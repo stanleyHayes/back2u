@@ -37,11 +37,60 @@ const baseTokens: ThemeOptions = {
     button: { textTransform: 'none', fontWeight: 600 },
   },
   components: {
-    // Buttons stay pill-rounded — the one element (with the nav) allowed to be.
-    MuiButton: { styleOverrides: { root: { borderRadius: 999 } } },
+    // Global keyframes + a subtle motion baseline, shared by every app.
+    MuiCssBaseline: {
+      styleOverrides: {
+        '@keyframes b2uFadeUp': {
+          from: { opacity: 0, transform: 'translateY(10px)' },
+          to: { opacity: 1, transform: 'none' },
+        },
+        '@keyframes b2uFadeIn': { from: { opacity: 0 }, to: { opacity: 1 } },
+        '@keyframes b2uPop': {
+          '0%': { opacity: 0, transform: 'scale(0.96)' },
+          '100%': { opacity: 1, transform: 'scale(1)' },
+        },
+        '@media (prefers-reduced-motion: reduce)': {
+          '*': { animationDuration: '0.001ms !important', animationIterationCount: '1 !important' },
+        },
+      },
+    },
+    // Buttons stay pill-rounded — the one element (with the nav) allowed to be —
+    // and get a tactile press.
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 999,
+          transition: 'transform .12s ease, box-shadow .2s ease, background-color .2s ease',
+          '&:active': { transform: 'scale(0.97)' },
+        },
+      },
+    },
     MuiPaper: { styleOverrides: { root: { backgroundImage: 'none' } } },
+    MuiCard: {
+      styleOverrides: {
+        root: { transition: 'transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .2s ease' },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          transition: 'transform .12s ease, background-color .2s ease, color .2s ease',
+          '&:active': { transform: 'scale(0.9)' },
+        },
+      },
+    },
   },
 };
+
+/** Entrance animation for a block; stagger with `fadeUpDelay(i)`. */
+export const fadeUp = {
+  animation: 'b2uFadeUp .5s cubic-bezier(.2,.7,.2,1) both',
+} as const;
+
+export const fadeUpDelay = (index: number, step = 60) => ({
+  animation: 'b2uFadeUp .5s cubic-bezier(.2,.7,.2,1) both',
+  animationDelay: `${index * step}ms`,
+});
 
 export const makeTheme = (overrides?: ThemeOptions) => createTheme({ ...baseTokens, ...overrides });
 

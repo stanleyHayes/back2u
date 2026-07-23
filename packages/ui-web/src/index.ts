@@ -7,6 +7,7 @@ export {
   CONSOLE_INK,
 } from './theme.js';
 export type { ConsoleThemeMode, ThemeMode } from './theme.js';
+export { fadeUp, fadeUpDelay } from './theme.js';
 export { OnboardingTour } from './OnboardingTour.js';
 export type { OnboardingTourProps, TourStep } from './OnboardingTour.js';
 export { circularThemeTransition, viewTransitionStyles } from './themeTransition.js';

@@ -819,7 +819,10 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         </Box>
 
         <Box sx={{ flex: 1, width: '100%', maxWidth: 1440, mx: 'auto', p: { xs: 2, md: 4 } }}>
-          {children}
+          {/* Re-key by route so each page fades up on navigation. */}
+          <Box key={pathname} sx={{ animation: 'b2uFadeUp .45s cubic-bezier(.2,.7,.2,1) both' }}>
+            {children}
+          </Box>
         </Box>
       </Box>
 

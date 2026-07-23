@@ -97,6 +97,17 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
           },
           '::view-transition-old(root)': { zIndex: 0 },
           '::view-transition-new(root)': { zIndex: 1 },
+          '@keyframes b2uFadeUp': {
+            from: { opacity: 0, transform: 'translateY(12px)' },
+            to: { opacity: 1, transform: 'none' },
+          },
+          '@keyframes b2uFadeIn': { from: { opacity: 0 }, to: { opacity: 1 } },
+          '@media (prefers-reduced-motion: reduce)': {
+            '*': {
+              animationDuration: '0.001ms !important',
+              animationIterationCount: '1 !important',
+            },
+          },
         },
       },
       MuiContainer: { defaultProps: { maxWidth: 'lg' } },

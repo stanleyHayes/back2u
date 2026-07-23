@@ -31,7 +31,11 @@ export function PageHeader({
     <Stack
       direction={{ xs: 'column', sm: 'row' }}
       spacing={2}
-      sx={{ alignItems: { sm: 'center' }, justifyContent: 'space-between' }}
+      sx={{
+        alignItems: { sm: 'center' },
+        justifyContent: 'space-between',
+        animation: 'b2uFadeUp .5s cubic-bezier(.2,.7,.2,1) both',
+      }}
     >
       <Stack direction="row" spacing={2} sx={{ alignItems: 'center', minWidth: 0 }}>
         <Box

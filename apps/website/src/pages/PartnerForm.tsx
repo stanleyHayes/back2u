@@ -417,6 +417,7 @@ export function PartnerForm() {
                 color: '#EAF3ED',
                 background: 'linear-gradient(155deg, #0B3D38 0%, #0F766E 100%)',
                 overflow: 'hidden',
+                animation: 'b2uFadeUp .55s cubic-bezier(.2,.7,.2,1) both',
                 boxShadow: '0 30px 60px -40px rgba(11,61,56,0.7)',
               }}
             >
@@ -538,6 +539,8 @@ export function PartnerForm() {
               sx={{
                 p: { xs: 2.5, md: 4 },
                 borderRadius: '4px 14px 14px 14px',
+                animation: 'b2uFadeUp .55s cubic-bezier(.2,.7,.2,1) both',
+                animationDelay: '90ms',
                 border: '1px solid',
                 borderColor: 'divider',
                 bgcolor: 'background.paper',
