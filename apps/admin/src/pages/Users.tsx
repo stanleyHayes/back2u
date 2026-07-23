@@ -26,6 +26,13 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { UserDTO } from '@back2u/shared-types';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import BlockIcon from '@mui/icons-material/Block';
+import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutlined';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import { IconButton, Tooltip } from '@mui/material';
+import { EmptyState, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -174,9 +181,11 @@ export function UsersPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>
-        User Management
-      </Typography>
+      <PageHeader
+        icon={<GroupOutlinedIcon />}
+        title="User Management"
+        description="Search accounts, manage roles, and ban, suspend or reactivate users."
+      />
 
       <TextField
         label="Search by name or email"
@@ -222,126 +231,148 @@ export function UsersPage() {
         </Stack>
       )}
 
-      <Box sx={{ overflowX: 'auto' }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  checked={allSelected}
-                  indeterminate={someSelected}
-                  onChange={toggleSelectAll}
-                  disabled={items.length === 0 || processing}
-                />
-              </TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Roles</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Points</TableCell>
-              <TableCell>Reputation</TableCell>
-              <TableCell>Joined</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {isLoading &&
-              Array.from({ length: 5 }).map((_, i) => (
-                <TableRow key={i}>
-                  {Array.from({ length: 9 }).map((_, j) => (
-                    <TableCell key={j}>
-                      <Skeleton variant="text" />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            {items.map((user) => (
-              <TableRow key={user.id} hover>
+      {!isLoading && items.length === 0 ? (
+        <EmptyState
+          tone="teal"
+          icon={<GroupOutlinedIcon />}
+          title="No users found"
+          description="No accounts match this search. Try a different name or email."
+        />
+      ) : (
+        <Box sx={{ overflowX: 'auto' }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedIds.has(user.id)}
-                    onChange={() => toggleSelect(user.id)}
-                    disabled={processing}
+                    checked={allSelected}
+                    indeterminate={someSelected}
+                    onChange={toggleSelectAll}
+                    disabled={items.length === 0 || processing}
                   />
                 </TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <Stack direction="row" spacing={0.5} useFlexGap sx={{ flexWrap: 'wrap' }}>
-                    {user.roles.map((r) => (
-                      <Chip key={r} label={r} size="small" color={ROLE_COLORS[r] ?? 'default'} />
-                    ))}
-                  </Stack>
-                </TableCell>
-                <TableCell>
-                  <Chip
-                    label={user.status ?? 'active'}
-                    size="small"
-                    color={STATUS_COLOR[user.status ?? 'active'] ?? 'default'}
-                  />
-                </TableCell>
-                <TableCell>{user.pointsBalance}</TableCell>
-                <TableCell>{user.reputationScore}</TableCell>
-                <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <Stack direction="row" spacing={0.5}>
-                    {user.status !== 'banned' && (
-                      <Button
-                        size="small"
-                        color="error"
-                        onClick={() => updateStatus.mutate({ id: user.id, status: 'banned' })}
-                        disabled={updateStatus.isPending || processing}
-                      >
-                        Ban
-                      </Button>
-                    )}
-                    {user.status !== 'suspended' && (
-                      <Button
-                        size="small"
-                        color="warning"
-                        onClick={() => updateStatus.mutate({ id: user.id, status: 'suspended' })}
-                        disabled={updateStatus.isPending || processing}
-                      >
-                        Suspend
-                      </Button>
-                    )}
-                    {user.status !== 'active' && (
-                      <Button
-                        size="small"
-                        color="success"
-                        onClick={() => updateStatus.mutate({ id: user.id, status: 'active' })}
-                        disabled={updateStatus.isPending || processing}
-                      >
-                        Activate
-                      </Button>
-                    )}
-                    <Button
-                      size="small"
-                      onClick={() => openRoleDialog(user)}
-                      disabled={updateRoles.isPending || processing}
-                    >
-                      Edit roles
-                    </Button>
-                  </Stack>
-                </TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Roles</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Points</TableCell>
+                <TableCell>Reputation</TableCell>
+                <TableCell>Joined</TableCell>
+                <TableCell align="right">Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Box>
+            </TableHead>
+            <TableBody>
+              {isLoading &&
+                Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({ length: 9 }).map((_, j) => (
+                      <TableCell key={j}>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              {items.map((user) => (
+                <TableRow key={user.id} hover>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={selectedIds.has(user.id)}
+                      onChange={() => toggleSelect(user.id)}
+                      disabled={processing}
+                    />
+                  </TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <Stack direction="row" spacing={0.5} useFlexGap sx={{ flexWrap: 'wrap' }}>
+                      {user.roles.map((r) => (
+                        <Chip key={r} label={r} size="small" color={ROLE_COLORS[r] ?? 'default'} />
+                      ))}
+                    </Stack>
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={user.status ?? 'active'}
+                      size="small"
+                      color={STATUS_COLOR[user.status ?? 'active'] ?? 'default'}
+                    />
+                  </TableCell>
+                  <TableCell>{user.pointsBalance}</TableCell>
+                  <TableCell>{user.reputationScore}</TableCell>
+                  <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell align="right">
+                    <Stack direction="row" spacing={0.25} sx={{ justifyContent: 'flex-end' }}>
+                      {user.status !== 'banned' && (
+                        <Tooltip title="Ban user">
+                          <IconButton
+                            size="small"
+                            color="error"
+                            onClick={() => updateStatus.mutate({ id: user.id, status: 'banned' })}
+                            disabled={updateStatus.isPending || processing}
+                          >
+                            <BlockIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                      {user.status !== 'suspended' && (
+                        <Tooltip title="Suspend user">
+                          <IconButton
+                            size="small"
+                            color="warning"
+                            onClick={() =>
+                              updateStatus.mutate({ id: user.id, status: 'suspended' })
+                            }
+                            disabled={updateStatus.isPending || processing}
+                          >
+                            <PauseCircleOutlineIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                      {user.status !== 'active' && (
+                        <Tooltip title="Reactivate user">
+                          <IconButton
+                            size="small"
+                            color="success"
+                            onClick={() => updateStatus.mutate({ id: user.id, status: 'active' })}
+                            disabled={updateStatus.isPending || processing}
+                          >
+                            <CheckCircleOutlineIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                      <Tooltip title="Edit roles">
+                        <IconButton
+                          size="small"
+                          sx={{ color: 'primary.main' }}
+                          onClick={() => openRoleDialog(user)}
+                          disabled={updateRoles.isPending || processing}
+                        >
+                          <ManageAccountsOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
+      )}
 
-      <TablePagination
-        component="div"
-        count={-1}
-        page={page}
-        onPageChange={(_e, newPage) => setPage(newPage)}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={(e) => {
-          setRowsPerPage(Number(e.target.value));
-          setPage(0);
-        }}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
+      {items.length > 0 && (
+        <TablePagination
+          component="div"
+          count={-1}
+          page={page}
+          onPageChange={(_e, newPage) => setPage(newPage)}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(Number(e.target.value));
+            setPage(0);
+          }}
+          rowsPerPageOptions={[5, 10, 25]}
+        />
+      )}
 
       <Dialog open={roleDialog.open} onClose={closeRoleDialog} maxWidth="sm" fullWidth>
         <DialogTitle>Edit roles — {roleDialog.user?.name}</DialogTitle>

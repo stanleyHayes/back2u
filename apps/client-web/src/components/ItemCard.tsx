@@ -160,9 +160,9 @@ export function ItemCard({
             display: 'block',
             fontWeight: 700,
             fontSize: 18,
-            color: INK,
+            color: 'text.primary',
             textDecoration: 'none',
-            '&:hover': { color: TEAL },
+            '&:hover': { color: 'primary.main' },
           }}
         >
           {item.title}

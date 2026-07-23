@@ -20,9 +20,8 @@ import { CardGridSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 const INK = '#0B3D38';
-const TEAL = '#0F766E';
 const MARIGOLD = '#E0A106';
 
 function majorCurrency(amount: number, currency: string) {
@@ -86,7 +85,11 @@ export function QrTagShopPage() {
 
   return (
     <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
-      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
+      <Stack
+        direction="row"
+        spacing={1.25}
+        sx={{ alignItems: 'center', color: 'primary.main', mb: 1 }}
+      >
         <ShoppingBagOutlinedIcon fontSize="small" />
         <Typography
           sx={{
@@ -104,7 +107,7 @@ export function QrTagShopPage() {
           fontFamily: DISPLAY,
           fontWeight: 600,
           fontSize: { xs: 34, md: 44 },
-          color: INK,
+          color: 'text.primary',
           letterSpacing: '-0.02em',
         }}
       >
@@ -156,7 +159,9 @@ export function QrTagShopPage() {
               }}
             >
               <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 20, color: INK }}>
+                <Typography
+                  sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 20, color: 'text.primary' }}
+                >
                   {p.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, mb: 1.5 }}>
@@ -165,11 +170,20 @@ export function QrTagShopPage() {
                 <Chip
                   size="small"
                   label={`${p.quantity} tags`}
-                  sx={{ bgcolor: 'rgba(15,118,110,0.1)', color: TEAL, width: 'fit-content' }}
+                  sx={{
+                    bgcolor: 'rgba(15,118,110,0.1)',
+                    color: 'primary.main',
+                    width: 'fit-content',
+                  }}
                 />
                 <Box sx={{ mt: 2, mb: 2 }}>
                   <Typography
-                    sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 26, color: INK }}
+                    sx={{
+                      fontFamily: DISPLAY,
+                      fontWeight: 600,
+                      fontSize: 26,
+                      color: 'text.primary',
+                    }}
                   >
                     {majorCurrency(p.price, p.currency)}
                   </Typography>
@@ -234,7 +248,9 @@ export function QrTagShopPage() {
             <Divider sx={{ my: 1.5 }} />
             <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
               <Typography sx={{ fontWeight: 700 }}>Total</Typography>
-              <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, color: INK }}>
+              <Typography
+                sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, color: 'text.primary' }}
+              >
                 ₵{cartTotal.toLocaleString()}
               </Typography>
             </Stack>

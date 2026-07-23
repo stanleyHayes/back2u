@@ -23,6 +23,7 @@ export interface UserDTO {
   reviewCount?: number;
   emailVerified: boolean;
   phoneVerified?: boolean;
+  mfaEnabled?: boolean;
   trustedFinder?: boolean;
   institutionId?: string;
   locale?: Locale;
@@ -60,4 +61,28 @@ export interface UpdateProfileInput {
 export interface AuthResponse {
   user: UserDTO;
   tokens: AuthTokens;
+}
+
+/**
+ * Returned by /auth/login instead of AuthResponse when the account has MFA
+ * enabled: the client must call /auth/mfa/verify with the short-lived
+ * mfaToken plus a TOTP code to complete the sign-in.
+ */
+export interface MfaChallengeResponse {
+  mfaRequired: true;
+  mfaToken: string;
+}
+
+export type LoginResponse = AuthResponse | MfaChallengeResponse;
+
+export interface MfaSetupResponse {
+  /** Base32 secret for manual entry into an authenticator app. */
+  secret: string;
+  /** otpauth:// URL, renderable as a QR code. */
+  otpauthUrl: string;
+}
+
+export interface ChangePasswordInput {
+  currentPassword: string;
+  newPassword: string;
 }

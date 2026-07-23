@@ -16,7 +16,8 @@ export function HBarChart({
       sx={{
         p: 2.5,
         borderRadius: 3,
-        border: '1px solid rgba(255,255,255,0.08)',
+        border: 1,
+        borderColor: 'divider',
         bgcolor: 'background.paper',
       }}
     >
@@ -39,7 +40,7 @@ export function HBarChart({
               sx={{
                 height: 8,
                 borderRadius: 999,
-                bgcolor: 'rgba(255,255,255,0.06)',
+                bgcolor: 'action.hover',
                 overflow: 'hidden',
               }}
             >

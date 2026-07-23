@@ -16,11 +16,12 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { back2uTheme } from '@back2u/ui-web';
+import type { AuthResponse } from '@back2u/shared-types';
 
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 const INK = '#0B3D38';
 const PAPER = '#FBF6EC';
 const TEAL = '#0F766E';
@@ -39,25 +40,45 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [mfaToken, setMfaToken] = useState<string | null>(null);
+  const [code, setCode] = useState('');
+
+  const finishLogin = (res: AuthResponse) => {
+    const allowed = res.user.roles.some(
+      (r) => r === 'partner_admin' || r === 'admin' || r === 'super_admin' || r === 'courier',
+    );
+    if (!allowed) {
+      setErr('This account does not have partner access.');
+      setMfaToken(null);
+      setCode('');
+      return;
+    }
+    setAuth({
+      user: res.user,
+      accessToken: res.tokens.accessToken,
+      refreshToken: res.tokens.refreshToken,
+    });
+    navigate('/');
+  };
 
   const login = useMutation({
     mutationFn: () => api.login({ email, password }),
     onSuccess: (res) => {
-      const allowed = res.user.roles.some(
-        (r) => r === 'partner_admin' || r === 'admin' || r === 'super_admin' || r === 'courier',
-      );
-      if (!allowed) {
-        setErr('This account does not have partner access.');
+      if ('mfaRequired' in res) {
+        setErr(null);
+        setCode('');
+        setMfaToken(res.mfaToken);
         return;
       }
-      setAuth({
-        user: res.user,
-        accessToken: res.tokens.accessToken,
-        refreshToken: res.tokens.refreshToken,
-      });
-      navigate('/');
+      finishLogin(res);
     },
     onError: (e: unknown) => setErr(e instanceof Error ? e.message : 'Login failed'),
+  });
+
+  const verify = useMutation({
+    mutationFn: () => api.verifyMfaLogin(mfaToken!, code),
+    onSuccess: finishLogin,
+    onError: (e: unknown) => setErr(e instanceof Error ? e.message : 'Verification failed'),
   });
 
   return (
@@ -215,71 +236,134 @@ export function LoginPage() {
               For institution staff &amp; couriers.
             </Typography>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                login.mutate();
-              }}
-            >
-              <Stack spacing={2.25}>
-                {err && (
-                  <Alert severity="error" sx={{ borderRadius: 2 }}>
-                    {err}
+            {mfaToken ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (code.length === 6) verify.mutate();
+                }}
+              >
+                <Stack spacing={2.25}>
+                  {err && (
+                    <Alert severity="error" sx={{ borderRadius: 2 }}>
+                      {err}
+                    </Alert>
+                  )}
+                  <Alert severity="info" sx={{ borderRadius: 2 }}>
+                    Two-factor authentication is on for this account. Enter the 6-digit code from
+                    your authenticator app.
                   </Alert>
-                )}
-                <TextField
-                  label="Email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  fullWidth
-                  autoComplete="email"
-                  sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
-                />
-                <TextField
-                  label="Password"
-                  type={showPw ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  fullWidth
-                  autoComplete="current-password"
-                  sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
-                  slotProps={{
-                    input: {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setShowPw((v) => !v)}
-                            edge="end"
-                            aria-label="Toggle password"
-                          >
-                            {showPw ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    },
-                  }}
-                />
-                <Button
-                  type="submit"
-                  size="large"
-                  disabled={login.isPending}
-                  sx={{
-                    bgcolor: MARIGOLD,
-                    color: INK,
-                    borderRadius: 999,
-                    fontWeight: 700,
-                    py: 1.4,
-                    boxShadow: '0 14px 28px -16px rgba(224,161,6,.9)',
-                    '&:hover': { bgcolor: '#cf9305' },
-                  }}
-                >
-                  {login.isPending ? 'Signing in…' : 'Sign in'}
-                </Button>
-              </Stack>
-            </form>
+                  <TextField
+                    label="Authentication code"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value.replace(/[^\d]/g, '').slice(0, 6))}
+                    autoFocus
+                    fullWidth
+                    slotProps={{
+                      htmlInput: {
+                        inputMode: 'numeric',
+                        autoComplete: 'one-time-code',
+                        style: { letterSpacing: '0.4em', textAlign: 'center', fontSize: 20 },
+                      },
+                    }}
+                    sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
+                  />
+                  <Button
+                    type="submit"
+                    size="large"
+                    disabled={code.length !== 6 || verify.isPending}
+                    sx={{
+                      bgcolor: MARIGOLD,
+                      color: INK,
+                      borderRadius: 999,
+                      fontWeight: 700,
+                      py: 1.4,
+                      boxShadow: '0 14px 28px -16px rgba(224,161,6,.9)',
+                      '&:hover': { bgcolor: '#cf9305' },
+                    }}
+                  >
+                    {verify.isPending ? 'Verifying…' : 'Verify & sign in'}
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setMfaToken(null);
+                      setCode('');
+                      setErr(null);
+                    }}
+                    color="inherit"
+                    sx={{ alignSelf: 'center', color: 'text.secondary' }}
+                  >
+                    Back to password
+                  </Button>
+                </Stack>
+              </form>
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  login.mutate();
+                }}
+              >
+                <Stack spacing={2.25}>
+                  {err && (
+                    <Alert severity="error" sx={{ borderRadius: 2 }}>
+                      {err}
+                    </Alert>
+                  )}
+                  <TextField
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    fullWidth
+                    autoComplete="email"
+                    sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
+                  />
+                  <TextField
+                    label="Password"
+                    type={showPw ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    fullWidth
+                    autoComplete="current-password"
+                    sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => setShowPw((v) => !v)}
+                              edge="end"
+                              aria-label="Toggle password"
+                            >
+                              {showPw ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    size="large"
+                    disabled={login.isPending}
+                    sx={{
+                      bgcolor: MARIGOLD,
+                      color: INK,
+                      borderRadius: 999,
+                      fontWeight: 700,
+                      py: 1.4,
+                      boxShadow: '0 14px 28px -16px rgba(224,161,6,.9)',
+                      '&:hover': { bgcolor: '#cf9305' },
+                    }}
+                  >
+                    {login.isPending ? 'Signing in…' : 'Sign in'}
+                  </Button>
+                </Stack>
+              </form>
+            )}
           </Box>
         </Box>
       </Box>

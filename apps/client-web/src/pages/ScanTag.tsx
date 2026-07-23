@@ -6,7 +6,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '../lib/api.js';
 import { shareLink } from '../lib/share.js';
 
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 const BODY = '"Outfit", system-ui, sans-serif';
 const INK = '#0B3D38';
 const PAPER = '#FBF6EC';
@@ -39,7 +39,7 @@ function Wordmark() {
           fontWeight: 600,
           fontSize: 21,
           letterSpacing: '-0.03em',
-          color: INK,
+          color: 'text.primary',
         }}
       >
         Back2u
@@ -193,7 +193,7 @@ export function ScanTagPage() {
               fontSize: 13,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
-              color: TEAL,
+              color: 'primary.main',
             }}
           >
             Back2u QR tag
@@ -249,7 +249,7 @@ export function ScanTagPage() {
                         fontFamily: DISPLAY,
                         fontWeight: 600,
                         fontSize: 24,
-                        color: INK,
+                        color: 'text.primary',
                         lineHeight: 1.1,
                       }}
                     >
@@ -351,7 +351,7 @@ export function ScanTagPage() {
                     textTransform: 'none',
                     fontFamily: BODY,
                     fontWeight: 700,
-                    color: INK,
+                    color: 'text.primary',
                     border: '1.5px solid rgba(11,61,56,0.25)',
                     py: 1.2,
                     '&:hover': { borderColor: INK, bgcolor: 'rgba(11,61,56,0.04)' },
@@ -361,7 +361,13 @@ export function ScanTagPage() {
                 </Button>
                 {shared && (
                   <Typography
-                    sx={{ color: TEAL, fontSize: 13, mt: 1, textAlign: 'center', fontWeight: 600 }}
+                    sx={{
+                      color: 'primary.main',
+                      fontSize: 13,
+                      mt: 1,
+                      textAlign: 'center',
+                      fontWeight: 600,
+                    }}
                   >
                     Link copied to clipboard.
                   </Typography>

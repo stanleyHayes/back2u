@@ -140,7 +140,10 @@ export function VaultPage() {
                   sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
                 >
                   <Box sx={{ minWidth: 0 }}>
-                    <Typography sx={{ fontWeight: 700, color: INK, fontSize: 17 }} noWrap>
+                    <Typography
+                      sx={{ fontWeight: 700, color: 'text.primary', fontSize: 17 }}
+                      noWrap
+                    >
                       {e.label}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">

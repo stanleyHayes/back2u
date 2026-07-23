@@ -17,7 +17,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 const INK = '#0B3D38';
 const PAPER = '#FBF6EC';
 const TEAL = '#0F766E';
@@ -161,13 +161,22 @@ export function LoginPage() {
   const [showPw, setShowPw] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [mfaToken, setMfaToken] = useState<string | null>(null);
+  const [code, setCode] = useState('');
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErr(null);
     try {
-      const res = await api.login({ email, password });
+      const res = mfaToken
+        ? await api.verifyMfaLogin(mfaToken, code)
+        : await api.login({ email, password });
+      if ('mfaRequired' in res) {
+        setMfaToken(res.mfaToken);
+        setCode('');
+        return;
+      }
       setAuth({
         user: res.user,
         accessToken: res.tokens.accessToken,
@@ -235,6 +244,39 @@ export function LoginPage() {
                   {err}
                 </Alert>
               )}
+              {mfaToken && (
+                <>
+                  <Alert severity="info" sx={{ borderRadius: 2 }}>
+                    Two-factor authentication is on for this account. Enter the 6-digit code from
+                    your authenticator app.
+                  </Alert>
+                  <TextField
+                    label="Authentication code"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value.replace(/[^\d]/g, '').slice(0, 6))}
+                    autoFocus
+                    fullWidth
+                    slotProps={{
+                      htmlInput: {
+                        inputMode: 'numeric',
+                        autoComplete: 'one-time-code',
+                        style: { letterSpacing: '0.4em', textAlign: 'center', fontSize: 20 },
+                      },
+                    }}
+                  />
+                  <Button
+                    onClick={() => {
+                      setMfaToken(null);
+                      setCode('');
+                      setErr(null);
+                    }}
+                    color="inherit"
+                    sx={{ alignSelf: 'center', color: 'text.secondary' }}
+                  >
+                    Back to password
+                  </Button>
+                </>
+              )}
               <TextField
                 label="Email"
                 type="email"
@@ -243,6 +285,7 @@ export function LoginPage() {
                 value={email}
                 autoComplete="email"
                 onChange={(e) => setEmail(e.target.value)}
+                sx={{ display: mfaToken ? 'none' : undefined }}
               />
               <TextField
                 label="Password"
@@ -252,6 +295,7 @@ export function LoginPage() {
                 value={password}
                 autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
+                sx={{ display: mfaToken ? 'none' : undefined }}
                 slotProps={{
                   input: {
                     endAdornment: (
@@ -268,7 +312,7 @@ export function LoginPage() {
                   },
                 }}
               />
-              <Box sx={{ textAlign: 'right' }}>
+              <Box sx={{ textAlign: 'right', display: mfaToken ? 'none' : undefined }}>
                 <Box
                   component={Link}
                   to="/forgot-password"
@@ -286,7 +330,7 @@ export function LoginPage() {
               <Button
                 type="submit"
                 size="large"
-                disabled={loading}
+                disabled={loading || (mfaToken !== null && code.length !== 6)}
                 sx={{
                   bgcolor: MARIGOLD,
                   color: INK,
@@ -297,7 +341,7 @@ export function LoginPage() {
                   '&:hover': { bgcolor: '#cf9305' },
                 }}
               >
-                {loading ? 'Signing in…' : 'Sign in'}
+                {loading ? 'Signing in…' : mfaToken ? 'Verify & sign in' : 'Sign in'}
               </Button>
             </Stack>
           </form>

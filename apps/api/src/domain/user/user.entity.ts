@@ -16,6 +16,13 @@ export interface UserSnapshot {
   pointsBalance: number;
   emailVerified: boolean;
   phoneVerified: boolean;
+  mfaEnabled: boolean;
+  /** Active TOTP secret (base32). Only set while MFA is enabled. */
+  mfaSecret?: string;
+  /** Secret awaiting first-code confirmation during enrollment. */
+  mfaPendingSecret?: string;
+  /** Highest TOTP time step already accepted — blocks replay within the drift window. */
+  mfaLastUsedStep?: number;
   trustedFinder: boolean;
   successfulReturns: number;
   averageRating?: number;
@@ -39,7 +46,21 @@ export class User {
   static create(
     input: Omit<
       UserSnapshot,
-      'createdAt' | 'updatedAt' | 'roles' | 'status' | 'reputationScore' | 'pointsBalance' | 'emailVerified' | 'phoneVerified' | 'trustedFinder' | 'successfulReturns' | 'reviewCount' | 'badges' | 'pushTokens' | 'emailPreferences'
+      | 'createdAt'
+      | 'updatedAt'
+      | 'roles'
+      | 'status'
+      | 'reputationScore'
+      | 'pointsBalance'
+      | 'emailVerified'
+      | 'phoneVerified'
+      | 'mfaEnabled'
+      | 'trustedFinder'
+      | 'successfulReturns'
+      | 'reviewCount'
+      | 'badges'
+      | 'pushTokens'
+      | 'emailPreferences'
     >,
   ): User {
     const now = new Date();
@@ -51,13 +72,20 @@ export class User {
       pointsBalance: 0,
       emailVerified: false,
       phoneVerified: false,
+      mfaEnabled: false,
       trustedFinder: false,
       successfulReturns: 0,
       averageRating: undefined,
       reviewCount: 0,
       badges: [],
       pushTokens: [],
-      emailPreferences: { marketing: true, matches: true, chat: true, reminders: true, courier: true },
+      emailPreferences: {
+        marketing: true,
+        matches: true,
+        chat: true,
+        reminders: true,
+        courier: true,
+      },
       createdAt: now,
       updatedAt: now,
     });
@@ -117,6 +145,36 @@ export class User {
     this.state.passwordHash = newHash;
     this.state.updatedAt = new Date();
   }
+  get mfaEnabled(): boolean {
+    return this.state.mfaEnabled === true;
+  }
+  beginMfaEnrollment(secret: string): void {
+    if (this.state.mfaEnabled) throw new ConflictError('MFA is already enabled');
+    this.state.mfaPendingSecret = secret;
+    this.state.updatedAt = new Date();
+  }
+  enableMfa(): void {
+    if (!this.state.mfaPendingSecret) throw new ConflictError('No MFA enrollment in progress');
+    this.state.mfaSecret = this.state.mfaPendingSecret;
+    this.state.mfaPendingSecret = undefined;
+    this.state.mfaEnabled = true;
+    this.state.updatedAt = new Date();
+  }
+  disableMfa(): void {
+    this.state.mfaEnabled = false;
+    this.state.mfaSecret = undefined;
+    this.state.mfaPendingSecret = undefined;
+    this.state.mfaLastUsedStep = undefined;
+    this.state.updatedAt = new Date();
+  }
+  /** True if this TOTP step was already consumed (replay). */
+  isMfaStepUsed(step: number): boolean {
+    return this.state.mfaLastUsedStep !== undefined && step <= this.state.mfaLastUsedStep;
+  }
+  markMfaStepUsed(step: number): void {
+    this.state.mfaLastUsedStep = Math.max(step, this.state.mfaLastUsedStep ?? -1);
+    this.state.updatedAt = new Date();
+  }
   addPushToken(token: string): void {
     if (!this.state.pushTokens.includes(token)) this.state.pushTokens.push(token);
     this.state.updatedAt = new Date();
@@ -142,7 +200,12 @@ export class User {
     this.state.reviewCount = count;
     this.state.updatedAt = new Date();
   }
-  updateProfile(input: { name?: string; phone?: string; avatarUrl?: string; emailPreferences?: EmailPreferences }): void {
+  updateProfile(input: {
+    name?: string;
+    phone?: string;
+    avatarUrl?: string;
+    emailPreferences?: EmailPreferences;
+  }): void {
     if (input.name !== undefined) {
       const name = input.name.trim();
       if (name.length === 0) throw new ValidationError('Name cannot be empty');

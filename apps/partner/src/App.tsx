@@ -2,6 +2,8 @@ import { Box, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import { PageHeader } from '@back2u/ui-web';
 
 import { api } from './lib/api.js';
 import { useAuth } from './lib/auth.store.js';
@@ -21,7 +23,6 @@ import { PartnerNotificationsPage } from './pages/PartnerNotifications.js';
 import { PartnerProfilePage } from './pages/PartnerProfile.js';
 import { PartnerSettingsPage } from './pages/PartnerSettings.js';
 
-const INK_TEAL = '#2DD4BF';
 const STATUS_ORDER = ['open', 'matched', 'claimed', 'returned', 'closed', 'archived'];
 
 function StatCard({ label, value }: { label: string; value: number }) {
@@ -29,18 +30,19 @@ function StatCard({ label, value }: { label: string; value: number }) {
     <Box
       sx={{
         p: 2.5,
-        borderRadius: 3,
-        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: 2,
+        border: 1,
+        borderColor: 'divider',
         bgcolor: 'background.paper',
       }}
     >
       <Typography sx={{ fontSize: 12.5, color: 'text.secondary' }}>{label}</Typography>
       <Typography
         sx={{
-          fontFamily: '"Fraunces", Georgia, serif',
+          fontFamily: '"Black Ops One", Georgia, serif',
           fontWeight: 600,
           fontSize: 34,
-          color: '#F3F6FB',
+          color: 'text.primary',
           lineHeight: 1.1,
         }}
       >
@@ -66,34 +68,18 @@ function Overview() {
     .map(([label, value]) => ({ label, value }));
   return (
     <Box>
-      <Typography
-        sx={{
-          color: INK_TEAL,
-          fontWeight: 700,
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          fontSize: 12,
-          mb: 0.5,
-        }}
-      >
-        Partner portal
-      </Typography>
-      <Typography
-        sx={{
-          fontFamily: '"Fraunces", Georgia, serif',
-          fontWeight: 600,
-          fontSize: 30,
-          color: '#F3F6FB',
-        }}
-      >
-        Welcome back
-      </Typography>
-      <Typography color="text.secondary" sx={{ mt: 1, mb: 3, maxWidth: 620 }}>
-        Lost &amp; found tracking for your institution. Filter by your venue, view turn-around
-        metrics, redeem finder points at your storefronts, and accept courier delivery jobs.
-      </Typography>
+      <PageHeader
+        icon={<DashboardOutlinedIcon />}
+        title="Welcome back"
+        description="Lost & found tracking for your institution. Filter by your venue, view turn-around metrics, redeem finder points at your storefronts, and accept courier delivery jobs."
+      />
       <Box
-        sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3,1fr)' }, gap: 2 }}
+        sx={{
+          mt: 3,
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(3,1fr)' },
+          gap: 2,
+        }}
       >
         <StatCard label="Reported here" value={data?.total ?? 0} />
         <StatCard
@@ -105,10 +91,10 @@ function Overview() {
 
       <Typography
         sx={{
-          fontFamily: '"Fraunces", Georgia, serif',
+          fontFamily: '"Black Ops One", Georgia, serif',
           fontWeight: 600,
           fontSize: 22,
-          color: '#F3F6FB',
+          color: 'text.primary',
           mt: 4,
           mb: 2,
         }}

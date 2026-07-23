@@ -15,7 +15,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { InstitutionLeadStatus } from '@back2u/shared-types';
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
-import { EmptyState, ListSkeleton } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -103,34 +103,27 @@ export function InstitutionLeadsPage() {
 
   return (
     <Stack spacing={3}>
-      <Stack
-        direction="row"
-        spacing={2}
-        sx={{ alignItems: 'center', justifyContent: 'space-between' }}
-      >
-        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-          <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            Partnership leads
-          </Typography>
-          {newCount > 0 && <Chip label={`${newCount} new`} color="info" />}
-        </Stack>
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-          <Checkbox
-            checked={allSelected}
-            indeterminate={someSelected}
-            onChange={toggleSelectAll}
-            disabled={items.length === 0 || processing}
-          />
-          <Typography variant="body2" color="text.secondary">
-            Select all
-          </Typography>
-        </Stack>
-      </Stack>
-
-      <Typography color="text.secondary">
-        Self-serve “Partner with us” submissions from the marketing site. Triage, reach out, and
-        convert approved leads into onboarded institutions.
-      </Typography>
+      <PageHeader
+        icon={<BusinessOutlinedIcon />}
+        title="Partnership leads"
+        description="Self-serve “Partner with us” submissions from the marketing site. Triage, reach out, and convert approved leads into onboarded institutions."
+        actions={
+          <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+            {newCount > 0 && <Chip label={`${newCount} new`} color="info" />}
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              <Checkbox
+                checked={allSelected}
+                indeterminate={someSelected}
+                onChange={toggleSelectAll}
+                disabled={items.length === 0 || processing}
+              />
+              <Typography variant="body2" color="text.secondary">
+                Select all
+              </Typography>
+            </Stack>
+          </Stack>
+        }
+      />
 
       {selectedIds.size > 0 && (
         <Stack direction="row" spacing={1}>

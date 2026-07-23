@@ -1,4 +1,5 @@
 import { Refresh } from '@mui/icons-material';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import {
   Box,
   Button,
@@ -10,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 import { SimpleChart } from '../components/SimpleChart.js';
@@ -52,20 +54,22 @@ export function OverviewPage() {
 
   return (
     <Stack spacing={3}>
-      <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="h3" sx={{ fontWeight: 700 }}>
-          Admin overview
-        </Typography>
-        <Button
-          variant="outlined"
-          size="small"
-          startIcon={isFetching ? <CircularProgress size={16} /> : <Refresh />}
-          onClick={handleRefresh}
-          disabled={isFetching}
-        >
-          Refresh
-        </Button>
-      </Stack>
+      <PageHeader
+        icon={<DashboardOutlinedIcon />}
+        title="Admin overview"
+        description="Live platform health — users, items, matches and marketplace activity at a glance."
+        actions={
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={isFetching ? <CircularProgress size={16} /> : <Refresh />}
+            onClick={handleRefresh}
+            disabled={isFetching}
+          >
+            Refresh
+          </Button>
+        }
+      />
 
       <Box
         sx={{

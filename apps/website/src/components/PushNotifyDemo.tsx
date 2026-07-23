@@ -81,23 +81,24 @@ export function PushNotifyDemo() {
           {/* Mock notification card */}
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Paper
-              elevation={4}
+              elevation={0}
               sx={{
                 width: '100%',
                 maxWidth: 360,
-                borderRadius: 3,
+                borderRadius: 2.5,
                 p: 2,
                 bgcolor: 'background.paper',
                 border: 1,
                 borderColor: 'divider',
+                boxShadow: '0 12px 32px rgba(11,61,56,0.14)',
               }}
             >
               <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
                 <Box
                   sx={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 2,
+                    width: 36,
+                    height: 36,
+                    borderRadius: 1.5,
                     bgcolor: 'primary.main',
                     display: 'flex',
                     alignItems: 'center',
@@ -105,7 +106,7 @@ export function PushNotifyDemo() {
                     flexShrink: 0,
                   }}
                 >
-                  <NotificationsIcon sx={{ color: 'primary.contrastText', fontSize: 20 }} />
+                  <NotificationsIcon sx={{ color: 'primary.contrastText', fontSize: 18 }} />
                 </Box>
                 <Box>
                   <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>

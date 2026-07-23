@@ -7,6 +7,8 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   set: (i: { user: UserDTO; accessToken: string; refreshToken: string }) => void;
+  /** Replaces the cached user (e.g. after a profile/MFA change) keeping tokens. */
+  updateUser: (user: UserDTO) => void;
   clear: () => void;
 }
 
@@ -17,6 +19,7 @@ export const useAuth = create<AuthState>()(
       accessToken: null,
       refreshToken: null,
       set: (i) => set({ user: i.user, accessToken: i.accessToken, refreshToken: i.refreshToken }),
+      updateUser: (user) => set({ user }),
       clear: () => set({ user: null, accessToken: null, refreshToken: null }),
     }),
     { name: 'back2u.partner.auth' },

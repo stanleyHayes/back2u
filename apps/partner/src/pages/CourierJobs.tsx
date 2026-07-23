@@ -2,9 +2,154 @@ import { Alert, Box, Button, Card, CardContent, Chip, Stack, Typography } from '
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
-import { EmptyState, CardGridSkeleton } from '@back2u/ui-web';
+import { EmptyState, PageHeader, CardGridSkeleton } from '@back2u/ui-web';
+import type { CourierJobDTO } from '@back2u/shared-types';
 
 import { api } from '../lib/api.js';
+
+function RouteStop({
+  marker,
+  label,
+  name,
+  sub,
+}: {
+  marker: React.ReactNode;
+  label: string;
+  name: string;
+  sub?: string;
+}) {
+  return (
+    <>
+      <Box sx={{ display: 'grid', placeItems: 'center', height: 22 }}>{marker}</Box>
+      <Box sx={{ minWidth: 0 }}>
+        <Typography sx={{ fontWeight: 600, color: 'text.primary', lineHeight: 1.35 }}>
+          {name}
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          {label}
+          {sub ? ` · ${sub}` : ''}
+        </Typography>
+      </Box>
+    </>
+  );
+}
+
+function CourierJobCard({
+  job,
+  pending,
+  accepting,
+  onAccept,
+}: {
+  job: CourierJobDTO;
+  pending: boolean;
+  accepting: boolean;
+  onAccept: () => void;
+}) {
+  return (
+    <Card
+      sx={{
+        borderRadius: 2,
+        border: 1,
+        borderColor: 'divider',
+        bgcolor: 'background.paper',
+      }}
+    >
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {/* Header: icon tile + job id + status */}
+        <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+          <Box
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: 1,
+              flexShrink: 0,
+              display: 'grid',
+              placeItems: 'center',
+              bgcolor: 'rgba(45,212,191,0.12)',
+              color: '#2DD4BF',
+            }}
+          >
+            <LocalShippingOutlinedIcon sx={{ fontSize: 22 }} />
+          </Box>
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography sx={{ fontWeight: 700, color: 'text.primary', lineHeight: 1.2 }}>
+              Job #{job.id.slice(-6)}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {new Date(job.createdAt).toLocaleDateString()}
+            </Typography>
+          </Box>
+          <Chip
+            label={job.status.replace(/_/g, ' ')}
+            size="small"
+            sx={{
+              textTransform: 'capitalize',
+              bgcolor: 'rgba(45,212,191,0.12)',
+              color: '#2DD4BF',
+              fontWeight: 700,
+            }}
+          />
+        </Stack>
+
+        {/* Route: dot — dotted connector — pin */}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: '22px 1fr',
+            columnGap: 1.25,
+            rowGap: 0.5,
+            px: 0.5,
+          }}
+        >
+          <RouteStop
+            marker={<Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: '#2DD4BF' }} />}
+            label="Pickup"
+            name={job.pickup.name}
+            sub={job.pickup.city}
+          />
+          <Box
+            sx={{
+              width: 0,
+              height: 18,
+              justifySelf: 'center',
+              borderLeft: '2px dotted rgba(128,128,128,0.5)',
+            }}
+          />
+          <Box />
+          <RouteStop
+            marker={<PlaceOutlinedIcon sx={{ fontSize: 16, color: '#E0A106' }} />}
+            label="Drop-off"
+            name={job.dropoff.name}
+            sub={job.dropoff.city}
+          />
+        </Box>
+
+        {/* Footer: fee + distance + accept */}
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+        >
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', minWidth: 0 }}>
+            <Chip
+              label={`${job.fee} ${job.currency}`}
+              size="small"
+              sx={{ bgcolor: 'rgba(224,161,6,0.14)', color: '#E0A106', fontWeight: 700 }}
+            />
+            {typeof job.estimatedDistanceKm === 'number' && (
+              <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
+                {job.estimatedDistanceKm.toFixed(1)} km
+              </Typography>
+            )}
+          </Stack>
+          <Button variant="contained" size="small" disabled={pending} onClick={onAccept}>
+            {accepting ? 'Accepting…' : 'Accept job'}
+          </Button>
+        </Stack>
+      </CardContent>
+    </Card>
+  );
+}
 
 export function CourierJobsPage() {
   const qc = useQueryClient();
@@ -20,34 +165,11 @@ export function CourierJobsPage() {
 
   return (
     <Stack spacing={3}>
-      <Box>
-        <Typography
-          sx={{
-            color: '#2DD4BF',
-            fontWeight: 700,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            fontSize: 12,
-            mb: 0.5,
-          }}
-        >
-          Logistics
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily: '"Fraunces", Georgia, serif',
-            fontWeight: 600,
-            fontSize: 28,
-            color: '#F3F6FB',
-          }}
-        >
-          Open courier jobs
-        </Typography>
-        <Typography color="text.secondary" sx={{ mt: 1, maxWidth: 620 }}>
-          Delivery requests waiting for a runner. Accept a job to assign it to your desk, then
-          collect with the pickup code and hand off with the delivery code.
-        </Typography>
-      </Box>
+      <PageHeader
+        icon={<LocalShippingOutlinedIcon />}
+        title="Open courier jobs"
+        description="Delivery requests waiting for a runner. Accept a job to assign it to your desk, then collect with the pickup code and hand off with the delivery code."
+      />
 
       {accept.isError && (
         <Alert severity="error">Could not accept that job — it may have just been taken.</Alert>
@@ -80,63 +202,13 @@ export function CourierJobsPage() {
           sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)' }, gap: 2 }}
         >
           {jobs.map((j) => (
-            <Card
+            <CourierJobCard
               key={j.id}
-              sx={{
-                borderRadius: 3,
-                border: '1px solid rgba(255,255,255,0.08)',
-                bgcolor: 'background.paper',
-              }}
-            >
-              <CardContent>
-                <Stack
-                  direction="row"
-                  sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}
-                >
-                  <Typography sx={{ fontWeight: 700, color: '#F3F6FB' }}>
-                    Job {j.id.slice(-6)}
-                  </Typography>
-                  <Chip
-                    label={`${j.fee} ${j.currency}`}
-                    size="small"
-                    sx={{ bgcolor: 'rgba(45,212,191,0.12)', color: '#2DD4BF', fontWeight: 700 }}
-                  />
-                </Stack>
-                <Stack spacing={1}>
-                  <Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
-                    <PlaceOutlinedIcon sx={{ fontSize: 18, color: '#2DD4BF', mt: '2px' }} />
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">
-                        Pickup
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#E5E9F0' }}>
-                        {j.pickup.name}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                  <Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
-                    <PlaceOutlinedIcon sx={{ fontSize: 18, color: '#E0A106', mt: '2px' }} />
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">
-                        Drop-off
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#E5E9F0' }}>
-                        {j.dropoff.name}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </Stack>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 2 }}
-                  disabled={accept.isPending}
-                  onClick={() => accept.mutate(j.id)}
-                >
-                  {accept.isPending && accept.variables === j.id ? 'Accepting…' : 'Accept job'}
-                </Button>
-              </CardContent>
-            </Card>
+              job={j}
+              pending={accept.isPending}
+              accepting={accept.isPending && accept.variables === j.id}
+              onAccept={() => accept.mutate(j.id)}
+            />
           ))}
         </Box>
       )}

@@ -18,6 +18,9 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { SafetyReportDTO } from '@back2u/shared-types';
+import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
+import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
+import { EmptyState, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -112,9 +115,11 @@ export function SafetyReportsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>
-        Safety Reports
-      </Typography>
+      <PageHeader
+        icon={<ShieldOutlinedIcon />}
+        title="Safety Reports"
+        description="Triage scam, harassment and spam reports from users, and resolve them in bulk."
+      />
 
       {selectedIds.size > 0 && (
         <Stack direction="row" spacing={1}>
@@ -141,73 +146,80 @@ export function SafetyReportsPage() {
         </Stack>
       )}
 
-      {data && data.length === 0 && <Alert severity="success">No open reports.</Alert>}
-
-      <Box sx={{ overflowX: 'auto' }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  checked={allSelected}
-                  indeterminate={someSelected}
-                  onChange={toggleSelectAll}
-                  disabled={items.length === 0 || processing}
-                />
-              </TableCell>
-              <TableCell>Target</TableCell>
-              <TableCell>Target ID</TableCell>
-              <TableCell>Reason</TableCell>
-              <TableCell>Note</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Created</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {items.map((report) => (
-              <TableRow key={report.id} hover>
+      {!isLoading && items.length === 0 ? (
+        <EmptyState
+          tone="teal"
+          icon={<TaskAltOutlinedIcon />}
+          title="No open reports"
+          description="Nothing needs attention right now. New safety reports from users will land here."
+        />
+      ) : (
+        <Box sx={{ overflowX: 'auto' }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedIds.has(report.id)}
-                    onChange={() => toggleSelect(report.id)}
-                    disabled={processing}
+                    checked={allSelected}
+                    indeterminate={someSelected}
+                    onChange={toggleSelectAll}
+                    disabled={items.length === 0 || processing}
                   />
                 </TableCell>
-                <TableCell>{report.target}</TableCell>
-                <TableCell>{report.targetId.slice(-8)}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={report.reason}
-                    size="small"
-                    color={REASON_COLOR[report.reason] ?? 'default'}
-                  />
-                </TableCell>
-                <TableCell>{report.note ?? '—'}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={report.status}
-                    size="small"
-                    color={STATUS_COLOR[report.status] ?? 'default'}
-                  />
-                </TableCell>
-                <TableCell>{new Date(report.createdAt).toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="success"
-                    disabled={processing || report.status !== 'open'}
-                    onClick={() => decide.mutate({ id: report.id, decision: 'resolved' })}
-                  >
-                    Resolve
-                  </Button>
-                </TableCell>
+                <TableCell>Target</TableCell>
+                <TableCell>Target ID</TableCell>
+                <TableCell>Reason</TableCell>
+                <TableCell>Note</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Created</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Box>
+            </TableHead>
+            <TableBody>
+              {items.map((report) => (
+                <TableRow key={report.id} hover>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={selectedIds.has(report.id)}
+                      onChange={() => toggleSelect(report.id)}
+                      disabled={processing}
+                    />
+                  </TableCell>
+                  <TableCell>{report.target}</TableCell>
+                  <TableCell>{report.targetId.slice(-8)}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={report.reason}
+                      size="small"
+                      color={REASON_COLOR[report.reason] ?? 'default'}
+                    />
+                  </TableCell>
+                  <TableCell>{report.note ?? '—'}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={report.status}
+                      size="small"
+                      color={STATUS_COLOR[report.status] ?? 'default'}
+                    />
+                  </TableCell>
+                  <TableCell>{new Date(report.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="success"
+                      disabled={processing || report.status !== 'open'}
+                      onClick={() => decide.mutate({ id: report.id, decision: 'resolved' })}
+                    >
+                      Resolve
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
+      )}
 
       <Snackbar
         open={snackbar.open}

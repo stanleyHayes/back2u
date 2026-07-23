@@ -1,7 +1,9 @@
 import { Alert, Box, Button, Chip, Stack, Typography } from '@mui/material';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { SubscriptionTier } from '@back2u/shared-types';
+import { EmptyState, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
@@ -39,27 +41,13 @@ export function BillingPage() {
 
   return (
     <Box sx={{ maxWidth: 1040, mx: 'auto' }}>
-      <Typography
-        sx={{
-          color: TEAL,
-          fontWeight: 700,
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          fontSize: 12,
-          mb: 0.5,
-        }}
-      >
-        Billing
-      </Typography>
-      <Typography
-        sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 30, color: INK }}
-      >
-        Plans &amp; billing
-      </Typography>
-      <Typography color="text.secondary" sx={{ mt: 1, mb: 3, maxWidth: 620 }}>
-        Upgrade your institution to unlock unlimited items, courier dispatch, analytics, and API
-        access.
-      </Typography>
+      <Box sx={{ mb: 3 }}>
+        <PageHeader
+          icon={<CreditCardOutlinedIcon />}
+          title="Plans & billing"
+          description="Upgrade your institution to unlock unlimited items, courier dispatch, analytics, and API access."
+        />
+      </Box>
 
       {!institutionId && (
         <Alert severity="warning" sx={{ mb: 3, borderRadius: 2 }}>
@@ -72,7 +60,7 @@ export function BillingPage() {
           sx={{
             mb: 3,
             p: 2.5,
-            borderRadius: '20px 20px 20px 6px',
+            borderRadius: 2,
             bgcolor: INK,
             color: PAPER,
             display: 'flex',
@@ -95,7 +83,7 @@ export function BillingPage() {
             </Typography>
             <Typography
               sx={{
-                fontFamily: '"Fraunces", Georgia, serif',
+                fontFamily: '"Black Ops One", Georgia, serif',
                 fontSize: 22,
                 fontWeight: 600,
                 textTransform: 'capitalize',
@@ -118,6 +106,15 @@ export function BillingPage() {
         </Alert>
       )}
 
+      {plans && plans.length === 0 && (
+        <EmptyState
+          tone="marigold"
+          icon={<CreditCardOutlinedIcon />}
+          title="No plans available"
+          description="Subscription plans couldn't be found right now. Check back in a moment."
+        />
+      )}
+
       <Box
         sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2.5 }}
       >
@@ -131,7 +128,7 @@ export function BillingPage() {
               sx={{
                 position: 'relative',
                 p: 3,
-                borderRadius: '24px 24px 24px 8px',
+                borderRadius: 2,
                 bgcolor: 'background.paper',
                 border: '2px solid',
                 borderColor: isCurrent ? TEAL : featured ? MARIGOLD : 'divider',
@@ -168,15 +165,15 @@ export function BillingPage() {
                   }}
                 />
               )}
-              <Typography sx={{ fontWeight: 700, fontSize: 18, color: INK }}>
+              <Typography sx={{ fontWeight: 700, fontSize: 18, color: 'text.primary' }}>
                 {plan.name}
               </Typography>
               <Typography
                 sx={{
-                  fontFamily: '"Fraunces", Georgia, serif',
+                  fontFamily: '"Black Ops One", Georgia, serif',
                   fontWeight: 600,
                   fontSize: 30,
-                  color: INK,
+                  color: 'text.primary',
                   mt: 0.5,
                 }}
               >
@@ -214,7 +211,7 @@ export function BillingPage() {
                         borderRadius: 999,
                         fontWeight: 700,
                         py: 1.1,
-                        color: INK,
+                        color: 'text.primary',
                         borderColor: 'divider',
                       }
                 }

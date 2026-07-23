@@ -13,19 +13,22 @@ import {
   Typography,
 } from '@mui/material';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
+import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import { useQuery } from '@tanstack/react-query';
 import type { InstitutionType } from '@back2u/shared-types';
+import { PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { uploadImageUrl } from '../lib/cloudinary-upload.js';
 
 const TEAL = '#2DD4BF';
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 const PANEL = {
   p: { xs: 2.5, md: 3 },
-  borderRadius: 3,
-  border: '1px solid rgba(255,255,255,0.08)',
+  borderRadius: 2,
+  border: 1,
+  borderColor: 'divider',
   bgcolor: 'background.paper',
 };
 
@@ -119,27 +122,13 @@ export function RewardsProfilePage() {
 
   return (
     <Box sx={{ maxWidth: 880 }}>
-      <Typography
-        sx={{
-          color: TEAL,
-          fontWeight: 700,
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          fontSize: 12,
-          mb: 0.5,
-        }}
-      >
-        Commerce
-      </Typography>
-      <Typography
-        sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 30, color: '#F3F6FB', mb: 1 }}
-      >
-        Rewards storefront
-      </Typography>
-      <Typography color="text.secondary" sx={{ mb: 3, maxWidth: 620 }}>
-        Opt in to the Back2u rewards directory so members can discover you and spend their finder
-        points at your venue. Your storefront is advertised for free across the app.
-      </Typography>
+      <Box sx={{ mb: 3 }}>
+        <PageHeader
+          icon={<StorefrontOutlinedIcon />}
+          title="Rewards storefront"
+          description="Opt in to the Back2u rewards directory so members can discover you and spend their finder points at your venue. Your storefront is advertised for free across the app."
+        />
+      </Box>
 
       <Box
         sx={{
@@ -209,7 +198,12 @@ export function RewardsProfilePage() {
                 <Avatar
                   src={logoUrl || undefined}
                   variant="rounded"
-                  sx={{ width: 64, height: 48, bgcolor: 'rgba(45,212,191,0.15)', color: TEAL }}
+                  sx={{
+                    width: 64,
+                    height: 48,
+                    bgcolor: 'rgba(45,212,191,0.15)',
+                    color: 'primary.main',
+                  }}
                 >
                   {(inst?.name ?? 'P').charAt(0)}
                 </Avatar>
@@ -220,7 +214,7 @@ export function RewardsProfilePage() {
                   startIcon={
                     uploadingLogo ? <CircularProgress size={16} /> : <PhotoCameraOutlinedIcon />
                   }
-                  sx={{ color: TEAL, borderColor: 'rgba(45,212,191,0.4)', fontWeight: 700 }}
+                  sx={{ color: 'primary.main', borderColor: 'primary.main', fontWeight: 700 }}
                 >
                   {uploadingLogo ? 'Uploading…' : logoUrl ? 'Change image' : 'Upload image'}
                   <input hidden type="file" accept="image/*" onChange={onPickLogo} />
@@ -263,12 +257,10 @@ export function RewardsProfilePage() {
 
         {/* Live preview of the directory card */}
         <Box sx={PANEL}>
-          <Typography sx={{ fontWeight: 700, color: '#F3F6FB', mb: 2 }}>
+          <Typography sx={{ fontWeight: 700, color: 'text.primary', mb: 2 }}>
             Directory preview
           </Typography>
-          <Box
-            sx={{ borderRadius: 3, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}
-          >
+          <Box sx={{ borderRadius: 2, overflow: 'hidden', border: 1, borderColor: 'divider' }}>
             <Box
               sx={{
                 height: 110,
@@ -301,7 +293,7 @@ export function RewardsProfilePage() {
             </Box>
             <Box sx={{ p: 2 }}>
               <Typography
-                sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 18, color: '#F3F6FB' }}
+                sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 18, color: 'text.primary' }}
               >
                 {inst?.name ?? 'Your venue'}
               </Typography>

@@ -43,7 +43,7 @@ const outlineBtn = {
   fontWeight: 700,
   color: 'text.primary',
   borderColor: 'divider',
-  '&:hover': { borderColor: TEAL, color: TEAL },
+  '&:hover': { borderColor: TEAL, color: 'primary.main' },
 } as const;
 
 const LOCALES: { code: Locale; label: string }[] = [
@@ -84,7 +84,7 @@ function SettingCard({
             display: 'grid',
             placeItems: 'center',
             bgcolor: 'rgba(15,118,110,0.1)',
-            color: TEAL,
+            color: 'primary.main',
             flexShrink: 0,
             '& svg': { fontSize: 21 },
           }}
@@ -92,7 +92,9 @@ function SettingCard({
           {icon}
         </Box>
         <Box sx={{ minWidth: 0 }}>
-          <Typography sx={{ fontWeight: 700, fontSize: 16.5, color: INK, lineHeight: 1.3 }}>
+          <Typography
+            sx={{ fontWeight: 700, fontSize: 16.5, color: 'text.primary', lineHeight: 1.3 }}
+          >
             {title}
           </Typography>
           {desc && <Typography sx={{ fontSize: 13.5, color: 'text.secondary' }}>{desc}</Typography>}
@@ -219,7 +221,7 @@ export function SettingsPage() {
     <Box sx={{ maxWidth: 640, mx: 'auto' }}>
       <Typography
         sx={{
-          color: TEAL,
+          color: 'primary.main',
           fontWeight: 700,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
@@ -231,10 +233,10 @@ export function SettingsPage() {
       </Typography>
       <Typography
         sx={{
-          fontFamily: '"Fraunces", Georgia, serif',
+          fontFamily: '"Black Ops One", Georgia, serif',
           fontWeight: 600,
           fontSize: 30,
-          color: INK,
+          color: 'text.primary',
           mb: 3,
         }}
       >

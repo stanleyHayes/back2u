@@ -13,6 +13,8 @@ const institutionLeadSchema = new Schema(
     contactEmail: { type: String, required: true },
     contactPhone: { type: String },
     city: { type: String, required: true },
+    lat: { type: Number },
+    lng: { type: Number },
     estimatedVolume: { type: String },
     message: { type: String },
     status: {

@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 const INK = '#0B3D38';
 const TEAL = '#0F766E';
 const MARIGOLD = '#E0A106';
@@ -120,7 +120,11 @@ export function MatchesPage() {
 
   const header = (
     <Box sx={{ mb: 3 }}>
-      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
+      <Stack
+        direction="row"
+        spacing={1.25}
+        sx={{ alignItems: 'center', color: 'primary.main', mb: 1 }}
+      >
         <AutoAwesomeIcon fontSize="small" />
         <Typography
           sx={{
@@ -138,7 +142,7 @@ export function MatchesPage() {
           fontFamily: DISPLAY,
           fontWeight: 600,
           fontSize: { xs: 34, md: 44 },
-          color: INK,
+          color: 'text.primary',
           letterSpacing: '-0.02em',
         }}
       >
@@ -228,9 +232,9 @@ function ItemMatches({
             fontFamily: DISPLAY,
             fontWeight: 600,
             fontSize: 22,
-            color: INK,
+            color: 'text.primary',
             textDecoration: 'none',
-            '&:hover': { color: TEAL },
+            '&:hover': { color: 'primary.main' },
           }}
         >
           {item.title}

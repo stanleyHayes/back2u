@@ -19,6 +19,7 @@ export const toUserDTO = (user: User): UserDTO => {
     reviewCount: s.reviewCount,
     emailVerified: s.emailVerified,
     phoneVerified: s.phoneVerified,
+    mfaEnabled: s.mfaEnabled === true,
     trustedFinder: s.trustedFinder,
     institutionId: s.institutionId,
     locale: s.locale,

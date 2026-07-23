@@ -15,6 +15,10 @@ export interface UserDoc {
   pointsBalance: number;
   emailVerified: boolean;
   phoneVerified: boolean;
+  mfaEnabled: boolean;
+  mfaSecret?: string;
+  mfaPendingSecret?: string;
+  mfaLastUsedStep?: number;
   trustedFinder: boolean;
   successfulReturns: number;
   averageRating?: number;
@@ -49,7 +53,15 @@ const userSchema = new mongoose.Schema<UserDoc>(
     avatarUrl: { type: String },
     roles: {
       type: [String],
-      enum: ['user', 'finder', 'trusted_finder', 'courier', 'partner_admin', 'admin', 'super_admin'],
+      enum: [
+        'user',
+        'finder',
+        'trusted_finder',
+        'courier',
+        'partner_admin',
+        'admin',
+        'super_admin',
+      ],
       default: ['user'],
     },
     status: { type: String, enum: ['active', 'banned', 'suspended'], default: 'active' },
@@ -57,6 +69,10 @@ const userSchema = new mongoose.Schema<UserDoc>(
     pointsBalance: { type: Number, default: 0 },
     emailVerified: { type: Boolean, default: false },
     phoneVerified: { type: Boolean, default: false },
+    mfaEnabled: { type: Boolean, default: false },
+    mfaSecret: { type: String },
+    mfaPendingSecret: { type: String },
+    mfaLastUsedStep: { type: Number },
     trustedFinder: { type: Boolean, default: false },
     successfulReturns: { type: Number, default: 0 },
     averageRating: { type: Number },

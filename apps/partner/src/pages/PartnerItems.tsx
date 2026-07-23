@@ -13,12 +13,102 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
-import { EmptyState, CardGridSkeleton } from '@back2u/ui-web';
+import { EmptyState, PageHeader, CardGridSkeleton } from '@back2u/ui-web';
+import type { ItemDTO } from '@back2u/shared-types';
 
 import { api } from '../lib/api.js';
 
 const STATUSES = ['all', 'open', 'matched', 'returned', 'closed', 'archived'] as const;
 const KINDS = ['all', 'lost', 'found'] as const;
+
+function ItemCard({ item }: { item: ItemDTO }) {
+  const image = item.images[0];
+  return (
+    <Card
+      component={Link}
+      to={`/items/${item.id}`}
+      sx={{
+        textDecoration: 'none',
+        color: 'inherit',
+        borderRadius: 2,
+        overflow: 'hidden',
+        border: 1,
+        borderColor: 'divider',
+        bgcolor: 'background.paper',
+        transition: 'border-color .15s ease, transform .15s ease',
+        '&:hover': { borderColor: 'rgba(45,212,191,0.4)', transform: 'translateY(-2px)' },
+      }}
+    >
+      <Box
+        sx={{
+          position: 'relative',
+          aspectRatio: '16/10',
+          bgcolor: 'rgba(45,212,191,0.08)',
+          display: 'grid',
+          placeItems: 'center',
+          color: '#2DD4BF',
+        }}
+      >
+        {image ? (
+          <Box
+            component="img"
+            src={image.url}
+            alt={item.title}
+            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        ) : (
+          <Inventory2OutlinedIcon sx={{ fontSize: 44 }} />
+        )}
+        <Chip
+          label={item.kind}
+          size="small"
+          sx={{
+            position: 'absolute',
+            top: 10,
+            left: 10,
+            textTransform: 'capitalize',
+            fontWeight: 700,
+            bgcolor: item.kind === 'found' ? 'rgba(45,212,191,0.92)' : 'rgba(194,65,12,0.92)',
+            color: item.kind === 'found' ? '#04201d' : '#FFF3E8',
+          }}
+        />
+        <Chip
+          label={item.status}
+          size="small"
+          sx={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            textTransform: 'capitalize',
+            fontWeight: 700,
+            bgcolor: 'rgba(10,15,22,0.72)',
+            color: '#F3F6FB',
+            backdropFilter: 'blur(4px)',
+          }}
+        />
+      </Box>
+      <CardContent>
+        <Typography
+          sx={{
+            fontWeight: 700,
+            color: 'text.primary',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {item.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
+          {item.category} · {item.place.city ?? item.place.name}
+        </Typography>
+        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+          {new Date(item.occurredAt).toLocaleDateString()}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+}
 
 export function PartnerItemsPage() {
   const [status, setStatus] = useState<string>('all');
@@ -43,9 +133,11 @@ export function PartnerItemsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>
-        Items
-      </Typography>
+      <PageHeader
+        icon={<Inventory2OutlinedIcon />}
+        title="Items"
+        description="Lost and found items reported at your institution. Filter by status or kind, or search by name."
+      />
 
       <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap' }}>
         <TextField
@@ -106,31 +198,7 @@ export function PartnerItemsPage() {
             }}
           >
             {items.map((item) => (
-              <Card
-                key={item.id}
-                variant="outlined"
-                component={Link}
-                to={`/items/${item.id}`}
-                style={{ textDecoration: 'none', color: 'inherit' }}
-              >
-                <CardContent>
-                  <Stack
-                    direction="row"
-                    sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-                  >
-                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                      {item.title}
-                    </Typography>
-                    <Chip label={item.status} size="small" />
-                  </Stack>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.kind} · {item.category} · {item.place.name}
-                  </Typography>
-                  <Typography variant="body2" sx={{ mt: 1 }}>
-                    {item.description.slice(0, 100)}...
-                  </Typography>
-                </CardContent>
-              </Card>
+              <ItemCard key={item.id} item={item} />
             ))}
           </Box>
           <Pagination count={totalPages} page={page} onChange={(_e, v) => setPage(v)} />

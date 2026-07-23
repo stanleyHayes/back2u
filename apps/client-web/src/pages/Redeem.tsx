@@ -147,7 +147,7 @@ export function RedeemPage() {
                   </Typography>
                   <Typography
                     sx={{
-                      fontFamily: '"Fraunces", serif',
+                      fontFamily: '"Black Ops One", serif',
                       fontWeight: 600,
                       fontSize: 44,
                       letterSpacing: '0.08em',
@@ -205,7 +205,7 @@ export function RedeemPage() {
                   }}
                 >
                   <Box sx={{ minWidth: 0 }}>
-                    <Typography sx={{ fontWeight: 700, color: INK }}>
+                    <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>
                       {r.code} · {r.points} pts = {money(r.value, r.currency)}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">

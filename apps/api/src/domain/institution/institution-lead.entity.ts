@@ -10,6 +10,8 @@ export interface InstitutionLeadSnapshot {
   contactEmail: string;
   contactPhone?: string;
   city: string;
+  lat?: number;
+  lng?: number;
   estimatedVolume?: string;
   message?: string;
   status: InstitutionLeadStatus;

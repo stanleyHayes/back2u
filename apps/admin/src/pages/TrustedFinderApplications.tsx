@@ -21,7 +21,8 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { TrustedFinderApplicationDTO } from '@back2u/shared-types';
-import { AiAssistantBar } from '@back2u/ui-web';
+import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
+import { AiAssistantBar, EmptyState, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -101,9 +102,11 @@ export function TrustedFinderApplicationsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>
-        Trusted Finder Applications
-      </Typography>
+      <PageHeader
+        icon={<HowToRegOutlinedIcon />}
+        title="Trusted Finder Applications"
+        description="Vet members applying for trusted-finder status — review their ID and bio, then approve or reject."
+      />
 
       <Stack direction="row" spacing={1}>
         {(['pending', 'approved', 'rejected'] as const).map((s) => (
@@ -125,95 +128,95 @@ export function TrustedFinderApplicationsPage() {
         </Button>
       </Stack>
 
-      <Box sx={{ overflowX: 'auto' }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>User</TableCell>
-              <TableCell>ID Photo</TableCell>
-              <TableCell>Bio</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Created</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {isLoading &&
-              Array.from({ length: 5 }).map((_, i) => (
-                <TableRow key={i}>
-                  {Array.from({ length: 6 }).map((_, j) => (
-                    <TableCell key={j}>
-                      <Skeleton variant="text" />
-                    </TableCell>
-                  ))}
+      {!isLoading && (data ?? []).length === 0 ? (
+        <EmptyState
+          tone="teal"
+          icon={<HowToRegOutlinedIcon />}
+          title="No applications found"
+          description="Applications matching this filter will appear here for review."
+        />
+      ) : (
+        <Box sx={{ overflowX: 'auto' }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>User</TableCell>
+                <TableCell>ID Photo</TableCell>
+                <TableCell>Bio</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Created</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {isLoading &&
+                Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({ length: 6 }).map((_, j) => (
+                      <TableCell key={j}>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              {(data ?? []).map((app) => (
+                <TableRow key={app.id} hover>
+                  <TableCell>
+                    <Typography variant="body2">{app.userId}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <a href={app.idPhotoUrl} target="_blank" rel="noreferrer">
+                      <img
+                        src={app.idPhotoUrl}
+                        alt="ID"
+                        style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 4 }}
+                      />
+                    </a>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2" sx={{ maxWidth: 300, whiteSpace: 'pre-wrap' }}>
+                      {app.bio ?? '—'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={app.status}
+                      size="small"
+                      color={STATUS_COLOR[app.status] ?? 'default'}
+                    />
+                  </TableCell>
+                  <TableCell>{new Date(app.createdAt).toLocaleString()}</TableCell>
+                  <TableCell>
+                    {app.status === 'pending' && (
+                      <Stack direction="row" spacing={0.5}>
+                        <Button
+                          size="small"
+                          color="success"
+                          onClick={() => openDecide(app, 'approved')}
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          size="small"
+                          color="error"
+                          onClick={() => openDecide(app, 'rejected')}
+                        >
+                          Reject
+                        </Button>
+                      </Stack>
+                    )}
+                    {app.status !== 'pending' && app.reason && (
+                      <Typography variant="caption" color="text.secondary">
+                        {app.reason}
+                      </Typography>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
-            {(data ?? []).map((app) => (
-              <TableRow key={app.id} hover>
-                <TableCell>
-                  <Typography variant="body2">{app.userId}</Typography>
-                </TableCell>
-                <TableCell>
-                  <a href={app.idPhotoUrl} target="_blank" rel="noreferrer">
-                    <img
-                      src={app.idPhotoUrl}
-                      alt="ID"
-                      style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 4 }}
-                    />
-                  </a>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="body2" sx={{ maxWidth: 300, whiteSpace: 'pre-wrap' }}>
-                    {app.bio ?? '—'}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Chip
-                    label={app.status}
-                    size="small"
-                    color={STATUS_COLOR[app.status] ?? 'default'}
-                  />
-                </TableCell>
-                <TableCell>{new Date(app.createdAt).toLocaleString()}</TableCell>
-                <TableCell>
-                  {app.status === 'pending' && (
-                    <Stack direction="row" spacing={0.5}>
-                      <Button
-                        size="small"
-                        color="success"
-                        onClick={() => openDecide(app, 'approved')}
-                      >
-                        Approve
-                      </Button>
-                      <Button
-                        size="small"
-                        color="error"
-                        onClick={() => openDecide(app, 'rejected')}
-                      >
-                        Reject
-                      </Button>
-                    </Stack>
-                  )}
-                  {app.status !== 'pending' && app.reason && (
-                    <Typography variant="caption" color="text.secondary">
-                      {app.reason}
-                    </Typography>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-            {!isLoading && (data ?? []).length === 0 && (
-              <TableRow>
-                <TableCell colSpan={6}>
-                  <Typography variant="body2" color="text.secondary">
-                    No applications found.
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </Box>
+            </TableBody>
+          </Table>
+        </Box>
+      )}
 
       <Dialog open={decideDialog.open} onClose={closeDecide} maxWidth="sm" fullWidth>
         <DialogTitle>

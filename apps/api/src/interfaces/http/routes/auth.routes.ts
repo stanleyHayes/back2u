@@ -3,8 +3,15 @@ import type { Container } from 'inversify';
 import { z } from 'zod';
 
 import { LoginUserUseCase } from '../../../application/use-cases/auth/login-user.js';
-import { RegisterUserUseCase, toUserDTO } from '../../../application/use-cases/auth/register-user.js';
-import { LogoutUseCase, RefreshSessionUseCase } from '../../../application/use-cases/auth/refresh-session.js';
+import { VerifyMfaLoginUseCase } from '../../../application/use-cases/auth/mfa.use-cases.js';
+import {
+  RegisterUserUseCase,
+  toUserDTO,
+} from '../../../application/use-cases/auth/register-user.js';
+import {
+  LogoutUseCase,
+  RefreshSessionUseCase,
+} from '../../../application/use-cases/auth/refresh-session.js';
 import { TOKENS } from '../../../application/ports/tokens.js';
 import type { IUserRepository } from '../../../application/ports/repositories.js';
 import { NotFoundError } from '../../../domain/shared/errors.js';
@@ -27,6 +34,11 @@ const RefreshSchema = z.object({
   refreshToken: z.string().min(1),
 });
 
+const MfaVerifySchema = z.object({
+  mfaToken: z.string().min(1),
+  code: z.string().min(6).max(7),
+});
+
 export const authRouter = (c: Container): Router => {
   const r = Router();
 
@@ -46,6 +58,16 @@ export const authRouter = (c: Container): Router => {
     try {
       const input = LoginSchema.parse(req.body);
       const data = await c.get(LoginUserUseCase).execute(input, meta(req));
+      ok(res, data);
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  r.post('/mfa/verify', async (req, res, next) => {
+    try {
+      const { mfaToken, code } = MfaVerifySchema.parse(req.body);
+      const data = await c.get(VerifyMfaLoginUseCase).execute(mfaToken, code, meta(req));
       ok(res, data);
     } catch (e) {
       next(e);

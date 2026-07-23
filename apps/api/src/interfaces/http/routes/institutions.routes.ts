@@ -54,6 +54,8 @@ const LeadSchema = z.object({
   contactEmail: z.string().email(),
   contactPhone: z.string().optional(),
   city: z.string().min(1),
+  lat: z.number().min(-90).max(90).optional(),
+  lng: z.number().min(-180).max(180).optional(),
   estimatedVolume: z.string().optional(),
   message: z.string().optional(),
 });
@@ -124,22 +126,30 @@ export const institutionsRouter = (c: Container): Router => {
     }
   });
 
-  r.post('/leads/:id/decide', requireAuth(c), requireRole(...ADMIN_ROLES), async (req, res, next) => {
-    try {
-      const input = DecideLeadSchema.parse(req.body);
-      const data = await c.get(DecideInstitutionLeadUseCase).execute(req.params.id as string, input.decision);
-      ok(res, data);
-    } catch (e) {
-      next(e);
-    }
-  });
+  r.post(
+    '/leads/:id/decide',
+    requireAuth(c),
+    requireRole(...ADMIN_ROLES),
+    async (req, res, next) => {
+      try {
+        const input = DecideLeadSchema.parse(req.body);
+        const data = await c
+          .get(DecideInstitutionLeadUseCase)
+          .execute(req.params.id as string, input.decision);
+        ok(res, data);
+      } catch (e) {
+        next(e);
+      }
+    },
+  );
 
   r.post('/:id/subscribe', requireAuth(c), async (req, res, next) => {
     try {
       const institutionId = req.params.id as string;
       const auth = req.auth!;
       const isAdmin = auth.roles.some((role) => (ADMIN_ROLES as readonly string[]).includes(role));
-      const isOwnPartner = auth.roles.includes('partner_admin') && auth.institutionId === institutionId;
+      const isOwnPartner =
+        auth.roles.includes('partner_admin') && auth.institutionId === institutionId;
       if (!isAdmin && !isOwnPartner) throw new ForbiddenError();
       const input = SubscribeSchema.parse(req.body);
       const data = await c.get(SubscribeInstitutionUseCase).execute(institutionId, input.tier);

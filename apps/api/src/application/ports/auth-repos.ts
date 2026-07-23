@@ -7,7 +7,8 @@ import type { Id } from '../../domain/shared/id.js';
 export interface IRefreshTokenRepository {
   save(t: RefreshToken): Promise<void>;
   findByHash(hash: string): Promise<RefreshToken | null>;
-  revokeAllForUser(userId: Id): Promise<void>;
+  /** Revokes every active token for the user, optionally sparing one (by hash). */
+  revokeAllForUser(userId: Id, exceptTokenHash?: string): Promise<void>;
 }
 
 export interface IOtpRepository {

@@ -6,7 +6,7 @@ import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 const INK = '#0B3D38';
 const PAPER = '#FBF6EC';
 const TEAL = '#0F766E';
@@ -124,7 +124,11 @@ export function LeaderboardPage() {
 
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto' }}>
-      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
+      <Stack
+        direction="row"
+        spacing={1.25}
+        sx={{ alignItems: 'center', color: 'primary.main', mb: 1 }}
+      >
         <EmojiEventsIcon fontSize="small" />
         <Typography
           sx={{
@@ -142,7 +146,7 @@ export function LeaderboardPage() {
           fontFamily: DISPLAY,
           fontWeight: 600,
           fontSize: { xs: 34, md: 44 },
-          color: INK,
+          color: 'text.primary',
           letterSpacing: '-0.02em',
         }}
       >
@@ -216,7 +220,9 @@ export function LeaderboardPage() {
               )}
             </Box>
             <Stack sx={{ alignItems: 'flex-end' }}>
-              <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 18, color: INK }}>
+              <Typography
+                sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 18, color: 'text.primary' }}
+              >
                 {e.pointsBalance.toLocaleString()}
               </Typography>
               <Typography variant="caption" color="text.secondary">

@@ -21,7 +21,6 @@ import { useAuth } from '../lib/auth.store.js';
 import { uploadAvatar } from '../lib/cloudinary-upload.js';
 
 const INK = '#0B3D38';
-const TEAL = '#0F766E';
 const MARIGOLD = '#E0A106';
 const STEPS = ['Photo ID', 'About you'];
 
@@ -106,7 +105,7 @@ export function TrustedFinderApplyPage() {
     <Box sx={{ maxWidth: 760, mx: 'auto' }}>
       <Typography
         sx={{
-          color: TEAL,
+          color: 'primary.main',
           fontWeight: 700,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
@@ -118,10 +117,10 @@ export function TrustedFinderApplyPage() {
       </Typography>
       <Typography
         sx={{
-          fontFamily: '"Fraunces", Georgia, serif',
+          fontFamily: '"Black Ops One", Georgia, serif',
           fontWeight: 600,
           fontSize: 30,
-          color: INK,
+          color: 'text.primary',
           mb: 1,
         }}
       >

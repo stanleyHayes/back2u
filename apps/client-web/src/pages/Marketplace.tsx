@@ -22,7 +22,7 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { isFlagEnabled } from '../lib/feature-flags.js';
 
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 const INK = '#0B3D38';
 const TEAL = '#0F766E';
 const MARIGOLD = '#E0A106';
@@ -70,7 +70,7 @@ export function MarketplacePage() {
   if (!marketplaceEnabled) {
     return (
       <Box sx={{ maxWidth: 1100, mx: 'auto', textAlign: 'center', py: 8 }}>
-        <Typography variant="h5" sx={{ fontWeight: 600, color: INK }}>
+        <Typography variant="h5" sx={{ fontWeight: 600, color: 'text.primary' }}>
           Coming soon
         </Typography>
         <Typography color="text.secondary" sx={{ mt: 1 }}>
@@ -82,7 +82,11 @@ export function MarketplacePage() {
 
   return (
     <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
-      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
+      <Stack
+        direction="row"
+        spacing={1.25}
+        sx={{ alignItems: 'center', color: 'primary.main', mb: 1 }}
+      >
         <GavelIcon fontSize="small" />
         <Typography
           sx={{
@@ -100,7 +104,7 @@ export function MarketplacePage() {
           fontFamily: DISPLAY,
           fontWeight: 600,
           fontSize: { xs: 34, md: 44 },
-          color: INK,
+          color: 'text.primary',
           letterSpacing: '-0.02em',
         }}
       >
@@ -210,7 +214,9 @@ function ListingCard({
             sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
         ) : (
-          <Box sx={{ height: '100%', display: 'grid', placeItems: 'center', color: TEAL }}>
+          <Box
+            sx={{ height: '100%', display: 'grid', placeItems: 'center', color: 'primary.main' }}
+          >
             <GavelIcon sx={{ fontSize: 40, opacity: 0.5 }} />
           </Box>
         )}
@@ -282,9 +288,9 @@ function ListingCard({
             fontFamily: DISPLAY,
             fontWeight: 600,
             fontSize: 19,
-            color: INK,
+            color: 'text.primary',
             textDecoration: 'none',
-            '&:hover': { color: TEAL },
+            '&:hover': { color: 'primary.main' },
           }}
         >
           {title}
@@ -304,7 +310,13 @@ function ListingCard({
             Starting price
           </Typography>
           <Typography
-            sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 24, color: INK, lineHeight: 1.1 }}
+            sx={{
+              fontFamily: DISPLAY,
+              fontWeight: 600,
+              fontSize: 24,
+              color: 'text.primary',
+              lineHeight: 1.1,
+            }}
           >
             {money(l.startingPrice, l.currency)}
           </Typography>
@@ -317,7 +329,7 @@ function ListingCard({
             <Chip
               size="small"
               label={`Proceeds → ${l.charityRecipient}`}
-              sx={{ mt: 0.75, bgcolor: 'rgba(15,118,110,0.1)', color: TEAL }}
+              sx={{ mt: 0.75, bgcolor: 'rgba(15,118,110,0.1)', color: 'primary.main' }}
             />
           )}
         </Box>

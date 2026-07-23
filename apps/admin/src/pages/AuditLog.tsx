@@ -22,11 +22,11 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { TableChart, Timeline, Download, FilterAltOff } from '@mui/icons-material';
+import { TableChart, Timeline, Download, FilterAlt, FilterAltOff } from '@mui/icons-material';
 import { useQuery } from '@tanstack/react-query';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import type { AuditLogDTO, UserDTO } from '@back2u/shared-types';
-import { EmptyState, TableSkeleton } from '@back2u/ui-web';
+import { EmptyState, PageHeader, TableSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -257,40 +257,39 @@ export function AuditLogPage() {
 
   return (
     <Stack spacing={3}>
-      <Stack
-        direction="row"
-        sx={{ alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}
-      >
-        <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Audit log
-        </Typography>
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-          <ToggleButtonGroup
-            value={view}
-            exclusive
-            onChange={(_e, v) => v && setView(v)}
-            size="small"
-          >
-            <ToggleButton value="timeline">
-              <Timeline fontSize="small" sx={{ mr: 0.5 }} />
-              Timeline
-            </ToggleButton>
-            <ToggleButton value="table">
-              <TableChart fontSize="small" sx={{ mr: 0.5 }} />
-              Table
-            </ToggleButton>
-          </ToggleButtonGroup>
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<Download />}
-            onClick={exportCSV}
-            disabled={filtered.length === 0}
-          >
-            Export CSV
-          </Button>
-        </Stack>
-      </Stack>
+      <PageHeader
+        icon={<HistoryOutlinedIcon />}
+        title="Audit log"
+        description="Every admin action across the platform — filter by action, entity, date or actor."
+        actions={
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            <ToggleButtonGroup
+              value={view}
+              exclusive
+              onChange={(_e, v) => v && setView(v)}
+              size="small"
+            >
+              <ToggleButton value="timeline">
+                <Timeline fontSize="small" sx={{ mr: 0.5 }} />
+                Timeline
+              </ToggleButton>
+              <ToggleButton value="table">
+                <TableChart fontSize="small" sx={{ mr: 0.5 }} />
+                Table
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<Download />}
+              onClick={exportCSV}
+              disabled={filtered.length === 0}
+            >
+              Export CSV
+            </Button>
+          </Stack>
+        }
+      />
 
       {/* Active filter chips */}
       {(activeEntityId || activeActorId) && (
@@ -315,7 +314,37 @@ export function AuditLogPage() {
       )}
 
       {/* Filters */}
-      <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
+      <Stack
+        direction="row"
+        spacing={1.5}
+        sx={{
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          gap: 1.5,
+          p: 1.75,
+          borderRadius: 2.5,
+          border: 1,
+          borderColor: 'divider',
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Stack
+          direction="row"
+          spacing={0.75}
+          sx={{ alignItems: 'center', color: 'text.secondary', pr: 0.5 }}
+        >
+          <FilterAlt fontSize="small" />
+          <Typography
+            sx={{
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Filters
+          </Typography>
+        </Stack>
         <FormControl size="small" sx={{ minWidth: 140 }}>
           <InputLabel>Action</InputLabel>
           <Select
@@ -379,8 +408,11 @@ export function AuditLogPage() {
       </Stack>
 
       {!isLoading && (
-        <Typography variant="body2" color="text.secondary">
-          {`${filtered.length} entries`}
+        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+          <Box component="span" sx={{ color: 'text.primary', fontWeight: 700 }}>
+            {filtered.length}
+          </Box>{' '}
+          {filtered.length === 1 ? 'entry' : 'entries'}
         </Typography>
       )}
 

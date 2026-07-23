@@ -13,10 +13,14 @@ import {
   Paper,
   Popover,
   Stack,
+  Tooltip,
   Typography,
+  useTheme,
 } from '@mui/material';
-import { AppShell } from '@back2u/ui-web';
+import { AppShell, circularThemeTransition } from '@back2u/ui-web';
 import { NotificationsNoneOutlined } from '@mui/icons-material';
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
@@ -100,7 +104,7 @@ function NavBtn({ to, end, children }: { to: string; end?: boolean; children: Re
         fontWeight: 600,
         borderRadius: 2,
         px: 1.5,
-        '&.active': { color: '#0F766E', bgcolor: 'rgba(15,118,110,0.1)' },
+        '&.active': { color: 'primary.main', bgcolor: 'rgba(15,118,110,0.1)' },
       }}
     >
       {children}
@@ -108,9 +112,26 @@ function NavBtn({ to, end, children }: { to: string; end?: boolean; children: Re
   );
 }
 
+function ThemeToggle() {
+  const dark = useTheme().palette.mode === 'dark';
+  const setThemeMode = useUi((s) => s.setThemeMode);
+  return (
+    <Tooltip title={dark ? 'Switch to light theme' : 'Switch to dark theme'}>
+      <IconButton
+        onClick={(e) => circularThemeTransition(e, () => setThemeMode(dark ? 'light' : 'dark'))}
+        sx={{ color: 'text.primary' }}
+        aria-label="Toggle theme"
+      >
+        {dark ? <LightModeOutlinedIcon /> : <DarkModeOutlinedIcon />}
+      </IconButton>
+    </Tooltip>
+  );
+}
+
 import { EmailVerificationBanner } from './components/EmailVerificationBanner.js';
 import { api, signOut } from './lib/api.js';
 import { useAuth } from './lib/auth.store.js';
+import { useUi } from './lib/ui.store.js';
 import { isFlagEnabled } from './lib/feature-flags.js';
 import { ensureServiceWorker } from './lib/web-push.js';
 import { ChatPage } from './pages/Chat.js';
@@ -420,10 +441,10 @@ function MobileNav({
         >
           <Typography
             sx={{
-              fontFamily: '"Fraunces", Georgia, serif',
+              fontFamily: '"Black Ops One", Georgia, serif',
               fontWeight: 600,
               fontSize: 20,
-              color: INK,
+              color: 'text.primary',
             }}
           >
             Menu
@@ -744,6 +765,7 @@ export function App() {
               </>
             )}
           </Stack>
+          <ThemeToggle />
           <MobileNav
             loggedIn={!!user}
             clear={() => void signOut()}
@@ -755,6 +777,9 @@ export function App() {
       <EmailVerificationBanner />
       <Routes>
         <Route path="/" element={<FeedPage />} />
+        {/* The feed lives at "/", but the marketing site and older emails
+            deep-link to /feed — keep the alias working forever. */}
+        <Route path="/feed" element={<Navigate to="/" replace />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/marketplace" element={<MarketplacePage />} />
@@ -803,6 +828,8 @@ export function App() {
         />
         <Route path="/shop/tags" element={user ? <QrTagShopPage /> : <Navigate to="/login" />} />
         <Route path="/tags/:code" element={<ScanTagPage />} />
+        {/* Unknown deep links land on the feed instead of a blank shell. */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AppShell>
   );

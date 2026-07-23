@@ -10,7 +10,6 @@ import { api } from '../lib/api.js';
 import { PageHeader, SectionCard } from '../components/BrandPage.js';
 
 const INK = '#0B3D38';
-const TEAL = '#0F766E';
 
 export function ZonesPage() {
   const qc = useQueryClient();
@@ -123,7 +122,10 @@ export function ZonesPage() {
                   sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
                 >
                   <Box sx={{ minWidth: 0 }}>
-                    <Typography sx={{ fontWeight: 700, color: INK, fontSize: 17 }} noWrap>
+                    <Typography
+                      sx={{ fontWeight: 700, color: 'text.primary', fontSize: 17 }}
+                      noWrap
+                    >
                       {z.name}
                     </Typography>
                     <Stack
@@ -140,7 +142,7 @@ export function ZonesPage() {
                           sx={{
                             height: 20,
                             bgcolor: 'rgba(15,118,110,0.12)',
-                            color: TEAL,
+                            color: 'primary.main',
                             fontWeight: 600,
                             textTransform: 'capitalize',
                           }}

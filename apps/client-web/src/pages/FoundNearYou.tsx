@@ -144,7 +144,7 @@ export function FoundNearYouPage() {
         <Box>
           <Typography
             sx={{
-              color: '#0F766E',
+              color: 'primary.main',
               fontWeight: 700,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -155,7 +155,12 @@ export function FoundNearYouPage() {
             Augmented reality
           </Typography>
           <Typography
-            sx={{ fontFamily: '"Fraunces", serif', fontWeight: 600, fontSize: 32, color: INK }}
+            sx={{
+              fontFamily: '"Black Ops One", serif',
+              fontWeight: 600,
+              fontSize: 32,
+              color: 'text.primary',
+            }}
           >
             Found near you
           </Typography>
@@ -256,7 +261,7 @@ export function FoundNearYouPage() {
         {!loading && coords && items.length === 0 && (
           <Box sx={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', p: 3 }}>
             <Stack spacing={1} sx={{ alignItems: 'center', textAlign: 'center' }}>
-              <Typography sx={{ fontFamily: '"Fraunces", serif', fontSize: 24, color: PAPER }}>
+              <Typography sx={{ fontFamily: '"Black Ops One", serif', fontSize: 24, color: PAPER }}>
                 Nothing found within 5&nbsp;km
               </Typography>
               <Typography sx={{ color: 'rgba(255,253,248,0.7)' }}>

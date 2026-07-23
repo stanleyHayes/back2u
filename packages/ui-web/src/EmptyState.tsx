@@ -17,7 +17,7 @@ export type EmptyStateAction = {
 
 /**
  * Sophisticated, brand-consistent empty state: an animated haloed icon,
- * a Fraunces title, a supporting line, and up to a couple of action buttons.
+ * a Black Ops One title, a supporting line, and up to a couple of action buttons.
  * Theme-aware (reads text colours from the active MUI theme) so it looks right
  * on the light client apps and the dark admin console alike.
  */
@@ -41,17 +41,23 @@ export function EmptyState({
   return (
     <Box
       sx={{
+        // Fill the parent and center our own content, rather than relying on
+        // `mx: auto` — that fails to center when a page drops us into a flex
+        // column or grid track, leaving the empty state pinned to the left.
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         textAlign: 'center',
         py: dense ? 5 : { xs: 7, md: 10 },
         px: 3,
-        maxWidth: 460,
-        mx: 'auto',
         // staggered entrance
         '@keyframes b2uEmptyIn': {
           from: { opacity: 0, transform: 'translateY(10px)' },
           to: { opacity: 1, transform: 'translateY(0)' },
         },
         animation: 'b2uEmptyIn .5s cubic-bezier(.2,.7,.2,1) both',
+        '& > *': { maxWidth: 460 },
       }}
     >
       {/* Animated halo + floating icon badge */}
@@ -113,7 +119,7 @@ export function EmptyState({
 
       <Typography
         sx={{
-          fontFamily: '"Fraunces", Georgia, serif',
+          fontFamily: '"Black Ops One", Georgia, serif',
           fontWeight: 600,
           letterSpacing: '-0.01em',
           fontSize: dense ? 20 : 26,

@@ -14,6 +14,8 @@ import {
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import QrCode2OutlinedIcon from '@mui/icons-material/QrCode2Outlined';
+import { EmptyState, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -74,9 +76,11 @@ export function BulkMintTagsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>
-        Mint QR Tags
-      </Typography>
+      <PageHeader
+        icon={<QrCode2OutlinedIcon />}
+        title="Mint QR tags"
+        description="Generate a batch of Back2u QR tags to print and attach to items handed in at your venue."
+      />
 
       <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
         <TextField
@@ -96,6 +100,15 @@ export function BulkMintTagsPage() {
         <Alert severity="error">
           {mint.error instanceof Error ? mint.error.message : 'Minting failed'}
         </Alert>
+      )}
+
+      {tags.length === 0 && !mint.isPending && (
+        <EmptyState
+          tone="teal"
+          icon={<QrCode2OutlinedIcon />}
+          title="No tags minted yet"
+          description="Pick a quantity above and mint your first batch — each tag gets a unique scan link you can copy or export as CSV."
+        />
       )}
 
       {tags.length > 0 && (

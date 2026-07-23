@@ -321,19 +321,50 @@ export function MapPage() {
                 anchor="bottom"
                 onClose={() => setSelectedItem(null)}
                 closeButton
+                maxWidth="260px"
               >
-                <Stack spacing={1} sx={{ p: 1, minWidth: 180 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700 }} noWrap>
+                <Stack spacing={1} sx={{ p: 0.5, width: 232 }}>
+                  {selectedItem.images[0]?.url && (
+                    <Box
+                      component="img"
+                      src={selectedItem.images[0].url}
+                      alt={selectedItem.title}
+                      sx={{
+                        width: '100%',
+                        height: 120,
+                        objectFit: 'cover',
+                        borderRadius: 1.5,
+                        display: 'block',
+                      }}
+                    />
+                  )}
+                  <Stack direction="row" spacing={0.75} sx={{ flexWrap: 'wrap', gap: 0.5 }}>
+                    <Chip
+                      size="small"
+                      label={selectedItem.kind === 'found' ? 'Found here' : 'Lost here'}
+                      color={selectedItem.kind === 'lost' ? 'primary' : 'success'}
+                    />
+                    <Chip size="small" variant="outlined" label={selectedItem.category} />
+                  </Stack>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, lineHeight: 1.3 }}>
                     {selectedItem.title}
                   </Typography>
-                  <Chip
-                    size="small"
-                    label={selectedItem.kind}
-                    color={selectedItem.kind === 'lost' ? 'primary' : 'success'}
-                  />
+                  <Stack
+                    direction="row"
+                    spacing={0.5}
+                    sx={{ alignItems: 'center', color: 'text.secondary' }}
+                  >
+                    <LocationOnIcon sx={{ fontSize: 15 }} />
+                    <Typography variant="caption" noWrap>
+                      {[selectedItem.place.name, selectedItem.place.city]
+                        .filter(Boolean)
+                        .join(', ')}
+                    </Typography>
+                  </Stack>
                   <Button
                     size="small"
-                    variant="outlined"
+                    variant="contained"
+                    fullWidth
                     component={Link}
                     to={`/items/${selectedItem.id}`}
                     onClick={() => setSelectedItem(null)}

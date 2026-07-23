@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
-import { EmptyState, ListSkeleton } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -97,26 +97,24 @@ export function VerificationsPage() {
 
   return (
     <Stack spacing={3}>
-      <Stack
-        direction="row"
-        spacing={2}
-        sx={{ alignItems: 'center', justifyContent: 'space-between' }}
-      >
-        <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Pending ownership verifications
-        </Typography>
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-          <Checkbox
-            checked={allSelected}
-            indeterminate={someSelected}
-            onChange={toggleSelectAll}
-            disabled={items.length === 0 || processing}
-          />
-          <Typography variant="body2" color="text.secondary">
-            Select all
-          </Typography>
-        </Stack>
-      </Stack>
+      <PageHeader
+        icon={<TaskAltOutlinedIcon />}
+        title="Pending ownership verifications"
+        description="Review claimant answers and approve or reject ownership — one by one or in bulk."
+        actions={
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            <Checkbox
+              checked={allSelected}
+              indeterminate={someSelected}
+              onChange={toggleSelectAll}
+              disabled={items.length === 0 || processing}
+            />
+            <Typography variant="body2" color="text.secondary">
+              Select all
+            </Typography>
+          </Stack>
+        }
+      />
 
       {selectedIds.size > 0 && (
         <Stack direction="row" spacing={1}>

@@ -28,7 +28,7 @@ body::before {
 
 .b2u-display {
   /* Wins over MUI's emotion-injected body font on headings that use this class. */
-  font-family: 'Fraunces', Georgia, serif !important;
+  font-family: 'Black Ops One', Georgia, serif !important;
   font-optical-sizing: auto;
 }
 

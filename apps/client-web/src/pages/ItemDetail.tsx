@@ -11,9 +11,16 @@ import {
 } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import HourglassBottomOutlinedIcon from '@mui/icons-material/HourglassBottomOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { EmptyState, DetailSkeleton } from '@back2u/ui-web';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 
@@ -111,6 +118,53 @@ function ReviewPrompt({ matchId, itemId }: { matchId: string; itemId: string }) 
   );
 }
 
+function Fact({
+  icon,
+  label,
+  value,
+  span,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: ReactNode;
+  /** Make the tile span the full grid width. */
+  span?: boolean;
+}) {
+  return (
+    <Box
+      sx={{
+        gridColumn: span ? '1 / -1' : undefined,
+        p: 1.5,
+        borderRadius: 2,
+        border: 1,
+        borderColor: 'divider',
+        bgcolor: 'action.hover',
+        minWidth: 0,
+      }}
+    >
+      <Stack
+        direction="row"
+        spacing={0.75}
+        sx={{ alignItems: 'center', color: 'primary.main', mb: 0.5 }}
+      >
+        <Box sx={{ display: 'inline-flex', '& svg': { fontSize: 16 } }}>{icon}</Box>
+        <Typography
+          sx={{
+            fontSize: 10.5,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'text.secondary',
+            fontWeight: 700,
+          }}
+        >
+          {label}
+        </Typography>
+      </Stack>
+      <Typography sx={{ fontSize: 14, fontWeight: 700, lineHeight: 1.3 }}>{value}</Typography>
+    </Box>
+  );
+}
+
 export function ItemDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -196,160 +250,312 @@ export function ItemDetailPage() {
 
   const showReviewPrompt = item.status === 'returned' && user && relevantMatch && isParticipant;
 
+  const openLightbox = (i: number) => {
+    setLightboxIndex(i);
+    setLightboxOpen(true);
+  };
+  const hasImages = item.images.length > 0;
+  const expiringSoon = isExpiringWithin7Days(item);
+
   return (
-    <Stack spacing={3}>
-      <Paper sx={{ p: 3 }}>
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{ mb: 1, alignItems: 'center', flexWrap: 'wrap' }}
-          useFlexGap
-        >
-          <Chip
-            label={item.kind}
-            color={item.kind === 'lost' ? 'error' : 'success'}
-            sx={{ textTransform: 'capitalize' }}
-          />
-          <Chip label={item.status} variant="outlined" />
-          <Chip label={item.category} variant="outlined" />
-          {item.classification === 'stolen' && <Chip label="stolen" color="warning" />}
-          <Box sx={{ flex: 1 }} />
-          {user && (
-            <IconButton
-              size="small"
-              onClick={() => {
-                if (isBookmarked) {
-                  unbookmarkMutation.mutate();
-                } else {
-                  bookmarkMutation.mutate();
-                }
-              }}
-              sx={{ color: isBookmarked ? 'warning.main' : 'text.secondary' }}
-            >
-              {isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-            </IconButton>
-          )}
-          <ShareButton itemId={id!} size="medium" />
-          {isOwner && item.classification === 'stolen' && (
-            <Button
-              size="small"
-              variant="outlined"
-              color="warning"
-              onClick={() => policeReport.mutate()}
-              disabled={policeReport.isPending}
-            >
-              Generate police report
-            </Button>
-          )}
-          {isOwner && item.status === 'open' && isExpiringWithin7Days(item) && (
-            <Button
-              size="small"
-              variant="contained"
-              onClick={() => bumpItem.mutate()}
-              disabled={bumpItem.isPending}
-            >
-              {bumpItem.isPending ? 'Bumping…' : 'Bump to top'}
-            </Button>
-          )}
-          {!isOwner && user && item.status !== 'returned' && (
-            <Button
-              size="small"
-              component={Link}
-              to={`/items/${item.id}/verify`}
-              variant="contained"
-            >
-              I'm the owner — verify
-            </Button>
-          )}
-        </Stack>
-        <Typography variant="h3" gutterBottom>
-          {item.title}
-        </Typography>
-        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-          {item.description}
-        </Typography>
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            {item.place.name} · {new Date(item.occurredAt).toLocaleString()}
-          </Typography>
-          {typeof item.bookmarkCount === 'number' && (
-            <Typography variant="body2" color="text.secondary">
-              · {item.bookmarkCount} bookmark{item.bookmarkCount === 1 ? '' : 's'}
-            </Typography>
-          )}
-        </Stack>
-        {item.expiresAt && (
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-            Expires: {new Date(item.expiresAt).toLocaleString()}
-          </Typography>
-        )}
-        {item.status === 'returned' && (
-          <Alert severity="success" sx={{ mt: 2 }}>
-            This item has been successfully returned.
-          </Alert>
-        )}
-        {bumpItem.isSuccess && (
-          <Alert severity="success" sx={{ mt: 2 }}>
-            Item bumped successfully.
-          </Alert>
-        )}
-        {!isOwner && user && (
-          <Box sx={{ mt: 2 }}>
-            <Button
-              size="small"
-              color="error"
-              variant="text"
-              onClick={() => reportListing.mutate()}
-            >
-              {reportListing.isSuccess ? 'Reported' : 'Report listing'}
-            </Button>
-          </Box>
-        )}
-        {policeReport.isError && (
-          <Alert severity="error" sx={{ mt: 2 }}>
-            Failed to generate report.
-          </Alert>
-        )}
-        {showReviewPrompt && relevantMatch && (
-          <ReviewPrompt matchId={relevantMatch.id} itemId={item.id} />
-        )}
-      </Paper>
-      {item.images.length === 1 ? (
-        <Box
-          component="img"
-          src={item.images[0]!.url}
-          alt={item.title}
-          onClick={() => {
-            setLightboxIndex(0);
-            setLightboxOpen(true);
-          }}
-          sx={{ width: '100%', borderRadius: 2, objectFit: 'cover', cursor: 'pointer' }}
-        />
-      ) : (
-        <Box
-          sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}
-        >
-          {item.images.map((img, i) => (
+    <Stack spacing={2.5}>
+      <Button
+        component={Link}
+        to="/"
+        startIcon={<ArrowBackRoundedIcon />}
+        sx={{ alignSelf: 'flex-start', color: 'text.secondary', fontWeight: 600 }}
+      >
+        Back to feed
+      </Button>
+
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1.5fr) minmax(0, 1fr)' },
+          gap: { xs: 2.5, md: 3 },
+          alignItems: 'start',
+        }}
+      >
+        {/* Gallery + description */}
+        <Stack spacing={2.5} sx={{ minWidth: 0 }}>
+          {hasImages ? (
+            <Box>
+              <Box
+                component="img"
+                src={item.images[0]!.url}
+                alt={item.title}
+                onClick={() => openLightbox(0)}
+                sx={{
+                  width: '100%',
+                  aspectRatio: '4/3',
+                  objectFit: 'cover',
+                  borderRadius: 3,
+                  cursor: 'zoom-in',
+                  border: 1,
+                  borderColor: 'divider',
+                  display: 'block',
+                }}
+              />
+              {item.images.length > 1 && (
+                <Stack
+                  direction="row"
+                  spacing={1.25}
+                  sx={{ mt: 1.25, flexWrap: 'wrap' }}
+                  useFlexGap
+                >
+                  {item.images.map((img, i) => (
+                    <Box
+                      key={img.publicId}
+                      component="img"
+                      src={img.url}
+                      alt={`${item.title} ${i + 1}`}
+                      onClick={() => openLightbox(i)}
+                      sx={{
+                        width: 76,
+                        height: 76,
+                        objectFit: 'cover',
+                        borderRadius: 2,
+                        cursor: 'pointer',
+                        border: 2,
+                        borderColor: i === 0 ? 'primary.main' : 'divider',
+                        transition: 'border-color .15s, transform .15s',
+                        '&:hover': { transform: 'translateY(-2px)' },
+                      }}
+                    />
+                  ))}
+                </Stack>
+              )}
+            </Box>
+          ) : (
             <Box
-              key={img.publicId}
-              component="img"
-              src={img.url}
-              alt={item.title}
-              onClick={() => {
-                setLightboxIndex(i);
-                setLightboxOpen(true);
-              }}
               sx={{
                 width: '100%',
-                borderRadius: 2,
-                objectFit: 'cover',
-                cursor: 'pointer',
                 aspectRatio: '4/3',
+                borderRadius: 3,
+                border: 1,
+                borderColor: 'divider',
+                bgcolor: 'action.hover',
+                display: 'grid',
+                placeItems: 'center',
+                color: 'text.disabled',
               }}
+            >
+              <Stack sx={{ alignItems: 'center' }} spacing={1}>
+                <ImageOutlinedIcon sx={{ fontSize: 44 }} />
+                <Typography variant="body2">No photos on this listing</Typography>
+              </Stack>
+            </Box>
+          )}
+
+          <Paper
+            variant="outlined"
+            sx={{ p: { xs: 2.5, md: 3 }, borderRadius: 3, borderColor: 'divider' }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+              About this item
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{ whiteSpace: 'pre-wrap', color: 'text.secondary', lineHeight: 1.7 }}
+            >
+              {item.description || 'No description provided.'}
+            </Typography>
+          </Paper>
+
+          {showReviewPrompt && relevantMatch && (
+            <ReviewPrompt matchId={relevantMatch.id} itemId={item.id} />
+          )}
+        </Stack>
+
+        {/* Sticky info + actions */}
+        <Paper
+          variant="outlined"
+          sx={{
+            p: { xs: 2.5, md: 3 },
+            borderRadius: 3,
+            borderColor: 'divider',
+            position: { md: 'sticky' },
+            top: { md: 16 },
+          }}
+        >
+          <Stack direction="row" spacing={0.75} sx={{ flexWrap: 'wrap', mb: 1.5 }} useFlexGap>
+            <Chip
+              size="small"
+              label={item.kind}
+              color={item.kind === 'lost' ? 'error' : 'success'}
+              sx={{ textTransform: 'capitalize', fontWeight: 700 }}
             />
-          ))}
-        </Box>
-      )}
+            <Chip
+              size="small"
+              label={item.status}
+              variant="outlined"
+              sx={{ textTransform: 'capitalize' }}
+            />
+            {item.classification === 'stolen' && (
+              <Chip size="small" label="stolen" color="warning" sx={{ fontWeight: 700 }} />
+            )}
+          </Stack>
+
+          <Typography variant="h5" sx={{ fontWeight: 700, lineHeight: 1.2, mb: 2 }}>
+            {item.title}
+          </Typography>
+
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              gap: 1,
+            }}
+          >
+            <Fact span icon={<LocationOnOutlinedIcon />} label="Location" value={item.place.name} />
+            <Fact
+              icon={<ScheduleOutlinedIcon />}
+              label={item.kind === 'lost' ? 'Lost' : 'Found'}
+              value={new Date(item.occurredAt).toLocaleDateString()}
+            />
+            <Fact
+              icon={<CategoryOutlinedIcon />}
+              label="Category"
+              value={
+                <Box component="span" sx={{ textTransform: 'capitalize' }}>
+                  {item.category}
+                </Box>
+              }
+            />
+            {item.expiresAt && (
+              <Fact
+                icon={<HourglassBottomOutlinedIcon />}
+                label="Expires"
+                value={
+                  <Stack
+                    direction="row"
+                    spacing={0.75}
+                    sx={{ alignItems: 'center', flexWrap: 'wrap' }}
+                  >
+                    <span>{new Date(item.expiresAt).toLocaleDateString()}</span>
+                    {expiringSoon && (
+                      <Chip
+                        size="small"
+                        color="warning"
+                        label="Soon"
+                        sx={{ height: 18, fontSize: 10 }}
+                      />
+                    )}
+                  </Stack>
+                }
+              />
+            )}
+            {typeof item.bookmarkCount === 'number' && (
+              <Fact
+                icon={<BookmarkBorderIcon />}
+                label="Saved by"
+                value={`${item.bookmarkCount} ${item.bookmarkCount === 1 ? 'person' : 'people'}`}
+              />
+            )}
+          </Box>
+
+          {item.status === 'returned' && (
+            <Alert severity="success" sx={{ mt: 2 }}>
+              This item has been successfully returned.
+            </Alert>
+          )}
+          {bumpItem.isSuccess && (
+            <Alert severity="success" sx={{ mt: 2 }}>
+              Item bumped successfully.
+            </Alert>
+          )}
+          {policeReport.isError && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              Failed to generate report.
+            </Alert>
+          )}
+
+          {/* Primary actions */}
+          <Stack spacing={1.25} sx={{ mt: 2.5 }}>
+            {!isOwner && user && item.status !== 'returned' && (
+              <Button
+                component={Link}
+                to={`/items/${item.id}/verify`}
+                variant="contained"
+                fullWidth
+                startIcon={<VerifiedUserOutlinedIcon />}
+                sx={{ borderRadius: 999, fontWeight: 700, py: 1.1 }}
+              >
+                I'm the owner — verify
+              </Button>
+            )}
+            {isOwner && item.status === 'open' && expiringSoon && (
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => bumpItem.mutate()}
+                disabled={bumpItem.isPending}
+                sx={{ borderRadius: 999, fontWeight: 700, py: 1.1 }}
+              >
+                {bumpItem.isPending ? 'Bumping…' : 'Bump to top'}
+              </Button>
+            )}
+            {isOwner && item.classification === 'stolen' && (
+              <Button
+                variant="outlined"
+                color="warning"
+                fullWidth
+                onClick={() => policeReport.mutate()}
+                disabled={policeReport.isPending}
+                sx={{ borderRadius: 999, fontWeight: 700 }}
+              >
+                Generate police report
+              </Button>
+            )}
+
+            {/* Secondary row */}
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              {user && (
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  onClick={() =>
+                    isBookmarked ? unbookmarkMutation.mutate() : bookmarkMutation.mutate()
+                  }
+                  startIcon={isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                  sx={{
+                    flex: 1,
+                    borderRadius: 999,
+                    fontWeight: 600,
+                    borderColor: 'divider',
+                    color: isBookmarked ? 'warning.main' : 'text.primary',
+                  }}
+                >
+                  {isBookmarked ? 'Saved' : 'Save'}
+                </Button>
+              )}
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  border: 1,
+                  borderColor: 'divider',
+                  borderRadius: 999,
+                }}
+              >
+                <ShareButton itemId={id!} size="medium" />
+              </Box>
+            </Stack>
+
+            {!isOwner && user && (
+              <Button
+                size="small"
+                color="error"
+                variant="text"
+                onClick={() => reportListing.mutate()}
+                sx={{ alignSelf: 'flex-start' }}
+              >
+                {reportListing.isSuccess ? 'Reported' : 'Report listing'}
+              </Button>
+            )}
+          </Stack>
+        </Paper>
+      </Box>
+
       <ImageLightbox
         images={item.images.map((img) => ({ url: img.url, alt: item.title }))}
         open={lightboxOpen}

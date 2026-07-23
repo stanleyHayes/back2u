@@ -182,7 +182,7 @@ export function PostItemPage() {
     <Box sx={{ maxWidth: 760, mx: 'auto' }}>
       <Typography
         sx={{
-          color: TEAL,
+          color: 'primary.main',
           fontWeight: 700,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
@@ -194,10 +194,10 @@ export function PostItemPage() {
       </Typography>
       <Typography
         sx={{
-          fontFamily: '"Fraunces", Georgia, serif',
+          fontFamily: '"Black Ops One", Georgia, serif',
           fontWeight: 600,
           fontSize: 30,
-          color: INK,
+          color: 'text.primary',
           mb: 3,
         }}
       >
@@ -232,7 +232,9 @@ export function PostItemPage() {
           {/* STEP 0 — Type */}
           {activeStep === 0 && (
             <Stack spacing={2.5}>
-              <Typography sx={{ fontWeight: 700, color: INK }}>What are you reporting?</Typography>
+              <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>
+                What are you reporting?
+              </Typography>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                 <TextField
                   select
@@ -275,7 +277,7 @@ export function PostItemPage() {
           {/* STEP 1 — Photos */}
           {activeStep === 1 && (
             <Stack spacing={2}>
-              <Typography sx={{ fontWeight: 700, color: INK }}>Add photos</Typography>
+              <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>Add photos</Typography>
               <Typography variant="body2" color="text.secondary">
                 Clear photos dramatically improve AI matching.{' '}
                 {aiAutoSuggestEnabled &&
@@ -300,7 +302,7 @@ export function PostItemPage() {
                 {uploading ? (
                   <CircularProgress size={26} />
                 ) : (
-                  <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 34, color: TEAL }} />
+                  <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 34, color: 'primary.main' }} />
                 )}
                 <Typography sx={{ fontWeight: 600 }}>
                   {uploading ? 'Uploading…' : 'Tap to add photos'}
@@ -349,7 +351,7 @@ export function PostItemPage() {
           {/* STEP 2 — Details */}
           {activeStep === 2 && (
             <Stack spacing={2.5}>
-              <Typography sx={{ fontWeight: 700, color: INK }}>Describe it</Typography>
+              <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>Describe it</Typography>
               <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                 <TextField
                   label="Title"
@@ -381,7 +383,7 @@ export function PostItemPage() {
                       }
                     }}
                     disabled={aiLoading}
-                    sx={{ whiteSpace: 'nowrap', color: TEAL, fontWeight: 700 }}
+                    sx={{ whiteSpace: 'nowrap', color: 'primary.main', fontWeight: 700 }}
                   >
                     ✨ AI describe
                   </Button>
@@ -490,7 +492,9 @@ export function PostItemPage() {
           {/* STEP 3 — Location, time & reward */}
           {activeStep === 3 && (
             <Stack spacing={2.5}>
-              <Typography sx={{ fontWeight: 700, color: INK }}>Where &amp; when</Typography>
+              <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>
+                Where &amp; when
+              </Typography>
               <PlaceAutocomplete
                 label="Where was it?"
                 value={placeName}

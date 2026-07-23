@@ -11,12 +11,11 @@ import { ShareButton } from '../components/ShareButton.js';
 import { PageHeader, SectionCard } from '../components/BrandPage.js';
 
 const INK = '#0B3D38';
-const TEAL = '#0F766E';
 const CLAY = '#C2410C';
 
 const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
   lost: { bg: 'rgba(194,65,12,0.12)', color: CLAY },
-  active: { bg: 'rgba(15,118,110,0.12)', color: TEAL },
+  active: { bg: 'rgba(15,118,110,0.12)', color: 'primary.main' },
 };
 
 export function TagsPage() {
@@ -88,7 +87,11 @@ export function TagsPage() {
               {claim.isPending ? 'Claiming…' : 'Claim'}
             </Button>
           </Stack>
-          <Button component={Link} to="/shop/tags" sx={{ mt: 1.5, color: TEAL, fontWeight: 700 }}>
+          <Button
+            component={Link}
+            to="/shop/tags"
+            sx={{ mt: 1.5, color: 'primary.main', fontWeight: 700 }}
+          >
             Need stickers? Visit the tag shop →
           </Button>
         </SectionCard>
@@ -113,7 +116,10 @@ export function TagsPage() {
             }}
           >
             {data.map((t) => {
-              const style = STATUS_STYLE[t.status] ?? { bg: 'rgba(11,61,56,0.08)', color: INK };
+              const style = STATUS_STYLE[t.status] ?? {
+                bg: 'rgba(11,61,56,0.08)',
+                color: 'text.primary',
+              };
               return (
                 <Box
                   key={t.id}
@@ -131,7 +137,7 @@ export function TagsPage() {
                     sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
                   >
                     <Typography
-                      sx={{ fontWeight: 700, color: INK, fontSize: 17, minWidth: 0 }}
+                      sx={{ fontWeight: 700, color: 'text.primary', fontSize: 17, minWidth: 0 }}
                       noWrap
                     >
                       {t.itemLabel ?? t.code}

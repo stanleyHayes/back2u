@@ -1,27 +1,36 @@
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { makeTheme } from '@back2u/ui-web';
+import { CssBaseline, GlobalStyles, ThemeProvider, useMediaQuery } from '@mui/material';
+import { makeConsoleTheme, viewTransitionStyles } from '@back2u/ui-web';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { StrictMode } from 'react';
+import { StrictMode, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { App } from './App.js';
-
-const partnerTheme = makeTheme({
-  palette: { mode: 'dark', primary: { main: '#0F766E' }, background: { default: '#0B1220', paper: '#111827' } },
-});
+import { useUi } from './lib/ui.store.js';
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 30_000 } } });
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <ThemeProvider theme={partnerTheme}>
+function Root() {
+  const mode = useUi((s) => s.themeMode);
+  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
+  const resolved = mode === 'system' ? (prefersDark ? 'dark' : 'light') : mode;
+  const theme = useMemo(() => makeConsoleTheme(resolved), [resolved]);
+
+  return (
+    <ThemeProvider theme={theme}>
       <CssBaseline />
+      <GlobalStyles styles={viewTransitionStyles} />
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
       </QueryClientProvider>
     </ThemeProvider>
+  );
+}
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <Root />
   </StrictMode>,
 );

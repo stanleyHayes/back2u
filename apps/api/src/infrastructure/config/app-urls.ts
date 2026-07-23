@@ -29,7 +29,8 @@ export class AppUrls implements IAppUrls {
   }
 
   itemsNear(lng: number, lat: number): string {
-    return `${this.base}/items?lng=${lng}&lat=${lat}`;
+    // /near is the "found near you" page; /items does not exist as a list route.
+    return `${this.base}/near?lng=${lng}&lat=${lat}`;
   }
 
   itemDetail(id: string): string {

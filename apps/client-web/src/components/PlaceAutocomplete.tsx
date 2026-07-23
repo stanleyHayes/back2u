@@ -107,7 +107,7 @@ export function PlaceAutocomplete({
             {...rest}
             sx={{ gap: 1.25 }}
           >
-            <PlaceOutlinedIcon sx={{ fontSize: 18, color: '#0F766E', flexShrink: 0 }} />
+            <PlaceOutlinedIcon sx={{ fontSize: 18, color: 'primary.main', flexShrink: 0 }} />
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="body2" noWrap>
                 {option.name}

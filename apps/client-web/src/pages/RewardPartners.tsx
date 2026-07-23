@@ -103,10 +103,10 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
       <Box sx={{ p: 2.25, display: 'flex', flexDirection: 'column', gap: 1, flex: 1 }}>
         <Typography
           sx={{
-            fontFamily: '"Fraunces", Georgia, serif',
+            fontFamily: '"Black Ops One", Georgia, serif',
             fontWeight: 600,
             fontSize: 19,
-            color: INK,
+            color: 'text.primary',
           }}
           noWrap
         >
@@ -173,7 +173,7 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
               rel="noopener"
               size="small"
               startIcon={<LanguageOutlinedIcon />}
-              sx={{ color: TEAL, borderRadius: 999, fontWeight: 700 }}
+              sx={{ color: 'primary.main', borderRadius: 999, fontWeight: 700 }}
             >
               Visit
             </Button>
@@ -210,7 +210,7 @@ export function RewardPartnersPage() {
               fontWeight: 700,
               cursor: 'pointer',
               bgcolor: category === c.key ? INK : 'transparent',
-              color: category === c.key ? PAPER : INK,
+              color: category === c.key ? PAPER : 'text.primary',
               border: '1px solid',
               borderColor: category === c.key ? INK : 'divider',
               '&:hover': { bgcolor: category === c.key ? '#0a322e' : 'rgba(15,118,110,0.06)' },

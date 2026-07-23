@@ -980,8 +980,10 @@ function LandingPage() {
                 className="b2u-reveal"
                 sx={{
                   position: 'relative',
-                  p: 4,
-                  borderRadius: 5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  p: 3.5,
+                  borderRadius: 2,
                   bgcolor: i === 1 ? INK : 'background.paper',
                   color: i === 1 ? PAPER : 'text.primary',
                   border: '1px solid',
@@ -989,26 +991,42 @@ function LandingPage() {
                 }}
               >
                 <Box
-                  className="b2u-display"
                   aria-hidden
                   sx={{
-                    fontSize: 72,
-                    lineHeight: 0.7,
+                    fontSize: 40,
+                    lineHeight: 1,
+                    fontWeight: 700,
                     color: '#E0A106',
-                    height: 36,
-                    overflow: 'hidden',
+                    mb: 1.5,
                   }}
                 >
                   &ldquo;
                 </Box>
-                <Typography
-                  className="b2u-display"
-                  sx={{ fontStyle: 'italic', fontSize: 20, lineHeight: 1.45, mt: 1 }}
-                >
-                  {tm.quote}
-                </Typography>
-                <Typography sx={{ mt: 3, fontWeight: 700 }}>{tm.name}</Typography>
-                <Typography sx={{ fontSize: 14, opacity: 0.75 }}>{tm.role}</Typography>
+                <Typography sx={{ fontSize: 17, lineHeight: 1.55, flex: 1 }}>{tm.quote}</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mt: 3 }}>
+                  <Box
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 1.5,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 13,
+                      fontWeight: 700,
+                      bgcolor: i === 1 ? 'rgba(224,161,6,0.2)' : 'rgba(11,61,56,0.08)',
+                      color: i === 1 ? '#E0A106' : INK,
+                    }}
+                  >
+                    {tm.name.replace(/[^A-Z]/g, '').slice(0, 2)}
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontWeight: 700, fontSize: 15, lineHeight: 1.3 }}>
+                      {tm.name}
+                    </Typography>
+                    <Typography sx={{ fontSize: 13, opacity: 0.7 }}>{tm.role}</Typography>
+                  </Box>
+                </Box>
               </Box>
             ))}
           </Box>
@@ -1054,7 +1072,7 @@ function LandingPage() {
               sx={{
                 position: 'relative',
                 overflow: 'hidden',
-                borderRadius: { xs: 5, md: 8 },
+                borderRadius: { xs: 2, md: 3 },
                 bgcolor: INK,
                 color: PAPER,
                 px: { xs: 3, md: 10 },

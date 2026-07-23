@@ -39,7 +39,10 @@ import type { InstitutionLead } from '../../../domain/institution/institution-le
 import type { Institution } from '../../../domain/institution/institution.entity.js';
 import type { PartnerApiKey } from '../../../domain/institution/partner-api-key.entity.js';
 import type { Item } from '../../../domain/item/item.entity.js';
-import type { Bid, MarketplaceListing } from '../../../domain/marketplace_listing/marketplace-listing.entity.js';
+import type {
+  Bid,
+  MarketplaceListing,
+} from '../../../domain/marketplace_listing/marketplace-listing.entity.js';
 import type { ModerationQueueItem } from '../../../domain/moderation/moderation-queue-item.entity.js';
 import type { Notification } from '../../../domain/notification/notification.entity.js';
 import type { PoliceCase } from '../../../domain/announcement/police-case.entity.js';
@@ -325,6 +328,8 @@ export function toInstitutionLeadDTO(lead: InstitutionLead): InstitutionLeadDTO 
     contactEmail: s.contactEmail,
     contactPhone: s.contactPhone,
     city: s.city,
+    lat: s.lat,
+    lng: s.lng,
     estimatedVolume: s.estimatedVolume,
     message: s.message,
     status: s.status,
@@ -345,7 +350,9 @@ export function toWebhookDTO(webhook: Webhook): WebhookDTO {
   };
 }
 
-export function toTrustedFinderApplicationDTO(app: TrustedFinderApplication): TrustedFinderApplicationDTO {
+export function toTrustedFinderApplicationDTO(
+  app: TrustedFinderApplication,
+): TrustedFinderApplicationDTO {
   const s = app.snapshot;
   return {
     id: s.id,
@@ -390,7 +397,10 @@ export function toRewardDTO(reward: Reward): RewardDTO {
   };
 }
 
-export function toRedemptionDTO(redemption: PointsRedemption, institutionName?: string): RedemptionDTO {
+export function toRedemptionDTO(
+  redemption: PointsRedemption,
+  institutionName?: string,
+): RedemptionDTO {
   const s = redemption.snapshot;
   return {
     id: s.id,

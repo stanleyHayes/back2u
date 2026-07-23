@@ -2,9 +2,15 @@ import 'reflect-metadata';
 
 import { Container } from 'inversify';
 
-import { ListAuditLogsUseCase, WriteAuditLogUseCase } from '../application/use-cases/audit/audit.use-cases.js';
+import {
+  ListAuditLogsUseCase,
+  WriteAuditLogUseCase,
+} from '../application/use-cases/audit/audit.use-cases.js';
 import { CrowdsourcedHeartbeatUseCase } from '../application/use-cases/ble/heartbeat.use-case.js';
-import { GetMessagesUseCase, ListThreadsUseCase } from '../application/use-cases/chat/list-threads.js';
+import {
+  GetMessagesUseCase,
+  ListThreadsUseCase,
+} from '../application/use-cases/chat/list-threads.js';
 import { AutocompleteSearchUseCase } from '../application/use-cases/item/autocomplete-search.js';
 import { SuggestPlacesUseCase } from '../application/use-cases/geo/suggest-places.js';
 import { AiAssistUseCase } from '../application/use-cases/ai/ai-assist.use-case.js';
@@ -19,8 +25,18 @@ import { ListFlaggedItemsUseCase } from '../application/use-cases/item/list-flag
 import { ListItemsUseCase } from '../application/use-cases/item/list-items.js';
 import { UpdateItemUseCase } from '../application/use-cases/item/update-item.js';
 import { LoginUserUseCase } from '../application/use-cases/auth/login-user.js';
+import {
+  ChangePasswordUseCase,
+  DisableMfaUseCase,
+  EnableMfaUseCase,
+  SetupMfaUseCase,
+  VerifyMfaLoginUseCase,
+} from '../application/use-cases/auth/mfa.use-cases.js';
 import { RegisterUserUseCase } from '../application/use-cases/auth/register-user.js';
-import { LogoutUseCase, RefreshSessionUseCase } from '../application/use-cases/auth/refresh-session.js';
+import {
+  LogoutUseCase,
+  RefreshSessionUseCase,
+} from '../application/use-cases/auth/refresh-session.js';
 import {
   ExportMyDataUseCase,
   RedeemPointsUseCase,
@@ -44,7 +60,10 @@ import {
   RequestPhoneOtpUseCase,
   VerifyPhoneOtpUseCase,
 } from '../application/use-cases/phone_otp/phone-otp.use-cases.js';
-import { AcceptMatchUseCase, RejectMatchUseCase } from '../application/use-cases/match/decide-match.js';
+import {
+  AcceptMatchUseCase,
+  RejectMatchUseCase,
+} from '../application/use-cases/match/decide-match.js';
 import { ConfirmItemReturnUseCase } from '../application/use-cases/match/confirm-item-return.js';
 import { GenerateMatchesUseCase } from '../application/use-cases/match/generate-matches.js';
 import { ListMatchesForItemUseCase } from '../application/use-cases/match/list-matches-for-item.js';
@@ -293,7 +312,10 @@ import { MongoQrTagRepository } from '../infrastructure/persistence/mongo/reposi
 import { MongoQrTagProductRepository } from '../infrastructure/persistence/mongo/repositories/qr-tag-product.repository.mongo.js';
 import { MongoQrTagOrderRepository } from '../infrastructure/persistence/mongo/repositories/qr-tag-order.repository.mongo.js';
 import { MongoRewardRepository } from '../infrastructure/persistence/mongo/repositories/reward.repository.mongo.js';
-import { MongoBlockRepository, MongoReportRepository } from '../infrastructure/persistence/mongo/repositories/safety.repos.mongo.js';
+import {
+  MongoBlockRepository,
+  MongoReportRepository,
+} from '../infrastructure/persistence/mongo/repositories/safety.repos.mongo.js';
 import { MongoModerationQueueRepository } from '../infrastructure/persistence/mongo/repositories/moderation.repository.mongo.js';
 import { MongoUserRepository } from '../infrastructure/persistence/mongo/repositories/user.repository.mongo.js';
 import { MongoVaultRepository } from '../infrastructure/persistence/mongo/repositories/vault.repository.mongo.js';
@@ -306,7 +328,10 @@ import { MongoTrustedFinderApplicationRepository } from '../infrastructure/persi
 import { MongoPartnerApiKeyRepository } from '../infrastructure/persistence/mongo/repositories/partner-api-key.repository.mongo.js';
 import { MongoReviewRepository } from '../infrastructure/persistence/mongo/repositories/review.repository.mongo.js';
 import { MongoFeatureFlagRepository } from '../infrastructure/persistence/mongo/repositories/feature-flag.repository.mongo.js';
-import { MongoWebPushSubscriptionRepository, type IWebPushSubscriptionRepository } from '../infrastructure/persistence/mongo/repositories/web-push.repo.mongo.js';
+import {
+  MongoWebPushSubscriptionRepository,
+  type IWebPushSubscriptionRepository,
+} from '../infrastructure/persistence/mongo/repositories/web-push.repo.mongo.js';
 import { ExpoPushService } from '../infrastructure/push/expo.push-service.js';
 import { WebPushService } from '../infrastructure/push/web-push.service.js';
 import { PdfKitReportService } from '../infrastructure/storage/cloudinary/cloudinary.pdf-report.js';
@@ -347,11 +372,17 @@ export function buildContainer(envOverride?: Env): Container {
   c.bind<ICourierJobRepository>(TOKENS.CourierJobRepository).to(MongoCourierJobRepository);
   c.bind<IVaultRepository>(TOKENS.VaultRepository).to(MongoVaultRepository);
   c.bind<IAuditLogRepository>(TOKENS.AuditLogRepository).to(MongoAuditLogRepository);
-  c.bind<IZoneSubscriptionRepository>(TOKENS.ZoneSubscriptionRepository).to(MongoZoneSubscriptionRepository);
-  c.bind<IMarketplaceListingRepository>(TOKENS.MarketplaceListingRepository).to(MongoMarketplaceListingRepository);
+  c.bind<IZoneSubscriptionRepository>(TOKENS.ZoneSubscriptionRepository).to(
+    MongoZoneSubscriptionRepository,
+  );
+  c.bind<IMarketplaceListingRepository>(TOKENS.MarketplaceListingRepository).to(
+    MongoMarketplaceListingRepository,
+  );
   c.bind<IPoliceCaseRepository>(TOKENS.PoliceCaseRepository).to(MongoPoliceCaseRepository);
   c.bind<IInstitutionRepository>(TOKENS.InstitutionRepository).to(MongoInstitutionRepository);
-  c.bind<IInstitutionLeadRepository>(TOKENS.InstitutionLeadRepository).to(MongoInstitutionLeadRepository);
+  c.bind<IInstitutionLeadRepository>(TOKENS.InstitutionLeadRepository).to(
+    MongoInstitutionLeadRepository,
+  );
   c.bind<IRedemptionRepository>(TOKENS.RedemptionRepository).to(MongoRedemptionRepository);
   c.bind<IRefreshTokenRepository>(TOKENS.RefreshTokenRepository).to(MongoRefreshTokenRepository);
   c.bind<IOtpRepository>(TOKENS.OtpRepository).to(MongoOtpRepository);
@@ -359,11 +390,15 @@ export function buildContainer(envOverride?: Env): Container {
   c.bind<IIdempotencyStore>(TOKENS.IdempotencyStore).to(MongoIdempotencyStore);
   c.bind<IReportRepository>(TOKENS.ReportRepository).to(MongoReportRepository);
   c.bind<IBlockRepository>(TOKENS.BlockRepository).to(MongoBlockRepository);
-  c.bind<IModerationQueueRepository>(TOKENS.ModerationQueueRepository).to(MongoModerationQueueRepository);
+  c.bind<IModerationQueueRepository>(TOKENS.ModerationQueueRepository).to(
+    MongoModerationQueueRepository,
+  );
   c.bind<INotificationRepository>(TOKENS.NotificationRepository).to(MongoNotificationRepository);
   c.bind<IWebhookRepository>(TOKENS.WebhookRepository).to(MongoWebhookRepository);
   c.bind<IBookmarkRepository>(TOKENS.BookmarkRepository).to(MongoBookmarkRepository);
-  c.bind<ITrustedFinderApplicationRepository>(TOKENS.TrustedFinderApplicationRepository).to(MongoTrustedFinderApplicationRepository);
+  c.bind<ITrustedFinderApplicationRepository>(TOKENS.TrustedFinderApplicationRepository).to(
+    MongoTrustedFinderApplicationRepository,
+  );
   c.bind<IPartnerApiKeyRepository>(TOKENS.PartnerApiKeyRepository).to(MongoPartnerApiKeyRepository);
   c.bind<IReviewRepository>(TOKENS.ReviewRepository).to(MongoReviewRepository);
   c.bind<IFeatureFlagRepository>(TOKENS.FeatureFlagRepository).to(MongoFeatureFlagRepository);
@@ -379,7 +414,9 @@ export function buildContainer(envOverride?: Env): Container {
   c.bind<ITwilioSignatureVerifier>(TOKENS.TwilioSignatureVerifier).to(TwilioSignatureVerifier);
   c.bind<IPushService>(TOKENS.PushService).to(ExpoPushService);
   c.bind<IWebPushService>(TOKENS.WebPushService).to(WebPushService);
-  c.bind<IWebPushSubscriptionRepository>(TOKENS.WebPushSubscriptionRepository).to(MongoWebPushSubscriptionRepository);
+  c.bind<IWebPushSubscriptionRepository>(TOKENS.WebPushSubscriptionRepository).to(
+    MongoWebPushSubscriptionRepository,
+  );
   c.bind<IPaymentEscrowService>(TOKENS.PaymentEscrow).to(HubtelMomoEscrow);
   c.bind<IImageStorage>(TOKENS.ImageStorage).to(CloudinaryImageStorage);
   c.bind<IAiMatchingService>(TOKENS.AiMatchingService).to(AnthropicMatchingService);
@@ -401,6 +438,11 @@ export function buildContainer(envOverride?: Env): Container {
   c.bind(GenerateMatchesUseCase).toSelf();
   c.bind(RegisterUserUseCase).toSelf();
   c.bind(LoginUserUseCase).toSelf();
+  c.bind(SetupMfaUseCase).toSelf();
+  c.bind(EnableMfaUseCase).toSelf();
+  c.bind(DisableMfaUseCase).toSelf();
+  c.bind(VerifyMfaLoginUseCase).toSelf();
+  c.bind(ChangePasswordUseCase).toSelf();
   c.bind(RefreshSessionUseCase).toSelf();
   c.bind(LogoutUseCase).toSelf();
   c.bind(AutocompleteSearchUseCase).toSelf();

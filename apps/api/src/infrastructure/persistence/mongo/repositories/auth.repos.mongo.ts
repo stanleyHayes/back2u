@@ -61,11 +61,10 @@ export class MongoRefreshTokenRepository implements IRefreshTokenRepository {
     return doc ? RefreshToken.rehydrate(refreshTokenToSnapshot(doc)) : null;
   }
 
-  async revokeAllForUser(userId: Id): Promise<void> {
-    await RefreshTokenModel.updateMany(
-      { userId, revokedAt: null },
-      { $set: { revokedAt: new Date() } },
-    );
+  async revokeAllForUser(userId: Id, exceptTokenHash?: string): Promise<void> {
+    const filter: Record<string, unknown> = { userId, revokedAt: null };
+    if (exceptTokenHash) filter.tokenHash = { $ne: exceptTokenHash };
+    await RefreshTokenModel.updateMany(filter, { $set: { revokedAt: new Date() } });
   }
 }
 

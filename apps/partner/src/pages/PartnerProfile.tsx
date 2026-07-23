@@ -13,10 +13,12 @@ import {
   Typography,
 } from '@mui/material';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import { useQuery } from '@tanstack/react-query';
+import { PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
@@ -24,11 +26,12 @@ import { uploadImageUrl } from '../lib/cloudinary-upload.js';
 
 const TEAL = '#2DD4BF';
 const MARIGOLD = '#E0A106';
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 const PANEL = {
   p: { xs: 2.5, md: 3 },
-  borderRadius: 3,
-  border: '1px solid rgba(255,255,255,0.08)',
+  borderRadius: 2,
+  border: 1,
+  borderColor: 'divider',
   bgcolor: 'background.paper',
 };
 
@@ -155,31 +158,22 @@ export function PartnerProfilePage() {
   };
 
   return (
-    <Box sx={{ maxWidth: 960 }}>
-      <Typography
-        sx={{
-          color: TEAL,
-          fontWeight: 700,
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          fontSize: 12,
-          mb: 0.5,
-        }}
-      >
-        Account
-      </Typography>
-      <Typography
-        sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 30, color: '#F3F6FB', mb: 3 }}
-      >
-        Your profile
-      </Typography>
+    <Box sx={{ maxWidth: 960, mx: 'auto' }}>
+      <Box sx={{ mb: 3 }}>
+        <PageHeader
+          icon={<BadgeOutlinedIcon />}
+          title="Your profile"
+          description="How you appear across the partner portal, plus your account and institution details."
+        />
+      </Box>
 
       {/* Identity banner */}
       <Box
         sx={{
-          borderRadius: 3,
+          borderRadius: 2,
           overflow: 'hidden',
-          border: '1px solid rgba(255,255,255,0.08)',
+          border: 1,
+          borderColor: 'divider',
           mb: 3,
         }}
       >
@@ -212,7 +206,7 @@ export function PartnerProfilePage() {
             </Avatar>
             <Box sx={{ minWidth: 0, pb: 0.5 }}>
               <Typography
-                sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 24, color: '#F3F6FB' }}
+                sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 24, color: 'text.primary' }}
               >
                 {name || 'Partner'}
               </Typography>
@@ -226,7 +220,7 @@ export function PartnerProfilePage() {
                     sx={{
                       textTransform: 'capitalize',
                       bgcolor: 'rgba(45,212,191,0.14)',
-                      color: TEAL,
+                      color: 'primary.main',
                       fontWeight: 700,
                     }}
                   />
@@ -256,7 +250,7 @@ export function PartnerProfilePage() {
       >
         {/* Editable details */}
         <Box sx={PANEL}>
-          <Typography sx={{ fontWeight: 700, color: '#F3F6FB', mb: 0.5 }}>
+          <Typography sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
             Personal details
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5 }}>
@@ -310,7 +304,7 @@ export function PartnerProfilePage() {
                   startIcon={
                     uploadingAvatar ? <CircularProgress size={16} /> : <PhotoCameraOutlinedIcon />
                   }
-                  sx={{ color: TEAL, borderColor: 'rgba(45,212,191,0.4)', fontWeight: 700 }}
+                  sx={{ color: 'primary.main', borderColor: 'primary.main', fontWeight: 700 }}
                 >
                   {uploadingAvatar ? 'Uploading…' : avatarUrl ? 'Change photo' : 'Upload photo'}
                   <input hidden type="file" accept="image/*" onChange={onPickAvatar} />
@@ -360,7 +354,7 @@ export function PartnerProfilePage() {
 
         {/* Account + institution meta */}
         <Box sx={PANEL}>
-          <Typography sx={{ fontWeight: 700, color: '#F3F6FB', mb: 2 }}>Account</Typography>
+          <Typography sx={{ fontWeight: 700, color: 'text.primary', mb: 2 }}>Account</Typography>
           <Stack spacing={2.25}>
             <MetaRow label="Institution" value={inst?.name ?? '—'} />
             <Box>

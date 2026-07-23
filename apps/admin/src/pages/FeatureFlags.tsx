@@ -13,7 +13,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ListSkeleton } from '@back2u/ui-web';
+import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
+import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
+import { EmptyState, ListSkeleton, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -43,35 +45,45 @@ export function FeatureFlagsPage() {
   });
 
   return (
-    <Box sx={{ maxWidth: 900 }}>
-      <Typography variant="h5" sx={{ fontWeight: 700 }} gutterBottom>
-        Feature flags
-      </Typography>
-      <Typography color="text.secondary" sx={{ mb: 3 }}>
-        Toggle features, control rollout percentage, and manage allowed users.
-      </Typography>
+    <Box sx={{ maxWidth: 900, mx: 'auto' }}>
+      <Stack spacing={3}>
+        <PageHeader
+          icon={<ToggleOnOutlinedIcon />}
+          title="Feature flags"
+          description="Toggle features, control rollout percentage, and manage allowed users."
+        />
 
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error instanceof Error ? error.message : 'Failed to load flags'}
-        </Alert>
-      )}
+        {error && (
+          <Alert severity="error">
+            {error instanceof Error ? error.message : 'Failed to load flags'}
+          </Alert>
+        )}
 
-      {isLoading && <ListSkeleton rows={5} avatar={false} />}
+        {isLoading && <ListSkeleton rows={5} avatar={false} />}
 
-      <Stack spacing={2}>
-        {data?.map((flag) => (
-          <FlagCard
-            key={flag.key}
-            flag={flag}
-            onToggle={() => toggle.mutate(flag.key)}
-            onRolloutChange={(percentage, allowedUserIds) =>
-              rollout.mutate({ key: flag.key, percentage, allowedUserIds })
-            }
-            togglePending={toggle.isPending && toggle.variables === flag.key}
-            rolloutPending={rollout.isPending && rollout.variables?.key === flag.key}
+        {data && data.length === 0 && (
+          <EmptyState
+            tone="teal"
+            icon={<ToggleOffOutlinedIcon />}
+            title="No feature flags"
+            description="Flags defined on the server will appear here so you can control their rollout."
           />
-        ))}
+        )}
+
+        <Stack spacing={2}>
+          {data?.map((flag) => (
+            <FlagCard
+              key={flag.key}
+              flag={flag}
+              onToggle={() => toggle.mutate(flag.key)}
+              onRolloutChange={(percentage, allowedUserIds) =>
+                rollout.mutate({ key: flag.key, percentage, allowedUserIds })
+              }
+              togglePending={toggle.isPending && toggle.variables === flag.key}
+              rolloutPending={rollout.isPending && rollout.variables?.key === flag.key}
+            />
+          ))}
+        </Stack>
       </Stack>
     </Box>
   );
@@ -94,7 +106,7 @@ function FlagCard({
   const [localAllowed, setLocalAllowed] = useState(flag.allowedUserIds.join(', '));
 
   return (
-    <Paper sx={{ p: 3, borderRadius: 3 }}>
+    <Paper sx={{ p: 3, borderRadius: 2 }}>
       <Stack
         direction="row"
         spacing={2}

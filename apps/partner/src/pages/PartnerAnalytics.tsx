@@ -11,9 +11,10 @@ import {
 } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
-import { EmptyState, StatCardsSkeleton, ListSkeleton } from '@back2u/ui-web';
+import { EmptyState, PageHeader, StatCardsSkeleton, ListSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -110,9 +111,11 @@ export function PartnerAnalyticsPage() {
   if (error) {
     return (
       <Stack spacing={2}>
-        <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Analytics
-        </Typography>
+        <PageHeader
+          icon={<InsightsOutlinedIcon />}
+          title="Analytics"
+          description="Turnaround and redemption metrics for your institution."
+        />
         <Typography color="error">Failed to load analytics.</Typography>
         <Button variant="outlined" onClick={handleRefresh} startIcon={<RefreshIcon />}>
           Retry
@@ -125,21 +128,22 @@ export function PartnerAnalyticsPage() {
 
   return (
     <Stack spacing={3}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Analytics
-        </Typography>
-        <Box sx={{ flex: 1 }} />
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={handleRefresh}
-          disabled={refreshing}
-          startIcon={refreshing ? <CircularProgress size={14} /> : <RefreshIcon />}
-        >
-          {refreshing ? 'Refreshing…' : 'Refresh'}
-        </Button>
-      </Box>
+      <PageHeader
+        icon={<InsightsOutlinedIcon />}
+        title="Analytics"
+        description="Turnaround and redemption metrics for your institution."
+        actions={
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleRefresh}
+            disabled={refreshing}
+            startIcon={refreshing ? <CircularProgress size={14} /> : <RefreshIcon />}
+          >
+            {refreshing ? 'Refreshing…' : 'Refresh'}
+          </Button>
+        }
+      />
 
       <Box
         sx={{

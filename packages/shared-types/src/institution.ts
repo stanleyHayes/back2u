@@ -53,6 +53,9 @@ export interface SubmitInstitutionLeadInput {
   contactEmail: string;
   contactPhone?: string;
   city: string;
+  /** Geocoded coordinates of the venue, when the place was picked from search. */
+  lat?: number;
+  lng?: number;
   estimatedVolume?: string;
   message?: string;
 }
@@ -65,6 +68,8 @@ export interface InstitutionLeadDTO {
   contactEmail: string;
   contactPhone?: string;
   city: string;
+  lat?: number;
+  lng?: number;
   estimatedVolume?: string;
   message?: string;
   status: InstitutionLeadStatus;

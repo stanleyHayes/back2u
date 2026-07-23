@@ -14,7 +14,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import type { RedemptionDTO, RedemptionStatus } from '@back2u/shared-types';
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
-import { EmptyState } from '@back2u/ui-web';
+import { EmptyState, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -56,13 +56,11 @@ export function RedemptionsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>
-        Points redemptions
-      </Typography>
-      <Typography color="text.secondary">
-        Customers spend reputation points at partner establishments. Enter the voucher code shown in
-        their app to confirm and fulfil the redemption.
-      </Typography>
+      <PageHeader
+        icon={<ConfirmationNumberOutlinedIcon />}
+        title="Points redemptions"
+        description="Customers spend reputation points at partner establishments. Enter the voucher code shown in their app to confirm and fulfil the redemption."
+      />
 
       {/* Confirm by code */}
       <Card variant="outlined">

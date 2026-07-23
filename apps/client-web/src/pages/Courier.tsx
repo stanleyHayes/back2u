@@ -171,10 +171,10 @@ export function CourierPage() {
           >
             <Typography
               sx={{
-                fontFamily: '"Fraunces", Georgia, serif',
+                fontFamily: '"Black Ops One", Georgia, serif',
                 fontWeight: 600,
                 fontSize: 22,
-                color: INK,
+                color: 'text.primary',
               }}
             >
               Open jobs
@@ -228,7 +228,9 @@ export function CourierPage() {
               }}
             >
               <Stack spacing={1.5}>
-                <Typography sx={{ fontWeight: 700, color: INK }}>Optimized route</Typography>
+                <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>
+                  Optimized route
+                </Typography>
                 <Stack direction="row" spacing={1}>
                   <Chip
                     label={`${routeResult.totalDistanceKm.toFixed(1)} km`}
@@ -246,7 +248,7 @@ export function CourierPage() {
                     <Stack key={w.jobId} direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                       <Typography
                         variant="body2"
-                        sx={{ fontWeight: 700, minWidth: 20, color: TEAL }}
+                        sx={{ fontWeight: 700, minWidth: 20, color: 'primary.main' }}
                       >
                         {i + 1}.
                       </Typography>
@@ -311,7 +313,7 @@ export function CourierPage() {
                         size="small"
                         sx={{ p: 0 }}
                       />
-                      <Typography sx={{ fontWeight: 700, color: INK }}>
+                      <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>
                         Job {j.id.slice(-6)}
                       </Typography>
                     </Stack>

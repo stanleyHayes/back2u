@@ -31,7 +31,8 @@ export function DonutChart({
       sx={{
         p: 2.5,
         borderRadius: 3,
-        border: '1px solid rgba(255,255,255,0.08)',
+        border: 1,
+        borderColor: 'divider',
         bgcolor: 'background.paper',
       }}
     >
@@ -44,7 +45,7 @@ export function DonutChart({
             height: 120,
             flexShrink: 0,
             borderRadius: '50%',
-            background: total > 0 ? `conic-gradient(${stops})` : 'rgba(255,255,255,0.08)',
+            background: total > 0 ? `conic-gradient(${stops})` : 'rgba(128,128,128,0.25)',
           }}
         >
           <Box
@@ -61,7 +62,7 @@ export function DonutChart({
             <Box>
               <Typography
                 sx={{
-                  fontFamily: '"Fraunces", Georgia, serif',
+                  fontFamily: '"Black Ops One", Georgia, serif',
                   fontWeight: 600,
                   fontSize: 22,
                   lineHeight: 1,

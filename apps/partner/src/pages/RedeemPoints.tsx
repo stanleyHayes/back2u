@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
-import { EmptyState, ListSkeleton } from '@back2u/ui-web';
+import { EmptyState, PageHeader, ListSkeleton } from '@back2u/ui-web';
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
@@ -70,12 +70,11 @@ export function RedeemPointsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h3" sx={{ fontWeight: 700 }}>
-        Redeem Points
-      </Typography>
-      <Typography color="text.secondary">
-        Enter a customer&apos;s voucher code to confirm their point exchange at your institution.
-      </Typography>
+      <PageHeader
+        icon={<ConfirmationNumberOutlinedIcon />}
+        title="Redeem points"
+        description="Enter a customer's voucher code to confirm their point exchange at your institution."
+      />
 
       <Card variant="outlined">
         <CardContent>

@@ -11,6 +11,11 @@ import {
   SetLocaleUseCase,
   UpdateProfileUseCase,
 } from '../../../application/use-cases/auth/me-extras.use-cases.js';
+import {
+  DisableMfaUseCase,
+  EnableMfaUseCase,
+  SetupMfaUseCase,
+} from '../../../application/use-cases/auth/mfa.use-cases.js';
 import { requireAuth } from '../middleware/auth.js';
 import { ok } from './_helpers.js';
 
@@ -31,6 +36,10 @@ const UpdateProfileSchema = z.object({
 
 const PushTokenSchema = z.object({
   token: z.string().min(1),
+});
+
+const MfaCodeSchema = z.object({
+  code: z.string().min(6).max(7),
 });
 
 const LocaleSchema = z.object({
@@ -84,6 +93,35 @@ export const meExtrasRouter = (c: Container): Router => {
     try {
       const emailPreferences = EmailPreferencesSchema.parse(req.body);
       const data = await c.get(UpdateProfileUseCase).execute(req.auth!.sub, { emailPreferences });
+      ok(res, data);
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  r.post('/mfa/setup', async (req, res, next) => {
+    try {
+      const data = await c.get(SetupMfaUseCase).execute(req.auth!.sub);
+      ok(res, data);
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  r.post('/mfa/enable', async (req, res, next) => {
+    try {
+      const { code } = MfaCodeSchema.parse(req.body);
+      const data = await c.get(EnableMfaUseCase).execute(req.auth!.sub, code);
+      ok(res, data);
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  r.post('/mfa/disable', async (req, res, next) => {
+    try {
+      const { code } = MfaCodeSchema.parse(req.body);
+      const data = await c.get(DisableMfaUseCase).execute(req.auth!.sub, code);
       ok(res, data);
     } catch (e) {
       next(e);

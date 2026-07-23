@@ -24,6 +24,9 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ModerationQueueItemDTO } from '@back2u/shared-types';
+import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
+import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
+import { EmptyState, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -76,9 +79,11 @@ export function ModerationQueuePage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>
-        Moderation Queue
-      </Typography>
+      <PageHeader
+        icon={<GavelOutlinedIcon />}
+        title="Moderation Queue"
+        description="Review flagged items, messages and users, then approve or remove them."
+      />
 
       <Stack direction="row" spacing={2}>
         <FormControl size="small" sx={{ minWidth: 120 }}>
@@ -112,48 +117,59 @@ export function ModerationQueuePage() {
         </Stack>
       )}
 
-      {data && data.length === 0 && <Alert severity="success">No moderation queue items.</Alert>}
-
-      <Box sx={{ overflowX: 'auto' }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Type</TableCell>
-              <TableCell>Target ID</TableCell>
-              <TableCell>Reason</TableCell>
-              <TableCell>Score</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Created</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {items.map((item) => (
-              <TableRow key={item.id} hover>
-                <TableCell>
-                  <Chip label={item.type} size="small" color={TYPE_COLOR[item.type] ?? 'default'} />
-                </TableCell>
-                <TableCell>{item.targetId.slice(-8)}</TableCell>
-                <TableCell>{item.reason}</TableCell>
-                <TableCell>{item.score.toFixed(2)}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={item.status}
-                    size="small"
-                    color={STATUS_COLOR[item.status] ?? 'default'}
-                  />
-                </TableCell>
-                <TableCell>{new Date(item.createdAt).toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <Button size="small" variant="outlined" onClick={() => setDetailItem(item)}>
-                    Review
-                  </Button>
-                </TableCell>
+      {!isLoading && items.length === 0 ? (
+        <EmptyState
+          tone="teal"
+          icon={<TaskAltOutlinedIcon />}
+          title="Queue is clear"
+          description="Nothing is waiting for review. Flagged content will appear here when it needs a decision."
+        />
+      ) : (
+        <Box sx={{ overflowX: 'auto' }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Type</TableCell>
+                <TableCell>Target ID</TableCell>
+                <TableCell>Reason</TableCell>
+                <TableCell>Score</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Created</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Box>
+            </TableHead>
+            <TableBody>
+              {items.map((item) => (
+                <TableRow key={item.id} hover>
+                  <TableCell>
+                    <Chip
+                      label={item.type}
+                      size="small"
+                      color={TYPE_COLOR[item.type] ?? 'default'}
+                    />
+                  </TableCell>
+                  <TableCell>{item.targetId.slice(-8)}</TableCell>
+                  <TableCell>{item.reason}</TableCell>
+                  <TableCell>{item.score.toFixed(2)}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={item.status}
+                      size="small"
+                      color={STATUS_COLOR[item.status] ?? 'default'}
+                    />
+                  </TableCell>
+                  <TableCell>{new Date(item.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    <Button size="small" variant="outlined" onClick={() => setDetailItem(item)}>
+                      Review
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
+      )}
 
       {detailItem && (
         <Dialog open onClose={() => setDetailItem(null)} maxWidth="sm" fullWidth>

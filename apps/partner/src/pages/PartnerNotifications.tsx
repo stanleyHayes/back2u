@@ -1,12 +1,10 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import { EmptyState, ListSkeleton } from '@back2u/ui-web';
+import { EmptyState, PageHeader, ListSkeleton } from '@back2u/ui-web';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { NotificationDTO } from '@back2u/shared-types';
 
 import { api } from '../lib/api.js';
-
-const TEAL = '#2DD4BF';
 
 export function PartnerNotificationsPage() {
   const qc = useQueryClient();
@@ -28,42 +26,27 @@ export function PartnerNotificationsPage() {
   const hasUnread = notifications.some((n) => !n.read);
 
   return (
-    <Box sx={{ maxWidth: 720 }}>
-      <Stack
-        direction="row"
-        sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 2.5 }}
-      >
-        <Box>
-          <Typography
-            sx={{
-              color: TEAL,
-              fontWeight: 700,
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              fontSize: 12,
-              mb: 0.5,
-            }}
-          >
-            Inbox
-          </Typography>
-          <Typography
-            sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 28 }}
-          >
-            Notifications
-          </Typography>
-        </Box>
-        {hasUnread && (
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => markAll.mutate()}
-            disabled={markAll.isPending}
-            sx={{ borderRadius: 999, fontWeight: 600 }}
-          >
-            Mark all read
-          </Button>
-        )}
-      </Stack>
+    <Box sx={{ maxWidth: 720, mx: 'auto' }}>
+      <Box sx={{ mb: 2.5 }}>
+        <PageHeader
+          icon={<NotificationsNoneOutlinedIcon />}
+          title="Notifications"
+          description="Match alerts, courier updates, and bids for your institution, as they happen."
+          actions={
+            hasUnread ? (
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => markAll.mutate()}
+                disabled={markAll.isPending}
+                sx={{ borderRadius: 999, fontWeight: 600 }}
+              >
+                Mark all read
+              </Button>
+            ) : undefined
+          }
+        />
+      </Box>
 
       {isLoading ? (
         <ListSkeleton rows={5} avatar={false} />
@@ -82,9 +65,9 @@ export function PartnerNotificationsPage() {
               onClick={() => !n.read && markOne.mutate(n.id)}
               sx={{
                 p: 2,
-                borderRadius: '16px 16px 16px 4px',
+                borderRadius: 2,
                 border: '1px solid',
-                borderColor: n.read ? 'rgba(255,255,255,0.08)' : 'rgba(45,212,191,0.35)',
+                borderColor: n.read ? 'divider' : 'rgba(45,212,191,0.35)',
                 bgcolor: n.read ? 'background.paper' : 'rgba(45,212,191,0.08)',
                 cursor: n.read ? 'default' : 'pointer',
                 transition: 'background-color .15s',

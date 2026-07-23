@@ -6,6 +6,7 @@ import {
   ConfirmEmailVerificationUseCase,
   RequestEmailVerificationUseCase,
 } from '../../../application/use-cases/email_verify/email-verify.use-cases.js';
+import { ChangePasswordUseCase } from '../../../application/use-cases/auth/mfa.use-cases.js';
 import {
   ConfirmPasswordResetUseCase,
   RequestPasswordResetUseCase,
@@ -37,6 +38,14 @@ const PasswordResetRequestSchema = z.object({
 const PasswordResetConfirmSchema = z.object({
   token: z.string().min(1),
   newPassword: z.string().min(8),
+});
+
+const PasswordChangeSchema = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(8),
+  // The caller's own refresh token — spared from the revoke-all so the
+  // session that changed the password stays signed in.
+  refreshToken: z.string().min(1).optional(),
 });
 
 export const authExtraRouter = (c: Container, resetPasswordUrl: string): Router => {
@@ -84,7 +93,21 @@ export const authExtraRouter = (c: Container, resetPasswordUrl: string): Router 
   r.post('/password/request-reset', async (req, res, next) => {
     try {
       const { email } = PasswordResetRequestSchema.parse(req.body);
-      const data = await c.get(RequestPasswordResetUseCase).execute({ email, resetUrlBase: resetPasswordUrl });
+      const data = await c
+        .get(RequestPasswordResetUseCase)
+        .execute({ email, resetUrlBase: resetPasswordUrl });
+      ok(res, data);
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  r.post('/password/change', requireAuth(c), async (req, res, next) => {
+    try {
+      const { currentPassword, newPassword, refreshToken } = PasswordChangeSchema.parse(req.body);
+      const data = await c
+        .get(ChangePasswordUseCase)
+        .execute(req.auth!.sub, currentPassword, newPassword, refreshToken);
       ok(res, data);
     } catch (e) {
       next(e);

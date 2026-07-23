@@ -1,10 +1,9 @@
 import { Box, Stack, Typography } from '@mui/material';
 import type { ReactNode } from 'react';
 
-const INK = '#0B3D38';
 const TEAL = '#0F766E';
 
-/** Eyebrow + Fraunces title + optional subtitle — the standard page header across the user app. */
+/** Eyebrow + Black Ops One title + optional subtitle — the standard page header across the user app. */
 export function PageHeader({
   eyebrow,
   title,
@@ -18,7 +17,7 @@ export function PageHeader({
     <Box sx={{ mb: 3 }}>
       <Typography
         sx={{
-          color: TEAL,
+          color: 'primary.main',
           fontWeight: 700,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
@@ -30,10 +29,10 @@ export function PageHeader({
       </Typography>
       <Typography
         sx={{
-          fontFamily: '"Fraunces", Georgia, serif',
+          fontFamily: '"Black Ops One", Georgia, serif',
           fontWeight: 600,
           fontSize: 30,
-          color: INK,
+          color: 'text.primary',
           lineHeight: 1.1,
           letterSpacing: '-0.01em',
         }}
@@ -94,7 +93,9 @@ export function SectionCard({
           )}
           <Box sx={{ minWidth: 0 }}>
             {title && (
-              <Typography sx={{ fontWeight: 700, fontSize: 16.5, color: INK, lineHeight: 1.3 }}>
+              <Typography
+                sx={{ fontWeight: 700, fontSize: 16.5, color: 'text.primary', lineHeight: 1.3 }}
+              >
                 {title}
               </Typography>
             )}

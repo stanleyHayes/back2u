@@ -239,7 +239,7 @@ export function ChatPage() {
     <Box sx={{ maxWidth: 1080, mx: 'auto' }}>
       <Typography
         sx={{
-          color: TEAL,
+          color: 'primary.main',
           fontWeight: 700,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
@@ -251,10 +251,10 @@ export function ChatPage() {
       </Typography>
       <Typography
         sx={{
-          fontFamily: '"Fraunces", Georgia, serif',
+          fontFamily: '"Black Ops One", Georgia, serif',
           fontWeight: 600,
           fontSize: 30,
-          color: INK,
+          color: 'text.primary',
           mb: 2.5,
         }}
       >
@@ -287,7 +287,9 @@ export function ChatPage() {
           }}
         >
           <Box sx={{ px: 2.5, py: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
-            <Typography sx={{ fontWeight: 700, color: INK, fontSize: 15 }}>Chats</Typography>
+            <Typography sx={{ fontWeight: 700, color: 'text.primary', fontSize: 15 }}>
+              Chats
+            </Typography>
           </Box>
           <Box sx={{ flex: 1, overflowY: 'auto', p: 1 }}>
             {threads === undefined ? (
@@ -346,7 +348,10 @@ export function ChatPage() {
               >
                 <Avatar name={activeName} size={42} />
                 <Box sx={{ minWidth: 0 }}>
-                  <Typography sx={{ fontWeight: 700, color: INK, fontSize: 15.5 }} noWrap>
+                  <Typography
+                    sx={{ fontWeight: 700, color: 'text.primary', fontSize: 15.5 }}
+                    noWrap
+                  >
                     {activeName}
                   </Typography>
                   <Typography sx={{ fontSize: 12.5, color: 'text.secondary' }} noWrap>
@@ -454,7 +459,9 @@ export function ChatPage() {
                           <Typography sx={{ fontSize: 11, color: 'text.secondary' }}>
                             {fmtTime(m.createdAt)}
                           </Typography>
-                          {otherRead && <DoneAllRoundedIcon sx={{ fontSize: 14, color: TEAL }} />}
+                          {otherRead && (
+                            <DoneAllRoundedIcon sx={{ fontSize: 14, color: 'primary.main' }} />
+                          )}
                         </Stack>
                       </Box>
                     );
@@ -554,7 +561,7 @@ export function ChatPage() {
                   <IconButton
                     onClick={() => fileInputRef.current?.click()}
                     disabled={selectedFiles.length >= 3 || uploading || send.isPending}
-                    sx={{ color: TEAL }}
+                    sx={{ color: 'primary.main' }}
                   >
                     <ImageOutlinedIcon />
                   </IconButton>
@@ -627,7 +634,7 @@ function ThreadRow({
     >
       <Avatar name={name} size={42} />
       <Box sx={{ minWidth: 0, flex: 1 }}>
-        <Typography noWrap sx={{ fontSize: 14, fontWeight: 700, color: INK }}>
+        <Typography noWrap sx={{ fontSize: 14, fontWeight: 700, color: 'text.primary' }}>
           {name}
         </Typography>
         <Typography noWrap sx={{ fontSize: 12, color: 'text.secondary' }}>

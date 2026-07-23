@@ -13,7 +13,8 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AiAssistantBar } from '@back2u/ui-web';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import { AiAssistantBar, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -41,9 +42,11 @@ export function PartnerItemDetailPage() {
     <Stack spacing={3}>
       <Button onClick={() => navigate(-1)}>← Back</Button>
 
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>
-        {item.title}
-      </Typography>
+      <PageHeader
+        icon={<Inventory2OutlinedIcon />}
+        title={item.title}
+        description={`${item.kind} · ${item.category} · reported at ${item.place.name}`}
+      />
 
       <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
         <Chip label={item.kind} />

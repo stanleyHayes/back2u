@@ -32,7 +32,7 @@ const PAPER = '#FBF6EC';
 const TEAL = '#0F766E';
 const MARIGOLD = '#E0A106';
 const CLAY = '#C2410C';
-const DISPLAY = '"Fraunces", Georgia, serif';
+const DISPLAY = '"Black Ops One", Georgia, serif';
 
 function formatExpiryStatus(item: ItemDTO): string | null {
   if (item.status !== 'open' || !item.expiresAt) return null;
@@ -75,7 +75,7 @@ function SectionTitle({
     <Box>
       <Typography
         sx={{
-          color: TEAL,
+          color: 'primary.main',
           fontWeight: 700,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
@@ -84,7 +84,9 @@ function SectionTitle({
       >
         {eyebrow}
       </Typography>
-      <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, color: INK }}>
+      <Typography
+        sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, color: 'text.primary' }}
+      >
         {title}
         {count !== undefined && count > 0 && (
           <Box component="span" sx={{ color: 'text.secondary', fontFamily: 'inherit' }}>
@@ -151,9 +153,9 @@ function ProfileItemRow({ item, action }: { item: ItemDTO; action?: ReactNode })
           sx={{
             display: 'block',
             fontWeight: 700,
-            color: INK,
+            color: 'text.primary',
             textDecoration: 'none',
-            '&:hover': { color: TEAL },
+            '&:hover': { color: 'primary.main' },
           }}
         >
           {item.title}
@@ -172,7 +174,7 @@ function ProfileItemRow({ item, action }: { item: ItemDTO; action?: ReactNode })
               height: 20,
               fontWeight: 700,
               bgcolor: isFound ? 'rgba(15,118,110,0.12)' : 'rgba(194,65,12,0.12)',
-              color: isFound ? TEAL : CLAY,
+              color: isFound ? 'primary.main' : CLAY,
             }}
           />
           {expiry && (
@@ -317,7 +319,7 @@ function ReviewsSection({ userId }: { userId: string }) {
             </Typography>
           </Stack>
           {review.comment && (
-            <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', color: INK }}>
+            <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', color: 'text.primary' }}>
               {review.comment}
             </Typography>
           )}
@@ -366,7 +368,13 @@ function StatCard({
         {icon}
       </Box>
       <Typography
-        sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 30, color: INK, lineHeight: 1 }}
+        sx={{
+          fontFamily: DISPLAY,
+          fontWeight: 600,
+          fontSize: 30,
+          color: 'text.primary',
+          lineHeight: 1,
+        }}
       >
         {value}
       </Typography>
