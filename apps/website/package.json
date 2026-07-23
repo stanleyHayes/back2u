@@ -18,7 +18,7 @@
     "@mui/material": "^6.1.10",
     "i18next": "^24.0.5",
     "i18next-browser-languagedetector": "^8.0.2",
-    "mapbox-gl": "^3.24.0",
+    "mapbox-gl": "^3.27.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^15.4.0",
