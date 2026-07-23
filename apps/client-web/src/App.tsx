@@ -163,6 +163,7 @@ import { ScanTagPage } from './pages/ScanTag.js';
 import { RedeemPage } from './pages/Redeem.js';
 import { RewardPartnersPage } from './pages/RewardPartners.js';
 import { FoundNearYouPage } from './pages/FoundNearYou.js';
+import { NotFoundPage } from './pages/NotFound.js';
 import { TrustedFinderApplyPage } from './pages/TrustedFinderApply.js';
 import { QrTagShopPage } from './pages/QrTagShop.js';
 
@@ -828,8 +829,7 @@ export function App() {
         />
         <Route path="/shop/tags" element={user ? <QrTagShopPage /> : <Navigate to="/login" />} />
         <Route path="/tags/:code" element={<ScanTagPage />} />
-        {/* Unknown deep links land on the feed instead of a blank shell. */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AppShell>
   );

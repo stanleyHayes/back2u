@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import { PageHeader } from '@back2u/ui-web';
 
@@ -22,6 +22,7 @@ import { BillingPage } from './pages/Billing.js';
 import { PartnerNotificationsPage } from './pages/PartnerNotifications.js';
 import { PartnerProfilePage } from './pages/PartnerProfile.js';
 import { PartnerSettingsPage } from './pages/PartnerSettings.js';
+import { NotFoundPage } from './pages/NotFound.js';
 
 const STATUS_ORDER = ['open', 'matched', 'claimed', 'returned', 'closed', 'archived'];
 
@@ -175,7 +176,7 @@ export function App() {
         <Route path="/notifications" element={<PartnerNotificationsPage />} />
         <Route path="/profile" element={<PartnerProfilePage />} />
         <Route path="/settings" element={<PartnerSettingsPage />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </PartnerLayout>
   );

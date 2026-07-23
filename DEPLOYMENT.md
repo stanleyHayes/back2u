@@ -58,6 +58,9 @@ project per app**, all pointing at this same repo:
 | admin          | `apps/admin`      | `VITE_API_URL`                                                                                                                          |
 | partner        | `apps/partner`    | `VITE_API_URL`, `VITE_APP_PUBLIC_URL`                                                                                                   |
 
+Each app ships a `.env.example` (all keys documented), a `.env` for local dev (gitignored),
+and a `.env.production` with sensible defaults that the Vercel dashboard overrides at build time.
+
 - Set **Root Directory** to the app folder in each project's settings. Vercel detects the
   pnpm workspace and the bundled `vercel.json` runs `pnpm turbo run build --filter=@back2u/<app>`
   from the repo root (so shared packages build first) and serves `dist/` with an SPA fallback.

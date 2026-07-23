@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { AdminLayout } from './components/AdminLayout.js';
 import { api } from './lib/api.js';
@@ -19,6 +19,7 @@ import { TrustedFinderApplicationsPage } from './pages/TrustedFinderApplications
 import { FeatureFlagsPage } from './pages/FeatureFlags.js';
 import { AdminProfilePage } from './pages/AdminProfile.js';
 import { AdminSettingsPage } from './pages/AdminSettings.js';
+import { NotFoundPage } from './pages/NotFound.js';
 
 export function App() {
   const { user, clear } = useAuth();
@@ -60,7 +61,7 @@ export function App() {
         <Route path="/feature-flags" element={<FeatureFlagsPage />} />
         <Route path="/profile" element={<AdminProfilePage />} />
         <Route path="/settings" element={<AdminSettingsPage />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AdminLayout>
   );
