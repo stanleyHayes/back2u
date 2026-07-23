@@ -1,5 +1,15 @@
 import { useRef, useState, type ReactNode } from 'react';
-import { Alert, Avatar, Box, Button, Chip, IconButton, Stack, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
@@ -35,23 +45,43 @@ function formatExpiryStatus(item: ItemDTO): string | null {
 function StarRating({ value, size = 16 }: { value?: number; size?: number }) {
   if (!value || value <= 0) return null;
   return (
-    <Stack direction="row" spacing={0.25} alignItems="center">
+    <Stack direction="row" spacing={0.25} sx={{ alignItems: 'center' }}>
       {[1, 2, 3, 4, 5].map((s) => (
-        <Box key={s} component="span" sx={{ fontSize: size, color: s <= Math.round(value) ? MARIGOLD : 'text.disabled' }}>
+        <Box
+          key={s}
+          component="span"
+          sx={{ fontSize: size, color: s <= Math.round(value) ? MARIGOLD : 'text.disabled' }}
+        >
           {s <= Math.round(value) ? '★' : '☆'}
         </Box>
       ))}
-      <Typography variant="body2" color="text.secondary" ml={0.5}>
+      <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5 }}>
         {value.toFixed(1)}
       </Typography>
     </Stack>
   );
 }
 
-function SectionTitle({ eyebrow, title, count }: { eyebrow: string; title: string; count?: number }) {
+function SectionTitle({
+  eyebrow,
+  title,
+  count,
+}: {
+  eyebrow: string;
+  title: string;
+  count?: number;
+}) {
   return (
     <Box>
-      <Typography sx={{ color: TEAL, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', fontSize: 11 }}>
+      <Typography
+        sx={{
+          color: TEAL,
+          fontWeight: 700,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          fontSize: 11,
+        }}
+      >
         {eyebrow}
       </Typography>
       <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, color: INK }}>
@@ -82,7 +112,10 @@ function ProfileItemRow({ item, action }: { item: ItemDTO; action?: ReactNode })
         borderColor: 'divider',
         bgcolor: 'background.paper',
         transition: 'transform .15s, box-shadow .15s',
-        '&:hover': { transform: 'translateX(3px)', boxShadow: '0 16px 30px -26px rgba(11,61,56,.5)' },
+        '&:hover': {
+          transform: 'translateX(3px)',
+          boxShadow: '0 16px 30px -26px rgba(11,61,56,.5)',
+        },
       }}
     >
       <Box
@@ -100,7 +133,12 @@ function ProfileItemRow({ item, action }: { item: ItemDTO; action?: ReactNode })
         }}
       >
         {item.images[0]?.url ? (
-          <Box component="img" src={item.images[0].url} alt={item.title} sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <Box
+            component="img"
+            src={item.images[0].url}
+            alt={item.title}
+            sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         ) : (
           <Typography sx={{ fontSize: 10, color: 'text.secondary' }}>No photo</Typography>
         )}
@@ -110,11 +148,22 @@ function ProfileItemRow({ item, action }: { item: ItemDTO; action?: ReactNode })
           component={Link}
           to={`/items/${item.id}`}
           noWrap
-          sx={{ display: 'block', fontWeight: 700, color: INK, textDecoration: 'none', '&:hover': { color: TEAL } }}
+          sx={{
+            display: 'block',
+            fontWeight: 700,
+            color: INK,
+            textDecoration: 'none',
+            '&:hover': { color: TEAL },
+          }}
         >
           {item.title}
         </Typography>
-        <Stack direction="row" spacing={0.75} mt={0.5} flexWrap="wrap" useFlexGap alignItems="center">
+        <Stack
+          direction="row"
+          spacing={0.75}
+          sx={{ mt: 0.5, flexWrap: 'wrap', alignItems: 'center' }}
+          useFlexGap
+        >
           <Chip
             size="small"
             label={item.kind}
@@ -126,7 +175,15 @@ function ProfileItemRow({ item, action }: { item: ItemDTO; action?: ReactNode })
               color: isFound ? TEAL : CLAY,
             }}
           />
-          {expiry && <Chip size="small" label={expiry} color="warning" variant="outlined" sx={{ height: 20 }} />}
+          {expiry && (
+            <Chip
+              size="small"
+              label={expiry}
+              color="warning"
+              variant="outlined"
+              sx={{ height: 20 }}
+            />
+          )}
         </Stack>
       </Box>
       {action}
@@ -166,7 +223,9 @@ function OpenItemsSection({ userId }: { userId: string }) {
       ) : (
         data.items.map((item) => {
           const canBump =
-            item.status === 'open' && item.expiresAt && new Date(item.expiresAt).getTime() - Date.now() <= 7 * 86_400_000;
+            item.status === 'open' &&
+            item.expiresAt &&
+            new Date(item.expiresAt).getTime() - Date.now() <= 7 * 86_400_000;
           return (
             <ProfileItemRow
               key={item.id}
@@ -239,9 +298,19 @@ function ReviewsSection({ userId }: { userId: string }) {
       {reviews.map((review) => (
         <Box
           key={review.id}
-          sx={{ p: 2, borderRadius: '16px 16px 16px 4px', border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}
+          sx={{
+            p: 2,
+            borderRadius: '16px 16px 16px 4px',
+            border: '1px solid',
+            borderColor: 'divider',
+            bgcolor: 'background.paper',
+          }}
         >
-          <Stack direction="row" spacing={1} alignItems="center" mb={0.5} justifyContent="space-between">
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ alignItems: 'center', mb: 0.5, justifyContent: 'space-between' }}
+          >
             <StarRating value={review.rating} size={15} />
             <Typography variant="caption" color="text.secondary">
               {new Date(review.createdAt).toLocaleDateString()}
@@ -296,7 +365,11 @@ function StatCard({
       >
         {icon}
       </Box>
-      <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 30, color: INK, lineHeight: 1 }}>{value}</Typography>
+      <Typography
+        sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 30, color: INK, lineHeight: 1 }}
+      >
+        {value}
+      </Typography>
       <Typography sx={{ fontSize: 12.5, color: 'text.secondary', mt: 0.5 }}>{label}</Typography>
     </Box>
   );
@@ -356,7 +429,7 @@ export function ProfilePage() {
   };
 
   return (
-    <Box maxWidth={760} mx="auto">
+    <Box sx={{ maxWidth: 760, mx: 'auto' }}>
       {/* Hero banner */}
       <Box
         sx={{
@@ -396,10 +469,9 @@ export function ProfilePage() {
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={2.5}
-          alignItems={{ xs: 'flex-start', sm: 'center' }}
-          sx={{ position: 'relative' }}
+          sx={{ alignItems: { xs: 'flex-start', sm: 'center' }, position: 'relative' }}
         >
-          <Box position="relative">
+          <Box sx={{ position: 'relative' }}>
             <Box
               sx={{
                 p: '3px',
@@ -408,7 +480,10 @@ export function ProfilePage() {
                 display: 'inline-flex',
               }}
             >
-              <Avatar src={editing ? avatarUrl : user.avatarUrl} sx={{ width: 84, height: 84, fontSize: 34, border: '3px solid', borderColor: INK }}>
+              <Avatar
+                src={editing ? avatarUrl : user.avatarUrl}
+                sx={{ width: 84, height: 84, fontSize: 34, border: '3px solid', borderColor: INK }}
+              >
                 {user.name[0]}
               </Avatar>
             </Box>
@@ -418,7 +493,14 @@ export function ProfilePage() {
                   size="small"
                   onClick={() => fileRef.current?.click()}
                   disabled={uploading}
-                  sx={{ position: 'absolute', bottom: 0, right: 0, bgcolor: PAPER, color: INK, '&:hover': { bgcolor: '#efe7d6' } }}
+                  sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    right: 0,
+                    bgcolor: PAPER,
+                    color: INK,
+                    '&:hover': { bgcolor: '#efe7d6' },
+                  }}
                   aria-label="Change avatar"
                 >
                   <PhotoCameraIcon fontSize="small" />
@@ -429,14 +511,32 @@ export function ProfilePage() {
           </Box>
 
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography sx={{ color: MARIGOLD, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', fontSize: 11 }}>
+            <Typography
+              sx={{
+                color: MARIGOLD,
+                fontWeight: 700,
+                letterSpacing: '0.16em',
+                textTransform: 'uppercase',
+                fontSize: 11,
+              }}
+            >
               {editing ? 'Editing profile' : 'Your profile'}
             </Typography>
-            <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: { xs: 28, md: 34 }, lineHeight: 1.1, letterSpacing: '-0.02em' }}>
+            <Typography
+              sx={{
+                fontFamily: DISPLAY,
+                fontWeight: 600,
+                fontSize: { xs: 28, md: 34 },
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+              }}
+            >
               {user.name}
             </Typography>
-            <Typography sx={{ color: 'rgba(255,253,248,0.7)', fontSize: 14.5 }}>{user.email}</Typography>
-            <Stack direction="row" spacing={0.75} mt={1.25} flexWrap="wrap" useFlexGap>
+            <Typography sx={{ color: 'rgba(255,253,248,0.7)', fontSize: 14.5 }}>
+              {user.email}
+            </Typography>
+            <Stack direction="row" spacing={0.75} sx={{ mt: 1.25, flexWrap: 'wrap' }} useFlexGap>
               {user.trustedFinder && (
                 <Chip
                   size="small"
@@ -450,15 +550,30 @@ export function ProfilePage() {
                   key={r}
                   size="small"
                   label={r.replace(/_/g, ' ')}
-                  sx={{ textTransform: 'capitalize', bgcolor: 'rgba(255,253,248,0.1)', color: PAPER, border: '1px solid rgba(255,253,248,0.18)' }}
+                  sx={{
+                    textTransform: 'capitalize',
+                    bgcolor: 'rgba(255,253,248,0.1)',
+                    color: PAPER,
+                    border: '1px solid rgba(255,253,248,0.18)',
+                  }}
                 />
               ))}
               {user.phone && (
                 <Chip
                   size="small"
-                  icon={user.phoneVerified ? <VerifiedRoundedIcon sx={{ fontSize: 15, color: '#7fe0c8 !important' }} /> : undefined}
-                  label={user.phoneVerified ? `${user.phone} · verified` : `${user.phone} · unverified`}
-                  sx={{ bgcolor: 'rgba(255,253,248,0.1)', color: PAPER, border: '1px solid rgba(255,253,248,0.18)' }}
+                  icon={
+                    user.phoneVerified ? (
+                      <VerifiedRoundedIcon sx={{ fontSize: 15, color: '#7fe0c8 !important' }} />
+                    ) : undefined
+                  }
+                  label={
+                    user.phoneVerified ? `${user.phone} · verified` : `${user.phone} · unverified`
+                  }
+                  sx={{
+                    bgcolor: 'rgba(255,253,248,0.1)',
+                    color: PAPER,
+                    border: '1px solid rgba(255,253,248,0.18)',
+                  }}
                 />
               )}
             </Stack>
@@ -492,17 +607,34 @@ export function ProfilePage() {
 
       {editing ? (
         <Box
-          sx={{ mt: 2.5, p: { xs: 2.5, md: 3.5 }, borderRadius: '24px 24px 24px 8px', border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}
+          sx={{
+            mt: 2.5,
+            p: { xs: 2.5, md: 3.5 },
+            borderRadius: '24px 24px 24px 8px',
+            border: '1px solid',
+            borderColor: 'divider',
+            bgcolor: 'background.paper',
+          }}
         >
           <Stack spacing={2.25}>
-            <TextField label="Name" value={name} onChange={(e) => setName(e.target.value)} fullWidth required />
+            <TextField
+              label="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              fullWidth
+              required
+            />
             <TextField
               label="Phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               fullWidth
               placeholder="+233…"
-              helperText={user.phoneVerified ? 'Changing your number will require re-verification.' : undefined}
+              helperText={
+                user.phoneVerified
+                  ? 'Changing your number will require re-verification.'
+                  : undefined
+              }
             />
             {uploading && (
               <Typography variant="caption" color="text.secondary">
@@ -514,11 +646,23 @@ export function ProfilePage() {
                 variant="contained"
                 onClick={() => save.mutate()}
                 disabled={save.isPending || uploading || name.trim().length === 0}
-                sx={{ bgcolor: INK, color: PAPER, borderRadius: 999, px: 3, fontWeight: 700, '&:hover': { bgcolor: '#0a322e' } }}
+                sx={{
+                  bgcolor: INK,
+                  color: PAPER,
+                  borderRadius: 999,
+                  px: 3,
+                  fontWeight: 700,
+                  '&:hover': { bgcolor: '#0a322e' },
+                }}
               >
                 {save.isPending ? 'Saving…' : 'Save changes'}
               </Button>
-              <Button color="inherit" onClick={() => setEditing(false)} disabled={save.isPending} sx={{ fontWeight: 600 }}>
+              <Button
+                color="inherit"
+                onClick={() => setEditing(false)}
+                disabled={save.isPending}
+                sx={{ fontWeight: 600 }}
+              >
                 Cancel
               </Button>
             </Stack>

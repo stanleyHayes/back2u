@@ -27,9 +27,16 @@ export function DonutChart({
     .join(', ');
 
   return (
-    <Box sx={{ p: 2.5, borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', bgcolor: 'background.paper' }}>
+    <Box
+      sx={{
+        p: 2.5,
+        borderRadius: 3,
+        border: '1px solid rgba(255,255,255,0.08)',
+        bgcolor: 'background.paper',
+      }}
+    >
       <Typography sx={{ fontWeight: 700, mb: 2 }}>{title}</Typography>
-      <Stack direction="row" spacing={2.5} alignItems="center">
+      <Stack direction="row" spacing={2.5} sx={{ alignItems: 'center' }}>
         <Box
           sx={{
             position: 'relative',
@@ -52,11 +59,25 @@ export function DonutChart({
             }}
           >
             <Box>
-              <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 22, lineHeight: 1 }}>
+              <Typography
+                sx={{
+                  fontFamily: '"Fraunces", Georgia, serif',
+                  fontWeight: 600,
+                  fontSize: 22,
+                  lineHeight: 1,
+                }}
+              >
                 {centerValue ?? total}
               </Typography>
               {centerLabel && (
-                <Typography sx={{ fontSize: 9.5, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                <Typography
+                  sx={{
+                    fontSize: 9.5,
+                    color: 'text.secondary',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                  }}
+                >
                   {centerLabel}
                 </Typography>
               )}
@@ -65,8 +86,10 @@ export function DonutChart({
         </Box>
         <Stack spacing={0.75} sx={{ flex: 1, minWidth: 0 }}>
           {slices.map((s) => (
-            <Stack key={s.label} direction="row" spacing={1} alignItems="center">
-              <Box sx={{ width: 10, height: 10, borderRadius: '2px', bgcolor: s.color, flexShrink: 0 }} />
+            <Stack key={s.label} direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              <Box
+                sx={{ width: 10, height: 10, borderRadius: '2px', bgcolor: s.color, flexShrink: 0 }}
+              />
               <Typography sx={{ fontSize: 13, flex: 1 }} noWrap>
                 {s.label}
               </Typography>

@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as Notifications from 'expo-notifications';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { MD3LightTheme, PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -16,10 +16,42 @@ const theme = {
 
 const qc = new QueryClient();
 
+// Routes that require a signed-in user; everything else (feed, item detail,
+// scan-tag, map, marketplace, leaderboard, auth flow, etc.) works logged out.
+const PROTECTED_ROOT = new Set([
+  'bookmarks',
+  'courier',
+  'courier-tracking',
+  'notifications',
+  'safety',
+  'settings',
+  'shop',
+  'tags',
+  'trusted-finder-apply',
+  'vault',
+  'verification',
+  'zones',
+]);
+const PROTECTED_TABS = new Set(['chat', 'matches', 'post']);
+
 export default function RootLayout() {
   const router = useRouter();
+  const segments = useSegments() as string[];
   const accessToken = useAuth((s) => s.accessToken);
+  const user = useAuth((s) => s.user);
+  const [hydrated, setHydrated] = useState(useAuth.persist.hasHydrated());
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
+
+  useEffect(() => useAuth.persist.onFinishHydration(() => setHydrated(true)), []);
+
+  useEffect(() => {
+    if (!hydrated || user) return;
+    const isProtected =
+      segments[0] === '(tabs)'
+        ? PROTECTED_TABS.has(segments[1] ?? '')
+        : PROTECTED_ROOT.has(segments[0] ?? '');
+    if (isProtected) router.replace('/login');
+  }, [hydrated, user, segments, router]);
 
   useEffect(() => {
     if (accessToken) void registerForPush().catch(() => {});
@@ -35,7 +67,12 @@ export default function RootLayout() {
       <PaperProvider theme={theme}>
         <QueryClientProvider client={qc}>
           <StatusBar style="auto" />
-          <Stack screenOptions={{ headerStyle: { backgroundColor: theme.colors.primary }, headerTintColor: '#fff' }}>
+          <Stack
+            screenOptions={{
+              headerStyle: { backgroundColor: theme.colors.primary },
+              headerTintColor: '#fff',
+            }}
+          >
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="login" options={{ title: 'Sign in' }} />
             <Stack.Screen name="register" options={{ title: 'Create account' }} />

@@ -90,13 +90,11 @@ export function TrustedFinderApplyPage() {
 
   if (user.trustedFinder) {
     return (
-      <Stack spacing={3} maxWidth={560}>
-        <Typography variant="h4" fontWeight={700}>
+      <Stack spacing={3} sx={{ maxWidth: 560 }}>
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
           Trusted Finder
         </Typography>
-        <Alert severity="success">
-          You are already a trusted finder.
-        </Alert>
+        <Alert severity="success">You are already a trusted finder.</Alert>
         <Button component={Link} to="/profile" variant="outlined">
           Back to profile
         </Button>
@@ -105,7 +103,7 @@ export function TrustedFinderApplyPage() {
   }
 
   return (
-    <Box maxWidth={760} mx="auto">
+    <Box sx={{ maxWidth: 760, mx: 'auto' }}>
       <Typography
         sx={{
           color: TEAL,
@@ -178,7 +176,7 @@ export function TrustedFinderApplyPage() {
                   </Button>
                   <input ref={fileRef} type="file" accept="image/*" hidden onChange={onPickPhoto} />
                   {idPhotoUrl && (
-                    <Box mt={1}>
+                    <Box sx={{ mt: 1 }}>
                       <img
                         src={idPhotoUrl}
                         alt="ID preview"
@@ -193,14 +191,25 @@ export function TrustedFinderApplyPage() {
             {activeStep === 1 && (
               <Stack spacing={2.5}>
                 <Box>
-                  <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.5 }}>
-                    <Typography variant="caption" color="text.secondary">Short bio (optional)</Typography>
+                  <Stack
+                    direction="row"
+                    sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}
+                  >
+                    <Typography variant="caption" color="text.secondary">
+                      Short bio (optional)
+                    </Typography>
                     <AiAssistantBar
                       dense
                       value={bio}
                       onChange={(text) => setBio(text.slice(0, 800))}
                       assist={api.aiAssist.bind(api)}
-                      actions={['create_from_prompt', 'fix_grammar', 'improve_clarity', 'formalize', 'expand']}
+                      actions={[
+                        'create_from_prompt',
+                        'fix_grammar',
+                        'improve_clarity',
+                        'formalize',
+                        'expand',
+                      ]}
                     />
                   </Stack>
                   <TextField
@@ -211,7 +220,7 @@ export function TrustedFinderApplyPage() {
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     placeholder="Tell us why you want to be a trusted finder…"
-                    inputProps={{ maxLength: 800 }}
+                    slotProps={{ htmlInput: { maxLength: 800 } }}
                     helperText={`${bio.length}/800`}
                   />
                 </Box>
@@ -220,9 +229,13 @@ export function TrustedFinderApplyPage() {
 
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{ pt: 1.5, borderTop: '1px solid', borderColor: 'divider' }}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                pt: 1.5,
+                borderTop: '1px solid',
+                borderColor: 'divider',
+              }}
             >
               <Button
                 onClick={handleBack}

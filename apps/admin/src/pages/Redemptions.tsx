@@ -56,7 +56,7 @@ export function RedemptionsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" fontWeight={700}>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
         Points redemptions
       </Typography>
       <Typography color="text.secondary">
@@ -70,7 +70,11 @@ export function RedemptionsPage() {
           <Typography variant="h6" gutterBottom>
             Confirm a voucher
           </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="flex-start">
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={2}
+            sx={{ alignItems: 'flex-start' }}
+          >
             <TextField
               label="Voucher code"
               placeholder="RDM-XXXXXX"
@@ -151,12 +155,14 @@ export function RedemptionsPage() {
                 }}
               >
                 <Box>
-                  <Typography fontWeight={700}>
+                  <Typography sx={{ fontWeight: 700 }}>
                     {r.code} · {r.points} pts = {money(r.value, r.currency)}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
                     {new Date(r.createdAt).toLocaleString()}
-                    {r.fulfilledAt ? ` · fulfilled ${new Date(r.fulfilledAt).toLocaleString()}` : ''}
+                    {r.fulfilledAt
+                      ? ` · fulfilled ${new Date(r.fulfilledAt).toLocaleString()}`
+                      : ''}
                   </Typography>
                 </Box>
                 <Chip label={r.status} size="small" color={STATUS_COLOR[r.status]} />

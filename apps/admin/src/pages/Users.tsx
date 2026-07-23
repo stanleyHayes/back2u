@@ -35,7 +35,10 @@ const STATUS_COLOR: Record<string, 'success' | 'error' | 'warning' | 'default'> 
   suspended: 'warning',
 };
 
-const ROLE_COLORS: Record<string, 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'error'> = {
+const ROLE_COLORS: Record<
+  string,
+  'default' | 'primary' | 'secondary' | 'info' | 'success' | 'error'
+> = {
   user: 'default',
   finder: 'primary',
   trusted_finder: 'secondary',
@@ -53,7 +56,11 @@ export function UsersPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [processing, setProcessing] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
     open: false,
     message: '',
     severity: 'success',
@@ -75,7 +82,8 @@ export function UsersPage() {
   });
 
   const updateRoles = useMutation({
-    mutationFn: (input: { id: string; roles: string[] }) => api.updateUserRoles(input.id, input.roles),
+    mutationFn: (input: { id: string; roles: string[] }) =>
+      api.updateUserRoles(input.id, input.roles),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-users'] }),
   });
 
@@ -106,7 +114,15 @@ export function UsersPage() {
     closeRoleDialog();
   };
 
-  const allRoles = ['user', 'finder', 'trusted_finder', 'courier', 'partner_admin', 'admin', 'super_admin'];
+  const allRoles = [
+    'user',
+    'finder',
+    'trusted_finder',
+    'courier',
+    'partner_admin',
+    'admin',
+    'super_admin',
+  ];
 
   const toggleSelectAll = () => {
     if (allSelected) {
@@ -133,7 +149,11 @@ export function UsersPage() {
     for (let i = 0; i < ids.length; i++) {
       setProgress({ current: i + 1, total: ids.length });
       try {
-        await updateStatus.mutateAsync({ id: ids[i], status, reason: 'Bulk update' } as { id: string; status: string; reason: string });
+        await updateStatus.mutateAsync({ id: ids[i], status, reason: 'Bulk update' } as {
+          id: string;
+          status: string;
+          reason: string;
+        });
       } catch {
         failed++;
       }
@@ -144,14 +164,17 @@ export function UsersPage() {
     await qc.invalidateQueries({ queryKey: ['admin-users'] });
     setSnackbar({
       open: true,
-      message: failed > 0 ? `Completed with ${failed} failures.` : `All ${ids.length} users updated to ${status}.`,
+      message:
+        failed > 0
+          ? `Completed with ${failed} failures.`
+          : `All ${ids.length} users updated to ${status}.`,
       severity: failed > 0 ? 'error' : 'success',
     });
   };
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" fontWeight={700}>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
         User Management
       </Typography>
 
@@ -166,19 +189,25 @@ export function UsersPage() {
         sx={{ maxWidth: 400 }}
       />
 
-      {updateStatus.isError && (
-        <Alert severity="error">Failed to update user status.</Alert>
-      )}
-      {updateRoles.isError && (
-        <Alert severity="error">Failed to update user roles.</Alert>
-      )}
+      {updateStatus.isError && <Alert severity="error">Failed to update user status.</Alert>}
+      {updateRoles.isError && <Alert severity="error">Failed to update user roles.</Alert>}
 
       {selectedIds.size > 0 && (
         <Stack direction="row" spacing={1}>
-          <Button variant="contained" color="error" disabled={processing} onClick={() => runBulk('banned')}>
+          <Button
+            variant="contained"
+            color="error"
+            disabled={processing}
+            onClick={() => runBulk('banned')}
+          >
             Ban selected ({selectedIds.size})
           </Button>
-          <Button variant="outlined" color="success" disabled={processing} onClick={() => runBulk('active')}>
+          <Button
+            variant="outlined"
+            color="success"
+            disabled={processing}
+            onClick={() => runBulk('active')}
+          >
             Activate selected ({selectedIds.size})
           </Button>
         </Stack>
@@ -198,7 +227,12 @@ export function UsersPage() {
           <TableHead>
             <TableRow>
               <TableCell padding="checkbox">
-                <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleSelectAll} disabled={items.length === 0 || processing} />
+                <Checkbox
+                  checked={allSelected}
+                  indeterminate={someSelected}
+                  onChange={toggleSelectAll}
+                  disabled={items.length === 0 || processing}
+                />
               </TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
@@ -233,7 +267,7 @@ export function UsersPage() {
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
-                  <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
+                  <Stack direction="row" spacing={0.5} useFlexGap sx={{ flexWrap: 'wrap' }}>
                     {user.roles.map((r) => (
                       <Chip key={r} label={r} size="small" color={ROLE_COLORS[r] ?? 'default'} />
                     ))}
@@ -281,7 +315,11 @@ export function UsersPage() {
                         Activate
                       </Button>
                     )}
-                    <Button size="small" onClick={() => openRoleDialog(user)} disabled={updateRoles.isPending || processing}>
+                    <Button
+                      size="small"
+                      onClick={() => openRoleDialog(user)}
+                      disabled={updateRoles.isPending || processing}
+                    >
                       Edit roles
                     </Button>
                   </Stack>
@@ -314,7 +352,7 @@ export function UsersPage() {
             value={selectedRoles}
             onChange={(e) => setSelectedRoles(e.target.value as string[])}
             renderValue={(selected) => (
-              <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
+              <Stack direction="row" spacing={0.5} useFlexGap sx={{ flexWrap: 'wrap' }}>
                 {(selected as string[]).map((r) => (
                   <Chip key={r} label={r} size="small" />
                 ))}
@@ -342,7 +380,10 @@ export function UsersPage() {
         onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar((s) => ({ ...s, open: false }))}>
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

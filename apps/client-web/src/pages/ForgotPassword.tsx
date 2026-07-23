@@ -9,9 +9,11 @@ export function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const reset = useMutation({ mutationFn: () => api.requestPasswordReset(email) });
   return (
-    <Box maxWidth={420} mx="auto">
+    <Box sx={{ maxWidth: 420, mx: 'auto' }}>
       <Paper sx={{ p: 4 }}>
-        <Typography variant="h4" gutterBottom>Reset your password</Typography>
+        <Typography variant="h4" gutterBottom>
+          Reset your password
+        </Typography>
         {reset.isSuccess ? (
           <Alert severity="success">If that email exists, a reset link has been sent.</Alert>
         ) : (
@@ -22,7 +24,13 @@ export function ForgotPasswordPage() {
             }}
           >
             <Stack spacing={2}>
-              <TextField label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <TextField
+                label="Email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
               <Button type="submit" variant="contained" size="large" disabled={reset.isPending}>
                 {reset.isPending ? 'Sending…' : 'Send reset link'}
               </Button>

@@ -2,13 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MapView, { Callout, Marker, type Region } from 'react-native-maps';
 import { Button, Chip, Text } from 'react-native-paper';
 
@@ -44,16 +38,12 @@ export default function MapScreen() {
   const router = useRouter();
   const mapRef = useRef<MapView>(null);
   const [filter, setFilter] = useState<FilterKind>('all');
-  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(
+    null,
+  );
   const [permissionStatus, setPermissionStatus] = useState<Location.PermissionStatus | null>(null);
 
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['items-map'],
     queryFn: () => api.listItems({ pageSize: 100 }),
   });
@@ -65,14 +55,18 @@ export default function MapScreen() {
       if (cancelled) return;
       setPermissionStatus(status);
       if (status === 'granted') {
-        const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+        const pos = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
         setUserLocation({
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude,
         });
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const items = data?.items ?? [];
@@ -84,15 +78,21 @@ export default function MapScreen() {
   const validItems = filteredItems.filter((item) => coordsFromItem(item) !== null);
 
   const fitToMarkers = useCallback(() => {
-    const coordinates = validItems.map(coordsFromItem).filter(Boolean) as { latitude: number; longitude: number }[];
+    const coordinates = validItems.map(coordsFromItem).filter(Boolean) as {
+      latitude: number;
+      longitude: number;
+    }[];
     if (coordinates.length === 0) return;
 
     if (coordinates.length === 1 && mapRef.current) {
-      mapRef.current.animateToRegion({
-        ...coordinates[0],
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      }, 500);
+      mapRef.current.animateToRegion(
+        {
+          ...coordinates[0],
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        },
+        500,
+      );
       return;
     }
 
@@ -121,11 +121,14 @@ export default function MapScreen() {
       longitude: pos.coords.longitude,
     };
     setUserLocation(coords);
-    mapRef.current?.animateToRegion({
-      ...coords,
-      latitudeDelta: LATITUDE_DELTA / 4,
-      longitudeDelta: LONGITUDE_DELTA / 4,
-    }, 500);
+    mapRef.current?.animateToRegion(
+      {
+        ...coords,
+        latitudeDelta: LATITUDE_DELTA / 4,
+        longitudeDelta: LONGITUDE_DELTA / 4,
+      },
+      500,
+    );
   };
 
   if (isLoading) {
@@ -170,7 +173,10 @@ export default function MapScreen() {
             >
               <Callout tooltip={false}>
                 <View style={{ padding: 4, minWidth: 140 }}>
-                  <Text style={{ fontWeight: '700', fontSize: 14, marginBottom: 2 }} numberOfLines={2}>
+                  <Text
+                    style={{ fontWeight: '700', fontSize: 14, marginBottom: 2 }}
+                    numberOfLines={2}
+                  >
                     {item.title}
                   </Text>
                   <Text style={{ fontSize: 12, color: '#666' }} numberOfLines={1}>
@@ -241,7 +247,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
   },
   centered: {
     flex: 1,

@@ -13,7 +13,7 @@ export function AppShell({
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | false;
 }) {
   return (
-    <Box minHeight="100vh" bgcolor="background.default">
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <AppBar
         position="sticky"
         color="inherit"
@@ -30,8 +30,8 @@ export function AppShell({
       >
         <Toolbar sx={{ minHeight: { xs: 60, md: 68 } }}>
           <BrandLogo />
-          <Box flex={1} />
-          <Stack direction="row" spacing={{ xs: 0.5, md: 1.5 }} alignItems="center">
+          <Box sx={{ flex: 1 }} />
+          <Stack direction="row" spacing={{ xs: 0.5, md: 1.5 }} sx={{ alignItems: 'center' }}>
             {navRight}
           </Stack>
         </Toolbar>

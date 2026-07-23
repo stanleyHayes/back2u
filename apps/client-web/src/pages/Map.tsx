@@ -6,8 +6,8 @@ import { useTheme } from '@mui/material/styles';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useQuery } from '@tanstack/react-query';
-import { Map as ReactMap, Marker, Popup, NavigationControl } from 'react-map-gl';
-import type { MapEvent, MapRef, ViewStateChangeEvent } from 'react-map-gl';
+import { Map as ReactMap, Marker, Popup, NavigationControl } from 'react-map-gl/mapbox';
+import type { MapEvent, MapRef, ViewStateChangeEvent } from 'react-map-gl/mapbox';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import Supercluster from 'supercluster';
 import type { BBox } from 'geojson';
@@ -147,14 +147,14 @@ export function MapPage() {
     (evt: MapEvent) => {
       updateBoundsFromMap(evt.target);
     },
-    [updateBoundsFromMap]
+    [updateBoundsFromMap],
   );
 
   const handleMoveEnd = useCallback(
     (evt: ViewStateChangeEvent) => {
       updateBoundsFromMap(evt.target);
     },
-    [updateBoundsFromMap]
+    [updateBoundsFromMap],
   );
 
   const handleClusterClick = useCallback(
@@ -166,7 +166,7 @@ export function MapPage() {
         zoom: expansionZoom,
       });
     },
-    [cluster]
+    [cluster],
   );
 
   const handleMyLocation = useCallback(() => {
@@ -180,7 +180,7 @@ export function MapPage() {
       (err) => {
         // eslint-disable-next-line no-console
         console.error(err);
-      }
+      },
     );
   }, []);
 
@@ -194,10 +194,9 @@ export function MapPage() {
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={2}
-        alignItems={{ xs: 'flex-start', sm: 'center' }}
-        justifyContent="space-between"
+        sx={{ alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}
       >
-        <Typography variant="h3" fontWeight={700}>
+        <Typography variant="h3" sx={{ fontWeight: 700 }}>
           Lost zones
         </Typography>
         <Button
@@ -211,32 +210,40 @@ export function MapPage() {
       </Stack>
 
       <Typography color="text.secondary">
-        Hotspots show where reports are clustered. Subscribe to a zone to be alerted when something new is reported
-        nearby.
+        Hotspots show where reports are clustered. Subscribe to a zone to be alerted when something
+        new is reported nearby.
       </Typography>
 
       <ButtonGroup size="small" variant="outlined">
         <Button variant={kind === '' ? 'contained' : 'outlined'} onClick={() => setKind('')}>
           All
         </Button>
-        <Button variant={kind === 'lost' ? 'contained' : 'outlined'} onClick={() => setKind('lost')}>
+        <Button
+          variant={kind === 'lost' ? 'contained' : 'outlined'}
+          onClick={() => setKind('lost')}
+        >
           Lost
         </Button>
-        <Button variant={kind === 'found' ? 'contained' : 'outlined'} onClick={() => setKind('found')}>
+        <Button
+          variant={kind === 'found' ? 'contained' : 'outlined'}
+          onClick={() => setKind('found')}
+        >
           Found
         </Button>
       </ButtonGroup>
 
       <Box
-        height={520}
-        borderRadius={3}
-        overflow="hidden"
-        border={1}
-        borderColor="divider"
-        position="relative"
+        sx={{
+          height: 520,
+          borderRadius: 3,
+          overflow: 'hidden',
+          border: 1,
+          borderColor: 'divider',
+          position: 'relative',
+        }}
       >
         {!TOKEN ? (
-          <Box p={4}>
+          <Box sx={{ p: 4 }}>
             <Typography color="error">VITE_MAPBOX_TOKEN missing.</Typography>
           </Box>
         ) : isError ? (
@@ -316,7 +323,7 @@ export function MapPage() {
                 closeButton
               >
                 <Stack spacing={1} sx={{ p: 1, minWidth: 180 }}>
-                  <Typography variant="subtitle2" fontWeight={700} noWrap>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700 }} noWrap>
                     {selectedItem.title}
                   </Typography>
                   <Chip

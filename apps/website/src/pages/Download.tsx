@@ -19,12 +19,16 @@ export function Download() {
         <Typography component="span" className="b2u-eyebrow" sx={{ justifyContent: 'center' }}>
           Get the app
         </Typography>
-        <Typography className="b2u-display" component="h1" sx={{ mt: 2, fontSize: { xs: 38, md: 56 }, fontWeight: 600, color: INK }}>
+        <Typography
+          className="b2u-display"
+          component="h1"
+          sx={{ mt: 2, fontSize: { xs: 38, md: 56 }, fontWeight: 600, color: INK }}
+        >
           Back2u in your pocket
         </Typography>
         <Typography sx={{ mt: 2.5, color: 'text.secondary', fontSize: 18, lineHeight: 1.7 }}>
-          Lost &amp; found happens on the move — in taxis, on campuses, at the mall. The mobile app keeps
-          reunions one tap away.
+          Lost &amp; found happens on the move — in taxis, on campuses, at the mall. The mobile app
+          keeps reunions one tap away.
         </Typography>
 
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
@@ -55,7 +59,15 @@ export function Download() {
                 'radial-gradient(20rem 16rem at 80% 110%, rgba(224,161,6,0.3), transparent 60%), radial-gradient(18rem 14rem at 10% -10%, rgba(20,184,166,0.32), transparent 60%)',
             }}
           />
-          <Stack sx={{ position: 'relative', height: '100%' }} justifyContent="center" alignItems="center" spacing={1.5}>
+          <Stack
+            sx={{
+              position: 'relative',
+              height: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            spacing={1.5}
+          >
             <Box
               sx={{
                 width: 64,
@@ -67,12 +79,25 @@ export function Download() {
                 placeItems: 'center',
               }}
             >
-              <Box sx={{ width: 18, height: 18, borderRadius: '50%', bgcolor: PAPER, transform: 'rotate(45deg)' }} />
+              <Box
+                sx={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: '50%',
+                  bgcolor: PAPER,
+                  transform: 'rotate(45deg)',
+                }}
+              />
             </Box>
-            <Typography className="b2u-display" sx={{ color: PAPER, fontSize: 22, fontWeight: 600 }}>
+            <Typography
+              className="b2u-display"
+              sx={{ color: PAPER, fontSize: 22, fontWeight: 600 }}
+            >
               Back2u
             </Typography>
-            <Typography sx={{ color: 'rgba(255,253,248,0.7)', fontSize: 13 }}>Reunite. Repeat.</Typography>
+            <Typography sx={{ color: 'rgba(255,253,248,0.7)', fontSize: 13 }}>
+              Reunite. Repeat.
+            </Typography>
           </Stack>
         </Box>
 
@@ -87,10 +112,15 @@ export function Download() {
         >
           {PERKS.map((p) => (
             <Box key={p.title}>
-              <Typography className="b2u-display" sx={{ fontSize: 18, fontWeight: 600, color: INK }}>
+              <Typography
+                className="b2u-display"
+                sx={{ fontSize: 18, fontWeight: 600, color: INK }}
+              >
                 {p.title}
               </Typography>
-              <Typography sx={{ mt: 0.5, color: 'text.secondary', fontSize: 15 }}>{p.body}</Typography>
+              <Typography sx={{ mt: 0.5, color: 'text.secondary', fontSize: 15 }}>
+                {p.body}
+              </Typography>
             </Box>
           ))}
         </Box>

@@ -57,22 +57,29 @@ export function RedeemPage() {
   });
 
   return (
-    <Box maxWidth={760} mx="auto">
+    <Box sx={{ maxWidth: 760, mx: 'auto' }}>
       <PageHeader
         eyebrow="Rewards"
         title="Redeem your points"
         subtitle={
           <>
-            Spend the points you&apos;ve earned returning items at our partner establishments. You have{' '}
-            <b>{balance.toLocaleString()} points</b>.
+            Spend the points you&apos;ve earned returning items at our partner establishments. You
+            have <b>{balance.toLocaleString()} points</b>.
           </>
         }
       />
 
       <Stack spacing={2.5}>
-        <SectionCard icon={<RedeemOutlinedIcon />} title="Create a voucher" desc="Generate a code to show at a partner counter." accent={MARIGOLD}>
+        <SectionCard
+          icon={<RedeemOutlinedIcon />}
+          title="Create a voucher"
+          desc="Generate a code to show at a partner counter."
+          accent={MARIGOLD}
+        >
           {redeemable.length === 0 ? (
-            <Alert severity="info">No partner institutions are accepting points yet. Check back soon.</Alert>
+            <Alert severity="info">
+              No partner institutions are accepting points yet. Check back soon.
+            </Alert>
           ) : (
             <Stack spacing={2.5}>
               <TextField
@@ -99,7 +106,7 @@ export function RedeemPage() {
                 value={points}
                 onChange={(e) => setPoints(Math.max(0, Math.floor(Number(e.target.value))))}
                 fullWidth
-                inputProps={{ min: 1, max: balance }}
+                slotProps={{ htmlInput: { min: 1, max: balance } }}
                 helperText={points > balance ? 'You don’t have enough points.' : ' '}
                 error={points > balance}
               />
@@ -111,19 +118,47 @@ export function RedeemPage() {
               )}
 
               {create.isError && (
-                <Alert severity="error">{create.error instanceof Error ? create.error.message : 'Could not create voucher'}</Alert>
+                <Alert severity="error">
+                  {create.error instanceof Error
+                    ? create.error.message
+                    : 'Could not create voucher'}
+                </Alert>
               )}
 
               {create.isSuccess && create.data && (
-                <Box sx={{ p: 3, borderRadius: '20px 20px 20px 6px', bgcolor: INK, color: '#FBF6EC', textAlign: 'center' }}>
-                  <Typography sx={{ fontSize: 13, letterSpacing: '0.16em', textTransform: 'uppercase', opacity: 0.7 }}>
+                <Box
+                  sx={{
+                    p: 3,
+                    borderRadius: '20px 20px 20px 6px',
+                    bgcolor: INK,
+                    color: '#FBF6EC',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: 13,
+                      letterSpacing: '0.16em',
+                      textTransform: 'uppercase',
+                      opacity: 0.7,
+                    }}
+                  >
                     Show this code at the counter
                   </Typography>
-                  <Typography sx={{ fontFamily: '"Fraunces", serif', fontWeight: 600, fontSize: 44, letterSpacing: '0.08em', my: 1 }}>
+                  <Typography
+                    sx={{
+                      fontFamily: '"Fraunces", serif',
+                      fontWeight: 600,
+                      fontSize: 44,
+                      letterSpacing: '0.08em',
+                      my: 1,
+                    }}
+                  >
                     {create.data.code}
                   </Typography>
                   <Typography sx={{ opacity: 0.85 }}>
-                    {create.data.points} points = <b>{money(create.data.value, create.data.currency)}</b>
+                    {create.data.points} points ={' '}
+                    <b>{money(create.data.value, create.data.currency)}</b>
                   </Typography>
                 </Box>
               )}
@@ -133,7 +168,15 @@ export function RedeemPage() {
                   size="large"
                   onClick={() => create.mutate()}
                   disabled={!institutionId || points <= 0 || points > balance || create.isPending}
-                  sx={{ bgcolor: MARIGOLD, color: INK, borderRadius: 999, fontWeight: 700, px: 3, py: 1.3, '&:hover': { bgcolor: '#cf9305' } }}
+                  sx={{
+                    bgcolor: MARIGOLD,
+                    color: INK,
+                    borderRadius: 999,
+                    fontWeight: 700,
+                    px: 3,
+                    py: 1.3,
+                    '&:hover': { bgcolor: '#cf9305' },
+                  }}
                 >
                   {create.isPending ? 'Creating…' : 'Generate voucher'}
                 </Button>
@@ -162,14 +205,20 @@ export function RedeemPage() {
                   }}
                 >
                   <Box sx={{ minWidth: 0 }}>
-                    <Typography fontWeight={700} sx={{ color: INK }}>
+                    <Typography sx={{ fontWeight: 700, color: INK }}>
                       {r.code} · {r.points} pts = {money(r.value, r.currency)}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {r.institutionName ?? 'Institution'} · {new Date(r.createdAt).toLocaleDateString()}
+                      {r.institutionName ?? 'Institution'} ·{' '}
+                      {new Date(r.createdAt).toLocaleDateString()}
                     </Typography>
                   </Box>
-                  <Chip label={r.status} size="small" color={STATUS_COLOR[r.status]} sx={{ textTransform: 'capitalize', flexShrink: 0 }} />
+                  <Chip
+                    label={r.status}
+                    size="small"
+                    color={STATUS_COLOR[r.status]}
+                    sx={{ textTransform: 'capitalize', flexShrink: 0 }}
+                  />
                 </Box>
               ))}
             </Stack>

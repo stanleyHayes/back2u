@@ -16,7 +16,14 @@ const CLAY = '#C2410C';
 const TARGETS = ['user', 'item', 'message', 'listing'] as const;
 const REASONS = ['scam', 'harassment', 'spam', 'inappropriate', 'other'] as const;
 
-const inkBtn = { bgcolor: INK, color: '#FBF6EC', borderRadius: 999, fontWeight: 700, px: 2.5, '&:hover': { bgcolor: '#0a322e' } } as const;
+const inkBtn = {
+  bgcolor: INK,
+  color: '#FBF6EC',
+  borderRadius: 999,
+  fontWeight: 700,
+  px: 2.5,
+  '&:hover': { bgcolor: '#0a322e' },
+} as const;
 
 export function SafetyPage() {
   const qc = useQueryClient();
@@ -43,7 +50,7 @@ export function SafetyPage() {
   const file = useMutation({ mutationFn: () => api.fileReport(report) });
 
   return (
-    <Box maxWidth={680} mx="auto">
+    <Box sx={{ maxWidth: 680, mx: 'auto' }}>
       <PageHeader
         eyebrow="Trust & safety"
         title="Safety center"
@@ -51,10 +58,25 @@ export function SafetyPage() {
       />
 
       <Stack spacing={2.5}>
-        <SectionCard icon={<BlockIcon />} title="Block a user" desc="They won't be able to message you or see your contact." accent={CLAY}>
+        <SectionCard
+          icon={<BlockIcon />}
+          title="Block a user"
+          desc="They won't be able to message you or see your contact."
+          accent={CLAY}
+        >
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <TextField label="User ID" value={blockId} onChange={(e) => setBlockId(e.target.value)} sx={{ flex: 1 }} />
-            <Button variant="contained" onClick={() => block.mutate()} disabled={!blockId || block.isPending} sx={inkBtn}>
+            <TextField
+              label="User ID"
+              value={blockId}
+              onChange={(e) => setBlockId(e.target.value)}
+              sx={{ flex: 1 }}
+            />
+            <Button
+              variant="contained"
+              onClick={() => block.mutate()}
+              disabled={!blockId || block.isPending}
+              sx={inkBtn}
+            >
               {block.isPending ? 'Blocking…' : 'Block'}
             </Button>
           </Stack>
@@ -68,10 +90,26 @@ export function SafetyPage() {
               {blocks.map((b) => (
                 <Box
                   key={b.blockedId}
-                  sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.25, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    p: 1.25,
+                    borderRadius: 2,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                  }}
                 >
-                  <Typography sx={{ flex: 1, fontFamily: 'monospace', fontSize: 13, wordBreak: 'break-all' }}>{b.blockedId}</Typography>
-                  <Button size="small" onClick={() => unblock.mutate(b.blockedId)} sx={{ fontWeight: 600, flexShrink: 0 }}>
+                  <Typography
+                    sx={{ flex: 1, fontFamily: 'monospace', fontSize: 13, wordBreak: 'break-all' }}
+                  >
+                    {b.blockedId}
+                  </Typography>
+                  <Button
+                    size="small"
+                    onClick={() => unblock.mutate(b.blockedId)}
+                    sx={{ fontWeight: 600, flexShrink: 0 }}
+                  >
                     Unblock
                   </Button>
                 </Box>
@@ -80,7 +118,12 @@ export function SafetyPage() {
           )}
         </SectionCard>
 
-        <SectionCard icon={<FlagOutlinedIcon />} title="Report content" desc="Flag a user, item, message, or listing for review." accent={CLAY}>
+        <SectionCard
+          icon={<FlagOutlinedIcon />}
+          title="Report content"
+          desc="Flag a user, item, message, or listing for review."
+          accent={CLAY}
+        >
           {file.isSuccess && (
             <Alert severity="success" sx={{ mb: 2 }}>
               Report filed. Thank you — our team will take a look.
@@ -92,7 +135,9 @@ export function SafetyPage() {
                 select
                 label="Target"
                 value={report.target}
-                onChange={(e) => setReport({ ...report, target: e.target.value as typeof report.target })}
+                onChange={(e) =>
+                  setReport({ ...report, target: e.target.value as typeof report.target })
+                }
                 sx={{ flex: 1 }}
               >
                 {TARGETS.map((t) => (
@@ -105,7 +150,9 @@ export function SafetyPage() {
                 select
                 label="Reason"
                 value={report.reason}
-                onChange={(e) => setReport({ ...report, reason: e.target.value as typeof report.reason })}
+                onChange={(e) =>
+                  setReport({ ...report, reason: e.target.value as typeof report.reason })
+                }
                 sx={{ flex: 1 }}
               >
                 {REASONS.map((t) => (
@@ -115,10 +162,20 @@ export function SafetyPage() {
                 ))}
               </TextField>
             </Stack>
-            <TextField label="Target ID" value={report.targetId} onChange={(e) => setReport({ ...report, targetId: e.target.value })} fullWidth />
+            <TextField
+              label="Target ID"
+              value={report.targetId}
+              onChange={(e) => setReport({ ...report, targetId: e.target.value })}
+              fullWidth
+            />
             <Box>
-              <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.5 }}>
-                <Typography variant="caption" color="text.secondary">Note (optional)</Typography>
+              <Stack
+                direction="row"
+                sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}
+              >
+                <Typography variant="caption" color="text.secondary">
+                  Note (optional)
+                </Typography>
                 <AiAssistantBar
                   dense
                   tone="clay"
@@ -128,10 +185,22 @@ export function SafetyPage() {
                   actions={['fix_grammar', 'improve_clarity', 'formalize', 'expand']}
                 />
               </Stack>
-              <TextField label="Note (optional)" multiline minRows={2} value={report.note} onChange={(e) => setReport({ ...report, note: e.target.value })} fullWidth />
+              <TextField
+                label="Note (optional)"
+                multiline
+                minRows={2}
+                value={report.note}
+                onChange={(e) => setReport({ ...report, note: e.target.value })}
+                fullWidth
+              />
             </Box>
             <Box>
-              <Button variant="contained" onClick={() => file.mutate()} disabled={!report.targetId || file.isPending} sx={inkBtn}>
+              <Button
+                variant="contained"
+                onClick={() => file.mutate()}
+                disabled={!report.targetId || file.isPending}
+                sx={inkBtn}
+              >
                 {file.isPending ? 'Filing…' : 'File report'}
               </Button>
             </Box>

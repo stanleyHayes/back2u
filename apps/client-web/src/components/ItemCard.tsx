@@ -49,7 +49,10 @@ export function ItemCard({
         border: '1px solid',
         borderColor: 'divider',
         transition: 'transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease',
-        '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 26px 46px -30px rgba(11,61,56,.55)' },
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          boxShadow: '0 26px 46px -30px rgba(11,61,56,.55)',
+        },
       }}
     >
       {/* Image: padded inside the card with its own rounded frame */}
@@ -77,10 +80,24 @@ export function ItemCard({
                 e.stopPropagation();
                 setLightboxOpen(true);
               }}
-              sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'pointer' }}
+              sx={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+                cursor: 'pointer',
+              }}
             />
           ) : (
-            <Box sx={{ display: 'grid', placeItems: 'center', height: '100%', color: 'text.secondary', fontSize: 14 }}>
+            <Box
+              sx={{
+                display: 'grid',
+                placeItems: 'center',
+                height: '100%',
+                color: 'text.secondary',
+                fontSize: 14,
+              }}
+            >
               No photo
             </Box>
           )}
@@ -129,7 +146,7 @@ export function ItemCard({
 
       {/* Content */}
       <Box sx={{ px: 0.75, pt: 1.5, pb: 0.5, flex: 1 }}>
-        <Stack direction="row" spacing={0.75} mb={1} flexWrap="wrap" useFlexGap>
+        <Stack direction="row" spacing={0.75} sx={{ mb: 1, flexWrap: 'wrap' }} useFlexGap>
           <Chip size="small" label={item.category} variant="outlined" />
           {item.classification === 'stolen' && <Chip size="small" label="stolen" color="warning" />}
           {item.status === 'returned' && <Chip size="small" label="Returned" color="success" />}
@@ -156,13 +173,19 @@ export function ItemCard({
       </Box>
 
       {/* Actions */}
-      <Stack direction="row" spacing={1} alignItems="center" sx={{ px: 0.5, pt: 1 }}>
+      <Stack direction="row" spacing={1} sx={{ alignItems: 'center', px: 0.5, pt: 1 }}>
         <Button
           component={Link}
           to={`/items/${item.id}`}
           size="small"
           variant="contained"
-          sx={{ bgcolor: INK, color: '#FBF6EC', borderRadius: 999, fontWeight: 700, '&:hover': { bgcolor: '#0a322e' } }}
+          sx={{
+            bgcolor: INK,
+            color: '#FBF6EC',
+            borderRadius: 999,
+            fontWeight: 700,
+            '&:hover': { bgcolor: '#0a322e' },
+          }}
         >
           {isFound ? 'Could be mine' : 'I found this'}
         </Button>
@@ -174,7 +197,7 @@ export function ItemCard({
         >
           Details
         </Button>
-        <Box flex={1} />
+        <Box sx={{ flex: 1 }} />
         {onToggleBookmark && (
           <IconButton
             size="small"
@@ -185,7 +208,11 @@ export function ItemCard({
             }}
             sx={{ color: isBookmarked ? 'warning.main' : 'text.secondary' }}
           >
-            {isBookmarked ? <BookmarkIcon fontSize="small" /> : <BookmarkBorderIcon fontSize="small" />}
+            {isBookmarked ? (
+              <BookmarkIcon fontSize="small" />
+            ) : (
+              <BookmarkBorderIcon fontSize="small" />
+            )}
           </IconButton>
         )}
         <ShareButton itemId={item.id} />

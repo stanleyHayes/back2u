@@ -84,10 +84,10 @@ export function CourierTrackingPage() {
   return (
     <Stack spacing={3}>
       <Box>
-        <Typography variant="h4" fontWeight={700} gutterBottom>
+        <Typography variant="h4" sx={{ fontWeight: 700 }} gutterBottom>
           Courier Job
         </Typography>
-        <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
+        <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
           <Chip label={STATUS_LABELS[job.status]} color={STATUS_COLORS[job.status]} />
           <Typography variant="body2" color="text.secondary">
             ID: {job.id}
@@ -100,13 +100,12 @@ export function CourierTrackingPage() {
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={2}
-            alignItems={{ xs: 'flex-start', sm: 'center' }}
-            justifyContent="space-between"
+            sx={{ alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}
           >
-            <Stack direction="row" spacing={1} alignItems="center" flex={1}>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flex: 1 }}>
               <LocationOn color="primary" />
               <Box>
-                <Typography variant="subtitle1" fontWeight={600}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   {job.pickup.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -115,19 +114,23 @@ export function CourierTrackingPage() {
               </Box>
             </Stack>
 
-            <Box display="flex" justifyContent="center" width={{ xs: '100%', sm: 'auto' }}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'center', width: { xs: '100%', sm: 'auto' } }}
+            >
               <ArrowForward color="action" />
             </Box>
 
             <Stack
               direction="row"
               spacing={1}
-              alignItems="center"
-              flex={1}
-              justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}
+              sx={{
+                alignItems: 'center',
+                flex: 1,
+                justifyContent: { xs: 'flex-start', sm: 'flex-end' },
+              }}
             >
-              <Box textAlign={{ xs: 'left', sm: 'right' }}>
-                <Typography variant="subtitle1" fontWeight={600}>
+              <Box sx={{ textAlign: { xs: 'left', sm: 'right' } }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   {job.dropoff.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -142,7 +145,7 @@ export function CourierTrackingPage() {
 
       {isCancelled ? (
         <Alert severity="error">
-          <Typography variant="subtitle1" fontWeight={600}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
             This job has been cancelled.
           </Typography>
         </Alert>
@@ -160,7 +163,7 @@ export function CourierTrackingPage() {
                     <StepLabel>
                       <Typography
                         variant="body1"
-                        fontWeight={isCurrent ? 700 : 400}
+                        sx={{ fontWeight: isCurrent ? 700 : 400 }}
                         color={isCurrent ? 'text.primary' : 'text.secondary'}
                       >
                         {STATUS_LABELS[status]}

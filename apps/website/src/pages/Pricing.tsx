@@ -105,9 +105,10 @@ export function Pricing() {
       >
         <Container sx={{ py: 2, display: 'flex', alignItems: 'center' }}>
           <BrandLogo />
-          <Box flex={1} />
+          <Box sx={{ flex: 1 }} />
           <Button
-            component={Link} to="/"
+            component={Link}
+            to="/"
             color="inherit"
             startIcon={<ArrowBackIcon />}
             size={isMobile ? 'small' : 'medium'}
@@ -123,31 +124,29 @@ export function Pricing() {
         <Container sx={{ py: { xs: 6, md: 10 }, textAlign: 'center' }}>
           <Typography
             variant="h1"
-            fontSize={{ xs: 32, md: 48 }}
-            fontWeight={800}
             gutterBottom
+            sx={{ fontSize: { xs: 32, md: 48 }, fontWeight: 800 }}
           >
             Simple, transparent pricing
           </Typography>
           <Typography
             variant="h5"
             color="text.secondary"
-            maxWidth={640}
-            mx="auto"
-            fontSize={{ xs: 16, md: 20 }}
+            sx={{ maxWidth: 640, mx: 'auto', fontSize: { xs: 16, md: 20 } }}
           >
-            Free for individuals. Premium features for power users and
-            institutions.
+            Free for individuals. Premium features for power users and institutions.
           </Typography>
         </Container>
 
         {/* Pricing Cards */}
         <Container sx={{ pb: { xs: 6, md: 10 } }}>
           <Box
-            display="grid"
-            gridTemplateColumns={{ xs: '1fr', md: 'repeat(3, 1fr)' }}
-            gap={3}
-            alignItems="stretch"
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+              gap: 3,
+              alignItems: 'stretch',
+            }}
           >
             {TIERS.map((tier) => (
               <Card
@@ -155,12 +154,8 @@ export function Pricing() {
                 variant="outlined"
                 sx={{
                   borderRadius: 3,
-                  border: tier.highlighted
-                    ? `2px solid ${theme.palette.primary.main}`
-                    : 1,
-                  borderColor: tier.highlighted
-                    ? theme.palette.primary.main
-                    : 'divider',
+                  border: tier.highlighted ? `2px solid ${theme.palette.primary.main}` : 1,
+                  borderColor: tier.highlighted ? theme.palette.primary.main : 'divider',
                   display: 'flex',
                   flexDirection: 'column',
                   position: 'relative',
@@ -199,18 +194,16 @@ export function Pricing() {
                 >
                   <Typography
                     variant="h6"
-                    fontWeight={700}
-                    textAlign="center"
                     gutterBottom
+                    sx={{ fontWeight: 700, textAlign: 'center' }}
                   >
                     {tier.name}
                   </Typography>
                   <Typography
                     variant="h4"
-                    fontWeight={800}
-                    textAlign="center"
                     color="primary.main"
                     gutterBottom
+                    sx={{ fontWeight: 800, textAlign: 'center' }}
                   >
                     {tier.price}
                   </Typography>
@@ -221,7 +214,7 @@ export function Pricing() {
                         key={feature}
                         direction="row"
                         spacing={1}
-                        alignItems="flex-start"
+                        sx={{ alignItems: 'flex-start' }}
                       >
                         <CheckCircleIcon
                           color="primary"
@@ -233,12 +226,7 @@ export function Pricing() {
                     ))}
                   </Stack>
                   {tier.disabled ? (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                      disabled
-                    >
+                    <Button variant="contained" color="primary" fullWidth disabled>
                       {tier.ctaLabel}
                     </Button>
                   ) : (
@@ -262,17 +250,15 @@ export function Pricing() {
           <Container maxWidth="md">
             <Typography
               variant="h2"
-              fontSize={{ xs: 24, md: 32 }}
-              fontWeight={700}
-              textAlign="center"
               gutterBottom
+              sx={{ fontSize: { xs: 24, md: 32 }, fontWeight: 700, textAlign: 'center' }}
             >
               Frequently asked questions
             </Typography>
-            <Stack spacing={3} mt={4}>
+            <Stack spacing={3} sx={{ mt: 4 }}>
               {FAQS.map((faq) => (
                 <Box key={faq.q}>
-                  <Typography fontWeight={700} gutterBottom>
+                  <Typography sx={{ fontWeight: 700 }} gutterBottom>
                     {faq.q}
                   </Typography>
                   <Typography color="text.secondary">{faq.a}</Typography>
@@ -295,7 +281,7 @@ export function Pricing() {
         }}
       >
         <Container>
-          <Typography color="text.secondary" fontSize={14}>
+          <Typography color="text.secondary" sx={{ fontSize: 14 }}>
             © {new Date().getFullYear()} Back2u. All rights reserved.
           </Typography>
         </Container>

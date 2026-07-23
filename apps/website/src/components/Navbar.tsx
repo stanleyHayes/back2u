@@ -78,18 +78,39 @@ export function Navbar() {
         <Box component={Link} to="/" sx={{ textDecoration: 'none' }} aria-label="Back2u home">
           <Wordmark />
         </Box>
-        <Box flex={1} />
-        <Stack direction="row" spacing={3} alignItems="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <Box sx={{ flex: 1 }} />
+        <Stack
+          direction="row"
+          spacing={3}
+          sx={{ alignItems: 'center', display: { xs: 'none', md: 'flex' } }}
+        >
           {LINKS.map((l) => (
             <NavLink key={l.label} link={l} />
           ))}
-          <Box component="a" href={`${APP_URL}/login`} sx={{ color: 'text.primary', fontWeight: 600, fontSize: 15, textDecoration: 'none', '&:hover': { color: INK } }}>
+          <Box
+            component="a"
+            href={`${APP_URL}/login`}
+            sx={{
+              color: 'text.primary',
+              fontWeight: 600,
+              fontSize: 15,
+              textDecoration: 'none',
+              '&:hover': { color: INK },
+            }}
+          >
             Sign in
           </Box>
           <Button
             href={APP_URL}
             variant="contained"
-            sx={{ bgcolor: INK, color: '#FBF6EC', borderRadius: 999, px: 2.5, fontWeight: 700, '&:hover': { bgcolor: '#0a322e' } }}
+            sx={{
+              bgcolor: INK,
+              color: '#FBF6EC',
+              borderRadius: 999,
+              px: 2.5,
+              fontWeight: 700,
+              '&:hover': { bgcolor: '#0a322e' },
+            }}
           >
             Open app
           </Button>
@@ -106,28 +127,43 @@ export function Navbar() {
 
       <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
         <Box sx={{ width: 288, p: 2.5, height: '100%', bgcolor: 'background.default' }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
+          <Stack
+            direction="row"
+            sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 3 }}
+          >
             <Wordmark />
             <IconButton onClick={() => setOpen(false)} aria-label="Close menu">
               <CloseIcon />
             </IconButton>
           </Stack>
-          <Stack spacing={2.5} alignItems="flex-start">
+          <Stack spacing={2.5} sx={{ alignItems: 'flex-start' }}>
             {LINKS.map((l) => (
               <NavLink key={l.label} link={l} onClick={() => setOpen(false)} />
             ))}
-            <Box component="a" href={`${APP_URL}/login`} onClick={() => setOpen(false)} sx={{ color: 'text.primary', fontWeight: 600, fontSize: 15, textDecoration: 'none' }}>
+            <Box
+              component="a"
+              href={`${APP_URL}/login`}
+              onClick={() => setOpen(false)}
+              sx={{ color: 'text.primary', fontWeight: 600, fontSize: 15, textDecoration: 'none' }}
+            >
               Sign in
             </Box>
             <Button
               href={APP_URL}
               variant="contained"
               fullWidth
-              sx={{ bgcolor: INK, color: '#FBF6EC', borderRadius: 999, fontWeight: 700, mt: 1, '&:hover': { bgcolor: '#0a322e' } }}
+              sx={{
+                bgcolor: INK,
+                color: '#FBF6EC',
+                borderRadius: 999,
+                fontWeight: 700,
+                mt: 1,
+                '&:hover': { bgcolor: '#0a322e' },
+              }}
             >
               Open app
             </Button>
-            <Box pt={1}>
+            <Box sx={{ pt: 1 }}>
               <LanguageSwitcher />
             </Box>
           </Stack>

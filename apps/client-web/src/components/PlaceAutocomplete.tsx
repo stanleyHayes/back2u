@@ -77,9 +77,14 @@ export function PlaceAutocomplete({
       inputValue={input}
       getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
       isOptionEqualToValue={(option, val) =>
-        typeof option !== 'string' && typeof val !== 'string' && option.lng === val.lng && option.lat === val.lat
+        typeof option !== 'string' &&
+        typeof val !== 'string' &&
+        option.lng === val.lng &&
+        option.lat === val.lat
       }
-      noOptionsText={debounced.trim().length < 2 ? 'Type at least 2 characters' : 'No matching places'}
+      noOptionsText={
+        debounced.trim().length < 2 ? 'Type at least 2 characters' : 'No matching places'
+      }
       onInputChange={(_e, val) => {
         setInput(val);
         onChange(val);
@@ -96,7 +101,12 @@ export function PlaceAutocomplete({
       renderOption={(props, option) => {
         const { key, ...rest } = props as React.HTMLAttributes<HTMLLIElement> & { key?: string };
         return (
-          <Box component="li" key={`${option.name}-${option.lng}-${option.lat}`} {...rest} sx={{ gap: 1.25 }}>
+          <Box
+            component="li"
+            key={`${option.name}-${option.lng}-${option.lat}`}
+            {...rest}
+            sx={{ gap: 1.25 }}
+          >
             <PlaceOutlinedIcon sx={{ fontSize: 18, color: '#0F766E', flexShrink: 0 }} />
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="body2" noWrap>
@@ -119,14 +129,17 @@ export function PlaceAutocomplete({
           error={error}
           helperText={helperText}
           placeholder="e.g. Atomic Junction, Accra"
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <>
-                {isFetching ? <CircularProgress color="inherit" size={18} /> : null}
-                {params.InputProps.endAdornment}
-              </>
-            ),
+          slotProps={{
+            ...params.slotProps,
+            input: {
+              ...params.slotProps.input,
+              endAdornment: (
+                <>
+                  {isFetching ? <CircularProgress color="inherit" size={18} /> : null}
+                  {params.slotProps.input.endAdornment}
+                </>
+              ),
+            },
           }}
         />
       )}

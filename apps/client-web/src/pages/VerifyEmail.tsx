@@ -10,9 +10,11 @@ export function VerifyEmailPage() {
   const confirm = useMutation({ mutationFn: () => api.confirmEmailVerification(code) });
 
   return (
-    <Box maxWidth={420} mx="auto">
+    <Box sx={{ maxWidth: 420, mx: 'auto' }}>
       <Paper sx={{ p: 4 }}>
-        <Typography variant="h4" gutterBottom>Verify your email</Typography>
+        <Typography variant="h4" gutterBottom>
+          Verify your email
+        </Typography>
         <Stack spacing={2}>
           <Button variant="outlined" onClick={() => request.mutate()} disabled={request.isPending}>
             Send verification code
@@ -21,7 +23,11 @@ export function VerifyEmailPage() {
           {confirm.isSuccess && <Alert severity="success">Email verified.</Alert>}
           {confirm.isError && <Alert severity="error">Invalid or expired code.</Alert>}
           <TextField label="Code" value={code} onChange={(e) => setCode(e.target.value)} />
-          <Button variant="contained" onClick={() => confirm.mutate()} disabled={!code || confirm.isPending}>
+          <Button
+            variant="contained"
+            onClick={() => confirm.mutate()}
+            disabled={!code || confirm.isPending}
+          >
             Confirm
           </Button>
         </Stack>

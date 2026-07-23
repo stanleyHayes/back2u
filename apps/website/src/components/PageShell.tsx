@@ -43,18 +43,38 @@ export function LegalProse({
       <Typography component="span" className="b2u-eyebrow">
         Legal
       </Typography>
-      <Typography className="b2u-display" component="h1" sx={{ mt: 2, fontSize: { xs: 36, md: 52 }, fontWeight: 600, color: INK }}>
+      <Typography
+        className="b2u-display"
+        component="h1"
+        sx={{ mt: 2, fontSize: { xs: 36, md: 52 }, fontWeight: 600, color: INK }}
+      >
         {title}
       </Typography>
-      <Typography sx={{ mt: 1.5, color: 'text.secondary', fontSize: 14 }}>Last updated {updated}</Typography>
-      <Typography sx={{ mt: 3, color: 'text.secondary', fontSize: 18, lineHeight: 1.7 }}>{intro}</Typography>
-      <Stack spacing={4} mt={5}>
+      <Typography sx={{ mt: 1.5, color: 'text.secondary', fontSize: 14 }}>
+        Last updated {updated}
+      </Typography>
+      <Typography sx={{ mt: 3, color: 'text.secondary', fontSize: 18, lineHeight: 1.7 }}>
+        {intro}
+      </Typography>
+      <Stack spacing={4} sx={{ mt: 5 }}>
         {sections.map((s, i) => (
           <Box key={s.heading}>
-            <Typography className="b2u-display" component="h2" sx={{ fontSize: 24, fontWeight: 600, color: INK }}>
+            <Typography
+              className="b2u-display"
+              component="h2"
+              sx={{ fontSize: 24, fontWeight: 600, color: INK }}
+            >
               {i + 1}. {s.heading}
             </Typography>
-            <Typography sx={{ mt: 1.5, color: 'text.secondary', fontSize: 16, lineHeight: 1.75, whiteSpace: 'pre-line' }}>
+            <Typography
+              sx={{
+                mt: 1.5,
+                color: 'text.secondary',
+                fontSize: 16,
+                lineHeight: 1.75,
+                whiteSpace: 'pre-line',
+              }}
+            >
               {s.body}
             </Typography>
           </Box>

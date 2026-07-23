@@ -20,7 +20,10 @@ export function BillingPage() {
   const user = useAuth((s) => s.user);
   const institutionId = user?.institutionId;
 
-  const { data: plans } = useQuery({ queryKey: ['subscription-plans'], queryFn: () => api.getSubscriptionPlans() });
+  const { data: plans } = useQuery({
+    queryKey: ['subscription-plans'],
+    queryFn: () => api.getSubscriptionPlans(),
+  });
   const { data: inst } = useQuery({
     queryKey: ['my-institution', institutionId],
     queryFn: () => api.getInstitution(institutionId!),
@@ -35,15 +38,27 @@ export function BillingPage() {
   });
 
   return (
-    <Box maxWidth={1040} mx="auto">
-      <Typography sx={{ color: TEAL, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', fontSize: 12, mb: 0.5 }}>
+    <Box sx={{ maxWidth: 1040, mx: 'auto' }}>
+      <Typography
+        sx={{
+          color: TEAL,
+          fontWeight: 700,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          fontSize: 12,
+          mb: 0.5,
+        }}
+      >
         Billing
       </Typography>
-      <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 30, color: INK }}>
+      <Typography
+        sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 30, color: INK }}
+      >
         Plans &amp; billing
       </Typography>
       <Typography color="text.secondary" sx={{ mt: 1, mb: 3, maxWidth: 620 }}>
-        Upgrade your institution to unlock unlimited items, courier dispatch, analytics, and API access.
+        Upgrade your institution to unlock unlimited items, courier dispatch, analytics, and API
+        access.
       </Typography>
 
       {!institutionId && (
@@ -53,12 +68,39 @@ export function BillingPage() {
       )}
 
       {inst && (
-        <Box sx={{ mb: 3, p: 2.5, borderRadius: '20px 20px 20px 6px', bgcolor: INK, color: PAPER, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1 }}>
+        <Box
+          sx={{
+            mb: 3,
+            p: 2.5,
+            borderRadius: '20px 20px 20px 6px',
+            bgcolor: INK,
+            color: PAPER,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 1,
+          }}
+        >
           <Box>
-            <Typography sx={{ fontSize: 12, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,253,248,0.6)' }}>
+            <Typography
+              sx={{
+                fontSize: 12,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,253,248,0.6)',
+              }}
+            >
               {inst.name}
             </Typography>
-            <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontSize: 22, fontWeight: 600, textTransform: 'capitalize' }}>
+            <Typography
+              sx={{
+                fontFamily: '"Fraunces", Georgia, serif',
+                fontSize: 22,
+                fontWeight: 600,
+                textTransform: 'capitalize',
+              }}
+            >
               {plans?.find((p) => p.tier === current)?.name ?? current} plan
             </Typography>
           </Box>
@@ -76,7 +118,9 @@ export function BillingPage() {
         </Alert>
       )}
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2.5 }}>
+      <Box
+        sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2.5 }}
+      >
         {plans?.map((plan) => {
           const isCurrent = plan.tier === current;
           const isUpgrade = ORDER[plan.tier] > ORDER[current];
@@ -97,13 +141,45 @@ export function BillingPage() {
               }}
             >
               {featured && !isCurrent && (
-                <Chip label="Most popular" size="small" sx={{ position: 'absolute', top: -12, right: 16, bgcolor: MARIGOLD, color: INK, fontWeight: 700 }} />
+                <Chip
+                  label="Most popular"
+                  size="small"
+                  sx={{
+                    position: 'absolute',
+                    top: -12,
+                    right: 16,
+                    bgcolor: MARIGOLD,
+                    color: INK,
+                    fontWeight: 700,
+                  }}
+                />
               )}
               {isCurrent && (
-                <Chip label="Current" size="small" sx={{ position: 'absolute', top: -12, right: 16, bgcolor: TEAL, color: '#fff', fontWeight: 700 }} />
+                <Chip
+                  label="Current"
+                  size="small"
+                  sx={{
+                    position: 'absolute',
+                    top: -12,
+                    right: 16,
+                    bgcolor: TEAL,
+                    color: '#fff',
+                    fontWeight: 700,
+                  }}
+                />
               )}
-              <Typography sx={{ fontWeight: 700, fontSize: 18, color: INK }}>{plan.name}</Typography>
-              <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 30, color: INK, mt: 0.5 }}>
+              <Typography sx={{ fontWeight: 700, fontSize: 18, color: INK }}>
+                {plan.name}
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: '"Fraunces", Georgia, serif',
+                  fontWeight: 600,
+                  fontSize: 30,
+                  color: INK,
+                  mt: 0.5,
+                }}
+              >
                 {money(plan.priceMinor, plan.currency)}
               </Typography>
               <Typography color="text.secondary" sx={{ fontSize: 13.5, mt: 0.5, mb: 2 }}>
@@ -111,8 +187,10 @@ export function BillingPage() {
               </Typography>
               <Stack spacing={1} sx={{ flex: 1, mb: 2.5 }}>
                 {plan.features.map((f) => (
-                  <Stack key={f} direction="row" spacing={1} alignItems="flex-start">
-                    <CheckRoundedIcon sx={{ fontSize: 18, color: TEAL, mt: '2px', flexShrink: 0 }} />
+                  <Stack key={f} direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+                    <CheckRoundedIcon
+                      sx={{ fontSize: 18, color: TEAL, mt: '2px', flexShrink: 0 }}
+                    />
                     <Typography sx={{ fontSize: 14 }}>{f}</Typography>
                   </Stack>
                 ))}
@@ -124,11 +202,30 @@ export function BillingPage() {
                 variant={isUpgrade ? 'contained' : 'outlined'}
                 sx={
                   isUpgrade
-                    ? { bgcolor: MARIGOLD, color: INK, borderRadius: 999, fontWeight: 700, py: 1.1, '&:hover': { bgcolor: '#cf9305' } }
-                    : { borderRadius: 999, fontWeight: 700, py: 1.1, color: INK, borderColor: 'divider' }
+                    ? {
+                        bgcolor: MARIGOLD,
+                        color: INK,
+                        borderRadius: 999,
+                        fontWeight: 700,
+                        py: 1.1,
+                        '&:hover': { bgcolor: '#cf9305' },
+                      }
+                    : {
+                        borderRadius: 999,
+                        fontWeight: 700,
+                        py: 1.1,
+                        color: INK,
+                        borderColor: 'divider',
+                      }
                 }
               >
-                {isCurrent ? 'Current plan' : subscribe.isPending && subscribe.variables === plan.tier ? 'Updating…' : isUpgrade ? 'Upgrade' : 'Switch'}
+                {isCurrent
+                  ? 'Current plan'
+                  : subscribe.isPending && subscribe.variables === plan.tier
+                    ? 'Updating…'
+                    : isUpgrade
+                      ? 'Upgrade'
+                      : 'Switch'}
               </Button>
             </Box>
           );

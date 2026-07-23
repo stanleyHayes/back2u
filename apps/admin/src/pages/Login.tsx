@@ -48,7 +48,11 @@ export function LoginPage() {
         setErr('This account does not have admin access.');
         return;
       }
-      setAuth({ user: res.user, accessToken: res.tokens.accessToken, refreshToken: res.tokens.refreshToken });
+      setAuth({
+        user: res.user,
+        accessToken: res.tokens.accessToken,
+        refreshToken: res.tokens.refreshToken,
+      });
       navigate('/');
     },
     onError: (e: unknown) => setErr(e instanceof Error ? e.message : 'Login failed'),
@@ -64,172 +68,219 @@ export function LoginPage() {
           bgcolor: PAPER,
         }}
       >
-      {/* Brand / console panel */}
-      <Box
-        sx={{
-          display: { xs: 'none', md: 'flex' },
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          position: 'relative',
-          overflow: 'hidden',
-          p: 7,
-          bgcolor: INK,
-          color: PAPER,
-        }}
-      >
-        {/* faint grid motif */}
+        {/* Brand / console panel */}
         <Box
-          aria-hidden
           sx={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage:
-              'linear-gradient(rgba(255,253,248,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,253,248,0.05) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-            maskImage: 'radial-gradient(60% 60% at 70% 40%, #000, transparent)',
+            display: { xs: 'none', md: 'flex' },
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            position: 'relative',
+            overflow: 'hidden',
+            p: 7,
+            bgcolor: INK,
+            color: PAPER,
           }}
-        />
-        <Box
-          aria-hidden
-          sx={{
-            position: 'absolute',
-            right: -140,
-            bottom: -140,
-            width: 420,
-            height: 420,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(224,161,6,0.2), transparent 60%)',
-          }}
-        />
-
-        <Box sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 1.25 }}>
+        >
+          {/* faint grid motif */}
           <Box
+            aria-hidden
             sx={{
-              width: 32,
-              height: 32,
-              borderRadius: '37% 37% 37% 10%',
-              background: `linear-gradient(140deg, ${TEAL}, #14B8A6)`,
-              transform: 'rotate(-6deg)',
-              display: 'grid',
-              placeItems: 'center',
+              position: 'absolute',
+              inset: 0,
+              backgroundImage:
+                'linear-gradient(rgba(255,253,248,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,253,248,0.05) 1px, transparent 1px)',
+              backgroundSize: '40px 40px',
+              maskImage: 'radial-gradient(60% 60% at 70% 40%, #000, transparent)',
             }}
-          >
-            <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: PAPER }} />
-          </Box>
-          <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 23, letterSpacing: '-0.03em' }}>
-            Back2u
-          </Typography>
+          />
           <Box
+            aria-hidden
             sx={{
-              ml: 0.5,
-              px: 1,
-              py: 0.25,
-              borderRadius: 1,
-              border: '1px solid rgba(255,253,248,0.25)',
-              fontSize: 11,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
+              position: 'absolute',
+              right: -140,
+              bottom: -140,
+              width: 420,
+              height: 420,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(224,161,6,0.2), transparent 60%)',
             }}
+          />
+
+          <Box
+            sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 1.25 }}
           >
-            Admin
-          </Box>
-        </Box>
-
-        <Box sx={{ position: 'relative' }}>
-          <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 40, lineHeight: 1.08, letterSpacing: '-0.02em' }}>
-            The operations console.
-          </Typography>
-          <Typography sx={{ mt: 2, fontSize: 16, color: 'rgba(255,253,248,0.7)', maxWidth: 380 }}>
-            Verify ownership, triage partnership leads &amp; reports, confirm point redemptions, and keep the
-            reunion engine running.
-          </Typography>
-          <Stack direction="row" spacing={4} mt={5}>
-            {STATS.map((s) => (
-              <Box key={s.l}>
-                <Typography sx={{ fontFamily: DISPLAY, fontSize: 22, fontWeight: 600, color: MARIGOLD }}>
-                  {s.n}
-                </Typography>
-                <Typography sx={{ fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,253,248,0.6)' }}>
-                  {s.l}
-                </Typography>
-              </Box>
-            ))}
-          </Stack>
-        </Box>
-      </Box>
-
-      {/* Form */}
-      <Box sx={{ display: 'grid', placeItems: 'center', p: { xs: 3, md: 6 } }}>
-        <Box sx={{ width: '100%', maxWidth: 400 }}>
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ color: TEAL, mb: 1 }}>
-            <ShieldOutlinedIcon fontSize="small" />
-            <Typography sx={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
-              Staff access
+            <Box
+              sx={{
+                width: 32,
+                height: 32,
+                borderRadius: '37% 37% 37% 10%',
+                background: `linear-gradient(140deg, ${TEAL}, #14B8A6)`,
+                transform: 'rotate(-6deg)',
+                display: 'grid',
+                placeItems: 'center',
+              }}
+            >
+              <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: PAPER }} />
+            </Box>
+            <Typography
+              sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 23, letterSpacing: '-0.03em' }}
+            >
+              Back2u
             </Typography>
-          </Stack>
-          <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: { xs: 32, md: 40 }, letterSpacing: '-0.02em', color: INK }}>
-            Admin sign-in
-          </Typography>
-          <Typography sx={{ color: 'text.secondary', mt: 1, mb: 3 }}>
-            Restricted to admin &amp; super-admin accounts.
-          </Typography>
+            <Box
+              sx={{
+                ml: 0.5,
+                px: 1,
+                py: 0.25,
+                borderRadius: 1,
+                border: '1px solid rgba(255,253,248,0.25)',
+                fontSize: 11,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Admin
+            </Box>
+          </Box>
 
-          <form onSubmit={(e) => { e.preventDefault(); login.mutate(); }}>
-            <Stack spacing={2.25}>
-              {err && (
-                <Alert severity="error" sx={{ borderRadius: 2 }}>
-                  {err}
-                </Alert>
-              )}
-              <TextField
-                label="Email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                fullWidth
-                autoComplete="email"
-                sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
-              />
-              <TextField
-                label="Password"
-                type={showPw ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                fullWidth
-                autoComplete="current-password"
-                sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={() => setShowPw((v) => !v)} edge="end" aria-label="Toggle password">
-                        {showPw ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <Button
-                type="submit"
-                size="large"
-                disabled={login.isPending}
+          <Box sx={{ position: 'relative' }}>
+            <Typography
+              sx={{
+                fontFamily: DISPLAY,
+                fontWeight: 600,
+                fontSize: 40,
+                lineHeight: 1.08,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              The operations console.
+            </Typography>
+            <Typography sx={{ mt: 2, fontSize: 16, color: 'rgba(255,253,248,0.7)', maxWidth: 380 }}>
+              Verify ownership, triage partnership leads &amp; reports, confirm point redemptions,
+              and keep the reunion engine running.
+            </Typography>
+            <Stack direction="row" spacing={4} sx={{ mt: 5 }}>
+              {STATS.map((s) => (
+                <Box key={s.l}>
+                  <Typography
+                    sx={{ fontFamily: DISPLAY, fontSize: 22, fontWeight: 600, color: MARIGOLD }}
+                  >
+                    {s.n}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: 12,
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      color: 'rgba(255,253,248,0.6)',
+                    }}
+                  >
+                    {s.l}
+                  </Typography>
+                </Box>
+              ))}
+            </Stack>
+          </Box>
+        </Box>
+
+        {/* Form */}
+        <Box sx={{ display: 'grid', placeItems: 'center', p: { xs: 3, md: 6 } }}>
+          <Box sx={{ width: '100%', maxWidth: 400 }}>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
+              <ShieldOutlinedIcon fontSize="small" />
+              <Typography
                 sx={{
-                  bgcolor: MARIGOLD,
-                  color: INK,
-                  borderRadius: 999,
+                  fontSize: 13,
                   fontWeight: 700,
-                  py: 1.4,
-                  boxShadow: '0 14px 28px -16px rgba(224,161,6,.9)',
-                  '&:hover': { bgcolor: '#cf9305' },
+                  letterSpacing: '0.16em',
+                  textTransform: 'uppercase',
                 }}
               >
-                {login.isPending ? 'Signing in…' : 'Sign in'}
-              </Button>
+                Staff access
+              </Typography>
             </Stack>
-          </form>
+            <Typography
+              sx={{
+                fontFamily: DISPLAY,
+                fontWeight: 600,
+                fontSize: { xs: 32, md: 40 },
+                letterSpacing: '-0.02em',
+                color: INK,
+              }}
+            >
+              Admin sign-in
+            </Typography>
+            <Typography sx={{ color: 'text.secondary', mt: 1, mb: 3 }}>
+              Restricted to admin &amp; super-admin accounts.
+            </Typography>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                login.mutate();
+              }}
+            >
+              <Stack spacing={2.25}>
+                {err && (
+                  <Alert severity="error" sx={{ borderRadius: 2 }}>
+                    {err}
+                  </Alert>
+                )}
+                <TextField
+                  label="Email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  fullWidth
+                  autoComplete="email"
+                  sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
+                />
+                <TextField
+                  label="Password"
+                  type={showPw ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  fullWidth
+                  autoComplete="current-password"
+                  sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPw((v) => !v)}
+                            edge="end"
+                            aria-label="Toggle password"
+                          >
+                            {showPw ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+                <Button
+                  type="submit"
+                  size="large"
+                  disabled={login.isPending}
+                  sx={{
+                    bgcolor: MARIGOLD,
+                    color: INK,
+                    borderRadius: 999,
+                    fontWeight: 700,
+                    py: 1.4,
+                    boxShadow: '0 14px 28px -16px rgba(224,161,6,.9)',
+                    '&:hover': { bgcolor: '#cf9305' },
+                  }}
+                >
+                  {login.isPending ? 'Signing in…' : 'Sign in'}
+                </Button>
+              </Stack>
+            </form>
+          </Box>
         </Box>
-      </Box>
       </Box>
     </ThemeProvider>
   );

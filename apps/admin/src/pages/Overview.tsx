@@ -52,8 +52,8 @@ export function OverviewPage() {
 
   return (
     <Stack spacing={3}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h3" fontWeight={700}>
+      <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <Typography variant="h3" sx={{ fontWeight: 700 }}>
           Admin overview
         </Typography>
         <Button
@@ -67,25 +67,41 @@ export function OverviewPage() {
         </Button>
       </Stack>
 
-      <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2,1fr)', lg: 'repeat(4,1fr)' }} gap={2}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)', lg: 'repeat(4,1fr)' },
+          gap: 2,
+        }}
+      >
         <StatCard label="Total users" value={data?.users} isLoading={isLoading} />
         <StatCard label="Total items" value={data?.itemsTotal} isLoading={isLoading} />
-        <StatCard label="Marketplace listings" value={data?.marketplaceListings} isLoading={isLoading} />
+        <StatCard
+          label="Marketplace listings"
+          value={data?.marketplaceListings}
+          isLoading={isLoading}
+        />
         <StatCard label="Marketplace bids" value={data?.marketplaceBids} isLoading={isLoading} />
         <StatCard label="Institutions" value={data?.institutions} isLoading={isLoading} />
         <StatCard label="Courier jobs" value={data?.courierJobs} isLoading={isLoading} />
         <StatCard label="Matches total" value={data?.matchesTotal} isLoading={isLoading} />
         <StatCard
           label="Match success rate"
-          value={data?.matchSuccessRate !== undefined ? `${(data.matchSuccessRate * 100).toFixed(1)}%` : undefined}
+          value={
+            data?.matchSuccessRate !== undefined
+              ? `${(data.matchSuccessRate * 100).toFixed(1)}%`
+              : undefined
+          }
           isLoading={isLoading}
         />
       </Box>
 
-      <Typography variant="h5" fontWeight={700}>
+      <Typography variant="h5" sx={{ fontWeight: 700 }}>
         Breakdowns
       </Typography>
-      <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: 'repeat(3,1fr)' }} gap={2}>
+      <Box
+        sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3,1fr)' }, gap: 2 }}
+      >
         {isLoading ? (
           <>
             <Skeleton variant="rounded" height={200} />
@@ -118,13 +134,16 @@ export function OverviewPage() {
             <HBarChart
               title="Items by status"
               color="#2DD4BF"
-              data={ITEM_STATUS_ORDER.map((s) => ({ label: ITEM_STATUS_LABELS[s] ?? s, value: data?.itemsByStatus[s] ?? 0 }))}
+              data={ITEM_STATUS_ORDER.map((s) => ({
+                label: ITEM_STATUS_LABELS[s] ?? s,
+                value: data?.itemsByStatus[s] ?? 0,
+              }))}
             />
           </>
         )}
       </Box>
 
-      <Typography variant="h5" fontWeight={700}>
+      <Typography variant="h5" sx={{ fontWeight: 700 }}>
         Top categories
       </Typography>
       <Box>
@@ -142,10 +161,12 @@ export function OverviewPage() {
         )}
       </Box>
 
-      <Typography variant="h5" fontWeight={700}>
+      <Typography variant="h5" sx={{ fontWeight: 700 }}>
         Last 30 days
       </Typography>
-      <Box display="grid" gridTemplateColumns={{ xs: '1fr', lg: 'repeat(3,1fr)' }} gap={2}>
+      <Box
+        sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: 'repeat(3,1fr)' }, gap: 2 }}
+      >
         {isLoading ? (
           <>
             <Skeleton variant="rounded" height={240} />
@@ -197,7 +218,7 @@ function StatCard({
         {isLoading ? (
           <Skeleton variant="text" width="40%" height={40} />
         ) : (
-          <Typography variant="h3" fontWeight={700}>
+          <Typography variant="h3" sx={{ fontWeight: 700 }}>
             {value ?? 0}
           </Typography>
         )}

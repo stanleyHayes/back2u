@@ -26,7 +26,7 @@ export function BookmarksPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h3" fontWeight={700}>
+      <Typography variant="h3" sx={{ fontWeight: 700 }}>
         Bookmarks
       </Typography>
 
@@ -42,9 +42,11 @@ export function BookmarksPage() {
         />
       ) : (
         <Box
-          display="grid"
-          gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
-          gap={2}
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+            gap: 2,
+          }}
         >
           {items.map((item) =>
             item ? (

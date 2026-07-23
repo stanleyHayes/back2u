@@ -41,16 +41,61 @@ const CAT_INK = '#0B3D38';
 
 type CategoryOption = { value: string; label: string; icon: ReactNode; desc: string };
 const CATEGORY_OPTIONS: CategoryOption[] = [
-  { value: '', label: 'All categories', icon: <GridViewOutlinedIcon />, desc: 'Browse everything posted' },
-  { value: 'Phone', label: 'Phone', icon: <SmartphoneOutlinedIcon />, desc: 'Smartphones, tablets & accessories' },
-  { value: 'Wallet', label: 'Wallet', icon: <AccountBalanceWalletOutlinedIcon />, desc: 'Wallets, purses & cardholders' },
-  { value: 'Keys', label: 'Keys', icon: <VpnKeyOutlinedIcon />, desc: 'Keychains, fobs & access cards' },
-  { value: 'Bag', label: 'Bag', icon: <ShoppingBagOutlinedIcon />, desc: 'Backpacks, handbags & luggage' },
+  {
+    value: '',
+    label: 'All categories',
+    icon: <GridViewOutlinedIcon />,
+    desc: 'Browse everything posted',
+  },
+  {
+    value: 'Phone',
+    label: 'Phone',
+    icon: <SmartphoneOutlinedIcon />,
+    desc: 'Smartphones, tablets & accessories',
+  },
+  {
+    value: 'Wallet',
+    label: 'Wallet',
+    icon: <AccountBalanceWalletOutlinedIcon />,
+    desc: 'Wallets, purses & cardholders',
+  },
+  {
+    value: 'Keys',
+    label: 'Keys',
+    icon: <VpnKeyOutlinedIcon />,
+    desc: 'Keychains, fobs & access cards',
+  },
+  {
+    value: 'Bag',
+    label: 'Bag',
+    icon: <ShoppingBagOutlinedIcon />,
+    desc: 'Backpacks, handbags & luggage',
+  },
   { value: 'ID', label: 'ID', icon: <BadgeOutlinedIcon />, desc: 'ID cards, passports & licences' },
-  { value: 'Laptop', label: 'Laptop', icon: <LaptopMacOutlinedIcon />, desc: 'Laptops, chargers & devices' },
-  { value: 'Jewelry', label: 'Jewelry', icon: <DiamondOutlinedIcon />, desc: 'Rings, watches & valuables' },
-  { value: 'Document', label: 'Document', icon: <DescriptionOutlinedIcon />, desc: 'Papers, certificates & files' },
-  { value: 'Other', label: 'Other', icon: <CategoryOutlinedIcon />, desc: 'Anything that doesn’t fit above' },
+  {
+    value: 'Laptop',
+    label: 'Laptop',
+    icon: <LaptopMacOutlinedIcon />,
+    desc: 'Laptops, chargers & devices',
+  },
+  {
+    value: 'Jewelry',
+    label: 'Jewelry',
+    icon: <DiamondOutlinedIcon />,
+    desc: 'Rings, watches & valuables',
+  },
+  {
+    value: 'Document',
+    label: 'Document',
+    icon: <DescriptionOutlinedIcon />,
+    desc: 'Papers, certificates & files',
+  },
+  {
+    value: 'Other',
+    label: 'Other',
+    icon: <CategoryOutlinedIcon />,
+    desc: 'Anything that doesn’t fit above',
+  },
 ];
 const CATEGORY_BY_VALUE: Record<string, CategoryOption> = Object.fromEntries(
   CATEGORY_OPTIONS.map((o) => [o.value, o]),
@@ -59,7 +104,11 @@ const CATEGORY_BY_VALUE: Record<string, CategoryOption> = Object.fromEntries(
 /** Rich category row: tinted icon tile + title + one-line description. */
 function categoryContent(icon: ReactNode, label: string, desc: string) {
   return (
-    <Stack direction="row" spacing={1.25} alignItems="flex-start" sx={{ py: 0.25, whiteSpace: 'normal' }}>
+    <Stack
+      direction="row"
+      spacing={1.25}
+      sx={{ alignItems: 'flex-start', py: 0.25, whiteSpace: 'normal' }}
+    >
       <Box
         sx={{
           width: 34,
@@ -76,8 +125,12 @@ function categoryContent(icon: ReactNode, label: string, desc: string) {
         {icon}
       </Box>
       <Box sx={{ minWidth: 0 }}>
-        <Typography sx={{ fontSize: 14, fontWeight: 700, lineHeight: 1.25, color: CAT_INK }}>{label}</Typography>
-        <Typography sx={{ fontSize: 12, color: 'text.secondary', lineHeight: 1.3 }}>{desc}</Typography>
+        <Typography sx={{ fontSize: 14, fontWeight: 700, lineHeight: 1.25, color: CAT_INK }}>
+          {label}
+        </Typography>
+        <Typography sx={{ fontSize: 12, color: 'text.secondary', lineHeight: 1.3 }}>
+          {desc}
+        </Typography>
       </Box>
     </Stack>
   );
@@ -234,7 +287,10 @@ export function FeedPage() {
 
   const searchOptions: SearchOption[] = useMemo(() => {
     const recent = loadRecentSearches().map((label) => ({ type: 'recent' as const, label }));
-    const cats = (autocompleteData?.categories ?? []).map((label) => ({ type: 'category' as const, label }));
+    const cats = (autocompleteData?.categories ?? []).map((label) => ({
+      type: 'category' as const,
+      label,
+    }));
     // Deduplicate: if a category is also a recent search, prefer the category suggestion
     const seen = new Set<string>();
     const out: SearchOption[] = [];
@@ -259,12 +315,19 @@ export function FeedPage() {
 
   const activeChips = useMemo(() => {
     const chips: { label: string; onDelete: () => void }[] = [];
-    if (kind) chips.push({ label: kind === 'lost' ? 'Lost' : 'Found', onDelete: () => setKind('') });
-    if (debouncedSearch) chips.push({ label: `Search: ${debouncedSearch}`, onDelete: () => setSearch('') });
+    if (kind)
+      chips.push({ label: kind === 'lost' ? 'Lost' : 'Found', onDelete: () => setKind('') });
+    if (debouncedSearch)
+      chips.push({ label: `Search: ${debouncedSearch}`, onDelete: () => setSearch('') });
     if (category) chips.push({ label: category, onDelete: () => setCategory('') });
     if (city) chips.push({ label: city, onDelete: () => setCity('') });
     if (dateRange !== 'all') {
-      const labels: Record<DateRange, string> = { today: 'Today', week: 'This week', month: 'This month', all: 'All' };
+      const labels: Record<DateRange, string> = {
+        today: 'Today',
+        week: 'This week',
+        month: 'This month',
+        all: 'All',
+      };
       chips.push({ label: labels[dateRange], onDelete: () => setDateRange('all') });
     }
     return chips;
@@ -281,21 +344,32 @@ export function FeedPage() {
 
   return (
     <Stack spacing={3}>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
-        <Typography variant="h3" fontWeight={700} sx={{ flex: 1 }}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ alignItems: 'center' }}>
+        <Typography variant="h3" sx={{ flex: 1, fontWeight: 700 }}>
           Lost &amp; found
         </Typography>
       </Stack>
 
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} flexWrap="wrap" useFlexGap>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{ flexWrap: 'wrap' }}
+        useFlexGap
+      >
         <ButtonGroup size="small" variant="outlined">
           <Button variant={kind === '' ? 'contained' : 'outlined'} onClick={() => setKind('')}>
             All
           </Button>
-          <Button variant={kind === 'lost' ? 'contained' : 'outlined'} onClick={() => setKind('lost')}>
+          <Button
+            variant={kind === 'lost' ? 'contained' : 'outlined'}
+            onClick={() => setKind('lost')}
+          >
             Lost
           </Button>
-          <Button variant={kind === 'found' ? 'contained' : 'outlined'} onClick={() => setKind('found')}>
+          <Button
+            variant={kind === 'found' ? 'contained' : 'outlined'}
+            onClick={() => setKind('found')}
+          >
             Found
           </Button>
         </ButtonGroup>
@@ -330,8 +404,12 @@ export function FeedPage() {
             const { key, ...rest } = props as { key: string } & React.HTMLAttributes<HTMLLIElement>;
             return (
               <li key={key} {...rest}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  {option.type === 'recent' ? <HistoryIcon fontSize="small" color="action" /> : <CategoryIcon fontSize="small" color="action" />}
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                  {option.type === 'recent' ? (
+                    <HistoryIcon fontSize="small" color="action" />
+                  ) : (
+                    <CategoryIcon fontSize="small" color="action" />
+                  )}
                   <Typography variant="body2">
                     {option.type === 'category' ? `Category: ${option.label}` : option.label}
                   </Typography>
@@ -339,9 +417,7 @@ export function FeedPage() {
               </li>
             );
           }}
-          renderInput={(params) => (
-            <TextField {...params} placeholder="Search keywords…" />
-          )}
+          renderInput={(params) => <TextField {...params} placeholder="Search keywords…" />}
         />
 
         <FormControl size="small" sx={{ minWidth: 200 }}>
@@ -350,13 +426,17 @@ export function FeedPage() {
             displayEmpty
             onChange={(e) => setCategory(e.target.value)}
             MenuProps={{
-              PaperProps: { sx: { width: 340, borderRadius: 3, p: 0.5, mt: 0.5, maxHeight: 460 } },
+              slotProps: {
+                paper: { sx: { width: 340, borderRadius: 3, p: 0.5, mt: 0.5, maxHeight: 460 } },
+              },
             }}
             renderValue={(selected) => {
               const opt = CATEGORY_BY_VALUE[(selected as string) ?? ''] ?? CATEGORY_OPTIONS[0]!;
               return (
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Box sx={{ display: 'flex', color: CAT_TEAL, '& svg': { fontSize: 18 } }}>{opt.icon}</Box>
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', color: CAT_TEAL, '& svg': { fontSize: 18 } }}>
+                    {opt.icon}
+                  </Box>
                   <span>{opt.label}</span>
                 </Stack>
               );
@@ -401,9 +481,7 @@ export function FeedPage() {
               </li>
             );
           }}
-          renderInput={(params) => (
-            <TextField {...params} placeholder="City" />
-          )}
+          renderInput={(params) => <TextField {...params} placeholder="City" />}
         />
 
         <ButtonGroup size="small" variant="outlined">
@@ -413,14 +491,25 @@ export function FeedPage() {
               variant={dateRange === r ? 'contained' : 'outlined'}
               onClick={() => setDateRange(r)}
             >
-              {r === 'today' ? 'Today' : r === 'week' ? 'This week' : r === 'month' ? 'This month' : 'All'}
+              {r === 'today'
+                ? 'Today'
+                : r === 'week'
+                  ? 'This week'
+                  : r === 'month'
+                    ? 'This month'
+                    : 'All'}
             </Button>
           ))}
         </ButtonGroup>
       </Stack>
 
       {activeChips.length > 0 && (
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap alignItems="center">
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ flexWrap: 'wrap', alignItems: 'center' }}
+          useFlexGap
+        >
           <Typography variant="body2" color="text.secondary">
             {data?.total ?? 0} result{data?.total === 1 ? '' : 's'}
           </Typography>
@@ -460,14 +549,22 @@ export function FeedPage() {
                   { label: 'Clear filters', onClick: clearAll },
                   { label: 'Post an item', variant: 'secondary', onClick: () => navigate('/post') },
                 ]
-              : [{ label: 'Post an item', startIcon: <AddIcon />, onClick: () => navigate('/post') }]
+              : [
+                  {
+                    label: 'Post an item',
+                    startIcon: <AddIcon />,
+                    onClick: () => navigate('/post'),
+                  },
+                ]
           }
         />
       ) : (
         <Box
-          display="grid"
-          gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
-          gap={2}
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+            gap: 2,
+          }}
         >
           {data?.items.map((it) => (
             <ItemCard
@@ -476,7 +573,11 @@ export function FeedPage() {
               isBookmarked={bookmarkedIds.has(it.id)}
               onToggleBookmark={
                 user
-                  ? () => toggleBookmark.mutate({ itemId: it.id, action: bookmarkedIds.has(it.id) ? 'remove' : 'add' })
+                  ? () =>
+                      toggleBookmark.mutate({
+                        itemId: it.id,
+                        action: bookmarkedIds.has(it.id) ? 'remove' : 'add',
+                      })
                   : undefined
               }
             />

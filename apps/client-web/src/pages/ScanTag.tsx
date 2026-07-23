@@ -33,7 +33,15 @@ function Wordmark() {
       >
         <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: PAPER_RAISED }} />
       </Box>
-      <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 21, letterSpacing: '-0.03em', color: INK }}>
+      <Typography
+        sx={{
+          fontFamily: DISPLAY,
+          fontWeight: 600,
+          fontSize: 21,
+          letterSpacing: '-0.03em',
+          color: INK,
+        }}
+      >
         Back2u
       </Typography>
     </Box>
@@ -42,7 +50,9 @@ function Wordmark() {
 
 function PinMark() {
   return (
-    <Box sx={{ position: 'relative', width: 88, height: 88, display: 'grid', placeItems: 'center' }}>
+    <Box
+      sx={{ position: 'relative', width: 88, height: 88, display: 'grid', placeItems: 'center' }}
+    >
       {/* pulse rings */}
       <Box
         sx={{
@@ -80,7 +90,15 @@ function PinMark() {
           boxShadow: '0 20px 38px -18px rgba(11,61,56,.7)',
         }}
       >
-        <Box sx={{ width: 22, height: 22, borderRadius: '50%', bgcolor: PAPER_RAISED, transform: 'rotate(45deg)' }} />
+        <Box
+          sx={{
+            width: 22,
+            height: 22,
+            borderRadius: '50%',
+            bgcolor: PAPER_RAISED,
+            transform: 'rotate(45deg)',
+          }}
+        />
       </Box>
     </Box>
   );
@@ -135,10 +153,16 @@ export function ScanTagPage() {
       }}
     >
       {/* Header */}
-      <Box sx={{ borderBottom: '1px solid rgba(11,61,56,0.1)', backdropFilter: 'blur(8px)', bgcolor: 'rgba(251,246,236,0.7)' }}>
+      <Box
+        sx={{
+          borderBottom: '1px solid rgba(11,61,56,0.1)',
+          backdropFilter: 'blur(8px)',
+          bgcolor: 'rgba(251,246,236,0.7)',
+        }}
+      >
         <Container maxWidth="sm" sx={{ py: 1.75, display: 'flex', alignItems: 'center' }}>
           <Wordmark />
-          <Box flex={1} />
+          <Box sx={{ flex: 1 }} />
           <Button
             href={APP_URL}
             variant="contained"
@@ -159,7 +183,7 @@ export function ScanTagPage() {
       </Box>
 
       <Container maxWidth="sm" sx={{ py: { xs: 5, md: 8 } }}>
-        <Stack alignItems="center" textAlign="center" spacing={2.5} mb={4}>
+        <Stack spacing={2.5} sx={{ alignItems: 'center', textAlign: 'center', mb: 4 }}>
           <PinMark />
           <Box
             component="span"
@@ -174,11 +198,20 @@ export function ScanTagPage() {
           >
             Back2u QR tag
           </Box>
-          <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: { xs: 36, md: 46 }, letterSpacing: '-0.02em', lineHeight: 1.05 }}>
+          <Typography
+            sx={{
+              fontFamily: DISPLAY,
+              fontWeight: 600,
+              fontSize: { xs: 36, md: 46 },
+              letterSpacing: '-0.02em',
+              lineHeight: 1.05,
+            }}
+          >
             You found something.
           </Typography>
           <Typography sx={{ color: MUTED, maxWidth: 420, fontSize: 17 }}>
-            Someone is missing this. Leave a note and we&apos;ll reunite it with its owner — your identity stays private.
+            Someone is missing this. Leave a note and we&apos;ll reunite it with its owner — your
+            identity stays private.
           </Typography>
         </Stack>
 
@@ -191,7 +224,9 @@ export function ScanTagPage() {
             p: { xs: 3, md: 4 },
           }}
         >
-          {isLoading && <Typography sx={{ color: MUTED, textAlign: 'center' }}>Loading tag info…</Typography>}
+          {isLoading && (
+            <Typography sx={{ color: MUTED, textAlign: 'center' }}>Loading tag info…</Typography>
+          )}
 
           {!isLoading && !tag && (
             <Alert severity="error" sx={{ borderRadius: 3 }}>
@@ -202,10 +237,22 @@ export function ScanTagPage() {
           {tag && (
             <Stack spacing={2.5}>
               {/* tag summary row */}
-              <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+              >
                 <Box sx={{ textAlign: 'left' }}>
                   {tag.itemLabel && (
-                    <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 24, color: INK, lineHeight: 1.1 }}>
+                    <Typography
+                      sx={{
+                        fontFamily: DISPLAY,
+                        fontWeight: 600,
+                        fontSize: 24,
+                        color: INK,
+                        lineHeight: 1.1,
+                      }}
+                    >
                       {tag.itemLabel}
                     </Typography>
                   )}
@@ -234,8 +281,9 @@ export function ScanTagPage() {
 
               {tag.status === 'unclaimed' && (
                 <Alert severity="info" sx={{ borderRadius: 3, textAlign: 'left' }}>
-                  This tag hasn&apos;t been claimed yet. If you found it near something valuable, the owner may not
-                  know it&apos;s lost — leave a message and we&apos;ll try to help.
+                  This tag hasn&apos;t been claimed yet. If you found it near something valuable,
+                  the owner may not know it&apos;s lost — leave a message and we&apos;ll try to
+                  help.
                 </Alert>
               )}
 
@@ -312,7 +360,9 @@ export function ScanTagPage() {
                   Share this tag
                 </Button>
                 {shared && (
-                  <Typography sx={{ color: TEAL, fontSize: 13, mt: 1, textAlign: 'center', fontWeight: 600 }}>
+                  <Typography
+                    sx={{ color: TEAL, fontSize: 13, mt: 1, textAlign: 'center', fontWeight: 600 }}
+                  >
                     Link copied to clipboard.
                   </Typography>
                 )}
@@ -321,7 +371,11 @@ export function ScanTagPage() {
           )}
         </Box>
 
-        <Stack direction="row" spacing={2} justifyContent="center" mt={4} sx={{ color: MUTED, fontSize: 13 }}>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ justifyContent: 'center', mt: 4, color: MUTED, fontSize: 13 }}
+        >
           <span>🔒 Anonymous</span>
           <span>·</span>
           <span>No app needed</span>

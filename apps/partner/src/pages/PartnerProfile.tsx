@@ -25,16 +25,45 @@ import { uploadImageUrl } from '../lib/cloudinary-upload.js';
 const TEAL = '#2DD4BF';
 const MARIGOLD = '#E0A106';
 const DISPLAY = '"Fraunces", Georgia, serif';
-const PANEL = { p: { xs: 2.5, md: 3 }, borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', bgcolor: 'background.paper' };
+const PANEL = {
+  p: { xs: 2.5, md: 3 },
+  borderRadius: 3,
+  border: '1px solid rgba(255,255,255,0.08)',
+  bgcolor: 'background.paper',
+};
 
-function MetaRow({ label, value, mono, action }: { label: string; value: string; mono?: boolean; action?: React.ReactNode }) {
+function MetaRow({
+  label,
+  value,
+  mono,
+  action,
+}: {
+  label: string;
+  value: string;
+  mono?: boolean;
+  action?: React.ReactNode;
+}) {
   return (
     <Box>
-      <Typography sx={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'text.secondary' }}>
+      <Typography
+        sx={{
+          fontSize: 11,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: 'text.secondary',
+        }}
+      >
         {label}
       </Typography>
-      <Stack direction="row" alignItems="center" spacing={0.5}>
-        <Typography sx={{ fontWeight: 600, fontFamily: mono ? 'monospace' : undefined, wordBreak: 'break-all', fontSize: mono ? 13 : undefined }}>
+      <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+        <Typography
+          sx={{
+            fontWeight: 600,
+            fontFamily: mono ? 'monospace' : undefined,
+            wordBreak: 'break-all',
+            fontSize: mono ? 13 : undefined,
+          }}
+        >
           {value}
         </Typography>
         {action}
@@ -79,12 +108,19 @@ export function PartnerProfilePage() {
   const initial = (name || user.email).charAt(0).toUpperCase();
   let since = '—';
   try {
-    since = new Date(user.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    since = new Date(user.createdAt).toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
   } catch {
     since = '—';
   }
 
-  const dirty = name.trim() !== (user.name ?? '') || (phone ?? '') !== (user.phone ?? '') || (avatarUrl ?? '') !== (user.avatarUrl ?? '');
+  const dirty =
+    name.trim() !== (user.name ?? '') ||
+    (phone ?? '') !== (user.phone ?? '') ||
+    (avatarUrl ?? '') !== (user.avatarUrl ?? '');
 
   const save = async () => {
     if (!name.trim()) {
@@ -94,9 +130,15 @@ export function PartnerProfilePage() {
     setSaving(true);
     setFeedback(null);
     try {
-      const updated = await api.updateProfile({ name: name.trim(), phone: phone.trim() || undefined, avatarUrl: avatarUrl.trim() });
+      const updated = await api.updateProfile({
+        name: name.trim(),
+        phone: phone.trim() || undefined,
+        avatarUrl: avatarUrl.trim(),
+      });
       const { accessToken, refreshToken } = useAuth.getState();
-      useAuth.getState().set({ user: updated, accessToken: accessToken!, refreshToken: refreshToken! });
+      useAuth
+        .getState()
+        .set({ user: updated, accessToken: accessToken!, refreshToken: refreshToken! });
       setFeedback({ ok: true, msg: 'Profile updated.' });
     } catch (e) {
       setFeedback({ ok: false, msg: e instanceof Error ? e.message : 'Could not save profile.' });
@@ -114,40 +156,89 @@ export function PartnerProfilePage() {
 
   return (
     <Box sx={{ maxWidth: 960 }}>
-      <Typography sx={{ color: TEAL, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', fontSize: 12, mb: 0.5 }}>
+      <Typography
+        sx={{
+          color: TEAL,
+          fontWeight: 700,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          fontSize: 12,
+          mb: 0.5,
+        }}
+      >
         Account
       </Typography>
-      <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 30, color: '#F3F6FB', mb: 3 }}>
+      <Typography
+        sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 30, color: '#F3F6FB', mb: 3 }}
+      >
         Your profile
       </Typography>
 
       {/* Identity banner */}
-      <Box sx={{ borderRadius: 3, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', mb: 3 }}>
-        <Box sx={{ height: 96, background: `linear-gradient(120deg, ${TEAL} 0%, #0F766E 55%, #0B3D38 100%)` }} />
+      <Box
+        sx={{
+          borderRadius: 3,
+          overflow: 'hidden',
+          border: '1px solid rgba(255,255,255,0.08)',
+          mb: 3,
+        }}
+      >
+        <Box
+          sx={{
+            height: 96,
+            background: `linear-gradient(120deg, ${TEAL} 0%, #0F766E 55%, #0B3D38 100%)`,
+          }}
+        />
         <Box sx={{ px: { xs: 2.5, md: 3 }, pb: 3, bgcolor: 'background.paper' }}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2.5} alignItems={{ xs: 'flex-start', sm: 'flex-end' }} sx={{ mt: -5 }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={2.5}
+            sx={{ alignItems: { xs: 'flex-start', sm: 'flex-end' }, mt: -5 }}
+          >
             <Avatar
               src={avatarUrl || undefined}
-              sx={{ width: 92, height: 92, fontSize: 34, fontWeight: 800, border: '4px solid', borderColor: 'background.paper', bgcolor: '#0F766E', color: '#04201d' }}
+              sx={{
+                width: 92,
+                height: 92,
+                fontSize: 34,
+                fontWeight: 800,
+                border: '4px solid',
+                borderColor: 'background.paper',
+                bgcolor: '#0F766E',
+                color: '#04201d',
+              }}
             >
               {initial}
             </Avatar>
             <Box sx={{ minWidth: 0, pb: 0.5 }}>
-              <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 24, color: '#F3F6FB' }}>
+              <Typography
+                sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 24, color: '#F3F6FB' }}
+              >
                 {name || 'Partner'}
               </Typography>
               <Typography sx={{ color: 'text.secondary' }}>{user.email}</Typography>
-              <Stack direction="row" spacing={1} mt={1.25} flexWrap="wrap" useFlexGap>
+              <Stack direction="row" spacing={1} useFlexGap sx={{ mt: 1.25, flexWrap: 'wrap' }}>
                 {user.roles.map((r) => (
                   <Chip
                     key={r}
                     label={r.replace(/_/g, ' ')}
                     size="small"
-                    sx={{ textTransform: 'capitalize', bgcolor: 'rgba(45,212,191,0.14)', color: TEAL, fontWeight: 700 }}
+                    sx={{
+                      textTransform: 'capitalize',
+                      bgcolor: 'rgba(45,212,191,0.14)',
+                      color: TEAL,
+                      fontWeight: 700,
+                    }}
                   />
                 ))}
                 {user.emailVerified && (
-                  <Chip icon={<VerifiedIcon sx={{ fontSize: 16 }} />} label="Email verified" size="small" color="success" variant="outlined" />
+                  <Chip
+                    icon={<VerifiedIcon sx={{ fontSize: 16 }} />}
+                    label="Email verified"
+                    size="small"
+                    color="success"
+                    variant="outlined"
+                  />
                 )}
               </Stack>
             </Box>
@@ -155,52 +246,97 @@ export function PartnerProfilePage() {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1.4fr 1fr' }, gap: 3, alignItems: 'start' }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: '1.4fr 1fr' },
+          gap: 3,
+          alignItems: 'start',
+        }}
+      >
         {/* Editable details */}
         <Box sx={PANEL}>
-          <Typography sx={{ fontWeight: 700, color: '#F3F6FB', mb: 0.5 }}>Personal details</Typography>
+          <Typography sx={{ fontWeight: 700, color: '#F3F6FB', mb: 0.5 }}>
+            Personal details
+          </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5 }}>
             Update how your name and contact appear across the partner portal.
           </Typography>
           {feedback && (
-            <Alert severity={feedback.ok ? 'success' : 'error'} sx={{ mb: 2 }} onClose={() => setFeedback(null)}>
+            <Alert
+              severity={feedback.ok ? 'success' : 'error'}
+              sx={{ mb: 2 }}
+              onClose={() => setFeedback(null)}
+            >
               {feedback.msg}
             </Alert>
           )}
           <Stack spacing={2.25}>
-            <TextField label="Full name" value={name} onChange={(e) => setName(e.target.value)} fullWidth required />
-            <TextField label="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} fullWidth placeholder="+233 …" />
+            <TextField
+              label="Full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              fullWidth
+              required
+            />
+            <TextField
+              label="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              fullWidth
+              placeholder="+233 …"
+            />
             <Box>
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
                 Profile photo
               </Typography>
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <Avatar src={avatarUrl || undefined} sx={{ width: 56, height: 56, bgcolor: '#0F766E', color: '#04201d', fontWeight: 800 }}>
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+                <Avatar
+                  src={avatarUrl || undefined}
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    bgcolor: '#0F766E',
+                    color: '#04201d',
+                    fontWeight: 800,
+                  }}
+                >
                   {initial}
                 </Avatar>
                 <Button
                   component="label"
                   variant="outlined"
                   disabled={uploadingAvatar}
-                  startIcon={uploadingAvatar ? <CircularProgress size={16} /> : <PhotoCameraOutlinedIcon />}
+                  startIcon={
+                    uploadingAvatar ? <CircularProgress size={16} /> : <PhotoCameraOutlinedIcon />
+                  }
                   sx={{ color: TEAL, borderColor: 'rgba(45,212,191,0.4)', fontWeight: 700 }}
                 >
                   {uploadingAvatar ? 'Uploading…' : avatarUrl ? 'Change photo' : 'Upload photo'}
                   <input hidden type="file" accept="image/*" onChange={onPickAvatar} />
                 </Button>
                 {avatarUrl && !uploadingAvatar && (
-                  <Button color="inherit" onClick={() => setAvatarUrl('')} sx={{ color: 'text.secondary' }}>
+                  <Button
+                    color="inherit"
+                    onClick={() => setAvatarUrl('')}
+                    sx={{ color: 'text.secondary' }}
+                  >
                     Remove
                   </Button>
                 )}
               </Stack>
             </Box>
-            <Stack direction="row" spacing={1.5} alignItems="center">
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
               <Button
                 variant="contained"
                 onClick={save}
                 disabled={saving || !dirty}
-                sx={{ bgcolor: TEAL, color: '#04201d', fontWeight: 700, '&:hover': { bgcolor: '#5fe6d4' } }}
+                sx={{
+                  bgcolor: TEAL,
+                  color: '#04201d',
+                  fontWeight: 700,
+                  '&:hover': { bgcolor: '#5fe6d4' },
+                }}
               >
                 {saving ? 'Saving…' : 'Save changes'}
               </Button>
@@ -228,14 +364,27 @@ export function PartnerProfilePage() {
           <Stack spacing={2.25}>
             <MetaRow label="Institution" value={inst?.name ?? '—'} />
             <Box>
-              <Typography sx={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'text.secondary' }}>
+              <Typography
+                sx={{
+                  fontSize: 11,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'text.secondary',
+                }}
+              >
                 Plan
               </Typography>
               {inst?.subscriptionTier ? (
                 <Chip
                   label={inst.subscriptionTier}
                   size="small"
-                  sx={{ mt: 0.5, textTransform: 'capitalize', bgcolor: 'rgba(224,161,6,0.16)', color: MARIGOLD, fontWeight: 700 }}
+                  sx={{
+                    mt: 0.5,
+                    textTransform: 'capitalize',
+                    bgcolor: 'rgba(224,161,6,0.16)',
+                    color: MARIGOLD,
+                    fontWeight: 700,
+                  }}
                 />
               ) : (
                 <Typography sx={{ fontWeight: 600 }}>—</Typography>
@@ -249,8 +398,16 @@ export function PartnerProfilePage() {
               mono
               action={
                 <Tooltip title={copied ? 'Copied!' : 'Copy ID'}>
-                  <IconButton size="small" onClick={copyId} sx={{ color: copied ? '#4ade80' : 'text.secondary' }}>
-                    {copied ? <CheckRoundedIcon sx={{ fontSize: 16 }} /> : <ContentCopyOutlinedIcon sx={{ fontSize: 16 }} />}
+                  <IconButton
+                    size="small"
+                    onClick={copyId}
+                    sx={{ color: copied ? '#4ade80' : 'text.secondary' }}
+                  >
+                    {copied ? (
+                      <CheckRoundedIcon sx={{ fontSize: 16 }} />
+                    ) : (
+                      <ContentCopyOutlinedIcon sx={{ fontSize: 16 }} />
+                    )}
                   </IconButton>
                 </Tooltip>
               }

@@ -25,9 +25,14 @@ export function ItemCardSkeleton() {
         borderColor: 'divider',
       }}
     >
-      <Skeleton variant="rounded" animation="wave" height={180} sx={{ borderRadius: '18px 18px 18px 4px' }} />
+      <Skeleton
+        variant="rounded"
+        animation="wave"
+        height={180}
+        sx={{ borderRadius: '18px 18px 18px 4px' }}
+      />
       <Box sx={{ px: 0.75, pt: 1.5 }}>
-        <Stack direction="row" spacing={0.75} mb={1}>
+        <Stack direction="row" spacing={0.75} sx={{ mb: 1 }}>
           <Skeleton variant="rounded" width={64} height={22} sx={{ borderRadius: 999 }} />
           <Skeleton variant="rounded" width={48} height={22} sx={{ borderRadius: 999 }} />
         </Stack>
@@ -43,7 +48,13 @@ export function ItemCardSkeleton() {
 }
 
 /** A responsive grid of card skeletons. */
-export function CardGridSkeleton({ count = 6, minWidth = 280 }: { count?: number; minWidth?: number }) {
+export function CardGridSkeleton({
+  count = 6,
+  minWidth = 280,
+}: {
+  count?: number;
+  minWidth?: number;
+}) {
   return (
     <Box
       sx={{
@@ -77,7 +88,15 @@ export function ListSkeleton({ rows = 5, avatar = true }: { rows?: number; avata
             bgcolor: 'background.paper',
           }}
         >
-          {avatar && <Skeleton variant="circular" animation="wave" width={44} height={44} sx={{ flexShrink: 0 }} />}
+          {avatar && (
+            <Skeleton
+              variant="circular"
+              animation="wave"
+              width={44}
+              height={44}
+              sx={{ flexShrink: 0 }}
+            />
+          )}
           <Box sx={{ flex: 1 }}>
             <Skeleton variant="text" width={`${50 + ((i * 7) % 30)}%`} height={22} />
             <Skeleton variant="text" width={`${30 + ((i * 11) % 25)}%`} height={18} />
@@ -102,7 +121,13 @@ export function StatCardsSkeleton({ count = 4 }: { count?: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <Box
           key={i}
-          sx={{ p: 2.5, borderRadius: 3, border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}
+          sx={{
+            p: 2.5,
+            borderRadius: 3,
+            border: '1px solid',
+            borderColor: 'divider',
+            bgcolor: 'background.paper',
+          }}
         >
           <Skeleton variant="text" width="55%" height={18} />
           <Skeleton variant="text" width="40%" height={40} />
@@ -119,9 +144,22 @@ export function TableSkeleton({ rows = 6 }: { rows?: number }) {
       {Array.from({ length: rows }).map((_, i) => (
         <Box
           key={i}
-          sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, borderRadius: 2, bgcolor: 'background.paper' }}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            p: 1.5,
+            borderRadius: 2,
+            bgcolor: 'background.paper',
+          }}
         >
-          <Skeleton variant="rounded" animation="wave" width={48} height={48} sx={{ borderRadius: 2, flexShrink: 0 }} />
+          <Skeleton
+            variant="rounded"
+            animation="wave"
+            width={48}
+            height={48}
+            sx={{ borderRadius: 2, flexShrink: 0 }}
+          />
           <Box sx={{ flex: 1 }}>
             <Skeleton variant="text" width="40%" height={20} />
             <Skeleton variant="text" width="65%" height={16} />
@@ -136,8 +174,19 @@ export function TableSkeleton({ rows = 6 }: { rows?: number }) {
 /** Item detail: a big media block beside a column of text lines. */
 export function DetailSkeleton() {
   return (
-    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1.1fr 1fr' }, gap: { xs: 3, md: 5 } }}>
-      <Skeleton variant="rounded" animation="wave" height={360} sx={{ borderRadius: '24px 24px 24px 8px' }} />
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr', md: '1.1fr 1fr' },
+        gap: { xs: 3, md: 5 },
+      }}
+    >
+      <Skeleton
+        variant="rounded"
+        animation="wave"
+        height={360}
+        sx={{ borderRadius: '24px 24px 24px 8px' }}
+      />
       <Box>
         <Skeleton variant="rounded" width={90} height={24} sx={{ borderRadius: 999, mb: 1.5 }} />
         <Skeleton variant="text" width="80%" height={46} />

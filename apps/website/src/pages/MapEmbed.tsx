@@ -12,8 +12,8 @@ import {
   Typography,
 } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Map as ReactMap, Marker, Popup, NavigationControl } from 'react-map-gl';
-import type { MapEvent, MapRef, ViewStateChangeEvent } from 'react-map-gl';
+import { Map as ReactMap, Marker, Popup, NavigationControl } from 'react-map-gl/mapbox';
+import type { MapEvent, MapRef, ViewStateChangeEvent } from 'react-map-gl/mapbox';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import Supercluster from 'supercluster';
 
@@ -124,7 +124,7 @@ export function MapEmbed() {
     if (meta) {
       meta.setAttribute(
         'content',
-        'Explore the live map of recent lost and found items across Ghana. See what was reported near you and help reunite people with what they value.'
+        'Explore the live map of recent lost and found items across Ghana. See what was reported near you and help reunite people with what they value.',
       );
     }
     return () => {
@@ -133,7 +133,7 @@ export function MapEmbed() {
       if (m) {
         m.setAttribute(
           'content',
-          'Back2u — AI-powered lost and found. Post a lost or found item, get matched in seconds, and reunite people with what they value.'
+          'Back2u — AI-powered lost and found. Post a lost or found item, get matched in seconds, and reunite people with what they value.',
         );
       }
     };
@@ -211,14 +211,14 @@ export function MapEmbed() {
     (evt: MapEvent) => {
       updateBoundsFromMap(evt.target);
     },
-    [updateBoundsFromMap]
+    [updateBoundsFromMap],
   );
 
   const handleMoveEnd = useCallback(
     (evt: ViewStateChangeEvent) => {
       updateBoundsFromMap(evt.target);
     },
-    [updateBoundsFromMap]
+    [updateBoundsFromMap],
   );
 
   const handleClusterClick = useCallback(
@@ -230,7 +230,7 @@ export function MapEmbed() {
         zoom: expansionZoom,
       });
     },
-    [cluster]
+    [cluster],
   );
 
   const itemsById = useMemo(() => {
@@ -264,10 +264,7 @@ export function MapEmbed() {
               Live map
             </Typography>
             <ButtonGroup size="small" variant="outlined">
-              <Button
-                variant={kind === '' ? 'contained' : 'outlined'}
-                onClick={() => setKind('')}
-              >
+              <Button variant={kind === '' ? 'contained' : 'outlined'} onClick={() => setKind('')}>
                 All
               </Button>
               <Button
@@ -407,7 +404,7 @@ export function MapEmbed() {
                   closeButton
                 >
                   <Stack spacing={1} sx={{ p: 1, minWidth: 180 }}>
-                    <Typography variant="subtitle2" fontWeight={700} noWrap>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }} noWrap>
                       {selectedItem.title}
                     </Typography>
                     <Chip

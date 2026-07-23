@@ -51,9 +51,33 @@ function QRPlaceholder() {
             // Create a pseudo-random QR-like pattern
             const filled =
               // Position detection patterns (corners)
-              (i === 0 || i === 1 || i === 2 || i === 7 || i === 8 || i === 9 || i === 14 || i === 15 || i === 16) || // top-left
-              (i === 4 || i === 5 || i === 6 || i === 11 || i === 12 || i === 13 || i === 18 || i === 19 || i === 20) || // top-right
-              (i === 28 || i === 29 || i === 30 || i === 35 || i === 36 || i === 37 || i === 42 || i === 43 || i === 44) || // bottom-left
+              i === 0 ||
+              i === 1 ||
+              i === 2 ||
+              i === 7 ||
+              i === 8 ||
+              i === 9 ||
+              i === 14 ||
+              i === 15 ||
+              i === 16 || // top-left
+              i === 4 ||
+              i === 5 ||
+              i === 6 ||
+              i === 11 ||
+              i === 12 ||
+              i === 13 ||
+              i === 18 ||
+              i === 19 ||
+              i === 20 || // top-right
+              i === 28 ||
+              i === 29 ||
+              i === 30 ||
+              i === 35 ||
+              i === 36 ||
+              i === 37 ||
+              i === 42 ||
+              i === 43 ||
+              i === 44 || // bottom-left
               // Random data modules
               [10, 17, 21, 23, 24, 26, 31, 33, 34, 38, 40, 41, 45, 46, 47, 48].includes(i);
 
@@ -82,10 +106,54 @@ function QRPlaceholder() {
         />
 
         {/* Corner accents */}
-        <Box sx={{ position: 'absolute', top: 12, left: 12, width: 24, height: 24, borderTop: 4, borderLeft: 4, borderColor: 'secondary.main' }} />
-        <Box sx={{ position: 'absolute', top: 12, right: 12, width: 24, height: 24, borderTop: 4, borderRight: 4, borderColor: 'secondary.main' }} />
-        <Box sx={{ position: 'absolute', bottom: 12, left: 12, width: 24, height: 24, borderBottom: 4, borderLeft: 4, borderColor: 'secondary.main' }} />
-        <Box sx={{ position: 'absolute', bottom: 12, right: 12, width: 24, height: 24, borderBottom: 4, borderRight: 4, borderColor: 'secondary.main' }} />
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 12,
+            left: 12,
+            width: 24,
+            height: 24,
+            borderTop: 4,
+            borderLeft: 4,
+            borderColor: 'secondary.main',
+          }}
+        />
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 12,
+            right: 12,
+            width: 24,
+            height: 24,
+            borderTop: 4,
+            borderRight: 4,
+            borderColor: 'secondary.main',
+          }}
+        />
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 12,
+            left: 12,
+            width: 24,
+            height: 24,
+            borderBottom: 4,
+            borderLeft: 4,
+            borderColor: 'secondary.main',
+          }}
+        />
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 12,
+            right: 12,
+            width: 24,
+            height: 24,
+            borderBottom: 4,
+            borderRight: 4,
+            borderColor: 'secondary.main',
+          }}
+        />
       </Box>
     </Box>
   );
@@ -112,26 +180,25 @@ export function QRTagPromo() {
           <Box sx={{ flex: 1, width: '100%' }}>
             <Typography
               variant="h2"
-              fontSize={{ xs: 28, md: 40 }}
-              fontWeight={700}
               gutterBottom
+              sx={{ fontSize: { xs: 28, md: 40 }, fontWeight: 700 }}
             >
               Never lose track again
             </Typography>
 
             <Typography
               color="text.secondary"
-              fontSize={{ xs: 16, md: 18 }}
-              sx={{ mb: 4, maxWidth: 480 }}
+              sx={{ fontSize: { xs: 16, md: 18 }, mb: 4, maxWidth: 480 }}
             >
-              Our waterproof QR tags bridge offline and online. Someone scans → you get an instant alert.
+              Our waterproof QR tags bridge offline and online. Someone scans → you get an instant
+              alert.
             </Typography>
 
             <Stack spacing={2} sx={{ mb: 4 }}>
               {BENEFITS.map((benefit) => (
-                <Stack key={benefit} direction="row" spacing={1.5} alignItems="center">
+                <Stack key={benefit} direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
                   <CheckCircleIcon color="primary" sx={{ fontSize: 22, flexShrink: 0 }} />
-                  <Typography color="text.primary" fontWeight={500}>
+                  <Typography color="text.primary" sx={{ fontWeight: 500 }}>
                     {benefit}
                   </Typography>
                 </Stack>

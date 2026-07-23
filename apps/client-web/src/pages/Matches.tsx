@@ -44,7 +44,9 @@ function ConfidenceRing({ score }: { score: number }) {
           placeItems: 'center',
         }}
       >
-        <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 20, color }}>{p}%</Typography>
+        <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 20, color }}>
+          {p}%
+        </Typography>
       </Box>
     </Box>
   );
@@ -53,10 +55,25 @@ function ConfidenceRing({ score }: { score: number }) {
 function SubScore({ label, value }: { label: string; value: number }) {
   return (
     <Box sx={{ flex: 1, minWidth: 56 }}>
-      <Typography sx={{ fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'text.secondary' }}>
+      <Typography
+        sx={{
+          fontSize: 10,
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          color: 'text.secondary',
+        }}
+      >
         {label}
       </Typography>
-      <Box sx={{ height: 5, borderRadius: 3, bgcolor: 'rgba(11,61,56,0.1)', mt: 0.4, overflow: 'hidden' }}>
+      <Box
+        sx={{
+          height: 5,
+          borderRadius: 3,
+          bgcolor: 'rgba(11,61,56,0.1)',
+          mt: 0.4,
+          overflow: 'hidden',
+        }}
+      >
         <Box sx={{ width: `${pct(value)}%`, height: '100%', bgcolor: scoreColor(value) }} />
       </Box>
     </Box>
@@ -103,13 +120,28 @@ export function MatchesPage() {
 
   const header = (
     <Box sx={{ mb: 3 }}>
-      <Stack direction="row" spacing={1.25} alignItems="center" sx={{ color: TEAL, mb: 1 }}>
+      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
         <AutoAwesomeIcon fontSize="small" />
-        <Typography sx={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+        <Typography
+          sx={{
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+          }}
+        >
           AI matching
         </Typography>
       </Stack>
-      <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: { xs: 34, md: 44 }, color: INK, letterSpacing: '-0.02em' }}>
+      <Typography
+        sx={{
+          fontFamily: DISPLAY,
+          fontWeight: 600,
+          fontSize: { xs: 34, md: 44 },
+          color: INK,
+          letterSpacing: '-0.02em',
+        }}
+      >
         Possible matches
       </Typography>
       <Typography color="text.secondary" sx={{ mt: 1 }}>
@@ -167,13 +199,40 @@ function ItemMatches({
   onConfirmReturn: (id: string) => void;
 }) {
   return (
-    <Box sx={{ p: { xs: 2, md: 3 }, borderRadius: '24px 24px 24px 8px', bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}>
+    <Box
+      sx={{
+        p: { xs: 2, md: 3 },
+        borderRadius: '24px 24px 24px 8px',
+        bgcolor: 'background.paper',
+        border: '1px solid',
+        borderColor: 'divider',
+      }}
+    >
       <Typography sx={{ mb: 2 }}>
-        <Box component="span" sx={{ fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'text.secondary' }}>
+        <Box
+          component="span"
+          sx={{
+            fontSize: 12,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'text.secondary',
+          }}
+        >
           For your item
         </Box>
         <br />
-        <Box component={Link} to={`/items/${item.id}`} sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, color: INK, textDecoration: 'none', '&:hover': { color: TEAL } }}>
+        <Box
+          component={Link}
+          to={`/items/${item.id}`}
+          sx={{
+            fontFamily: DISPLAY,
+            fontWeight: 600,
+            fontSize: 22,
+            color: INK,
+            textDecoration: 'none',
+            '&:hover': { color: TEAL },
+          }}
+        >
           {item.title}
         </Box>
       </Typography>
@@ -203,10 +262,8 @@ function ItemMatches({
               }}
             >
               <ConfidenceRing score={m.score} />
-              <Box flex={1} width="100%">
-                <Typography sx={{ fontWeight: 700, mb: 1 }}>
-                  {pct(m.score)}% confidence
-                </Typography>
+              <Box sx={{ flex: 1, width: '100%' }}>
+                <Typography sx={{ fontWeight: 700, mb: 1 }}>{pct(m.score)}% confidence</Typography>
                 <Stack direction="row" spacing={1.5}>
                   <SubScore label="Image" value={m.imageScore} />
                   <SubScore label="Text" value={m.textScore} />
@@ -214,14 +271,34 @@ function ItemMatches({
                   <SubScore label="Time" value={m.timeScore} />
                 </Stack>
                 {(m.returnConfirmedByLost || m.returnConfirmedByFound) && (
-                  <Stack direction="row" spacing={1} mt={1} flexWrap="wrap" useFlexGap>
+                  <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap' }} useFlexGap>
                     {m.returnConfirmedByLost && (
-                      <Chip size="small" icon={<CheckCircleIcon fontSize="small" />} label="Lost owner confirmed" color="success" variant="outlined" />
+                      <Chip
+                        size="small"
+                        icon={<CheckCircleIcon fontSize="small" />}
+                        label="Lost owner confirmed"
+                        color="success"
+                        variant="outlined"
+                      />
                     )}
                     {m.returnConfirmedByFound && (
-                      <Chip size="small" icon={<CheckCircleIcon fontSize="small" />} label="Found owner confirmed" color="success" variant="outlined" />
+                      <Chip
+                        size="small"
+                        icon={<CheckCircleIcon fontSize="small" />}
+                        label="Found owner confirmed"
+                        color="success"
+                        variant="outlined"
+                      />
                     )}
-                    {waitingOnOther && <Chip size="small" icon={<PendingIcon fontSize="small" />} label="Waiting for other party" color="warning" variant="outlined" />}
+                    {waitingOnOther && (
+                      <Chip
+                        size="small"
+                        icon={<PendingIcon fontSize="small" />}
+                        label="Waiting for other party"
+                        color="warning"
+                        variant="outlined"
+                      />
+                    )}
                   </Stack>
                 )}
               </Box>
@@ -232,11 +309,23 @@ function ItemMatches({
                       size="small"
                       disabled={pending}
                       onClick={() => onAccept(m.id)}
-                      sx={{ bgcolor: MARIGOLD, color: INK, borderRadius: 999, fontWeight: 700, px: 2, '&:hover': { bgcolor: '#cf9305' } }}
+                      sx={{
+                        bgcolor: MARIGOLD,
+                        color: INK,
+                        borderRadius: 999,
+                        fontWeight: 700,
+                        px: 2,
+                        '&:hover': { bgcolor: '#cf9305' },
+                      }}
                     >
                       Accept
                     </Button>
-                    <Button size="small" disabled={pending} onClick={() => onReject(m.id)} sx={{ color: 'text.secondary', fontWeight: 600 }}>
+                    <Button
+                      size="small"
+                      disabled={pending}
+                      onClick={() => onReject(m.id)}
+                      sx={{ color: 'text.secondary', fontWeight: 600 }}
+                    >
                       Reject
                     </Button>
                   </>
@@ -246,13 +335,25 @@ function ItemMatches({
                     size="small"
                     disabled={pending}
                     onClick={() => onConfirmReturn(m.id)}
-                    sx={{ bgcolor: TEAL, color: '#fff', borderRadius: 999, fontWeight: 700, px: 2, '&:hover': { bgcolor: '#0b5c56' } }}
+                    sx={{
+                      bgcolor: TEAL,
+                      color: '#fff',
+                      borderRadius: 999,
+                      fontWeight: 700,
+                      px: 2,
+                      '&:hover': { bgcolor: '#0b5c56' },
+                    }}
                   >
                     Confirm return
                   </Button>
                 )}
                 {m.status === 'accepted' && isReturned && (
-                  <Chip size="small" icon={<CheckCircleIcon fontSize="small" />} label="Successfully returned!" color="success" />
+                  <Chip
+                    size="small"
+                    icon={<CheckCircleIcon fontSize="small" />}
+                    label="Successfully returned!"
+                    color="success"
+                  />
                 )}
               </Stack>
             </Box>

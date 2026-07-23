@@ -57,7 +57,9 @@ function useFeatureFlags() {
         if (!cancelled) setFlags(json?.data ?? []);
       })
       .catch(() => {});
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
   return flags;
 }
@@ -79,32 +81,85 @@ function timeAgo(iso: string): string {
 }
 
 const FEATURES = [
-  { title: 'AI matching', body: 'Visual + text + geo + time correlation. Suggested matches with confidence scores.' },
-  { title: 'Geo-fenced alerts', body: 'Get notified when someone reports a found item near where you lost yours.' },
-  { title: 'Proof of ownership', body: 'Verification flow with receipt photos and item-specific questions.' },
-  { title: 'Rewards & points', body: 'Set a reward, build reputation, redeem points at partner institutions.' },
+  {
+    title: 'AI matching',
+    body: 'Visual + text + geo + time correlation. Suggested matches with confidence scores.',
+  },
+  {
+    title: 'Geo-fenced alerts',
+    body: 'Get notified when someone reports a found item near where you lost yours.',
+  },
+  {
+    title: 'Proof of ownership',
+    body: 'Verification flow with receipt photos and item-specific questions.',
+  },
+  {
+    title: 'Rewards & points',
+    body: 'Set a reward, build reputation, redeem points at partner institutions.',
+  },
   { title: 'QR tag ecosystem', body: 'Branded keychain stickers that bridge offline and online.' },
   { title: 'Anonymous chat', body: 'Auto-moderated in-app chat — no phone numbers shared.' },
 ];
 
 const STEPS = [
-  { step: '01', title: 'Snap & Post', body: 'Take a photo, describe your item, and drop a pin on the map. It takes 30 seconds.' },
-  { step: '02', title: 'AI Matches', body: 'Our AI correlates images, text, location, and time to surface the most likely matches.' },
-  { step: '03', title: 'Reunite', body: 'Verify ownership, chat anonymously, and arrange pickup or courier delivery.' },
+  {
+    step: '01',
+    title: 'Snap & Post',
+    body: 'Take a photo, describe your item, and drop a pin on the map. It takes 30 seconds.',
+  },
+  {
+    step: '02',
+    title: 'AI Matches',
+    body: 'Our AI correlates images, text, location, and time to surface the most likely matches.',
+  },
+  {
+    step: '03',
+    title: 'Reunite',
+    body: 'Verify ownership, chat anonymously, and arrange pickup or courier delivery.',
+  },
 ];
 
 const TESTIMONIALS = [
-  { name: 'Ama K.', role: 'Accra', quote: 'I left my laptop in a taxi. Back2u matched it within 2 hours. The verification flow made me feel safe.' },
-  { name: 'Kofi B.', role: 'University Student', quote: 'The QR tag on my backpack saved me twice. Someone scanned it and I got an alert immediately.' },
-  { name: 'Nana O.', role: 'Mall Security', quote: 'We onboarded our mall as a partner. Lost items get returned 4× faster now.' },
+  {
+    name: 'Ama K.',
+    role: 'Accra',
+    quote:
+      'I left my laptop in a taxi. Back2u matched it within 2 hours. The verification flow made me feel safe.',
+  },
+  {
+    name: 'Kofi B.',
+    role: 'University Student',
+    quote:
+      'The QR tag on my backpack saved me twice. Someone scanned it and I got an alert immediately.',
+  },
+  {
+    name: 'Nana O.',
+    role: 'Mall Security',
+    quote: 'We onboarded our mall as a partner. Lost items get returned 4× faster now.',
+  },
 ];
 
 const FAQS = [
-  { q: 'Is Back2u free to use?', a: 'Yes. Posting items, browsing matches, and chatting are free. Rewards and courier services involve optional fees set by users.' },
-  { q: 'How does AI matching work?', a: 'We combine visual similarity (perceptual hashing), text embeddings, geospatial proximity, and temporal correlation to rank possible matches.' },
-  { q: 'Is my personal information shared?', a: 'Never. Chat is anonymous. Your phone number and email are only visible to you and verified admins.' },
-  { q: 'What are QR tags?', a: 'Waterproof stickers with a unique code. When scanned, they show a contact form without revealing your identity.' },
-  { q: 'Can institutions partner with Back2u?', a: 'Absolutely. Universities, malls, airports, and transit hubs can onboard to manage lost & found at scale.' },
+  {
+    q: 'Is Back2u free to use?',
+    a: 'Yes. Posting items, browsing matches, and chatting are free. Rewards and courier services involve optional fees set by users.',
+  },
+  {
+    q: 'How does AI matching work?',
+    a: 'We combine visual similarity (perceptual hashing), text embeddings, geospatial proximity, and temporal correlation to rank possible matches.',
+  },
+  {
+    q: 'Is my personal information shared?',
+    a: 'Never. Chat is anonymous. Your phone number and email are only visible to you and verified admins.',
+  },
+  {
+    q: 'What are QR tags?',
+    a: 'Waterproof stickers with a unique code. When scanned, they show a contact form without revealing your identity.',
+  },
+  {
+    q: 'Can institutions partner with Back2u?',
+    a: 'Absolutely. Universities, malls, airports, and transit hubs can onboard to manage lost & found at scale.',
+  },
 ];
 
 const FALLBACK_TICKER = [
@@ -248,7 +303,15 @@ function HeroRadar() {
           boxShadow: '0 26px 50px -20px rgba(11,61,56,.7)',
         }}
       >
-        <Box sx={{ width: 30, height: 30, borderRadius: '50%', bgcolor: PAPER, transform: 'rotate(45deg)' }} />
+        <Box
+          sx={{
+            width: 30,
+            height: 30,
+            borderRadius: '50%',
+            bgcolor: PAPER,
+            transform: 'rotate(45deg)',
+          }}
+        />
       </Box>
       {/* floating match chips */}
       <Box
@@ -270,7 +333,9 @@ function HeroRadar() {
       >
         <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#0F766E' }} />
         <Box>
-          <Typography sx={{ fontSize: 12, fontWeight: 700, color: INK, lineHeight: 1.1 }}>Match found</Typography>
+          <Typography sx={{ fontSize: 12, fontWeight: 700, color: INK, lineHeight: 1.1 }}>
+            Match found
+          </Typography>
           <Typography sx={{ fontSize: 11, color: '#3C544F' }}>98% confidence</Typography>
         </Box>
       </Box>
@@ -307,12 +372,26 @@ function Ticker({ items }: { items: ItemPreview[] }) {
   return (
     <Box
       aria-hidden
-      sx={{ borderBlock: '1px solid', borderColor: 'divider', py: 1.5, bgcolor: 'rgba(255,253,248,0.5)' }}
+      sx={{
+        borderBlock: '1px solid',
+        borderColor: 'divider',
+        py: 1.5,
+        bgcolor: 'rgba(255,253,248,0.5)',
+      }}
     >
       <Box className="b2u-marquee">
         <Box className="b2u-marquee__track">
           {loop.map((it, i) => (
-            <Box key={i} sx={{ display: 'inline-flex', alignItems: 'center', gap: 1.2, px: 2.5, flexShrink: 0 }}>
+            <Box
+              key={i}
+              sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 1.2,
+                px: 2.5,
+                flexShrink: 0,
+              }}
+            >
               <Box
                 sx={{
                   width: 7,
@@ -323,7 +402,13 @@ function Ticker({ items }: { items: ItemPreview[] }) {
               />
               <Typography
                 component="span"
-                sx={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: it.kind === 'found' ? '#0F766E' : '#C2410C' }}
+                sx={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: it.kind === 'found' ? '#0F766E' : '#C2410C',
+                }}
               >
                 {it.kind}
               </Typography>
@@ -333,7 +418,15 @@ function Ticker({ items }: { items: ItemPreview[] }) {
               <Typography component="span" sx={{ fontSize: 14, color: '#3C544F' }}>
                 · {it.place}
               </Typography>
-              <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: 'rgba(11,61,56,.25)', ml: 1.5 }} />
+              <Box
+                sx={{
+                  width: 4,
+                  height: 4,
+                  borderRadius: '50%',
+                  bgcolor: 'rgba(11,61,56,.25)',
+                  ml: 1.5,
+                }}
+              />
             </Box>
           ))}
         </Box>
@@ -409,19 +502,41 @@ function LandingPage() {
               </svg>
               <Typography
                 className="b2u-rise b2u-d3"
-                sx={{ mt: 3, fontSize: { xs: 17, md: 19 }, color: 'text.secondary', maxWidth: 540, lineHeight: 1.6 }}
+                sx={{
+                  mt: 3,
+                  fontSize: { xs: 17, md: 19 },
+                  color: 'text.secondary',
+                  maxWidth: 540,
+                  lineHeight: 1.6,
+                }}
               >
                 {t('hero.subtitle')}
               </Typography>
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} mt={4} className="b2u-rise b2u-d4">
-                <Button size="large" variant="contained" color="secondary" href={`${APP_URL}/post?kind=lost`}>
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={1.5}
+                sx={{ mt: 4 }}
+                className="b2u-rise b2u-d4"
+              >
+                <Button
+                  size="large"
+                  variant="contained"
+                  color="secondary"
+                  href={`${APP_URL}/post?kind=lost`}
+                >
                   {t('cta.postLost')}
                 </Button>
-                <Button size="large" variant="outlined" color="inherit" href={`${APP_URL}/post?kind=found`} sx={{ color: 'text.primary' }}>
+                <Button
+                  size="large"
+                  variant="outlined"
+                  color="inherit"
+                  href={`${APP_URL}/post?kind=found`}
+                  sx={{ color: 'text.primary' }}
+                >
                   {t('cta.foundSomething')}
                 </Button>
               </Stack>
-              <Box className="b2u-rise b2u-d5" mt={4}>
+              <Box className="b2u-rise b2u-d5" sx={{ mt: 4 }}>
                 <AppStoreBadges />
               </Box>
             </Box>
@@ -436,7 +551,17 @@ function LandingPage() {
         <Ticker items={recentItems} />
 
         {/* Stats — ink band */}
-        <Box component="section" aria-labelledby="stats-heading" sx={{ position: 'relative', bgcolor: INK, color: PAPER, py: { xs: 7, md: 9 }, overflow: 'hidden' }}>
+        <Box
+          component="section"
+          aria-labelledby="stats-heading"
+          sx={{
+            position: 'relative',
+            bgcolor: INK,
+            color: PAPER,
+            py: { xs: 7, md: 9 },
+            overflow: 'hidden',
+          }}
+        >
           <Box
             aria-hidden
             sx={{
@@ -450,7 +575,14 @@ function LandingPage() {
             <Typography
               id="stats-heading"
               component="h2"
-              sx={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,253,248,0.65)', mb: { xs: 3.5, md: 4.5 } }}
+              sx={{
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,253,248,0.65)',
+                mb: { xs: 3.5, md: 4.5 },
+              }}
             >
               The reunion engine, by the numbers
             </Typography>
@@ -473,16 +605,32 @@ function LandingPage() {
                   sx={{
                     textAlign: { xs: 'center', sm: 'left' },
                     pl: { sm: i === 0 ? 0 : 4 },
-                    borderLeft: { xs: 'none', sm: i === 0 ? 'none' : '1px solid rgba(255,253,248,0.16)' },
+                    borderLeft: {
+                      xs: 'none',
+                      sm: i === 0 ? 'none' : '1px solid rgba(255,253,248,0.16)',
+                    },
                   }}
                 >
                   <Typography
                     className="b2u-display"
-                    sx={{ fontSize: { xs: 52, md: 68 }, fontWeight: 600, lineHeight: 1, color: PAPER }}
+                    sx={{
+                      fontSize: { xs: 52, md: 68 },
+                      fontWeight: 600,
+                      lineHeight: 1,
+                      color: PAPER,
+                    }}
                   >
                     {s.n}
                   </Typography>
-                  <Typography sx={{ mt: 1, fontSize: 14, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,253,248,0.7)' }}>
+                  <Typography
+                    sx={{
+                      mt: 1,
+                      fontSize: 14,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: 'rgba(255,253,248,0.7)',
+                    }}
+                  >
                     {s.l}
                   </Typography>
                 </Box>
@@ -499,14 +647,22 @@ function LandingPage() {
           <Container sx={{ py: { xs: 8, md: 12 } }}>
             <Box data-reveal className="b2u-reveal" sx={{ mb: 5 }}>
               <Kicker>Live right now</Kicker>
-              <Typography className="b2u-display" component="h2" sx={{ mt: 2, fontSize: { xs: 30, md: 44 }, fontWeight: 600 }}>
+              <Typography
+                className="b2u-display"
+                component="h2"
+                sx={{ mt: 2, fontSize: { xs: 30, md: 44 }, fontWeight: 600 }}
+              >
                 Real items, posted minutes ago
               </Typography>
             </Box>
             <Box
               data-reveal
               className="b2u-reveal"
-              sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)', md: 'repeat(3,1fr)' }, gap: 2.5 }}
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)', md: 'repeat(3,1fr)' },
+                gap: 2.5,
+              }}
             >
               {recentItems.slice(0, 6).map((it) => {
                 const isFound = it.kind === 'found';
@@ -521,7 +677,10 @@ function LandingPage() {
                       borderColor: 'divider',
                       bgcolor: 'background.paper',
                       transition: 'transform .2s, box-shadow .2s',
-                      '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 26px 46px -30px rgba(11,61,56,.5)' },
+                      '&:hover': {
+                        transform: 'translateY(-4px)',
+                        boxShadow: '0 26px 46px -30px rgba(11,61,56,.5)',
+                      },
                     }}
                   >
                     {/* Inset image with its own rounded frame */}
@@ -539,10 +698,23 @@ function LandingPage() {
                           component="img"
                           src={it.images[0].url}
                           alt={`${it.kind.toUpperCase()}: ${it.title} at ${it.place.name}`}
-                          sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                          sx={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            display: 'block',
+                          }}
                         />
                       ) : (
-                        <Box sx={{ display: 'grid', placeItems: 'center', height: '100%', color: 'text.secondary', fontSize: 14 }}>
+                        <Box
+                          sx={{
+                            display: 'grid',
+                            placeItems: 'center',
+                            height: '100%',
+                            color: 'text.secondary',
+                            fontSize: 14,
+                          }}
+                        >
                           No photo
                         </Box>
                       )}
@@ -611,7 +783,7 @@ function LandingPage() {
                       <Typography noWrap sx={{ mt: 1, fontWeight: 700, fontSize: 18, color: INK }}>
                         {it.title}
                       </Typography>
-                      <Stack direction="row" spacing={0.5} alignItems="center" sx={{ mt: 0.25 }}>
+                      <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center', mt: 0.25 }}>
                         <PlaceOutlinedIcon sx={{ fontSize: 15, color: 'text.secondary' }} />
                         <Typography variant="body2" color="text.secondary" noWrap>
                           {it.place.name}
@@ -622,8 +794,13 @@ function LandingPage() {
                 );
               })}
             </Box>
-            <Box mt={5}>
-              <Button variant="outlined" color="inherit" href={`${APP_URL}/feed`} sx={{ color: 'text.primary' }}>
+            <Box sx={{ mt: 5 }}>
+              <Button
+                variant="outlined"
+                color="inherit"
+                href={`${APP_URL}/feed`}
+                sx={{ color: 'text.primary' }}
+              >
                 Browse all items →
               </Button>
             </Box>
@@ -633,17 +810,48 @@ function LandingPage() {
         {/* How it works */}
         <Box sx={{ py: { xs: 8, md: 13 } }}>
           <Container>
-            <Box data-reveal className="b2u-reveal" sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
+            <Box
+              data-reveal
+              className="b2u-reveal"
+              sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}
+            >
               <Kicker sx={{ justifyContent: 'center' }}>How it works</Kicker>
-              <Typography className="b2u-display" component="h2" sx={{ mt: 2, fontSize: { xs: 32, md: 50 }, fontWeight: 600 }}>
+              <Typography
+                className="b2u-display"
+                component="h2"
+                sx={{ mt: 2, fontSize: { xs: 32, md: 50 }, fontWeight: 600 }}
+              >
                 From lost to found in three steps
               </Typography>
             </Box>
-            <Box sx={{ position: 'relative', display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: { xs: 5, md: 4 } }}>
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+                gap: { xs: 5, md: 4 },
+              }}
+            >
               {/* connecting line on desktop */}
-              <Box aria-hidden sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', top: 38, left: '16%', right: '16%', height: '1px', bgcolor: 'divider' }} />
+              <Box
+                aria-hidden
+                sx={{
+                  display: { xs: 'none', md: 'block' },
+                  position: 'absolute',
+                  top: 38,
+                  left: '16%',
+                  right: '16%',
+                  height: '1px',
+                  bgcolor: 'divider',
+                }}
+              />
               {STEPS.map((s, i) => (
-                <Box key={s.step} data-reveal className="b2u-reveal" sx={{ position: 'relative', textAlign: { xs: 'left', md: 'center' } }}>
+                <Box
+                  key={s.step}
+                  data-reveal
+                  className="b2u-reveal"
+                  sx={{ position: 'relative', textAlign: { xs: 'left', md: 'center' } }}
+                >
                   <Box
                     className="b2u-display"
                     sx={{
@@ -665,10 +873,15 @@ function LandingPage() {
                   >
                     {s.step}
                   </Box>
-                  <Typography className="b2u-display" sx={{ mt: 2.5, fontSize: 24, fontWeight: 600, color: INK }}>
+                  <Typography
+                    className="b2u-display"
+                    sx={{ mt: 2.5, fontSize: 24, fontWeight: 600, color: INK }}
+                  >
                     {s.title}
                   </Typography>
-                  <Typography sx={{ mt: 1, color: 'text.secondary', maxWidth: 320, mx: { md: 'auto' } }}>
+                  <Typography
+                    sx={{ mt: 1, color: 'text.secondary', maxWidth: 320, mx: { md: 'auto' } }}
+                  >
                     {s.body}
                   </Typography>
                 </Box>
@@ -685,7 +898,11 @@ function LandingPage() {
         <Container sx={{ py: { xs: 8, md: 13 } }}>
           <Box data-reveal className="b2u-reveal" sx={{ maxWidth: 620, mb: { xs: 5, md: 7 } }}>
             <Kicker>Why Back2u</Kicker>
-            <Typography className="b2u-display" component="h2" sx={{ mt: 2, fontSize: { xs: 32, md: 50 }, fontWeight: 600 }}>
+            <Typography
+              className="b2u-display"
+              component="h2"
+              sx={{ mt: 2, fontSize: { xs: 32, md: 50 }, fontWeight: 600 }}
+            >
               Built for real-world chaos
             </Typography>
             <Typography sx={{ mt: 2, color: 'text.secondary', fontSize: 18 }}>
@@ -715,10 +932,16 @@ function LandingPage() {
                   '&:hover': { bgcolor: 'rgba(15,118,110,0.04)' },
                 }}
               >
-                <Typography className="b2u-display" sx={{ fontSize: 15, fontWeight: 600, color: '#C2410C', letterSpacing: '0.05em' }}>
+                <Typography
+                  className="b2u-display"
+                  sx={{ fontSize: 15, fontWeight: 600, color: '#C2410C', letterSpacing: '0.05em' }}
+                >
                   {String(i + 1).padStart(2, '0')}
                 </Typography>
-                <Typography className="b2u-display" sx={{ mt: 1.5, fontSize: 22, fontWeight: 600, color: INK }}>
+                <Typography
+                  className="b2u-display"
+                  sx={{ mt: 1.5, fontSize: 22, fontWeight: 600, color: INK }}
+                >
                   {f.title}
                 </Typography>
                 <Typography sx={{ mt: 1, color: 'text.secondary' }}>{f.body}</Typography>
@@ -736,10 +959,20 @@ function LandingPage() {
 
         {/* Testimonials — pull quotes */}
         <Container sx={{ py: { xs: 8, md: 13 } }}>
-          <Box data-reveal className="b2u-reveal" sx={{ textAlign: 'center', mb: { xs: 5, md: 8 } }}>
+          <Box
+            data-reveal
+            className="b2u-reveal"
+            sx={{ textAlign: 'center', mb: { xs: 5, md: 8 } }}
+          >
             <Kicker sx={{ justifyContent: 'center' }}>Loved by finders &amp; owners</Kicker>
           </Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+              gap: 3,
+            }}
+          >
             {TESTIMONIALS.map((tm, i) => (
               <Box
                 key={tm.name}
@@ -758,11 +991,20 @@ function LandingPage() {
                 <Box
                   className="b2u-display"
                   aria-hidden
-                  sx={{ fontSize: 72, lineHeight: 0.7, color: '#E0A106', height: 36, overflow: 'hidden' }}
+                  sx={{
+                    fontSize: 72,
+                    lineHeight: 0.7,
+                    color: '#E0A106',
+                    height: 36,
+                    overflow: 'hidden',
+                  }}
                 >
                   &ldquo;
                 </Box>
-                <Typography className="b2u-display" sx={{ fontStyle: 'italic', fontSize: 20, lineHeight: 1.45, mt: 1 }}>
+                <Typography
+                  className="b2u-display"
+                  sx={{ fontStyle: 'italic', fontSize: 20, lineHeight: 1.45, mt: 1 }}
+                >
                   {tm.quote}
                 </Typography>
                 <Typography sx={{ mt: 3, fontWeight: 700 }}>{tm.name}</Typography>
@@ -776,7 +1018,11 @@ function LandingPage() {
         <Container maxWidth="md" sx={{ py: { xs: 8, md: 12 } }}>
           <Box data-reveal className="b2u-reveal" sx={{ mb: 4 }}>
             <Kicker>Questions</Kicker>
-            <Typography className="b2u-display" component="h2" sx={{ mt: 2, fontSize: { xs: 30, md: 44 }, fontWeight: 600 }}>
+            <Typography
+              className="b2u-display"
+              component="h2"
+              sx={{ mt: 2, fontSize: { xs: 30, md: 44 }, fontWeight: 600 }}
+            >
               Good to know
             </Typography>
           </Box>
@@ -784,7 +1030,10 @@ function LandingPage() {
             {FAQS.map((faq) => (
               <Accordion key={faq.q} disableGutters>
                 <AccordionSummary expandIcon={<FaqIcon />}>
-                  <Typography className="b2u-display" sx={{ fontSize: 19, fontWeight: 600, color: INK }}>
+                  <Typography
+                    className="b2u-display"
+                    sx={{ fontSize: 19, fontWeight: 600, color: INK }}
+                  >
                     {faq.q}
                   </Typography>
                 </AccordionSummary>
@@ -823,26 +1072,51 @@ function LandingPage() {
                 }}
               />
               <Box sx={{ position: 'relative' }}>
-                <Typography className="b2u-display" component="h2" sx={{ fontSize: { xs: 34, md: 56 }, fontWeight: 600, maxWidth: 760, mx: 'auto' }}>
+                <Typography
+                  className="b2u-display"
+                  component="h2"
+                  sx={{ fontSize: { xs: 34, md: 56 }, fontWeight: 600, maxWidth: 760, mx: 'auto' }}
+                >
                   Whatever you&apos;ve lost, let&apos;s get it back to you.
                 </Typography>
-                <Typography sx={{ mt: 2.5, fontSize: 18, color: 'rgba(255,253,248,0.78)', maxWidth: 520, mx: 'auto' }}>
+                <Typography
+                  sx={{
+                    mt: 2.5,
+                    fontSize: 18,
+                    color: 'rgba(255,253,248,0.78)',
+                    maxWidth: 520,
+                    mx: 'auto',
+                  }}
+                >
                   Join thousands across Ghana who trust Back2u to reunite them with what matters.
                 </Typography>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="center" mt={4}>
-                  <Button size="large" variant="contained" color="secondary" href={`${APP_URL}/register`}>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={1.5}
+                  sx={{ justifyContent: 'center', mt: 4 }}
+                >
+                  <Button
+                    size="large"
+                    variant="contained"
+                    color="secondary"
+                    href={`${APP_URL}/register`}
+                  >
                     Get started free
                   </Button>
                   <Button
                     size="large"
                     variant="outlined"
                     href={`${APP_URL}/feed`}
-                    sx={{ color: PAPER, borderColor: 'rgba(255,253,248,0.4)', '&:hover': { borderColor: PAPER, bgcolor: 'rgba(255,253,248,0.08)' } }}
+                    sx={{
+                      color: PAPER,
+                      borderColor: 'rgba(255,253,248,0.4)',
+                      '&:hover': { borderColor: PAPER, bgcolor: 'rgba(255,253,248,0.08)' },
+                    }}
                   >
                     Browse items
                   </Button>
                 </Stack>
-                <Box mt={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
                   <AppStoreBadges tone="dark" />
                 </Box>
               </Box>
@@ -859,8 +1133,24 @@ function LandingPage() {
 function FaqIcon() {
   return (
     <Box sx={{ position: 'relative', width: 22, height: 22, color: 'text.secondary' }}>
-      <AddIcon sx={{ position: 'absolute', inset: 0, fontSize: 22, opacity: 1, '.Mui-expanded &': { opacity: 0 } }} />
-      <RemoveIcon sx={{ position: 'absolute', inset: 0, fontSize: 22, opacity: 0, '.Mui-expanded &': { opacity: 1 } }} />
+      <AddIcon
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          fontSize: 22,
+          opacity: 1,
+          '.Mui-expanded &': { opacity: 0 },
+        }}
+      />
+      <RemoveIcon
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          fontSize: 22,
+          opacity: 0,
+          '.Mui-expanded &': { opacity: 1 },
+        }}
+      />
     </Box>
   );
 }

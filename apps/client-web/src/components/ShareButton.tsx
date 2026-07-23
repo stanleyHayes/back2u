@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutlined';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import PublicIcon from '@mui/icons-material/Public';
 import IosShareIcon from '@mui/icons-material/IosShare';
@@ -26,11 +26,21 @@ interface ShareButtonProps {
   size?: 'small' | 'medium' | 'large';
 }
 
-export function ShareButton({ itemId, url: urlProp, message: messageProp, title, size = 'small' }: ShareButtonProps) {
+export function ShareButton({
+  itemId,
+  url: urlProp,
+  message: messageProp,
+  title,
+  size = 'small',
+}: ShareButtonProps) {
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [shareData, setShareData] = useState<{ url: string; message: string } | null>(null);
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
     open: false,
     message: '',
     severity: 'success',
@@ -93,13 +103,21 @@ export function ShareButton({ itemId, url: urlProp, message: messageProp, title,
   const handleX = () =>
     handleAction(async () => {
       const { url } = await getShareData();
-      window.open(`https://twitter.com/intent/tweet?text=&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+      window.open(
+        `https://twitter.com/intent/tweet?text=&url=${encodeURIComponent(url)}`,
+        '_blank',
+        'noopener,noreferrer',
+      );
     });
 
   const handleFacebook = () =>
     handleAction(async () => {
       const { url } = await getShareData();
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+      window.open(
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+        '_blank',
+        'noopener,noreferrer',
+      );
     });
 
   const handleNativeShare = () =>
@@ -147,7 +165,11 @@ export function ShareButton({ itemId, url: urlProp, message: messageProp, title,
   return (
     <>
       <IconButton size={size} onClick={handleButtonClick} disabled={loading} aria-label="Share">
-        {loading ? <CircularProgress size={size === 'small' ? 16 : size === 'medium' ? 20 : 24} /> : <ShareIcon fontSize={size} />}
+        {loading ? (
+          <CircularProgress size={size === 'small' ? 16 : size === 'medium' ? 20 : 24} />
+        ) : (
+          <ShareIcon fontSize={size} />
+        )}
       </IconButton>
       <Menu
         anchorEl={anchorEl}
@@ -180,17 +202,28 @@ export function ShareButton({ itemId, url: urlProp, message: messageProp, title,
           </ListItemIcon>
           <ListItemText>Share on Facebook</ListItemText>
         </MenuItem>
-        {typeof navigator !== 'undefined' && !!(navigator as Navigator & { share?: unknown }).share && (
-          <MenuItem onClick={handleNativeShare}>
-            <ListItemIcon>
-              <IosShareIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Native share</ListItemText>
-          </MenuItem>
-        )}
+        {typeof navigator !== 'undefined' &&
+          !!(navigator as Navigator & { share?: unknown }).share && (
+            <MenuItem onClick={handleNativeShare}>
+              <ListItemIcon>
+                <IosShareIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Native share</ListItemText>
+            </MenuItem>
+          )}
       </Menu>
-      <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} variant="filled" sx={{ width: '100%' }}>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

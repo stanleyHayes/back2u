@@ -1,12 +1,4 @@
-import {
-  Box,
-  Container,
-  Paper,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Container, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
@@ -71,7 +63,7 @@ function StepCard({ step }: { step: Step }) {
       >
         {step.emoji}
       </Typography>
-      <Typography variant="h6" fontWeight={700} gutterBottom>
+      <Typography variant="h6" sx={{ fontWeight: 700 }} gutterBottom>
         {step.title}
       </Typography>
       <Typography variant="body2" color="text.secondary">
@@ -97,11 +89,7 @@ function ArrowConnector() {
         py: { xs: 1, md: 0 },
       }}
     >
-      {isMobile ? (
-        <ArrowDownwardIcon fontSize="medium" />
-      ) : (
-        <ArrowForwardIcon fontSize="medium" />
-      )}
+      {isMobile ? <ArrowDownwardIcon fontSize="medium" /> : <ArrowForwardIcon fontSize="medium" />}
     </Box>
   );
 }
@@ -121,19 +109,14 @@ export function HeroDemo() {
       <Container>
         <Typography
           variant="h2"
-          fontSize={{ xs: 28, md: 40 }}
-          fontWeight={700}
-          textAlign="center"
           gutterBottom
+          sx={{ fontSize: { xs: 28, md: 40 }, fontWeight: 700, textAlign: 'center' }}
         >
           See how it works in 10 seconds
         </Typography>
         <Typography
           color="text.secondary"
-          textAlign="center"
-          maxWidth={600}
-          mx="auto"
-          mb={6}
+          sx={{ textAlign: 'center', maxWidth: 600, mx: 'auto', mb: 6 }}
         >
           Four simple steps from lost to found.
         </Typography>
@@ -141,8 +124,7 @@ export function HeroDemo() {
         <Stack
           direction={isMobile ? 'column' : 'row'}
           spacing={0}
-          alignItems="center"
-          justifyContent="center"
+          sx={{ alignItems: 'center', justifyContent: 'center' }}
         >
           {STEPS.map((step, index) => (
             <Box

@@ -32,7 +32,7 @@ export function ReferralBanner() {
         >
           {/* Text block */}
           <Box sx={{ flex: 1 }}>
-            <Typography variant="h5" fontWeight={700} gutterBottom>
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 700 }}>
               Invite a friend, both get 50 points
             </Typography>
             <Typography sx={{ opacity: 0.95, maxWidth: 480 }}>
@@ -92,8 +92,10 @@ export function ReferralBanner() {
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}
                   spacing={{ xs: 1, sm: 2 }}
-                  alignItems={{ xs: 'flex-start', sm: 'center' }}
-                  justifyContent="space-between"
+                  sx={{
+                    alignItems: { xs: 'flex-start', sm: 'center' },
+                    justifyContent: 'space-between',
+                  }}
                 >
                   <Typography variant="caption" sx={{ opacity: 0.9 }}>
                     Points redeemable at partner institutions.

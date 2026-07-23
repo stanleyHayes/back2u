@@ -17,7 +17,8 @@ import { useState } from 'react';
 
 import { api } from '../lib/api.js';
 
-const PUBLIC_URL = (import.meta.env.VITE_APP_PUBLIC_URL as string | undefined) ?? 'https://back2u.app';
+const PUBLIC_URL =
+  (import.meta.env.VITE_APP_PUBLIC_URL as string | undefined) ?? 'https://back2u.app';
 
 function tagScanUrl(code: string): string {
   return `${PUBLIC_URL}/tags/${encodeURIComponent(code)}`;
@@ -73,15 +74,15 @@ export function BulkMintTagsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" fontWeight={700}>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
         Mint QR Tags
       </Typography>
 
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
         <TextField
           label="Quantity"
           type="number"
-          inputProps={{ min: 1, max: 500 }}
+          slotProps={{ htmlInput: { min: 1, max: 500 } }}
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
           sx={{ width: 120 }}
@@ -99,11 +100,11 @@ export function BulkMintTagsPage() {
 
       {tags.length > 0 && (
         <Stack spacing={2}>
-          <Stack direction="row" spacing={2} alignItems="center">
+          <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
             <Typography variant="subtitle1">
               Generated {tags.length} tag{tags.length === 1 ? '' : 's'}
             </Typography>
-            <Box flex={1} />
+            <Box sx={{ flex: 1 }} />
             <Button size="small" variant="outlined" onClick={handleDownloadCsv}>
               Download CSV
             </Button>

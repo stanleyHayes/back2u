@@ -1,13 +1,5 @@
 import { useState, useCallback } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  Snackbar,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Container, Paper, Snackbar, Stack, Typography } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 export function PushNotifyDemo() {
@@ -16,7 +8,7 @@ export function PushNotifyDemo() {
 
   const handleEnableDemoAlert = useCallback(async () => {
     if (!('Notification' in window)) {
-      setSnackbarMessage('In the real app, you\'d get push notifications here.');
+      setSnackbarMessage("In the real app, you'd get push notifications here.");
       setSnackbarOpen(true);
       return;
     }
@@ -36,11 +28,11 @@ export function PushNotifyDemo() {
           icon: '/favicon.ico',
         });
       } else {
-        setSnackbarMessage('In the real app, you\'d get push notifications here.');
+        setSnackbarMessage("In the real app, you'd get push notifications here.");
         setSnackbarOpen(true);
       }
     } else {
-      setSnackbarMessage('In the real app, you\'d get push notifications here.');
+      setSnackbarMessage("In the real app, you'd get push notifications here.");
       setSnackbarOpen(true);
     }
   }, []);
@@ -53,26 +45,27 @@ export function PushNotifyDemo() {
     <Box sx={{ py: { xs: 8, md: 12 } }}>
       <Container>
         <Box
-          display="grid"
-          gridTemplateColumns={{ xs: '1fr', md: 'repeat(2, 1fr)' }}
-          gap={6}
-          alignItems="center"
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+            gap: 6,
+            alignItems: 'center',
+          }}
         >
           {/* Text */}
           <Box>
             <Typography
               variant="h2"
-              fontSize={{ xs: 28, md: 40 }}
-              fontWeight={700}
               gutterBottom
+              sx={{ fontSize: { xs: 28, md: 40 }, fontWeight: 700 }}
             >
               Get alerted before you even ask
             </Typography>
-            <Typography color="text.secondary" maxWidth={480}>
-              Subscribe to zone alerts and we&apos;ll notify you when someone
-              reports a found item near where you lost yours.
+            <Typography color="text.secondary" sx={{ maxWidth: 480 }}>
+              Subscribe to zone alerts and we&apos;ll notify you when someone reports a found item
+              near where you lost yours.
             </Typography>
-            <Box mt={4}>
+            <Box sx={{ mt: 4 }}>
               <Button
                 variant="contained"
                 color="primary"
@@ -86,7 +79,7 @@ export function PushNotifyDemo() {
           </Box>
 
           {/* Mock notification card */}
-          <Box display="flex" justifyContent="center">
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Paper
               elevation={4}
               sx={{
@@ -99,7 +92,7 @@ export function PushNotifyDemo() {
                 borderColor: 'divider',
               }}
             >
-              <Stack direction="row" spacing={1.5} alignItems="flex-start">
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
                 <Box
                   sx={{
                     width: 40,
@@ -115,14 +108,17 @@ export function PushNotifyDemo() {
                   <NotificationsIcon sx={{ color: 'primary.contrastText', fontSize: 20 }} />
                 </Box>
                 <Box>
-                  <Typography variant="subtitle2" fontWeight={700}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
                     Back2u Alert
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" mt={0.25}>
-                    iPhone 14 found near Accra Mall — possible match for your lost
-                    item
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
+                    iPhone 14 found near Accra Mall — possible match for your lost item
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.7 }} mt={0.5} display="block">
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ opacity: 0.7, mt: 0.5, display: 'block' }}
+                  >
                     now
                   </Typography>
                 </Box>
@@ -148,7 +144,7 @@ export function PushNotifyDemo() {
             color: 'secondary.contrastText',
           }}
         >
-          <Typography variant="body2" fontWeight={500}>
+          <Typography variant="body2" sx={{ fontWeight: 500 }}>
             {snackbarMessage}
           </Typography>
         </Paper>

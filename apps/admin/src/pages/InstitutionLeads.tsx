@@ -31,7 +31,11 @@ export function InstitutionLeadsPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [processing, setProcessing] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
     open: false,
     message: '',
     severity: 'success',
@@ -77,7 +81,10 @@ export function InstitutionLeadsPage() {
     for (let i = 0; i < ids.length; i++) {
       setProgress({ current: i + 1, total: ids.length });
       try {
-        await decide.mutateAsync({ id: ids[i], decision } as { id: string; decision: 'approved' | 'rejected' });
+        await decide.mutateAsync({ id: ids[i], decision } as {
+          id: string;
+          decision: 'approved' | 'rejected';
+        });
       } catch {
         failed++;
       }
@@ -88,22 +95,32 @@ export function InstitutionLeadsPage() {
     await qc.invalidateQueries({ queryKey: ['admin-institution-leads'] });
     setSnackbar({
       open: true,
-      message: failed > 0 ? `Completed with ${failed} failures.` : `All ${ids.length} leads ${decision}.`,
+      message:
+        failed > 0 ? `Completed with ${failed} failures.` : `All ${ids.length} leads ${decision}.`,
       severity: failed > 0 ? 'error' : 'success',
     });
   };
 
   return (
     <Stack spacing={3}>
-      <Stack direction="row" alignItems="center" spacing={2} justifyContent="space-between">
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <Typography variant="h4" fontWeight={700}>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+      >
+        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+          <Typography variant="h4" sx={{ fontWeight: 700 }}>
             Partnership leads
           </Typography>
           {newCount > 0 && <Chip label={`${newCount} new`} color="info" />}
         </Stack>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleSelectAll} disabled={items.length === 0 || processing} />
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Checkbox
+            checked={allSelected}
+            indeterminate={someSelected}
+            onChange={toggleSelectAll}
+            disabled={items.length === 0 || processing}
+          />
           <Typography variant="body2" color="text.secondary">
             Select all
           </Typography>
@@ -111,16 +128,26 @@ export function InstitutionLeadsPage() {
       </Stack>
 
       <Typography color="text.secondary">
-        Self-serve “Partner with us” submissions from the marketing site. Triage, reach out, and convert
-        approved leads into onboarded institutions.
+        Self-serve “Partner with us” submissions from the marketing site. Triage, reach out, and
+        convert approved leads into onboarded institutions.
       </Typography>
 
       {selectedIds.size > 0 && (
         <Stack direction="row" spacing={1}>
-          <Button variant="contained" color="success" disabled={processing} onClick={() => runBulk('approved')}>
+          <Button
+            variant="contained"
+            color="success"
+            disabled={processing}
+            onClick={() => runBulk('approved')}
+          >
             Approve selected ({selectedIds.size})
           </Button>
-          <Button variant="outlined" color="error" disabled={processing} onClick={() => runBulk('rejected')}>
+          <Button
+            variant="outlined"
+            color="error"
+            disabled={processing}
+            onClick={() => runBulk('rejected')}
+          >
             Reject selected ({selectedIds.size})
           </Button>
         </Stack>
@@ -145,12 +172,18 @@ export function InstitutionLeadsPage() {
         />
       )}
 
-      <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: 'repeat(2, 1fr)' }} gap={2}>
+      <Box
+        sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}
+      >
         {items.map((lead) => (
           <Card key={lead.id} variant="outlined">
             <CardContent>
-              <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={1}>
-                <Stack direction="row" alignItems="center" spacing={1}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
+              >
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <Checkbox
                     checked={selectedIds.has(lead.id)}
                     onChange={() => toggleSelect(lead.id)}
@@ -167,13 +200,12 @@ export function InstitutionLeadsPage() {
                 <Chip label={lead.status} size="small" color={STATUS_COLOR[lead.status]} />
               </Stack>
 
-              <Stack spacing={0.25} mt={1.5} sx={{ pl: 4 }}>
+              <Stack spacing={0.25} sx={{ mt: 1.5, pl: 4 }}>
                 <Typography variant="body2">
                   <b>Contact:</b> {lead.contactName}
                 </Typography>
                 <Typography variant="body2">
-                  <b>Email:</b>{' '}
-                  <a href={`mailto:${lead.contactEmail}`}>{lead.contactEmail}</a>
+                  <b>Email:</b> <a href={`mailto:${lead.contactEmail}`}>{lead.contactEmail}</a>
                 </Typography>
                 {lead.contactPhone && (
                   <Typography variant="body2">
@@ -188,12 +220,16 @@ export function InstitutionLeadsPage() {
               </Stack>
 
               {lead.message && (
-                <Typography variant="body2" color="text.secondary" mt={1.5} sx={{ pl: 4, fontStyle: 'italic' }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 1.5, pl: 4, fontStyle: 'italic' }}
+                >
                   “{lead.message}”
                 </Typography>
               )}
 
-              <Stack direction="row" spacing={1} mt={2} flexWrap="wrap" useFlexGap sx={{ pl: 4 }}>
+              <Stack direction="row" spacing={1} useFlexGap sx={{ mt: 2, flexWrap: 'wrap', pl: 4 }}>
                 <Button
                   size="small"
                   variant="outlined"
@@ -231,7 +267,10 @@ export function InstitutionLeadsPage() {
         onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar((s) => ({ ...s, open: false }))}>
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

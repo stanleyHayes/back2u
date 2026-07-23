@@ -17,10 +17,15 @@ export function PartnerLogos() {
       <Container>
         <Typography
           variant="h6"
-          fontWeight={600}
-          textAlign="center"
           color="text.secondary"
-          sx={{ mb: { xs: 4, md: 5 }, textTransform: 'uppercase', letterSpacing: 1.5, fontSize: 14 }}
+          sx={{
+            fontWeight: 600,
+            textAlign: 'center',
+            mb: { xs: 4, md: 5 },
+            textTransform: 'uppercase',
+            letterSpacing: 1.5,
+            fontSize: 14,
+          }}
         >
           Trusted by leading institutions
         </Typography>
@@ -39,7 +44,11 @@ export function PartnerLogos() {
           {PARTNERS.map((name, index) => (
             <Box key={name} sx={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
               {index > 0 && (
-                <Divider orientation="vertical" flexItem sx={{ mx: 2, borderColor: 'divider', opacity: 0.5 }} />
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  sx={{ mx: 2, borderColor: 'divider', opacity: 0.5 }}
+                />
               )}
               <Typography
                 variant="body2"

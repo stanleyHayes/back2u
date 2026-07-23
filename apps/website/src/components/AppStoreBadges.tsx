@@ -34,17 +34,24 @@ function Badge({
         border: '1px solid rgba(255,253,248,0.16)',
         transition: 'transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease',
         boxShadow: '0 10px 24px -16px rgba(11,61,56,.8)',
-        '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 16px 30px -16px rgba(11,61,56,.9)' },
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          boxShadow: '0 16px 30px -16px rgba(11,61,56,.9)',
+        },
       }}
     >
       <Box sx={{ display: 'grid', placeItems: 'center', width: 26, height: 26, flexShrink: 0 }}>
         {icon}
       </Box>
       <Box sx={{ lineHeight: 1.1, textAlign: 'left' }}>
-        <Box sx={{ fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', opacity: 0.7 }}>
+        <Box
+          sx={{ fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', opacity: 0.7 }}
+        >
           {eyebrow}
         </Box>
-        <Box sx={{ fontFamily: '"Outfit", sans-serif', fontSize: 16, fontWeight: 700 }}>{label}</Box>
+        <Box sx={{ fontFamily: '"Outfit", sans-serif', fontSize: 16, fontWeight: 700 }}>
+          {label}
+        </Box>
       </Box>
     </Box>
   );
@@ -58,8 +65,14 @@ const AppleMark = (
 
 const PlayMark = (
   <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M3.6 2.3c-.3.2-.5.6-.5 1.1v17.2c0 .5.2.9.5 1.1l.1.1L13 12.1v-.2L3.7 2.2l-.1.1z" fill="#14B8A6" />
-    <path d="M16.3 15.4 13 12.1v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.6 0 2.3l-3.9 2.2-.1.1z" fill="#E0A106" />
+    <path
+      d="M3.6 2.3c-.3.2-.5.6-.5 1.1v17.2c0 .5.2.9.5 1.1l.1.1L13 12.1v-.2L3.7 2.2l-.1.1z"
+      fill="#14B8A6"
+    />
+    <path
+      d="M16.3 15.4 13 12.1v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.6 0 2.3l-3.9 2.2-.1.1z"
+      fill="#E0A106"
+    />
     <path d="M16.4 15.3 13 12 3.6 21.7c.4.4 1 .4 1.6.1l11.2-6.5z" fill="#F3C969" />
     <path d="M16.4 8.7 5.2 2.2c-.6-.3-1.2-.3-1.6.1L13 12l3.4-3.3z" fill="#0F766E" />
   </svg>
@@ -67,7 +80,12 @@ const PlayMark = (
 
 export function AppStoreBadges({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
   return (
-    <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap sx={{ opacity: tone === 'dark' ? 1 : 0.98 }}>
+    <Stack
+      direction="row"
+      spacing={1.5}
+      useFlexGap
+      sx={{ flexWrap: 'wrap', opacity: tone === 'dark' ? 1 : 0.98 }}
+    >
       <Badge href={APP_STORE_URL} eyebrow="Download on the" label="App Store" icon={AppleMark} />
       <Badge href={PLAY_STORE_URL} eyebrow="Get it on" label="Google Play" icon={PlayMark} />
     </Stack>

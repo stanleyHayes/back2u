@@ -150,7 +150,10 @@ export function AiAssistantBar({
     setCopied(false);
   };
 
-  const runAssist = async (action: AiAssistAction, extra?: { prompt?: string; language?: string }) => {
+  const runAssist = async (
+    action: AiAssistAction,
+    extra?: { prompt?: string; language?: string },
+  ) => {
     const selection = getSelection?.().trim() ?? '';
     const source = selection || value;
     setSourceText(selection && selection !== value ? selection : '');
@@ -163,11 +166,13 @@ export function AiAssistantBar({
         text: source || undefined,
         prompt: extra?.prompt,
         language: extra?.language,
-        context: action === 'generate_title' ? context ?? value : undefined,
+        context: action === 'generate_title' ? (context ?? value) : undefined,
       });
       setDraft(result.text);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'The assistant could not complete that. Please try again.');
+      setError(
+        e instanceof Error ? e.message : 'The assistant could not complete that. Please try again.',
+      );
     } finally {
       setLoading(false);
     }
@@ -226,7 +231,7 @@ export function AiAssistantBar({
   let dialogBody: ReactNode = null;
   if (loading) {
     dialogBody = (
-      <Stack alignItems="center" justifyContent="center" spacing={1.5} sx={{ py: 5 }}>
+      <Stack spacing={1.5} sx={{ alignItems: 'center', justifyContent: 'center', py: 5 }}>
         <CircularProgress size={28} sx={{ color: t.main }} />
         <Typography variant="body2" color="text.secondary">
           Writing…
@@ -256,7 +261,11 @@ export function AiAssistantBar({
           fullWidth
           multiline
           minRows={2}
-          label={dialogAction === 'generate_message' ? 'What should the message say?' : 'What should I write?'}
+          label={
+            dialogAction === 'generate_message'
+              ? 'What should the message say?'
+              : 'What should I write?'
+          }
           placeholder={
             dialogAction === 'generate_message'
               ? 'e.g. remind the finder to drop the item at the front desk by Friday'
@@ -354,7 +363,7 @@ export function AiAssistantBar({
               </Button>
             </>
           ) : draft !== null ? (
-            <Stack direction="row" spacing={1} sx={{ width: '100%' }} alignItems="center">
+            <Stack direction="row" spacing={1} sx={{ width: '100%', alignItems: 'center' }}>
               <Button onClick={reset} color="inherit">
                 Discard
               </Button>

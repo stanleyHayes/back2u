@@ -43,7 +43,11 @@ export function ModerationQueuePage() {
   const [typeFilter, setTypeFilter] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [detailItem, setDetailItem] = useState<ModerationQueueItemDTO | null>(null);
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
     open: false,
     message: '',
     severity: 'success',
@@ -51,7 +55,8 @@ export function ModerationQueuePage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['admin-moderation-queue', typeFilter, statusFilter],
-    queryFn: () => api.listModerationQueue({ type: typeFilter || undefined, status: statusFilter || undefined }),
+    queryFn: () =>
+      api.listModerationQueue({ type: typeFilter || undefined, status: statusFilter || undefined }),
   });
 
   const review = useMutation({
@@ -71,7 +76,7 @@ export function ModerationQueuePage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" fontWeight={700}>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
         Moderation Queue
       </Typography>
 
@@ -87,7 +92,11 @@ export function ModerationQueuePage() {
         </FormControl>
         <FormControl size="small" sx={{ minWidth: 120 }}>
           <InputLabel>Status</InputLabel>
-          <Select value={statusFilter} label="Status" onChange={(e) => setStatusFilter(e.target.value)}>
+          <Select
+            value={statusFilter}
+            label="Status"
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
             <MenuItem value="">All</MenuItem>
             <MenuItem value="pending">Pending</MenuItem>
             <MenuItem value="reviewed">Reviewed</MenuItem>
@@ -128,7 +137,11 @@ export function ModerationQueuePage() {
                 <TableCell>{item.reason}</TableCell>
                 <TableCell>{item.score.toFixed(2)}</TableCell>
                 <TableCell>
-                  <Chip label={item.status} size="small" color={STATUS_COLOR[item.status] ?? 'default'} />
+                  <Chip
+                    label={item.status}
+                    size="small"
+                    color={STATUS_COLOR[item.status] ?? 'default'}
+                  />
                 </TableCell>
                 <TableCell>{new Date(item.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell>
@@ -148,8 +161,16 @@ export function ModerationQueuePage() {
           <DialogContent>
             <Stack spacing={2} sx={{ mt: 1 }}>
               <Stack direction="row" spacing={1}>
-                <Chip label={detailItem.type} size="small" color={TYPE_COLOR[detailItem.type] ?? 'default'} />
-                <Chip label={detailItem.status} size="small" color={STATUS_COLOR[detailItem.status] ?? 'default'} />
+                <Chip
+                  label={detailItem.type}
+                  size="small"
+                  color={TYPE_COLOR[detailItem.type] ?? 'default'}
+                />
+                <Chip
+                  label={detailItem.status}
+                  size="small"
+                  color={STATUS_COLOR[detailItem.status] ?? 'default'}
+                />
               </Stack>
               <Typography variant="body2" color="text.secondary">
                 Target ID: {detailItem.targetId}
@@ -202,7 +223,10 @@ export function ModerationQueuePage() {
         onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar((s) => ({ ...s, open: false }))}>
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

@@ -43,11 +43,11 @@ export function PartnerItemsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" fontWeight={700}>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
         Items
       </Typography>
 
-      <Stack direction="row" spacing={2} flexWrap="wrap">
+      <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap' }}>
         <TextField
           label="Search"
           value={search}
@@ -55,25 +55,31 @@ export function PartnerItemsPage() {
           size="small"
           sx={{ minWidth: 240 }}
         />
-        <Box display="flex" gap={1} flexWrap="wrap">
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
           {STATUSES.map((s) => (
             <Button
               key={s}
               variant={status === s ? 'contained' : 'outlined'}
               size="small"
-              onClick={() => { setStatus(s); setPage(1); }}
+              onClick={() => {
+                setStatus(s);
+                setPage(1);
+              }}
             >
               {s}
             </Button>
           ))}
         </Box>
-        <Box display="flex" gap={1} flexWrap="wrap">
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
           {KINDS.map((k) => (
             <Button
               key={k}
               variant={kind === k ? 'contained' : 'outlined'}
               size="small"
-              onClick={() => { setKind(k); setPage(1); }}
+              onClick={() => {
+                setKind(k);
+                setPage(1);
+              }}
             >
               {k}
             </Button>
@@ -84,15 +90,37 @@ export function PartnerItemsPage() {
       {isLoading ? (
         <CardGridSkeleton count={6} minWidth={280} />
       ) : items.length === 0 ? (
-        <EmptyState tone="teal" icon={<Inventory2OutlinedIcon />} title="No items found" description="No items match these filters yet — try clearing them." />
+        <EmptyState
+          tone="teal"
+          icon={<Inventory2OutlinedIcon />}
+          title="No items found"
+          description="No items match these filters yet — try clearing them."
+        />
       ) : (
         <>
-          <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }} gap={2}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+              gap: 2,
+            }}
+          >
             {items.map((item) => (
-              <Card key={item.id} variant="outlined" component={Link} to={`/items/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Card
+                key={item.id}
+                variant="outlined"
+                component={Link}
+                to={`/items/${item.id}`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
                 <CardContent>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6" fontWeight={600}>{item.title}</Typography>
+                  <Stack
+                    direction="row"
+                    sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+                  >
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      {item.title}
+                    </Typography>
                     <Chip label={item.status} size="small" />
                   </Stack>
                   <Typography variant="body2" color="text.secondary">

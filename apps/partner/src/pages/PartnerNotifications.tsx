@@ -10,7 +10,10 @@ const TEAL = '#2DD4BF';
 
 export function PartnerNotificationsPage() {
   const qc = useQueryClient();
-  const { data, isLoading } = useQuery({ queryKey: ['notifications'], queryFn: () => api.listNotifications(50) });
+  const { data, isLoading } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: () => api.listNotifications(50),
+  });
 
   const markAll = useMutation({
     mutationFn: () => api.markAllNotificationsRead(),
@@ -26,15 +29,37 @@ export function PartnerNotificationsPage() {
 
   return (
     <Box sx={{ maxWidth: 720 }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2.5 }}>
+      <Stack
+        direction="row"
+        sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 2.5 }}
+      >
         <Box>
-          <Typography sx={{ color: TEAL, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', fontSize: 12, mb: 0.5 }}>
+          <Typography
+            sx={{
+              color: TEAL,
+              fontWeight: 700,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              fontSize: 12,
+              mb: 0.5,
+            }}
+          >
             Inbox
           </Typography>
-          <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 28 }}>Notifications</Typography>
+          <Typography
+            sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 28 }}
+          >
+            Notifications
+          </Typography>
         </Box>
         {hasUnread && (
-          <Button variant="outlined" size="small" onClick={() => markAll.mutate()} disabled={markAll.isPending} sx={{ borderRadius: 999, fontWeight: 600 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => markAll.mutate()}
+            disabled={markAll.isPending}
+            sx={{ borderRadius: 999, fontWeight: 600 }}
+          >
             Mark all read
           </Button>
         )}
@@ -65,14 +90,25 @@ export function PartnerNotificationsPage() {
                 transition: 'background-color .15s',
               }}
             >
-              <Stack direction="row" alignItems="flex-start" justifyContent="space-between" spacing={1}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
+              >
                 <Box sx={{ minWidth: 0 }}>
                   <Typography sx={{ fontWeight: n.read ? 500 : 700 }} noWrap>
                     {n.title}
                   </Typography>
                   <Typography sx={{ fontSize: 13.5, color: 'text.secondary' }}>{n.body}</Typography>
                 </Box>
-                <Typography sx={{ fontSize: 11.5, color: 'text.secondary', flexShrink: 0, whiteSpace: 'nowrap' }}>
+                <Typography
+                  sx={{
+                    fontSize: 11.5,
+                    color: 'text.secondary',
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {new Date(n.createdAt).toLocaleDateString()}
                 </Typography>
               </Stack>

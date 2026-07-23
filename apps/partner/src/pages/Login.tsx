@@ -50,7 +50,11 @@ export function LoginPage() {
         setErr('This account does not have partner access.');
         return;
       }
-      setAuth({ user: res.user, accessToken: res.tokens.accessToken, refreshToken: res.tokens.refreshToken });
+      setAuth({
+        user: res.user,
+        accessToken: res.tokens.accessToken,
+        refreshToken: res.tokens.refreshToken,
+      });
       navigate('/');
     },
     onError: (e: unknown) => setErr(e instanceof Error ? e.message : 'Login failed'),
@@ -103,7 +107,9 @@ export function LoginPage() {
             }}
           />
 
-          <Box sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 1.25 }}>
+          <Box
+            sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 1.25 }}
+          >
             <Box
               sx={{
                 width: 32,
@@ -117,7 +123,9 @@ export function LoginPage() {
             >
               <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: PAPER }} />
             </Box>
-            <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 23, letterSpacing: '-0.03em' }}>
+            <Typography
+              sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 23, letterSpacing: '-0.03em' }}
+            >
               Back2u
             </Typography>
             <Box
@@ -137,18 +145,37 @@ export function LoginPage() {
           </Box>
 
           <Box sx={{ position: 'relative' }}>
-            <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 40, lineHeight: 1.08, letterSpacing: '-0.02em' }}>
+            <Typography
+              sx={{
+                fontFamily: DISPLAY,
+                fontWeight: 600,
+                fontSize: 40,
+                lineHeight: 1.08,
+                letterSpacing: '-0.02em',
+              }}
+            >
               Your front desk, online.
             </Typography>
             <Typography sx={{ mt: 2, fontSize: 16, color: 'rgba(255,253,248,0.7)', maxWidth: 380 }}>
-              Track everything reported at your venue, redeem finder points at your counters, dispatch couriers, and
-              manage your plan — all in one place.
+              Track everything reported at your venue, redeem finder points at your counters,
+              dispatch couriers, and manage your plan — all in one place.
             </Typography>
-            <Stack direction="row" spacing={4} mt={5}>
+            <Stack direction="row" spacing={4} sx={{ mt: 5 }}>
               {STATS.map((s) => (
                 <Box key={s.l}>
-                  <Typography sx={{ fontFamily: DISPLAY, fontSize: 22, fontWeight: 600, color: MARIGOLD }}>{s.n}</Typography>
-                  <Typography sx={{ fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,253,248,0.6)' }}>
+                  <Typography
+                    sx={{ fontFamily: DISPLAY, fontSize: 22, fontWeight: 600, color: MARIGOLD }}
+                  >
+                    {s.n}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: 12,
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      color: 'rgba(255,253,248,0.6)',
+                    }}
+                  >
                     {s.l}
                   </Typography>
                 </Box>
@@ -160,20 +187,40 @@ export function LoginPage() {
         {/* Form */}
         <Box sx={{ display: 'grid', placeItems: 'center', p: { xs: 3, md: 6 } }}>
           <Box sx={{ width: '100%', maxWidth: 400 }}>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ color: TEAL, mb: 1 }}>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
               <StorefrontOutlinedIcon fontSize="small" />
-              <Typography sx={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+              <Typography
+                sx={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: '0.16em',
+                  textTransform: 'uppercase',
+                }}
+              >
                 Partner access
               </Typography>
             </Stack>
-            <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: { xs: 32, md: 40 }, letterSpacing: '-0.02em', color: INK }}>
+            <Typography
+              sx={{
+                fontFamily: DISPLAY,
+                fontWeight: 600,
+                fontSize: { xs: 32, md: 40 },
+                letterSpacing: '-0.02em',
+                color: INK,
+              }}
+            >
               Partner sign-in
             </Typography>
             <Typography sx={{ color: 'text.secondary', mt: 1, mb: 3 }}>
               For institution staff &amp; couriers.
             </Typography>
 
-            <form onSubmit={(e) => { e.preventDefault(); login.mutate(); }}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                login.mutate();
+              }}
+            >
               <Stack spacing={2.25}>
                 {err && (
                   <Alert severity="error" sx={{ borderRadius: 2 }}>
@@ -199,14 +246,20 @@ export function LoginPage() {
                   fullWidth
                   autoComplete="current-password"
                   sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fff', borderRadius: 2 } }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={() => setShowPw((v) => !v)} edge="end" aria-label="Toggle password">
-                          {showPw ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPw((v) => !v)}
+                            edge="end"
+                            aria-label="Toggle password"
+                          >
+                            {showPw ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
                   }}
                 />
                 <Button

@@ -16,7 +16,7 @@ import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 import { useAuth } from '../lib/auth.store.js';
@@ -118,7 +118,10 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
                     color: active ? '#FFFFFF' : MUTED,
                     bgcolor: active ? 'rgba(45,212,191,0.12)' : 'transparent',
                     transition: 'background-color .15s, color .15s',
-                    '&:hover': { bgcolor: active ? 'rgba(45,212,191,0.16)' : 'rgba(255,255,255,0.05)', color: '#FFFFFF' },
+                    '&:hover': {
+                      bgcolor: active ? 'rgba(45,212,191,0.16)' : 'rgba(255,255,255,0.05)',
+                      color: '#FFFFFF',
+                    },
                     '& svg': { fontSize: 20, color: active ? TEAL : 'rgba(233,238,247,0.5)' },
                     // marigold active accent bar
                     '&::before': active
@@ -137,7 +140,9 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
                   }}
                 >
                   {item.icon}
-                  <Typography sx={{ fontSize: 14.5, fontWeight: active ? 700 : 500 }}>{item.label}</Typography>
+                  <Typography sx={{ fontSize: 14.5, fontWeight: active ? 700 : 500 }}>
+                    {item.label}
+                  </Typography>
                 </Box>
               );
             })}
@@ -152,7 +157,15 @@ function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
   const { user, clear } = useAuth();
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: INK_PANEL }}>
-      <Box sx={{ px: 2.5, py: 2.5, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Box
+        sx={{
+          px: 2.5,
+          py: 2.5,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         <BrandLogo size={26} onDark />
         <Box
           sx={{
@@ -175,8 +188,16 @@ function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
       <NavList onNavigate={onNavigate} />
 
       {/* User footer */}
-      <Box sx={{ p: 1.5, m: 1.5, borderRadius: 2.5, bgcolor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-        <Stack direction="row" spacing={1.25} alignItems="center">
+      <Box
+        sx={{
+          p: 1.5,
+          m: 1.5,
+          borderRadius: 2.5,
+          bgcolor: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.06)',
+        }}
+      >
+        <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
           <Box
             sx={{
               width: 36,
@@ -202,7 +223,11 @@ function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
             </Typography>
           </Box>
           <Tooltip title="Sign out">
-            <IconButton onClick={clear} size="small" sx={{ color: MUTED, '&:hover': { color: '#fff' } }}>
+            <IconButton
+              onClick={clear}
+              size="small"
+              sx={{ color: MUTED, '&:hover': { color: '#fff' } }}
+            >
               <LogoutIcon fontSize="small" />
             </IconButton>
           </Tooltip>
@@ -215,7 +240,9 @@ function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
 export function AdminLayout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { pathname } = useLocation();
-  const current = [...ALL_ITEMS].sort((a, b) => b.to.length - a.to.length).find((i) => isActive(pathname, i.to));
+  const current = [...ALL_ITEMS]
+    .sort((a, b) => b.to.length - a.to.length)
+    .find((i) => isActive(pathname, i.to));
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
@@ -240,13 +267,25 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         ModalProps={{ keepMounted: true }}
-        sx={{ display: { xs: 'block', md: 'none' }, '& .MuiDrawer-paper': { width: SIDEBAR_W, border: 'none' } }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { width: SIDEBAR_W, border: 'none' },
+        }}
       >
         <SidebarInner onNavigate={() => setMobileOpen(false)} />
       </Drawer>
 
       {/* Main column */}
-      <Box sx={{ flex: 1, minWidth: 0, maxWidth: '100%', overflowX: 'hidden', display: 'flex', flexDirection: 'column' }}>
+      <Box
+        sx={{
+          flex: 1,
+          minWidth: 0,
+          maxWidth: '100%',
+          overflowX: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         {/* Topbar */}
         <Box
           sx={{
@@ -273,7 +312,13 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           </IconButton>
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography
-              sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 22, color: '#F3F6FB', lineHeight: 1.15 }}
+              sx={{
+                fontFamily: '"Fraunces", Georgia, serif',
+                fontWeight: 600,
+                fontSize: 22,
+                color: '#F3F6FB',
+                lineHeight: 1.15,
+              }}
             >
               {current?.label ?? 'Console'}
             </Typography>
@@ -281,7 +326,9 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           </Box>
         </Box>
 
-        <Box sx={{ flex: 1, width: '100%', maxWidth: 1440, mx: 'auto', p: { xs: 2, md: 4 } }}>{children}</Box>
+        <Box sx={{ flex: 1, width: '100%', maxWidth: 1440, mx: 'auto', p: { xs: 2, md: 4 } }}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );

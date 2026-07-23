@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  Link,
-  Slide,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Container, Link, Slide, Stack, Typography } from '@mui/material';
 
 const STORAGE_KEY = 'back2u-cookie-consent';
 
@@ -68,8 +60,10 @@ export function CookieConsent() {
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
               spacing={{ xs: 2, sm: 3 }}
-              alignItems={{ xs: 'flex-start', sm: 'center' }}
-              justifyContent="space-between"
+              sx={{
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                justifyContent: 'space-between',
+              }}
             >
               <Box>
                 <Typography variant="body2" color="text.secondary">
@@ -84,20 +78,11 @@ export function CookieConsent() {
                   Privacy Policy
                 </Link>
               </Box>
-              <Stack direction="row" spacing={1} flexShrink={0}>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  onClick={handleDecline}
-                >
+              <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
+                <Button variant="outlined" size="small" onClick={handleDecline}>
                   Decline
                 </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  onClick={handleAccept}
-                >
+                <Button variant="contained" color="primary" size="small" onClick={handleAccept}>
                   Accept all
                 </Button>
               </Stack>

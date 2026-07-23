@@ -52,7 +52,9 @@ export function MarketplacePage() {
   // Marketplace is live by default. It only hides if an admin has explicitly
   // created the 'marketplace' flag and switched it off / scoped its rollout.
   const marketplaceFlag = featureFlags.find((f) => f.key === 'marketplace');
-  const marketplaceEnabled = marketplaceFlag ? isFlagEnabled(featureFlags, 'marketplace', user?.id) : true;
+  const marketplaceEnabled = marketplaceFlag
+    ? isFlagEnabled(featureFlags, 'marketplace', user?.id)
+    : true;
   const { data } = useQuery({
     queryKey: ['marketplace'],
     queryFn: () => api.listMarketplace(),
@@ -80,13 +82,28 @@ export function MarketplacePage() {
 
   return (
     <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
-      <Stack direction="row" spacing={1.25} alignItems="center" sx={{ color: TEAL, mb: 1 }}>
+      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
         <GavelIcon fontSize="small" />
-        <Typography sx={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+        <Typography
+          sx={{
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+          }}
+        >
           Unclaimed marketplace
         </Typography>
       </Stack>
-      <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: { xs: 34, md: 44 }, color: INK, letterSpacing: '-0.02em' }}>
+      <Typography
+        sx={{
+          fontFamily: DISPLAY,
+          fontWeight: 600,
+          fontSize: { xs: 34, md: 44 },
+          color: INK,
+          letterSpacing: '-0.02em',
+        }}
+      >
         Auctions &amp; donations
       </Typography>
       <Typography color="text.secondary" sx={{ mt: 1, mb: 3 }}>
@@ -103,7 +120,13 @@ export function MarketplacePage() {
 
       {!data && <CardGridSkeleton count={6} minWidth={280} />}
 
-      <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2,1fr)', md: 'repeat(3,1fr)' }} gap={2.5}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)', md: 'repeat(3,1fr)' },
+          gap: 2.5,
+        }}
+      >
         {data?.map((l) => (
           <ListingCard
             key={l.id}
@@ -159,7 +182,10 @@ function ListingCard({
         border: '1px solid',
         borderColor: 'divider',
         transition: 'transform .18s, box-shadow .18s',
-        '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 26px 46px -30px rgba(11,61,56,.5)' },
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          boxShadow: '0 26px 46px -30px rgba(11,61,56,.5)',
+        },
       }}
     >
       {/* Item image */}
@@ -177,7 +203,12 @@ function ListingCard({
         }}
       >
         {item?.imageUrl ? (
-          <Box component="img" src={item.imageUrl} alt={title} sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <Box
+            component="img"
+            src={item.imageUrl}
+            alt={title}
+            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
         ) : (
           <Box sx={{ height: '100%', display: 'grid', placeItems: 'center', color: TEAL }}>
             <GavelIcon sx={{ fontSize: 40, opacity: 0.5 }} />
@@ -226,7 +257,17 @@ function ListingCard({
         {item?.category && (
           <Box
             component="span"
-            sx={{ display: 'inline-block', px: 1.1, py: 0.25, borderRadius: 999, fontSize: 11, fontWeight: 600, color: 'text.secondary', border: '1px solid', borderColor: 'divider' }}
+            sx={{
+              display: 'inline-block',
+              px: 1.1,
+              py: 0.25,
+              borderRadius: 999,
+              fontSize: 11,
+              fontWeight: 600,
+              color: 'text.secondary',
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
           >
             {item.category}
           </Box>
@@ -235,7 +276,16 @@ function ListingCard({
           component={Link}
           to={`/items/${l.itemId}`}
           noWrap
-          sx={{ display: 'block', mt: 0.75, fontFamily: DISPLAY, fontWeight: 600, fontSize: 19, color: INK, textDecoration: 'none', '&:hover': { color: TEAL } }}
+          sx={{
+            display: 'block',
+            mt: 0.75,
+            fontFamily: DISPLAY,
+            fontWeight: 600,
+            fontSize: 19,
+            color: INK,
+            textDecoration: 'none',
+            '&:hover': { color: TEAL },
+          }}
         >
           {title}
         </Typography>
@@ -246,10 +296,16 @@ function ListingCard({
         )}
 
         <Box sx={{ mt: 1.25 }}>
-          <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}
+          >
             Starting price
           </Typography>
-          <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 24, color: INK, lineHeight: 1.1 }}>
+          <Typography
+            sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 24, color: INK, lineHeight: 1.1 }}
+          >
             {money(l.startingPrice, l.currency)}
           </Typography>
           {l.buyNowPrice ? (
@@ -258,12 +314,16 @@ function ListingCard({
             </Typography>
           ) : null}
           {l.charityRecipient && (
-            <Chip size="small" label={`Proceeds → ${l.charityRecipient}`} sx={{ mt: 0.75, bgcolor: 'rgba(15,118,110,0.1)', color: TEAL }} />
+            <Chip
+              size="small"
+              label={`Proceeds → ${l.charityRecipient}`}
+              sx={{ mt: 0.75, bgcolor: 'rgba(15,118,110,0.1)', color: TEAL }}
+            />
           )}
         </Box>
       </Box>
 
-      <Box flex={1} sx={{ minHeight: 12 }} />
+      <Box sx={{ flex: 1, minHeight: 12 }} />
 
       <Stack direction="row" spacing={1} sx={{ px: 0.5, pb: 0.25 }}>
         <TextField
@@ -278,7 +338,14 @@ function ListingCard({
         <Button
           onClick={onBid}
           disabled={!live || pending || !(Number(bid) > 0)}
-          sx={{ bgcolor: MARIGOLD, color: INK, borderRadius: 999, fontWeight: 700, px: 2.5, '&:hover': { bgcolor: '#cf9305' } }}
+          sx={{
+            bgcolor: MARIGOLD,
+            color: INK,
+            borderRadius: 999,
+            fontWeight: 700,
+            px: 2.5,
+            '&:hover': { bgcolor: '#cf9305' },
+          }}
         >
           Bid
         </Button>
@@ -321,18 +388,33 @@ function MyBidsSection() {
   if (!user) return null;
 
   return (
-    <Box sx={{ mb: 3, p: 2.5, borderRadius: 4, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography fontWeight={700}>My bids</Typography>
-        <IconButton size="small" onClick={() => setOpen((v) => !v)} aria-label={open ? 'Collapse' : 'Expand'}>
-          <ExpandMoreIcon sx={{ transition: 'transform .2s', transform: open ? 'rotate(180deg)' : 'none' }} />
+    <Box
+      sx={{
+        mb: 3,
+        p: 2.5,
+        borderRadius: 4,
+        bgcolor: 'background.paper',
+        border: '1px solid',
+        borderColor: 'divider',
+      }}
+    >
+      <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <Typography sx={{ fontWeight: 700 }}>My bids</Typography>
+        <IconButton
+          size="small"
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? 'Collapse' : 'Expand'}
+        >
+          <ExpandMoreIcon
+            sx={{ transition: 'transform .2s', transform: open ? 'rotate(180deg)' : 'none' }}
+          />
         </IconButton>
       </Stack>
 
       <Collapse in={open}>
         <Box sx={{ mt: 1.5 }}>
           {loading && (
-            <Box display="flex" justifyContent="center" py={2}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
               <CircularProgress size={22} />
             </Box>
           )}
@@ -352,12 +434,17 @@ function MyBidsSection() {
                 <Stack
                   key={bid.id}
                   direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{ p: 1.25, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}
+                  sx={{
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    p: 1.25,
+                    borderRadius: 2,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                  }}
                 >
                   <Chip label={`Lot ${bid.listingId.slice(-6)}`} size="small" variant="outlined" />
-                  <Typography fontWeight={700}>{bid.amount.toLocaleString()}</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>{bid.amount.toLocaleString()}</Typography>
                   <Typography variant="caption" color="text.secondary">
                     {new Date(bid.createdAt).toLocaleDateString()}
                   </Typography>

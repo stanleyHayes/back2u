@@ -15,7 +15,7 @@ export function SimpleChart({ data, labels, color, title }: SimpleChartProps) {
 
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
-      <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+      <Typography variant="subtitle2" sx={{ fontWeight: 600 }} gutterBottom>
         {title}
       </Typography>
       <Box
@@ -32,12 +32,7 @@ export function SimpleChart({ data, labels, color, title }: SimpleChartProps) {
           const heightPct = (count / max) * 100;
           const isHovered = hoveredIndex === i;
           return (
-            <Tooltip
-              key={i}
-              title={`${labels[i] ?? ''}: ${count}`}
-              arrow
-              placement="top"
-            >
+            <Tooltip key={i} title={`${labels[i] ?? ''}: ${count}`} arrow placement="top">
               <Box
                 sx={{
                   display: 'flex',
@@ -76,7 +71,7 @@ export function SimpleChart({ data, labels, color, title }: SimpleChartProps) {
           );
         })}
       </Box>
-      <Stack direction="row" justifyContent="space-between" sx={{ mt: 1 }}>
+      <Stack direction="row" sx={{ justifyContent: 'space-between', mt: 1 }}>
         <Typography variant="caption" color="text.secondary">
           {labels[0] ?? ''}
         </Typography>

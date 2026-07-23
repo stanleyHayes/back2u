@@ -1,4 +1,14 @@
-import { Alert, Box, Button, Chip, IconButton, Paper, Stack, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -60,20 +70,19 @@ function ReviewPrompt({ matchId, itemId }: { matchId: string; itemId: string }) 
 
   return (
     <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
-      <Typography variant="subtitle2" fontWeight={700} gutterBottom>
+      <Typography variant="subtitle2" sx={{ fontWeight: 700 }} gutterBottom>
         How did the return go?
       </Typography>
-      <Stack direction="row" spacing={0.5} alignItems="center" mb={1}
+      <Stack
+        direction="row"
+        spacing={0.5}
+        sx={{ alignItems: 'center', mb: 1 }}
         onMouseLeave={() => setHoverRating(0)}
       >
         {[1, 2, 3, 4, 5].map((s) => (
-          <StarButton
-            key={s}
-            filled={s <= (hoverRating || rating)}
-            onClick={() => setRating(s)}
-          />
+          <StarButton key={s} filled={s <= (hoverRating || rating)} onClick={() => setRating(s)} />
         ))}
-        <Typography variant="body2" color="text.secondary" ml={1}>
+        <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
           {rating > 0 ? `${rating} / 5` : 'Tap to rate'}
         </Typography>
       </Stack>
@@ -183,20 +192,28 @@ export function ItemDetailPage() {
     );
 
   const isOwner = user?.id === item.postedById;
-  const isParticipant = isOwner || (otherItem?.postedById === user?.id);
+  const isParticipant = isOwner || otherItem?.postedById === user?.id;
 
-  const showReviewPrompt =
-    item.status === 'returned' && user && relevantMatch && isParticipant;
+  const showReviewPrompt = item.status === 'returned' && user && relevantMatch && isParticipant;
 
   return (
     <Stack spacing={3}>
       <Paper sx={{ p: 3 }}>
-        <Stack direction="row" spacing={1} mb={1} alignItems="center" flexWrap="wrap" useFlexGap>
-          <Chip label={item.kind} color={item.kind === 'lost' ? 'error' : 'success'} sx={{ textTransform: 'capitalize' }} />
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ mb: 1, alignItems: 'center', flexWrap: 'wrap' }}
+          useFlexGap
+        >
+          <Chip
+            label={item.kind}
+            color={item.kind === 'lost' ? 'error' : 'success'}
+            sx={{ textTransform: 'capitalize' }}
+          />
           <Chip label={item.status} variant="outlined" />
           <Chip label={item.category} variant="outlined" />
           {item.classification === 'stolen' && <Chip label="stolen" color="warning" />}
-          <Box flex={1} />
+          <Box sx={{ flex: 1 }} />
           {user && (
             <IconButton
               size="small"
@@ -214,24 +231,44 @@ export function ItemDetailPage() {
           )}
           <ShareButton itemId={id!} size="medium" />
           {isOwner && item.classification === 'stolen' && (
-            <Button size="small" variant="outlined" color="warning" onClick={() => policeReport.mutate()} disabled={policeReport.isPending}>
+            <Button
+              size="small"
+              variant="outlined"
+              color="warning"
+              onClick={() => policeReport.mutate()}
+              disabled={policeReport.isPending}
+            >
               Generate police report
             </Button>
           )}
           {isOwner && item.status === 'open' && isExpiringWithin7Days(item) && (
-            <Button size="small" variant="contained" onClick={() => bumpItem.mutate()} disabled={bumpItem.isPending}>
+            <Button
+              size="small"
+              variant="contained"
+              onClick={() => bumpItem.mutate()}
+              disabled={bumpItem.isPending}
+            >
               {bumpItem.isPending ? 'Bumping…' : 'Bump to top'}
             </Button>
           )}
           {!isOwner && user && item.status !== 'returned' && (
-            <Button size="small" component={Link} to={`/items/${item.id}/verify`} variant="contained">
+            <Button
+              size="small"
+              component={Link}
+              to={`/items/${item.id}/verify`}
+              variant="contained"
+            >
               I'm the owner — verify
             </Button>
           )}
         </Stack>
-        <Typography variant="h3" gutterBottom>{item.title}</Typography>
-        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>{item.description}</Typography>
-        <Stack direction="row" spacing={1} alignItems="center" mt={2}>
+        <Typography variant="h3" gutterBottom>
+          {item.title}
+        </Typography>
+        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+          {item.description}
+        </Typography>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 2 }}>
           <Typography variant="body2" color="text.secondary">
             {item.place.name} · {new Date(item.occurredAt).toLocaleString()}
           </Typography>
@@ -242,7 +279,7 @@ export function ItemDetailPage() {
           )}
         </Stack>
         {item.expiresAt && (
-          <Typography variant="body2" color="text.secondary" mt={1}>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
             Expires: {new Date(item.expiresAt).toLocaleString()}
           </Typography>
         )}
@@ -252,16 +289,27 @@ export function ItemDetailPage() {
           </Alert>
         )}
         {bumpItem.isSuccess && (
-          <Alert severity="success" sx={{ mt: 2 }}>Item bumped successfully.</Alert>
+          <Alert severity="success" sx={{ mt: 2 }}>
+            Item bumped successfully.
+          </Alert>
         )}
         {!isOwner && user && (
-          <Box mt={2}>
-            <Button size="small" color="error" variant="text" onClick={() => reportListing.mutate()}>
+          <Box sx={{ mt: 2 }}>
+            <Button
+              size="small"
+              color="error"
+              variant="text"
+              onClick={() => reportListing.mutate()}
+            >
               {reportListing.isSuccess ? 'Reported' : 'Report listing'}
             </Button>
           </Box>
         )}
-        {policeReport.isError && <Alert severity="error" sx={{ mt: 2 }}>Failed to generate report.</Alert>}
+        {policeReport.isError && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            Failed to generate report.
+          </Alert>
+        )}
         {showReviewPrompt && relevantMatch && (
           <ReviewPrompt matchId={relevantMatch.id} itemId={item.id} />
         )}
@@ -271,19 +319,33 @@ export function ItemDetailPage() {
           component="img"
           src={item.images[0]!.url}
           alt={item.title}
-          onClick={() => { setLightboxIndex(0); setLightboxOpen(true); }}
+          onClick={() => {
+            setLightboxIndex(0);
+            setLightboxOpen(true);
+          }}
           sx={{ width: '100%', borderRadius: 2, objectFit: 'cover', cursor: 'pointer' }}
         />
       ) : (
-        <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)' }} gap={2}>
+        <Box
+          sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}
+        >
           {item.images.map((img, i) => (
             <Box
               key={img.publicId}
               component="img"
               src={img.url}
               alt={item.title}
-              onClick={() => { setLightboxIndex(i); setLightboxOpen(true); }}
-              sx={{ width: '100%', borderRadius: 2, objectFit: 'cover', cursor: 'pointer', aspectRatio: '4/3' }}
+              onClick={() => {
+                setLightboxIndex(i);
+                setLightboxOpen(true);
+              }}
+              sx={{
+                width: '100%',
+                borderRadius: 2,
+                objectFit: 'cover',
+                cursor: 'pointer',
+                aspectRatio: '4/3',
+              }}
             />
           ))}
         </Box>

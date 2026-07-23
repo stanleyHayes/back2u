@@ -22,12 +22,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import {
-  TableChart,
-  Timeline,
-  Download,
-  FilterAltOff,
-} from '@mui/icons-material';
+import { TableChart, Timeline, Download, FilterAltOff } from '@mui/icons-material';
 import { useQuery } from '@tanstack/react-query';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import type { AuditLogDTO, UserDTO } from '@back2u/shared-types';
@@ -57,18 +52,32 @@ const BASE_ENTITY_OPTIONS = [
 function getActionColor(action: string): 'success' | 'info' | 'error' | 'warning' | 'default' {
   const normalized = action.toLowerCase();
   if (normalized.includes('create')) return 'success';
-  if (normalized.includes('update') || normalized.includes('edit') || normalized.includes('patch')) return 'info';
+  if (normalized.includes('update') || normalized.includes('edit') || normalized.includes('patch'))
+    return 'info';
   if (normalized.includes('delete') || normalized.includes('remove')) return 'error';
-  if (normalized.includes('auth') || normalized.includes('login') || normalized.includes('logout') || normalized.includes('token')) return 'warning';
+  if (
+    normalized.includes('auth') ||
+    normalized.includes('login') ||
+    normalized.includes('logout') ||
+    normalized.includes('token')
+  )
+    return 'warning';
   return 'default';
 }
 
 function getActionDotColor(action: string): string {
   const normalized = action.toLowerCase();
   if (normalized.includes('create')) return '#2e7d32';
-  if (normalized.includes('update') || normalized.includes('edit') || normalized.includes('patch')) return '#0288d1';
+  if (normalized.includes('update') || normalized.includes('edit') || normalized.includes('patch'))
+    return '#0288d1';
   if (normalized.includes('delete') || normalized.includes('remove')) return '#d32f2f';
-  if (normalized.includes('auth') || normalized.includes('login') || normalized.includes('logout') || normalized.includes('token')) return '#ed6c02';
+  if (
+    normalized.includes('auth') ||
+    normalized.includes('login') ||
+    normalized.includes('logout') ||
+    normalized.includes('token')
+  )
+    return '#ed6c02';
   return '#757575';
 }
 
@@ -127,13 +136,7 @@ export function AuditLogPage() {
   }, [users]);
 
   const { data: auditLogs, isLoading } = useQuery({
-    queryKey: [
-      'audit',
-      actionFilter,
-      entityFilter,
-      activeEntityId,
-      activeActorId,
-    ],
+    queryKey: ['audit', actionFilter, entityFilter, activeEntityId, activeActorId],
     queryFn: () =>
       api.listAuditLogs({
         limit: 500,
@@ -170,16 +173,11 @@ export function AuditLogPage() {
       result = result.filter((r) => {
         if (r.actorId?.toLowerCase().includes(q)) return true;
         const user = userMap.get(r.actorId ?? '');
-        return (
-          user?.name?.toLowerCase().includes(q) ||
-          user?.email?.toLowerCase().includes(q)
-        );
+        return user?.name?.toLowerCase().includes(q) || user?.email?.toLowerCase().includes(q);
       });
     }
 
-    return result.sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    return result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }, [auditLogs, dateRange, actorSearch, userMap]);
 
   const grouped = useMemo(() => {
@@ -193,7 +191,17 @@ export function AuditLogPage() {
   }, [filtered]);
 
   const exportCSV = () => {
-    const headers = ['Date', 'Action', 'Entity', 'Entity ID', 'Actor ID', 'Actor Email', 'Actor Name', 'IP', 'Metadata'];
+    const headers = [
+      'Date',
+      'Action',
+      'Entity',
+      'Entity ID',
+      'Actor ID',
+      'Actor Email',
+      'Actor Name',
+      'IP',
+      'Metadata',
+    ];
     const rows = filtered.map((e) => [
       new Date(e.createdAt).toISOString(),
       e.action,
@@ -205,7 +213,10 @@ export function AuditLogPage() {
       e.ip ?? '—',
       JSON.stringify(e.meta ?? {}),
     ]);
-    const csv = [headers.join(','), ...rows.map((r) => r.map((c) => escapeCsvCell(String(c))).join(','))].join('\n');
+    const csv = [
+      headers.join(','),
+      ...rows.map((r) => r.map((c) => escapeCsvCell(String(c))).join(',')),
+    ].join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -246,11 +257,14 @@ export function AuditLogPage() {
 
   return (
     <Stack spacing={3}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
-        <Typography variant="h4" fontWeight={700}>
+      <Stack
+        direction="row"
+        sx={{ alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}
+      >
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
           Audit log
         </Typography>
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <ToggleButtonGroup
             value={view}
             exclusive
@@ -280,7 +294,7 @@ export function AuditLogPage() {
 
       {/* Active filter chips */}
       {(activeEntityId || activeActorId) && (
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+        <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
           {activeEntityId && (
             <Chip
               label={`Entity ID: ${activeEntityId}`}
@@ -301,7 +315,7 @@ export function AuditLogPage() {
       )}
 
       {/* Filters */}
-      <Stack direction="row" spacing={2} flexWrap="wrap" alignItems="center">
+      <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
         <FormControl size="small" sx={{ minWidth: 140 }}>
           <InputLabel>Action</InputLabel>
           <Select
@@ -420,9 +434,8 @@ function TimelineView({
         <Box key={dateLabel}>
           <Typography
             variant="overline"
-            fontWeight={700}
             color="text.secondary"
-            sx={{ ml: { xs: 0, md: '148px' }, mb: 1, display: 'block' }}
+            sx={{ fontWeight: 700, ml: { xs: 0, md: '148px' }, mb: 1, display: 'block' }}
           >
             {dateLabel}
           </Typography>
@@ -461,7 +474,7 @@ function TimelineRow({
   const color = getActionDotColor(entry.action);
 
   return (
-    <Stack direction="row" spacing={2} alignItems="flex-start">
+    <Stack direction="row" spacing={2} sx={{ alignItems: 'flex-start' }}>
       {/* Timestamp */}
       <Box
         sx={{
@@ -479,7 +492,15 @@ function TimelineRow({
       </Box>
 
       {/* Dot + line */}
-      <Box sx={{ position: 'relative', width: 24, flexShrink: 0, display: 'flex', justifyContent: 'center' }}>
+      <Box
+        sx={{
+          position: 'relative',
+          width: 24,
+          flexShrink: 0,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <Box
           sx={{
             width: 12,
@@ -509,12 +530,13 @@ function TimelineRow({
       <Box sx={{ flex: 1, pb: 2 }}>
         <Card variant="outlined">
           <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
-            <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap mb={0.5}>
-              <Chip
-                label={entry.action}
-                size="small"
-                color={getActionColor(entry.action)}
-              />
+            <Stack
+              direction="row"
+              spacing={1}
+              useFlexGap
+              sx={{ alignItems: 'center', flexWrap: 'wrap', mb: 0.5 }}
+            >
+              <Chip label={entry.action} size="small" color={getActionColor(entry.action)} />
               <Typography variant="body2" color="text.secondary">
                 on
               </Typography>
@@ -526,7 +548,12 @@ function TimelineRow({
                 clickable
               />
             </Stack>
-            <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+            <Stack
+              direction="row"
+              spacing={1}
+              useFlexGap
+              sx={{ alignItems: 'center', flexWrap: 'wrap' }}
+            >
               <Typography variant="body2" color="text.secondary">
                 by
               </Typography>
@@ -554,7 +581,7 @@ function TimelineRow({
               )}
             </Stack>
             {entry.meta && Object.keys(entry.meta).length > 0 && (
-              <Box mt={1}>
+              <Box sx={{ mt: 1 }}>
                 <Typography
                   variant="caption"
                   component="pre"
@@ -627,14 +654,10 @@ function TableView({
                   </Tooltip>
                 </TableCell>
                 <TableCell>
-                  <Chip
-                    label={entry.action}
-                    size="small"
-                    color={getActionColor(entry.action)}
-                  />
+                  <Chip label={entry.action} size="small" color={getActionColor(entry.action)} />
                 </TableCell>
                 <TableCell>
-                  <Stack direction="row" spacing={0.5} alignItems="center">
+                  <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
                     <Typography variant="body2">{entry.entity}</Typography>
                     <Chip
                       label={entry.entityId}

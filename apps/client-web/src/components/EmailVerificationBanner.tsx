@@ -53,7 +53,7 @@ export function EmailVerificationBanner() {
         severity={success ? 'success' : 'warning'}
         icon={<EmailIcon />}
         action={
-          <Stack direction="row" spacing={1} alignItems="center">
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
             {!success && !sent && (
               <Button
                 size="small"
@@ -72,7 +72,7 @@ export function EmailVerificationBanner() {
                   placeholder="6-digit code"
                   value={code}
                   onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  inputProps={{ maxLength: 6, inputMode: 'numeric' }}
+                  slotProps={{ htmlInput: { maxLength: 6, inputMode: 'numeric' } }}
                   sx={{ width: 120, bgcolor: 'background.paper', borderRadius: 1 }}
                 />
                 <Button

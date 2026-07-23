@@ -78,7 +78,15 @@ function BrandPanel() {
             placeItems: 'center',
           }}
         >
-          <Box sx={{ width: 14, height: 14, borderRadius: '50%', bgcolor: PAPER, transform: 'rotate(45deg)' }} />
+          <Box
+            sx={{
+              width: 14,
+              height: 14,
+              borderRadius: '50%',
+              bgcolor: PAPER,
+              transform: 'rotate(45deg)',
+            }}
+          />
         </Box>
       </Box>
 
@@ -96,26 +104,45 @@ function BrandPanel() {
         >
           <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: PAPER }} />
         </Box>
-        <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, letterSpacing: '-0.03em' }}>
+        <Typography
+          sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, letterSpacing: '-0.03em' }}
+        >
           Back2u
         </Typography>
       </Box>
 
       <Box sx={{ position: 'relative' }}>
-        <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 34, lineHeight: 1.12, letterSpacing: '-0.02em' }}>
+        <Typography
+          sx={{
+            fontFamily: DISPLAY,
+            fontWeight: 600,
+            fontSize: 34,
+            lineHeight: 1.12,
+            letterSpacing: '-0.02em',
+          }}
+        >
           Whatever you&apos;ve lost, let&apos;s get it back to you.
         </Typography>
         <Typography sx={{ mt: 2, fontSize: 15, color: 'rgba(255,253,248,0.7)', maxWidth: 320 }}>
           Sign in to track your matches, message finders anonymously, and claim what&apos;s yours.
         </Typography>
-        <Stack direction="row" spacing={3} mt={4}>
+        <Stack direction="row" spacing={3} sx={{ mt: 4 }}>
           {[
             { n: '12k+', l: 'Items posted' },
             { n: '3.8k+', l: 'Reunions' },
           ].map((s) => (
             <Box key={s.l}>
-              <Typography sx={{ fontFamily: DISPLAY, fontSize: 26, fontWeight: 600 }}>{s.n}</Typography>
-              <Typography sx={{ fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,253,248,0.6)' }}>
+              <Typography sx={{ fontFamily: DISPLAY, fontSize: 26, fontWeight: 600 }}>
+                {s.n}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: 12,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(255,253,248,0.6)',
+                }}
+              >
                 {s.l}
               </Typography>
             </Box>
@@ -141,7 +168,11 @@ export function LoginPage() {
     setErr(null);
     try {
       const res = await api.login({ email, password });
-      setAuth({ user: res.user, accessToken: res.tokens.accessToken, refreshToken: res.tokens.refreshToken });
+      setAuth({
+        user: res.user,
+        accessToken: res.tokens.accessToken,
+        refreshToken: res.tokens.refreshToken,
+      });
       navigate('/');
     } catch (e: unknown) {
       setErr(e instanceof Error ? e.message : 'Login failed');
@@ -169,13 +200,33 @@ export function LoginPage() {
         <BrandPanel />
 
         <Box sx={{ p: { xs: 3.5, md: 6 } }}>
-          <Typography component="span" sx={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: TEAL }}>
+          <Typography
+            component="span"
+            sx={{
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: TEAL,
+            }}
+          >
             Sign in
           </Typography>
-          <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: { xs: 34, md: 40 }, letterSpacing: '-0.02em', mt: 1, color: INK }}>
+          <Typography
+            sx={{
+              fontFamily: DISPLAY,
+              fontWeight: 600,
+              fontSize: { xs: 34, md: 40 },
+              letterSpacing: '-0.02em',
+              mt: 1,
+              color: INK,
+            }}
+          >
             Welcome back
           </Typography>
-          <Typography sx={{ color: 'text.secondary', mt: 1, mb: 3 }}>Good to see you again.</Typography>
+          <Typography sx={{ color: 'text.secondary', mt: 1, mb: 3 }}>
+            Good to see you again.
+          </Typography>
 
           <form onSubmit={submit}>
             <Stack spacing={2.25}>
@@ -201,22 +252,34 @@ export function LoginPage() {
                 value={password}
                 autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPw((v) => !v)}
-                        edge="end"
-                        aria-label={showPw ? 'Hide password' : 'Show password'}
-                      >
-                        {showPw ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPw((v) => !v)}
+                          edge="end"
+                          aria-label={showPw ? 'Hide password' : 'Show password'}
+                        >
+                          {showPw ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
               <Box sx={{ textAlign: 'right' }}>
-                <Box component={Link} to="/forgot-password" sx={{ fontSize: 14, color: TEAL, textDecoration: 'none', fontWeight: 600, '&:hover': { textDecoration: 'underline' } }}>
+                <Box
+                  component={Link}
+                  to="/forgot-password"
+                  sx={{
+                    fontSize: 14,
+                    color: TEAL,
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    '&:hover': { textDecoration: 'underline' },
+                  }}
+                >
                   Forgot password?
                 </Box>
               </Box>
@@ -241,7 +304,16 @@ export function LoginPage() {
 
           <Typography sx={{ mt: 3, color: 'text.secondary', fontSize: 15 }}>
             No account?{' '}
-            <Box component={Link} to="/register" sx={{ color: INK, fontWeight: 700, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+            <Box
+              component={Link}
+              to="/register"
+              sx={{
+                color: INK,
+                fontWeight: 700,
+                textDecoration: 'none',
+                '&:hover': { textDecoration: 'underline' },
+              }}
+            >
               Create one
             </Box>
           </Typography>

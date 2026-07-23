@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 import {
-  ChatBubbleOutline,
+  ChatBubbleOutlined,
   LocalShippingOutlined,
   LocalOfferOutlined,
   NotificationsNoneOutlined,
@@ -33,7 +33,7 @@ const typeConfig: Record<
   { icon: React.ReactNode; color: string; label: string } | undefined
 > = {
   match: { icon: <LocalOfferOutlined />, color: '#0F766E', label: 'Match' },
-  message: { icon: <ChatBubbleOutline />, color: '#2563EB', label: 'Message' },
+  message: { icon: <ChatBubbleOutlined />, color: '#2563EB', label: 'Message' },
   courier: { icon: <LocalShippingOutlined />, color: '#D97706', label: 'Courier' },
   marketplace: { icon: <ShoppingBagOutlined />, color: '#7C3AED', label: 'Marketplace' },
   tag: { icon: <QrCodeOutlined />, color: '#059669', label: 'Tag' },
@@ -78,8 +78,8 @@ function NotificationRow({
       </ListItemAvatar>
       <ListItemText
         primary={
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="body1" fontWeight={n.read ? 400 : 700}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            <Typography variant="body1" sx={{ fontWeight: n.read ? 400 : 700 }}>
               {n.title}
             </Typography>
             {!n.read && (
@@ -145,7 +145,7 @@ export function NotificationsPage() {
   if (isLoading) {
     return (
       <Stack spacing={3}>
-        <Typography variant="h3" fontWeight={700}>
+        <Typography variant="h3" sx={{ fontWeight: 700 }}>
           Notifications
         </Typography>
         <ListSkeleton rows={6} />
@@ -155,9 +155,7 @@ export function NotificationsPage() {
 
   if (error) {
     return (
-      <Alert severity="error">
-        {(error as Error)?.message ?? 'Failed to load notifications'}
-      </Alert>
+      <Alert severity="error">{(error as Error)?.message ?? 'Failed to load notifications'}</Alert>
     );
   }
 
@@ -165,8 +163,8 @@ export function NotificationsPage() {
 
   return (
     <Stack spacing={3}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h3" fontWeight={700}>
+      <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <Typography variant="h3" sx={{ fontWeight: 700 }}>
           Notifications
         </Typography>
         {notifications.some((n) => !n.read) && (

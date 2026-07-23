@@ -101,13 +101,15 @@ export function ImageLightbox({ images, initialIndex = 0, open, onClose }: Image
       fullScreen={isMobile}
       maxWidth="lg"
       fullWidth
-      PaperProps={{
-        sx: {
-          bgcolor: 'rgba(0,0,0,0.92)',
-          color: '#fff',
-          overflow: 'hidden',
-          height: '100%',
-          maxHeight: '100vh',
+      slotProps={{
+        paper: {
+          sx: {
+            bgcolor: 'rgba(0,0,0,0.92)',
+            color: '#fff',
+            overflow: 'hidden',
+            height: '100%',
+            maxHeight: '100vh',
+          },
         },
       }}
       sx={{

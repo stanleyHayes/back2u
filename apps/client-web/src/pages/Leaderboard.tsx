@@ -18,13 +18,23 @@ const MEDAL = [MARIGOLD, TEAL, CLAY];
 function Badges({ badges }: { badges: string[] }) {
   if (!badges?.length) return null;
   return (
-    <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap justifyContent="center">
+    <Stack
+      direction="row"
+      spacing={0.5}
+      sx={{ flexWrap: 'wrap', justifyContent: 'center' }}
+      useFlexGap
+    >
       {badges.map((b) => (
         <Chip
           key={b}
           label={b.replace(/_/g, ' ')}
           size="small"
-          sx={{ bgcolor: 'rgba(224,161,6,0.14)', color: '#8a6300', fontWeight: 600, textTransform: 'capitalize' }}
+          sx={{
+            bgcolor: 'rgba(224,161,6,0.14)',
+            color: '#8a6300',
+            fontWeight: 600,
+            textTransform: 'capitalize',
+          }}
         />
       ))}
     </Stack>
@@ -72,17 +82,34 @@ function PodiumCard({ e, place }: { e: LeaderboardEntryDTO; place: number }) {
       </Box>
       <Avatar
         src={e.avatarUrl}
-        sx={{ width: isFirst ? 80 : 64, height: isFirst ? 80 : 64, mx: 'auto', mt: 1, mb: 1.5, border: `3px solid ${color}` }}
+        sx={{
+          width: isFirst ? 80 : 64,
+          height: isFirst ? 80 : 64,
+          mx: 'auto',
+          mt: 1,
+          mb: 1.5,
+          border: `3px solid ${color}`,
+        }}
       >
         {e.name[0]}
       </Avatar>
       <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: isFirst ? 24 : 20 }}>
         {e.name}
       </Typography>
-      <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: isFirst ? 36 : 30, color, mt: 0.5 }}>
+      <Typography
+        sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: isFirst ? 36 : 30, color, mt: 0.5 }}
+      >
         {e.pointsBalance.toLocaleString()}
       </Typography>
-      <Typography sx={{ fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', opacity: 0.7, mb: 1.5 }}>
+      <Typography
+        sx={{
+          fontSize: 12,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          opacity: 0.7,
+          mb: 1.5,
+        }}
+      >
         points · {e.successfulReturns} returns
       </Typography>
       <Badges badges={e.badges} />
@@ -97,23 +124,42 @@ export function LeaderboardPage() {
 
   return (
     <Box sx={{ maxWidth: 900, mx: 'auto' }}>
-      <Stack direction="row" spacing={1.25} alignItems="center" sx={{ color: TEAL, mb: 1 }}>
+      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
         <EmojiEventsIcon fontSize="small" />
-        <Typography sx={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+        <Typography
+          sx={{
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+          }}
+        >
           Hall of finders
         </Typography>
       </Stack>
-      <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: { xs: 34, md: 44 }, color: INK, letterSpacing: '-0.02em' }}>
+      <Typography
+        sx={{
+          fontFamily: DISPLAY,
+          fontWeight: 600,
+          fontSize: { xs: 34, md: 44 },
+          color: INK,
+          letterSpacing: '-0.02em',
+        }}
+      >
         Top finders
       </Typography>
       <Typography color="text.secondary" sx={{ mt: 1, mb: 4 }}>
-        Ranked by reward points and successful returns. Earn the <b>Hero Finder</b> badge at 5 returns and{' '}
-        <b>Trusted Guardian</b> at 25.
+        Ranked by reward points and successful returns. Earn the <b>Hero Finder</b> badge at 5
+        returns and <b>Trusted Guardian</b> at 25.
       </Typography>
 
       {/* Podium */}
       {top.length > 0 && (
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2.5} alignItems={{ md: 'flex-start' }} mb={4}>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          spacing={2.5}
+          sx={{ alignItems: { md: 'flex-start' }, mb: 4 }}
+        >
           {top.map((e, i) => (
             <PodiumCard key={e.userId} e={e} place={i} />
           ))}
@@ -138,23 +184,38 @@ export function LeaderboardPage() {
               '&:hover': { transform: 'translateX(3px)' },
             }}
           >
-            <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 20, color: 'text.secondary', minWidth: 36, textAlign: 'center' }}>
+            <Typography
+              sx={{
+                fontFamily: DISPLAY,
+                fontWeight: 600,
+                fontSize: 20,
+                color: 'text.secondary',
+                minWidth: 36,
+                textAlign: 'center',
+              }}
+            >
               {e.rank}
             </Typography>
             <Avatar src={e.avatarUrl}>{e.name[0]}</Avatar>
-            <Box flex={1} minWidth={0}>
-              <Typography fontWeight={700} noWrap>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography sx={{ fontWeight: 700 }} noWrap>
                 {e.name}
               </Typography>
               {e.badges?.length > 0 && (
-                <Stack direction="row" spacing={0.5} mt={0.25} flexWrap="wrap" useFlexGap>
+                <Stack direction="row" spacing={0.5} sx={{ mt: 0.25, flexWrap: 'wrap' }} useFlexGap>
                   {e.badges.map((b) => (
-                    <Chip key={b} label={b.replace(/_/g, ' ')} size="small" variant="outlined" sx={{ height: 20, fontSize: 11, textTransform: 'capitalize' }} />
+                    <Chip
+                      key={b}
+                      label={b.replace(/_/g, ' ')}
+                      size="small"
+                      variant="outlined"
+                      sx={{ height: 20, fontSize: 11, textTransform: 'capitalize' }}
+                    />
                   ))}
                 </Stack>
               )}
             </Box>
-            <Stack alignItems="flex-end">
+            <Stack sx={{ alignItems: 'flex-end' }}>
               <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 18, color: INK }}>
                 {e.pointsBalance.toLocaleString()}
               </Typography>

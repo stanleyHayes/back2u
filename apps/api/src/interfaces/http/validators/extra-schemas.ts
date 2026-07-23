@@ -218,7 +218,15 @@ export const UpdateUserStatusSchema = z.object({
 
 export const UpdateUserRolesSchema = z.object({
   roles: z.array(
-    z.enum(['user', 'finder', 'trusted_finder', 'courier', 'partner_admin', 'admin', 'super_admin']),
+    z.enum([
+      'user',
+      'finder',
+      'trusted_finder',
+      'courier',
+      'partner_admin',
+      'admin',
+      'super_admin',
+    ]),
   ),
 });
 
@@ -276,6 +284,6 @@ export const CreateNotificationSchema = z.object({
   type: z.enum(['match', 'message', 'courier', 'marketplace', 'tag', 'system']),
   title: z.string().min(1),
   body: z.string().min(1),
-  data: z.record(z.unknown()).optional(),
+  data: z.record(z.string(), z.unknown()).optional(),
   url: z.string().optional(),
 });

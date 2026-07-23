@@ -30,14 +30,21 @@ export function FeatureFlagsPage() {
   });
 
   const rollout = useMutation({
-    mutationFn: ({ key, percentage, allowedUserIds }: { key: string; percentage: number; allowedUserIds?: string[] }) =>
-      api.updateFeatureRollout(key, { rolloutPercentage: percentage, allowedUserIds }),
+    mutationFn: ({
+      key,
+      percentage,
+      allowedUserIds,
+    }: {
+      key: string;
+      percentage: number;
+      allowedUserIds?: string[];
+    }) => api.updateFeatureRollout(key, { rolloutPercentage: percentage, allowedUserIds }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['feature-flags'] }),
   });
 
   return (
     <Box sx={{ maxWidth: 900 }}>
-      <Typography variant="h5" fontWeight={700} gutterBottom>
+      <Typography variant="h5" sx={{ fontWeight: 700 }} gutterBottom>
         Feature flags
       </Typography>
       <Typography color="text.secondary" sx={{ mb: 3 }}>
@@ -88,9 +95,13 @@ function FlagCard({
 
   return (
     <Paper sx={{ p: 3, borderRadius: 3 }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+      >
         <Box>
-          <Typography fontWeight={700}>{flag.name}</Typography>
+          <Typography sx={{ fontWeight: 700 }}>{flag.name}</Typography>
           <Typography variant="body2" color="text.secondary">
             {flag.key}
           </Typography>
@@ -100,17 +111,13 @@ function FlagCard({
             </Typography>
           )}
         </Box>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <Chip
             size="small"
             label={flag.enabled ? 'Enabled' : 'Disabled'}
             color={flag.enabled ? 'success' : 'default'}
           />
-          <Switch
-            checked={flag.enabled}
-            onChange={onToggle}
-            disabled={togglePending}
-          />
+          <Switch checked={flag.enabled} onChange={onToggle} disabled={togglePending} />
         </Stack>
       </Stack>
 
@@ -118,14 +125,22 @@ function FlagCard({
 
       <Stack spacing={2}>
         <Box>
-          <Typography variant="body2" fontWeight={600} gutterBottom>
+          <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
             Rollout: {localPercentage}%
           </Typography>
           <Slider
             value={localPercentage}
             onChange={(_e, v) => setLocalPercentage(v as number)}
             onChangeCommitted={(_e, v) =>
-              onRolloutChange(v as number, localAllowed ? localAllowed.split(',').map((s) => s.trim()).filter(Boolean) : undefined)
+              onRolloutChange(
+                v as number,
+                localAllowed
+                  ? localAllowed
+                      .split(',')
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                  : undefined,
+              )
             }
             min={0}
             max={100}
@@ -142,7 +157,12 @@ function FlagCard({
           onBlur={() =>
             onRolloutChange(
               localPercentage,
-              localAllowed ? localAllowed.split(',').map((s) => s.trim()).filter(Boolean) : undefined,
+              localAllowed
+                ? localAllowed
+                    .split(',')
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                : undefined,
             )
           }
           disabled={rolloutPending}

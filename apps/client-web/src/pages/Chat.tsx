@@ -76,7 +76,10 @@ export function ChatPage() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  const previewUrls = useMemo(() => selectedFiles.map((f) => URL.createObjectURL(f)), [selectedFiles]);
+  const previewUrls = useMemo(
+    () => selectedFiles.map((f) => URL.createObjectURL(f)),
+    [selectedFiles],
+  );
   useEffect(() => {
     return () => {
       previewUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -227,16 +230,34 @@ export function ChatPage() {
     [user?.id],
   );
 
-  const canSend = (draft.trim().length > 0 || selectedFiles.length > 0) && !send.isPending && !uploading;
+  const canSend =
+    (draft.trim().length > 0 || selectedFiles.length > 0) && !send.isPending && !uploading;
   const activeThread = threads?.find((t) => t.id === active);
   const activeName = activeThread ? otherParticipantName(activeThread) : '';
 
   return (
     <Box sx={{ maxWidth: 1080, mx: 'auto' }}>
-      <Typography sx={{ color: TEAL, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', fontSize: 12, mb: 0.5 }}>
+      <Typography
+        sx={{
+          color: TEAL,
+          fontWeight: 700,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          fontSize: 12,
+          mb: 0.5,
+        }}
+      >
         Messages
       </Typography>
-      <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 30, color: INK, mb: 2.5 }}>
+      <Typography
+        sx={{
+          fontFamily: '"Fraunces", Georgia, serif',
+          fontWeight: 600,
+          fontSize: 30,
+          color: INK,
+          mb: 2.5,
+        }}
+      >
         Conversations
       </Typography>
 
@@ -314,8 +335,14 @@ export function ChatPage() {
               <Stack
                 direction="row"
                 spacing={1.5}
-                alignItems="center"
-                sx={{ px: 2.5, py: 1.75, borderBottom: '1px solid', borderColor: 'divider', flexShrink: 0 }}
+                sx={{
+                  alignItems: 'center',
+                  px: 2.5,
+                  py: 1.75,
+                  borderBottom: '1px solid',
+                  borderColor: 'divider',
+                  flexShrink: 0,
+                }}
               >
                 <Avatar name={activeName} size={42} />
                 <Box sx={{ minWidth: 0 }}>
@@ -349,7 +376,12 @@ export function ChatPage() {
                     return (
                       <Box
                         key={m.id}
-                        sx={{ mb: 1.25, display: 'flex', flexDirection: 'column', alignItems: isMine ? 'flex-end' : 'flex-start' }}
+                        sx={{
+                          mb: 1.25,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: isMine ? 'flex-end' : 'flex-start',
+                        }}
                       >
                         <Box
                           sx={{
@@ -364,12 +396,23 @@ export function ChatPage() {
                           }}
                         >
                           {m.body && (
-                            <Typography sx={{ fontSize: 14.5, lineHeight: 1.5, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                            <Typography
+                              sx={{
+                                fontSize: 14.5,
+                                lineHeight: 1.5,
+                                whiteSpace: 'pre-wrap',
+                                wordBreak: 'break-word',
+                              }}
+                            >
                               {m.body}
                             </Typography>
                           )}
                           {m.images && m.images.length > 0 && (
-                            <Stack direction="row" spacing={1} sx={{ mt: m.body ? 1 : 0, flexWrap: 'wrap' }}>
+                            <Stack
+                              direction="row"
+                              spacing={1}
+                              sx={{ mt: m.body ? 1 : 0, flexWrap: 'wrap' }}
+                            >
                               {m.images.map((img, idx) => (
                                 <Box
                                   key={`${m.id}-${idx}`}
@@ -377,19 +420,40 @@ export function ChatPage() {
                                   src={img.url}
                                   alt=""
                                   onClick={() => openLightbox(m.images!, idx)}
-                                  sx={{ width: 96, height: 96, objectFit: 'cover', borderRadius: 2, cursor: 'pointer', flexShrink: 0 }}
+                                  sx={{
+                                    width: 96,
+                                    height: 96,
+                                    objectFit: 'cover',
+                                    borderRadius: 2,
+                                    cursor: 'pointer',
+                                    flexShrink: 0,
+                                  }}
                                 />
                               ))}
                             </Stack>
                           )}
                           {m.flagged && (
-                            <Typography sx={{ display: 'block', mt: 0.5, fontSize: 11, color: MARIGOLD, fontWeight: 700 }}>
+                            <Typography
+                              sx={{
+                                display: 'block',
+                                mt: 0.5,
+                                fontSize: 11,
+                                color: MARIGOLD,
+                                fontWeight: 700,
+                              }}
+                            >
                               flagged
                             </Typography>
                           )}
                         </Box>
-                        <Stack direction="row" spacing={0.5} alignItems="center" sx={{ mt: 0.4, px: 0.5 }}>
-                          <Typography sx={{ fontSize: 11, color: 'text.secondary' }}>{fmtTime(m.createdAt)}</Typography>
+                        <Stack
+                          direction="row"
+                          spacing={0.5}
+                          sx={{ alignItems: 'center', mt: 0.4, px: 0.5 }}
+                        >
+                          <Typography sx={{ fontSize: 11, color: 'text.secondary' }}>
+                            {fmtTime(m.createdAt)}
+                          </Typography>
                           {otherRead && <DoneAllRoundedIcon sx={{ fontSize: 14, color: TEAL }} />}
                         </Stack>
                       </Box>
@@ -469,8 +533,15 @@ export function ChatPage() {
                 <Stack
                   direction="row"
                   spacing={0.5}
-                  alignItems="center"
-                  sx={{ borderRadius: 999, border: '1px solid', borderColor: 'divider', bgcolor: 'background.default', px: 0.75, py: 0.5 }}
+                  sx={{
+                    alignItems: 'center',
+                    borderRadius: 999,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    bgcolor: 'background.default',
+                    px: 0.75,
+                    py: 0.5,
+                  }}
                 >
                   <input
                     ref={fileInputRef}
@@ -495,7 +566,7 @@ export function ChatPage() {
                     onChange={(e) => handleTyping(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && canSend && handleSend()}
                     disabled={uploading}
-                    InputProps={{ disableUnderline: true, sx: { px: 1, fontSize: 14.5 } }}
+                    slotProps={{ input: { disableUnderline: true, sx: { px: 1, fontSize: 14.5 } } }}
                   />
                   <IconButton
                     onClick={handleSend}
@@ -560,7 +631,9 @@ function ThreadRow({
           {name}
         </Typography>
         <Typography noWrap sx={{ fontSize: 12, color: 'text.secondary' }}>
-          {time ? new Date(time).toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'New thread'}
+          {time
+            ? new Date(time).toLocaleDateString([], { month: 'short', day: 'numeric' })
+            : 'New thread'}
         </Typography>
       </Box>
     </Box>

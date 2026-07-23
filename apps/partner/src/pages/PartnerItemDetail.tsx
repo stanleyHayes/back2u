@@ -41,11 +41,11 @@ export function PartnerItemDetailPage() {
     <Stack spacing={3}>
       <Button onClick={() => navigate(-1)}>← Back</Button>
 
-      <Typography variant="h4" fontWeight={700}>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
         {item.title}
       </Typography>
 
-      <Stack direction="row" spacing={1} flexWrap="wrap">
+      <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
         <Chip label={item.kind} />
         <Chip label={item.status} color="primary" />
         <Chip label={item.category} />
@@ -53,7 +53,12 @@ export function PartnerItemDetailPage() {
       </Stack>
 
       {item.images[0] && (
-        <Box component="img" src={item.images[0].url} alt={item.title} sx={{ maxWidth: 400, borderRadius: 2 }} />
+        <Box
+          component="img"
+          src={item.images[0].url}
+          alt={item.title}
+          sx={{ maxWidth: 400, borderRadius: 2 }}
+        />
       )}
 
       <Typography variant="body1">{item.description}</Typography>
@@ -61,7 +66,7 @@ export function PartnerItemDetailPage() {
       <Divider />
 
       <Typography variant="h6">Actions</Typography>
-      <Stack direction="row" spacing={1} flexWrap="wrap">
+      <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
         {item.status === 'open' && (
           <Button variant="outlined" onClick={() => updateStatus.mutate('closed')}>
             Close item
@@ -82,14 +87,21 @@ export function PartnerItemDetailPage() {
 
       <Divider />
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant="h6">Internal notes</Typography>
         <AiAssistantBar
           dense
           value={note}
           onChange={setNote}
           assist={api.aiAssist.bind(api)}
-          actions={['fix_grammar', 'improve_clarity', 'formalize', 'summarize', 'create_from_prompt', 'translate']}
+          actions={[
+            'fix_grammar',
+            'improve_clarity',
+            'formalize',
+            'summarize',
+            'create_from_prompt',
+            'translate',
+          ]}
         />
       </Stack>
       <TextField

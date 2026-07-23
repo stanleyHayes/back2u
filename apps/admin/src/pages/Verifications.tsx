@@ -22,7 +22,11 @@ export function VerificationsPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [processing, setProcessing] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
     open: false,
     message: '',
     severity: 'success',
@@ -83,19 +87,31 @@ export function VerificationsPage() {
     await qc.invalidateQueries({ queryKey: ['admin-verifications'] });
     setSnackbar({
       open: true,
-      message: failed > 0 ? `Completed with ${failed} failures.` : `All ${ids.length} verifications ${decision}d.`,
+      message:
+        failed > 0
+          ? `Completed with ${failed} failures.`
+          : `All ${ids.length} verifications ${decision}d.`,
       severity: failed > 0 ? 'error' : 'success',
     });
   };
 
   return (
     <Stack spacing={3}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-        <Typography variant="h4" fontWeight={700}>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+      >
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
           Pending ownership verifications
         </Typography>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleSelectAll} disabled={items.length === 0 || processing} />
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Checkbox
+            checked={allSelected}
+            indeterminate={someSelected}
+            onChange={toggleSelectAll}
+            disabled={items.length === 0 || processing}
+          />
           <Typography variant="body2" color="text.secondary">
             Select all
           </Typography>
@@ -104,10 +120,20 @@ export function VerificationsPage() {
 
       {selectedIds.size > 0 && (
         <Stack direction="row" spacing={1}>
-          <Button variant="contained" color="success" disabled={processing} onClick={() => runBulk('approve')}>
+          <Button
+            variant="contained"
+            color="success"
+            disabled={processing}
+            onClick={() => runBulk('approve')}
+          >
             Approve selected ({selectedIds.size})
           </Button>
-          <Button variant="outlined" color="error" disabled={processing} onClick={() => runBulk('reject')}>
+          <Button
+            variant="outlined"
+            color="error"
+            disabled={processing}
+            onClick={() => runBulk('reject')}
+          >
             Reject selected ({selectedIds.size})
           </Button>
         </Stack>
@@ -135,8 +161,8 @@ export function VerificationsPage() {
       {items.map((v) => (
         <Card key={v.id} variant="outlined">
           <CardContent>
-            <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                 <Checkbox
                   checked={selectedIds.has(v.id)}
                   onChange={() => toggleSelect(v.id)}
@@ -144,17 +170,20 @@ export function VerificationsPage() {
                 />
                 <Typography variant="h6">Item {v.itemId.slice(-6)}</Typography>
               </Stack>
-              <Chip label={`AI ${(v.aiConsistencyScore * 100).toFixed(0)}%`} color={v.aiConsistencyScore > 0.7 ? 'success' : 'warning'} />
+              <Chip
+                label={`AI ${(v.aiConsistencyScore * 100).toFixed(0)}%`}
+                color={v.aiConsistencyScore > 0.7 ? 'success' : 'warning'}
+              />
             </Stack>
             <Typography variant="caption" color="text.secondary" sx={{ pl: 4 }}>
               by {v.claimantId.slice(-6)} · {new Date(v.createdAt).toLocaleString()}
             </Typography>
             {v.answers.map((a, i) => (
-              <Typography key={i} variant="body2" mt={1} sx={{ pl: 4 }}>
+              <Typography key={i} variant="body2" sx={{ mt: 1, pl: 4 }}>
                 <b>Q{i + 1}:</b> {a.answer}
               </Typography>
             ))}
-            <Stack direction="row" spacing={1} mt={2} sx={{ pl: 4 }}>
+            <Stack direction="row" spacing={1} sx={{ mt: 2, pl: 4 }}>
               <Button
                 variant="contained"
                 color="success"
@@ -185,7 +214,10 @@ export function VerificationsPage() {
         onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar((s) => ({ ...s, open: false }))}>
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

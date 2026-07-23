@@ -41,7 +41,11 @@ export function SafetyReportsPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [processing, setProcessing] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
     open: false,
     message: '',
     severity: 'success',
@@ -86,7 +90,10 @@ export function SafetyReportsPage() {
     for (let i = 0; i < ids.length; i++) {
       setProgress({ current: i + 1, total: ids.length });
       try {
-        await decide.mutateAsync({ id: ids[i], decision: 'resolved' } as { id: string; decision: 'resolved' });
+        await decide.mutateAsync({ id: ids[i], decision: 'resolved' } as {
+          id: string;
+          decision: 'resolved';
+        });
       } catch {
         failed++;
       }
@@ -97,14 +104,15 @@ export function SafetyReportsPage() {
     await qc.invalidateQueries({ queryKey: ['admin-safety-reports'] });
     setSnackbar({
       open: true,
-      message: failed > 0 ? `Completed with ${failed} failures.` : `All ${ids.length} reports resolved.`,
+      message:
+        failed > 0 ? `Completed with ${failed} failures.` : `All ${ids.length} reports resolved.`,
       severity: failed > 0 ? 'error' : 'success',
     });
   };
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" fontWeight={700}>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
         Safety Reports
       </Typography>
 
@@ -140,7 +148,12 @@ export function SafetyReportsPage() {
           <TableHead>
             <TableRow>
               <TableCell padding="checkbox">
-                <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleSelectAll} disabled={items.length === 0 || processing} />
+                <Checkbox
+                  checked={allSelected}
+                  indeterminate={someSelected}
+                  onChange={toggleSelectAll}
+                  disabled={items.length === 0 || processing}
+                />
               </TableCell>
               <TableCell>Target</TableCell>
               <TableCell>Target ID</TableCell>
@@ -164,11 +177,19 @@ export function SafetyReportsPage() {
                 <TableCell>{report.target}</TableCell>
                 <TableCell>{report.targetId.slice(-8)}</TableCell>
                 <TableCell>
-                  <Chip label={report.reason} size="small" color={REASON_COLOR[report.reason] ?? 'default'} />
+                  <Chip
+                    label={report.reason}
+                    size="small"
+                    color={REASON_COLOR[report.reason] ?? 'default'}
+                  />
                 </TableCell>
                 <TableCell>{report.note ?? '—'}</TableCell>
                 <TableCell>
-                  <Chip label={report.status} size="small" color={STATUS_COLOR[report.status] ?? 'default'} />
+                  <Chip
+                    label={report.status}
+                    size="small"
+                    color={STATUS_COLOR[report.status] ?? 'default'}
+                  />
                 </TableCell>
                 <TableCell>{new Date(report.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell>
@@ -194,7 +215,10 @@ export function SafetyReportsPage() {
         onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar((s) => ({ ...s, open: false }))}>
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

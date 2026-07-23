@@ -54,7 +54,10 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
         bgcolor: 'background.paper',
         overflow: 'hidden',
         transition: 'transform .15s, box-shadow .15s',
-        '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 24px 48px -36px rgba(11,61,56,0.5)' },
+        '&:hover': {
+          transform: 'translateY(-3px)',
+          boxShadow: '0 24px 48px -36px rgba(11,61,56,0.5)',
+        },
       }}
     >
       <Box
@@ -72,7 +75,14 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
             component="img"
             src={p.logoUrl}
             alt={p.name}
-            sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+            }}
           />
         ) : (
           <StorefrontOutlinedIcon sx={{ fontSize: 44, color: PAPER, opacity: 0.9 }} />
@@ -80,20 +90,48 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
         <Chip
           label={TYPE_LABEL[p.type] ?? 'Partner'}
           size="small"
-          sx={{ position: 'absolute', top: 10, left: 10, bgcolor: 'rgba(251,246,236,0.92)', color: INK, fontWeight: 700 }}
+          sx={{
+            position: 'absolute',
+            top: 10,
+            left: 10,
+            bgcolor: 'rgba(251,246,236,0.92)',
+            color: INK,
+            fontWeight: 700,
+          }}
         />
       </Box>
       <Box sx={{ p: 2.25, display: 'flex', flexDirection: 'column', gap: 1, flex: 1 }}>
-        <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 19, color: INK }} noWrap>
+        <Typography
+          sx={{
+            fontFamily: '"Fraunces", Georgia, serif',
+            fontWeight: 600,
+            fontSize: 19,
+            color: INK,
+          }}
+          noWrap
+        >
           {p.name}
         </Typography>
         {p.description && (
-          <Typography variant="body2" color="text.secondary" sx={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
             {p.description}
           </Typography>
         )}
         {p.place?.name && (
-          <Stack direction="row" spacing={0.5} alignItems="center" sx={{ color: 'text.secondary' }}>
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{ alignItems: 'center', color: 'text.secondary' }}
+          >
             <PlaceOutlinedIcon sx={{ fontSize: 16 }} />
             <Typography variant="caption" noWrap>
               {[p.place.name, p.place.city].filter(Boolean).join(', ')}
@@ -104,7 +142,12 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
         <Chip
           label={`100 pts ≈ GHS ${((100 * rate) / 100).toFixed(2)}`}
           size="small"
-          sx={{ alignSelf: 'flex-start', bgcolor: 'rgba(224,161,6,0.14)', color: '#946a00', fontWeight: 700 }}
+          sx={{
+            alignSelf: 'flex-start',
+            bgcolor: 'rgba(224,161,6,0.14)',
+            color: '#946a00',
+            fontWeight: 700,
+          }}
         />
         <Stack direction="row" spacing={1} sx={{ mt: 0.5 }}>
           <Button
@@ -113,7 +156,13 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
             variant="contained"
             size="small"
             startIcon={<RedeemOutlinedIcon />}
-            sx={{ bgcolor: INK, color: PAPER, borderRadius: 999, fontWeight: 700, '&:hover': { bgcolor: '#0a322e' } }}
+            sx={{
+              bgcolor: INK,
+              color: PAPER,
+              borderRadius: 999,
+              fontWeight: 700,
+              '&:hover': { bgcolor: '#0a322e' },
+            }}
           >
             Redeem here
           </Button>
@@ -151,7 +200,7 @@ export function RewardPartnersPage() {
         subtitle="Turn the points you earn from returning lost items into perks at restaurants, cafés, malls and shops near you. New partners join all the time."
       />
 
-      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 3 }}>
+      <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 3 }} useFlexGap>
         {CATEGORIES.map((c) => (
           <Chip
             key={c.key}

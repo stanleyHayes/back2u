@@ -31,21 +31,9 @@ const MARIGOLD = '#E0A106';
 
 const STEPS = ['Institution', 'Contact', 'Volume & message'];
 
-const INSTITUTION_TYPES = [
-  'University',
-  'Mall',
-  'Airport',
-  'Transit',
-  'Hotel',
-  'Other',
-] as const;
+const INSTITUTION_TYPES = ['University', 'Mall', 'Airport', 'Transit', 'Hotel', 'Other'] as const;
 
-const VOLUME_OPTIONS = [
-  '<10',
-  '10-50',
-  '50-200',
-  '200+',
-] as const;
+const VOLUME_OPTIONS = ['<10', '10-50', '50-200', '200+'] as const;
 
 type InstitutionType = (typeof INSTITUTION_TYPES)[number];
 type VolumeOption = (typeof VOLUME_OPTIONS)[number];
@@ -91,19 +79,19 @@ export function PartnerForm() {
   const [error, setError] = useState<string | null>(null);
   const [activeStep, setActiveStep] = useState(0);
 
-  const handleChange = (field: keyof FormData) => (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const value = event.target.value;
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field as keyof FormErrors]) {
-      setErrors((prev) => {
-        const next = { ...prev };
-        delete next[field as keyof FormErrors];
-        return next;
-      });
-    }
-  };
+  const handleChange =
+    (field: keyof FormData) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const value = event.target.value;
+      setFormData((prev) => ({ ...prev, [field]: value }));
+      if (errors[field as keyof FormErrors]) {
+        setErrors((prev) => {
+          const next = { ...prev };
+          delete next[field as keyof FormErrors];
+          return next;
+        });
+      }
+    };
 
   const validate = (): boolean => {
     const nextErrors: FormErrors = {};
@@ -217,7 +205,7 @@ export function PartnerForm() {
         >
           <Container sx={{ py: 2, display: 'flex', alignItems: 'center' }}>
             <BrandLogo />
-            <Box flex={1} />
+            <Box sx={{ flex: 1 }} />
             <Button
               component={Link}
               to="/"
@@ -231,7 +219,16 @@ export function PartnerForm() {
         </Box>
 
         {/* Success Card */}
-        <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', px: 2, py: 8 }}>
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            px: 2,
+            py: 8,
+          }}
+        >
           <Card
             variant="outlined"
             sx={{
@@ -244,19 +241,13 @@ export function PartnerForm() {
           >
             <CardContent sx={{ py: 6, px: { xs: 3, md: 5 } }}>
               <CheckCircleIcon color="success" sx={{ fontSize: 64, mb: 2 }} />
-              <Typography variant="h4" fontWeight={700} gutterBottom>
+              <Typography variant="h4" sx={{ fontWeight: 700 }} gutterBottom>
                 Thank you!
               </Typography>
-              <Typography color="text.secondary" fontSize={16}>
+              <Typography color="text.secondary" sx={{ fontSize: 16 }}>
                 Our team will reach out within 48 hours.
               </Typography>
-              <Button
-                component={Link}
-                to="/"
-                variant="contained"
-                color="primary"
-                sx={{ mt: 4 }}
-              >
+              <Button component={Link} to="/" variant="contained" color="primary" sx={{ mt: 4 }}>
                 Back to home
               </Button>
             </CardContent>
@@ -275,7 +266,7 @@ export function PartnerForm() {
           }}
         >
           <Container>
-            <Typography color="text.secondary" fontSize={14}>
+            <Typography color="text.secondary" sx={{ fontSize: 14 }}>
               © {new Date().getFullYear()} Back2u. All rights reserved.
             </Typography>
           </Container>
@@ -300,7 +291,7 @@ export function PartnerForm() {
       >
         <Container sx={{ py: 2, display: 'flex', alignItems: 'center' }}>
           <BrandLogo />
-          <Box flex={1} />
+          <Box sx={{ flex: 1 }} />
           <Button
             component={Link}
             to="/"
@@ -316,7 +307,7 @@ export function PartnerForm() {
       {/* Form */}
       <Box component="main" sx={{ flex: 1, py: { xs: 6, md: 10 } }}>
         <Container maxWidth="md">
-          <Box maxWidth={760} mx="auto">
+          <Box sx={{ maxWidth: 760, mx: 'auto' }}>
             <Typography
               sx={{
                 color: TEAL,
@@ -340,7 +331,7 @@ export function PartnerForm() {
             >
               Partner with Back2u
             </Typography>
-            <Typography color="text.secondary" fontSize={16} sx={{ mb: 3 }}>
+            <Typography color="text.secondary" sx={{ fontSize: 16, mb: 3 }}>
               Join universities, malls, airports, and transit hubs using smart lost &amp; found.
             </Typography>
 
@@ -484,9 +475,13 @@ export function PartnerForm() {
 
                 <Stack
                   direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{ pt: 1.5, borderTop: '1px solid', borderColor: 'divider' }}
+                  sx={{
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    pt: 1.5,
+                    borderTop: '1px solid',
+                    borderColor: 'divider',
+                  }}
                 >
                   <Button
                     onClick={handleBack}
@@ -560,7 +555,7 @@ export function PartnerForm() {
         }}
       >
         <Container>
-          <Typography color="text.secondary" fontSize={14}>
+          <Typography color="text.secondary" sx={{ fontSize: 14 }}>
             © {new Date().getFullYear()} Back2u. All rights reserved.
           </Typography>
         </Container>

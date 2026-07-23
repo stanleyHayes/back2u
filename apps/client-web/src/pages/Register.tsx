@@ -18,7 +18,11 @@ export function RegisterPage() {
     setErr(null);
     try {
       const res = await api.register(form);
-      setAuth({ user: res.user, accessToken: res.tokens.accessToken, refreshToken: res.tokens.refreshToken });
+      setAuth({
+        user: res.user,
+        accessToken: res.tokens.accessToken,
+        refreshToken: res.tokens.refreshToken,
+      });
       navigate('/');
     } catch (e: unknown) {
       setErr(e instanceof Error ? e.message : 'Registration failed');
@@ -28,7 +32,7 @@ export function RegisterPage() {
   };
 
   return (
-    <Box maxWidth={460} mx="auto">
+    <Box sx={{ maxWidth: 460, mx: 'auto' }}>
       <Paper sx={{ p: 4 }}>
         <Typography variant="h4" gutterBottom>
           Create your account
@@ -62,7 +66,12 @@ export function RegisterPage() {
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               helperText="At least 8 characters"
             />
-            <Button type="submit" variant="contained" size="large" disabled={loading || form.password.length < 8}>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              disabled={loading || form.password.length < 8}
+            >
               {loading ? 'Creating…' : 'Create account'}
             </Button>
             <Typography variant="body2">

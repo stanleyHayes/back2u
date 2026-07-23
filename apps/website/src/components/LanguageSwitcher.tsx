@@ -1,11 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  Menu,
-  MenuItem,
-  Box,
-} from '@mui/material';
+import { Button, Menu, MenuItem, Box } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 interface LanguageOption {
@@ -40,7 +35,7 @@ export function LanguageSwitcher() {
       localStorage.setItem('i18nextLng', code);
       handleClose();
     },
-    [i18n, handleClose]
+    [i18n, handleClose],
   );
 
   const currentLang = LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0]!;
@@ -77,9 +72,19 @@ export function LanguageSwitcher() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'language-switcher-button',
-          dense: true,
+        slotProps={{
+          list: {
+            'aria-labelledby': 'language-switcher-button',
+            dense: true,
+          },
+          paper: {
+            sx: {
+              mt: 0.5,
+              minWidth: 140,
+              borderRadius: 1,
+              boxShadow: 3,
+            },
+          },
         }}
         anchorOrigin={{
           vertical: 'bottom',
@@ -88,14 +93,6 @@ export function LanguageSwitcher() {
         transformOrigin={{
           vertical: 'top',
           horizontal: 'right',
-        }}
-        PaperProps={{
-          sx: {
-            mt: 0.5,
-            minWidth: 140,
-            borderRadius: 1,
-            boxShadow: 3,
-          },
         }}
       >
         {LANGUAGES.map((lang) => (

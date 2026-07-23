@@ -26,9 +26,24 @@ const STATUS_ORDER = ['open', 'matched', 'claimed', 'returned', 'closed', 'archi
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <Box sx={{ p: 2.5, borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', bgcolor: 'background.paper' }}>
+    <Box
+      sx={{
+        p: 2.5,
+        borderRadius: 3,
+        border: '1px solid rgba(255,255,255,0.08)',
+        bgcolor: 'background.paper',
+      }}
+    >
       <Typography sx={{ fontSize: 12.5, color: 'text.secondary' }}>{label}</Typography>
-      <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 34, color: '#F3F6FB', lineHeight: 1.1 }}>
+      <Typography
+        sx={{
+          fontFamily: '"Fraunces", Georgia, serif',
+          fontWeight: 600,
+          fontSize: 34,
+          color: '#F3F6FB',
+          lineHeight: 1.1,
+        }}
+      >
         {value}
       </Typography>
     </Box>
@@ -51,38 +66,81 @@ function Overview() {
     .map(([label, value]) => ({ label, value }));
   return (
     <Box>
-      <Typography sx={{ color: INK_TEAL, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', fontSize: 12, mb: 0.5 }}>
+      <Typography
+        sx={{
+          color: INK_TEAL,
+          fontWeight: 700,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          fontSize: 12,
+          mb: 0.5,
+        }}
+      >
         Partner portal
       </Typography>
-      <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 30, color: '#F3F6FB' }}>
+      <Typography
+        sx={{
+          fontFamily: '"Fraunces", Georgia, serif',
+          fontWeight: 600,
+          fontSize: 30,
+          color: '#F3F6FB',
+        }}
+      >
         Welcome back
       </Typography>
       <Typography color="text.secondary" sx={{ mt: 1, mb: 3, maxWidth: 620 }}>
-        Lost &amp; found tracking for your institution. Filter by your venue, view turn-around metrics, redeem finder
-        points at your storefronts, and accept courier delivery jobs.
+        Lost &amp; found tracking for your institution. Filter by your venue, view turn-around
+        metrics, redeem finder points at your storefronts, and accept courier delivery jobs.
       </Typography>
-      <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: 'repeat(3,1fr)' }} gap={2}>
+      <Box
+        sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3,1fr)' }, gap: 2 }}
+      >
         <StatCard label="Reported here" value={data?.total ?? 0} />
-        <StatCard label="Awaiting collection" value={items.filter((i) => i.status === 'matched').length} />
+        <StatCard
+          label="Awaiting collection"
+          value={items.filter((i) => i.status === 'matched').length}
+        />
         <StatCard label="Returned" value={items.filter((i) => i.status === 'returned').length} />
       </Box>
 
-      <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 22, color: '#F3F6FB', mt: 4, mb: 2 }}>
+      <Typography
+        sx={{
+          fontFamily: '"Fraunces", Georgia, serif',
+          fontWeight: 600,
+          fontSize: 22,
+          color: '#F3F6FB',
+          mt: 4,
+          mb: 2,
+        }}
+      >
         Breakdowns
       </Typography>
-      <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: 'repeat(3,1fr)' }} gap={2}>
+      <Box
+        sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3,1fr)' }, gap: 2 }}
+      >
         <DonutChart
           title="Lost vs found"
           centerLabel="items"
           slices={[
-            { label: 'Found', value: items.filter((i) => i.kind === 'found').length, color: '#2DD4BF' },
-            { label: 'Lost', value: items.filter((i) => i.kind === 'lost').length, color: '#C2410C' },
+            {
+              label: 'Found',
+              value: items.filter((i) => i.kind === 'found').length,
+              color: '#2DD4BF',
+            },
+            {
+              label: 'Lost',
+              value: items.filter((i) => i.kind === 'lost').length,
+              color: '#C2410C',
+            },
           ]}
         />
         <HBarChart
           title="Items by status"
           color="#2DD4BF"
-          data={STATUS_ORDER.map((s) => ({ label: s.charAt(0).toUpperCase() + s.slice(1), value: items.filter((i) => i.status === s).length }))}
+          data={STATUS_ORDER.map((s) => ({
+            label: s.charAt(0).toUpperCase() + s.slice(1),
+            value: items.filter((i) => i.status === s).length,
+          }))}
         />
         <HBarChart title="Top categories" color="#E0A106" data={topCategories} />
       </Box>

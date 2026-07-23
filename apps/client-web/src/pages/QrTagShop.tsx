@@ -61,7 +61,9 @@ export function QrTagShopPage() {
         window.location.assign(data.authorizationUrl);
         return;
       }
-      setPaySuccess(`Payment successful! ${data.tags.length} tag${data.tags.length > 1 ? 's' : ''} minted.`);
+      setPaySuccess(
+        `Payment successful! ${data.tags.length} tag${data.tags.length > 1 ? 's' : ''} minted.`,
+      );
       setQuantities({});
       qc.invalidateQueries({ queryKey: ['my-tag-orders'] });
       qc.invalidateQueries({ queryKey: ['my-tags'] });
@@ -84,13 +86,28 @@ export function QrTagShopPage() {
 
   return (
     <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
-      <Stack direction="row" spacing={1.25} alignItems="center" sx={{ color: TEAL, mb: 1 }}>
+      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', color: TEAL, mb: 1 }}>
         <ShoppingBagOutlinedIcon fontSize="small" />
-        <Typography sx={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+        <Typography
+          sx={{
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+          }}
+        >
           Tag shop
         </Typography>
       </Stack>
-      <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: { xs: 34, md: 44 }, color: INK, letterSpacing: '-0.02em' }}>
+      <Typography
+        sx={{
+          fontFamily: DISPLAY,
+          fontWeight: 600,
+          fontSize: { xs: 34, md: 44 },
+          color: INK,
+          letterSpacing: '-0.02em',
+        }}
+      >
         Buy QR tags
       </Typography>
       <Typography color="text.secondary" sx={{ mt: 1, mb: 3 }}>
@@ -98,7 +115,11 @@ export function QrTagShopPage() {
       </Typography>
 
       {paySuccess && (
-        <Alert severity="success" sx={{ mb: 3, borderRadius: 2 }} onClose={() => setPaySuccess(null)}>
+        <Alert
+          severity="success"
+          sx={{ mb: 3, borderRadius: 2 }}
+          onClose={() => setPaySuccess(null)}
+        >
           {paySuccess}
         </Alert>
       )}
@@ -110,7 +131,13 @@ export function QrTagShopPage() {
 
       {isLoading && <CardGridSkeleton count={6} minWidth={240} />}
 
-      <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2,1fr)', md: 'repeat(3,1fr)' }} gap={2.5}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)', md: 'repeat(3,1fr)' },
+          gap: 2.5,
+        }}
+      >
         {products?.map((p) => {
           const qty = quantities[p.id] ?? 0;
           return (
@@ -122,25 +149,38 @@ export function QrTagShopPage() {
                 flexDirection: 'column',
                 borderRadius: '24px 24px 24px 8px',
                 transition: 'transform .18s, box-shadow .18s',
-                '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 26px 46px -30px rgba(11,61,56,.5)' },
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 26px 46px -30px rgba(11,61,56,.5)',
+                },
               }}
             >
               <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 20, color: INK }}>{p.name}</Typography>
+                <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 20, color: INK }}>
+                  {p.name}
+                </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, mb: 1.5 }}>
                   {p.description}
                 </Typography>
-                <Chip size="small" label={`${p.quantity} tags`} sx={{ bgcolor: 'rgba(15,118,110,0.1)', color: TEAL, width: 'fit-content' }} />
+                <Chip
+                  size="small"
+                  label={`${p.quantity} tags`}
+                  sx={{ bgcolor: 'rgba(15,118,110,0.1)', color: TEAL, width: 'fit-content' }}
+                />
                 <Box sx={{ mt: 2, mb: 2 }}>
-                  <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 26, color: INK }}>
+                  <Typography
+                    sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 26, color: INK }}
+                  >
                     {majorCurrency(p.price, p.currency)}
                   </Typography>
                 </Box>
-                <Box flex={1} />
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Box sx={{ flex: 1 }} />
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <IconButton
                     size="small"
-                    onClick={() => setQuantities((q) => ({ ...q, [p.id]: Math.max(0, (q[p.id] ?? 0) - 1) }))}
+                    onClick={() =>
+                      setQuantities((q) => ({ ...q, [p.id]: Math.max(0, (q[p.id] ?? 0) - 1) }))
+                    }
                     disabled={qty === 0 || anyLoading}
                   >
                     <RemoveIcon fontSize="small" />
@@ -148,7 +188,7 @@ export function QrTagShopPage() {
                   <TextField
                     size="small"
                     value={qty}
-                    inputProps={{ readOnly: true, style: { textAlign: 'center' } }}
+                    slotProps={{ htmlInput: { readOnly: true, style: { textAlign: 'center' } } }}
                     sx={{ width: 56 }}
                   />
                   <IconButton
@@ -168,7 +208,7 @@ export function QrTagShopPage() {
       {cartItems.length > 0 && (
         <Card variant="outlined" sx={{ mt: 3, borderRadius: 3 }}>
           <CardContent>
-            <Typography variant="h6" fontWeight={700} gutterBottom>
+            <Typography variant="h6" sx={{ fontWeight: 700 }} gutterBottom>
               Checkout
             </Typography>
             <Stack spacing={1.5}>
@@ -176,18 +216,24 @@ export function QrTagShopPage() {
                 const p = products?.find((x) => x.id === productId);
                 if (!p) return null;
                 return (
-                  <Stack key={productId} direction="row" justifyContent="space-between" alignItems="center">
+                  <Stack
+                    key={productId}
+                    direction="row"
+                    sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+                  >
                     <Typography>
                       {p.name} × {quantity}
                     </Typography>
-                    <Typography fontWeight={700}>{majorCurrency(p.price * quantity, p.currency)}</Typography>
+                    <Typography sx={{ fontWeight: 700 }}>
+                      {majorCurrency(p.price * quantity, p.currency)}
+                    </Typography>
                   </Stack>
                 );
               })}
             </Stack>
             <Divider sx={{ my: 1.5 }} />
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Typography fontWeight={700}>Total</Typography>
+            <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography sx={{ fontWeight: 700 }}>Total</Typography>
               <Typography sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, color: INK }}>
                 ₵{cartTotal.toLocaleString()}
               </Typography>
@@ -195,7 +241,14 @@ export function QrTagShopPage() {
             <Button
               fullWidth
               variant="contained"
-              sx={{ mt: 2, bgcolor: MARIGOLD, color: INK, borderRadius: 999, fontWeight: 700, '&:hover': { bgcolor: '#cf9305' } }}
+              sx={{
+                mt: 2,
+                bgcolor: MARIGOLD,
+                color: INK,
+                borderRadius: 999,
+                fontWeight: 700,
+                '&:hover': { bgcolor: '#cf9305' },
+              }}
               disabled={anyLoading}
               onClick={() => createOrder.mutate(cartItems)}
             >
@@ -207,21 +260,30 @@ export function QrTagShopPage() {
 
       {orders && orders.length > 0 && (
         <Box sx={{ mt: 4 }}>
-          <Typography variant="h6" fontWeight={700} gutterBottom>
+          <Typography variant="h6" sx={{ fontWeight: 700 }} gutterBottom>
             Order history
           </Typography>
           <Stack spacing={1.5}>
             {orders.map((o) => (
               <Card key={o.id} variant="outlined" sx={{ borderRadius: 2 }}>
                 <CardContent>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
+                  <Stack
+                    direction="row"
+                    sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 1 }}
+                  >
                     <Typography variant="body2" color="text.secondary">
                       {new Date(o.createdAt).toLocaleDateString()}
                     </Typography>
                     <Chip
                       size="small"
                       label={o.status}
-                      color={o.status === 'fulfilled' ? 'success' : o.status === 'paid' ? 'warning' : 'default'}
+                      color={
+                        o.status === 'fulfilled'
+                          ? 'success'
+                          : o.status === 'paid'
+                            ? 'warning'
+                            : 'default'
+                      }
                     />
                   </Stack>
                   {o.products.map((p) => (
@@ -229,7 +291,7 @@ export function QrTagShopPage() {
                       {p.name} × {p.quantity}
                     </Typography>
                   ))}
-                  <Typography fontWeight={700} sx={{ mt: 1 }}>
+                  <Typography sx={{ mt: 1, fontWeight: 700 }}>
                     Total: {majorCurrency(o.total, o.currency)}
                   </Typography>
                 </CardContent>

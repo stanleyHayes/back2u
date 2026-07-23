@@ -55,7 +55,9 @@ export function FoundNearYouPage() {
     navigator.geolocation.getCurrentPosition(
       (pos) => setCoords({ lng: pos.coords.longitude, lat: pos.coords.latitude }),
       () => {
-        setGeoError('We need your location to surface found items near you. Enable location and reload.');
+        setGeoError(
+          'We need your location to surface found items near you. Enable location and reload.',
+        );
         setLoading(false);
       },
       { enableHighAccuracy: true, timeout: 10_000 },
@@ -129,12 +131,32 @@ export function FoundNearYouPage() {
 
   return (
     <Box sx={{ maxWidth: 1000, mx: 'auto' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2} flexWrap="wrap" gap={1}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          mb: 2,
+          flexWrap: 'wrap',
+          gap: 1,
+        }}
+      >
         <Box>
-          <Typography sx={{ color: '#0F766E', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', fontSize: 12, mb: 0.5 }}>
+          <Typography
+            sx={{
+              color: '#0F766E',
+              fontWeight: 700,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              fontSize: 12,
+              mb: 0.5,
+            }}
+          >
             Augmented reality
           </Typography>
-          <Typography sx={{ fontFamily: '"Fraunces", serif', fontWeight: 600, fontSize: 32, color: INK }}>
+          <Typography
+            sx={{ fontFamily: '"Fraunces", serif', fontWeight: 600, fontSize: 32, color: INK }}
+          >
             Found near you
           </Typography>
           <Typography color="text.secondary">
@@ -214,8 +236,16 @@ export function FoundNearYouPage() {
 
         {/* loading */}
         {loading && (
-          <Box sx={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', color: PAPER }}>
-            <Stack alignItems="center" spacing={1.5}>
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              display: 'grid',
+              placeItems: 'center',
+              color: PAPER,
+            }}
+          >
+            <Stack spacing={1.5} sx={{ alignItems: 'center' }}>
               <CircularProgress sx={{ color: MARIGOLD }} />
               <Typography sx={{ color: PAPER }}>Scanning for nearby finds…</Typography>
             </Stack>
@@ -225,7 +255,7 @@ export function FoundNearYouPage() {
         {/* empty */}
         {!loading && coords && items.length === 0 && (
           <Box sx={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', p: 3 }}>
-            <Stack alignItems="center" spacing={1} sx={{ textAlign: 'center' }}>
+            <Stack spacing={1} sx={{ alignItems: 'center', textAlign: 'center' }}>
               <Typography sx={{ fontFamily: '"Fraunces", serif', fontSize: 24, color: PAPER }}>
                 Nothing found within 5&nbsp;km
               </Typography>
@@ -260,8 +290,8 @@ export function FoundNearYouPage() {
               <Stack
                 direction="row"
                 spacing={1}
-                alignItems="center"
                 sx={{
+                  alignItems: 'center',
                   p: 0.75,
                   pr: 1.5,
                   borderRadius: 999,
@@ -276,16 +306,35 @@ export function FoundNearYouPage() {
                     component="img"
                     src={it.images[0].url}
                     alt={it.title}
-                    sx={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      flexShrink: 0,
+                    }}
                   />
                 ) : (
-                  <Box sx={{ width: 36, height: 36, borderRadius: '50%', bgcolor: TEAL, flexShrink: 0 }} />
+                  <Box
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: '50%',
+                      bgcolor: TEAL,
+                      flexShrink: 0,
+                    }}
+                  />
                 )}
                 <Box sx={{ minWidth: 0 }}>
-                  <Typography noWrap sx={{ fontWeight: 700, fontSize: 13, color: INK, lineHeight: 1.1 }}>
+                  <Typography
+                    noWrap
+                    sx={{ fontWeight: 700, fontSize: 13, color: INK, lineHeight: 1.1 }}
+                  >
                     {it.title}
                   </Typography>
-                  <Typography sx={{ fontSize: 11, color: '#3C544F' }}>{fmtDist(it.dist)} away</Typography>
+                  <Typography sx={{ fontSize: 11, color: '#3C544F' }}>
+                    {fmtDist(it.dist)} away
+                  </Typography>
                 </Box>
               </Stack>
             </Box>
@@ -315,13 +364,21 @@ export function FoundNearYouPage() {
                 }}
               >
                 {it.images[0]?.url && (
-                  <Box component="img" src={it.images[0].url} alt={it.title} sx={{ width: '100%', height: 110, objectFit: 'cover', display: 'block' }} />
+                  <Box
+                    component="img"
+                    src={it.images[0].url}
+                    alt={it.title}
+                    sx={{ width: '100%', height: 110, objectFit: 'cover', display: 'block' }}
+                  />
                 )}
                 <Box sx={{ p: 1.25 }}>
                   <Typography noWrap sx={{ fontWeight: 700, fontSize: 14 }}>
                     {it.title}
                   </Typography>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Stack
+                    direction="row"
+                    sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+                  >
                     <Typography noWrap variant="caption" color="text.secondary">
                       {it.place?.name}
                     </Typography>
@@ -334,8 +391,13 @@ export function FoundNearYouPage() {
         </Box>
       )}
 
-      <Box mt={2}>
-        <Button variant="outlined" color="inherit" sx={{ color: 'text.primary' }} onClick={() => navigate('/map')}>
+      <Box sx={{ mt: 2 }}>
+        <Button
+          variant="outlined"
+          color="inherit"
+          sx={{ color: 'text.primary' }}
+          onClick={() => navigate('/map')}
+        >
           Prefer a map? Open the map view →
         </Button>
       </Box>

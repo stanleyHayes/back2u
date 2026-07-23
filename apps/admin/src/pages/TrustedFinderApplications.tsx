@@ -33,14 +33,24 @@ const STATUS_COLOR: Record<string, 'warning' | 'success' | 'error' | 'default'> 
 
 export function TrustedFinderApplicationsPage() {
   const qc = useQueryClient();
-  const [statusFilter, setStatusFilter] = useState<'pending' | 'approved' | 'rejected' | undefined>('pending');
-  const [decideDialog, setDecideDialog] = useState<{ open: boolean; app: TrustedFinderApplicationDTO | null; decision: 'approved' | 'rejected' }>({
+  const [statusFilter, setStatusFilter] = useState<'pending' | 'approved' | 'rejected' | undefined>(
+    'pending',
+  );
+  const [decideDialog, setDecideDialog] = useState<{
+    open: boolean;
+    app: TrustedFinderApplicationDTO | null;
+    decision: 'approved' | 'rejected';
+  }>({
     open: false,
     app: null,
     decision: 'approved',
   });
   const [reason, setReason] = useState('');
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
     open: false,
     message: '',
     severity: 'success',
@@ -61,7 +71,11 @@ export function TrustedFinderApplicationsPage() {
       setSnackbar({ open: true, message: 'Decision saved.', severity: 'success' });
     },
     onError: (e: unknown) => {
-      setSnackbar({ open: true, message: e instanceof Error ? e.message : 'Failed to decide', severity: 'error' });
+      setSnackbar({
+        open: true,
+        message: e instanceof Error ? e.message : 'Failed to decide',
+        severity: 'error',
+      });
     },
   });
 
@@ -77,13 +91,17 @@ export function TrustedFinderApplicationsPage() {
 
   const handleDecide = () => {
     if (decideDialog.app) {
-      decide.mutate({ id: decideDialog.app.id, decision: decideDialog.decision, reason: reason || undefined });
+      decide.mutate({
+        id: decideDialog.app.id,
+        decision: decideDialog.decision,
+        reason: reason || undefined,
+      });
     }
   };
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h4" fontWeight={700}>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
         Trusted Finder Applications
       </Typography>
 
@@ -150,16 +168,28 @@ export function TrustedFinderApplicationsPage() {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Chip label={app.status} size="small" color={STATUS_COLOR[app.status] ?? 'default'} />
+                  <Chip
+                    label={app.status}
+                    size="small"
+                    color={STATUS_COLOR[app.status] ?? 'default'}
+                  />
                 </TableCell>
                 <TableCell>{new Date(app.createdAt).toLocaleString()}</TableCell>
                 <TableCell>
                   {app.status === 'pending' && (
                     <Stack direction="row" spacing={0.5}>
-                      <Button size="small" color="success" onClick={() => openDecide(app, 'approved')}>
+                      <Button
+                        size="small"
+                        color="success"
+                        onClick={() => openDecide(app, 'approved')}
+                      >
                         Approve
                       </Button>
-                      <Button size="small" color="error" onClick={() => openDecide(app, 'rejected')}>
+                      <Button
+                        size="small"
+                        color="error"
+                        onClick={() => openDecide(app, 'rejected')}
+                      >
                         Reject
                       </Button>
                     </Stack>
@@ -190,12 +220,15 @@ export function TrustedFinderApplicationsPage() {
           {decideDialog.decision === 'approved' ? 'Approve' : 'Reject'} application
         </DialogTitle>
         <DialogContent>
-          <Stack spacing={2} mt={1}>
+          <Stack spacing={2} sx={{ mt: 1 }}>
             <Typography variant="body2" color="text.secondary">
               Application from user {decideDialog.app?.userId}
             </Typography>
             <Box>
-              <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.75 }}>
+              <Stack
+                direction="row"
+                sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 0.75 }}
+              >
                 <Typography variant="caption" color="text.secondary">
                   Reason / note (optional)
                 </Typography>
@@ -204,7 +237,13 @@ export function TrustedFinderApplicationsPage() {
                   value={reason}
                   onChange={setReason}
                   assist={api.aiAssist.bind(api)}
-                  actions={['fix_grammar', 'improve_clarity', 'formalize', 'make_casual', 'create_from_prompt']}
+                  actions={[
+                    'fix_grammar',
+                    'improve_clarity',
+                    'formalize',
+                    'make_casual',
+                    'create_from_prompt',
+                  ]}
                 />
               </Stack>
               <TextField
@@ -237,7 +276,10 @@ export function TrustedFinderApplicationsPage() {
         onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar((s) => ({ ...s, open: false }))}>
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

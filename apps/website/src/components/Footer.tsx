@@ -2,12 +2,12 @@ import { useState, type FormEvent } from 'react';
 import { Box, Button, Container, IconButton, InputBase, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -25,7 +25,8 @@ import { Wordmark } from './Wordmark';
 import { AppStoreBadges } from './AppStoreBadges';
 
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
-const CONTACT_EMAIL = (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? 'hello@back2u.app';
+const CONTACT_EMAIL =
+  (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? 'hello@back2u.app';
 const PAPER = '#FBF6EC';
 const MARIGOLD = '#E0A106';
 const MUTED = 'rgba(255,253,248,0.62)';
@@ -38,9 +39,17 @@ const COLUMNS: { title: string; links: FLink[] }[] = [
     links: [
       { label: 'Browse feed', icon: <RssFeedIcon fontSize="inherit" />, href: `${APP_URL}/feed` },
       { label: 'Live map', icon: <MapIcon fontSize="inherit" />, to: '/map' },
-      { label: 'Post an item', icon: <AddCircleOutlineIcon fontSize="inherit" />, href: `${APP_URL}/post` },
+      {
+        label: 'Post an item',
+        icon: <AddCircleOutlinedIcon fontSize="inherit" />,
+        href: `${APP_URL}/post`,
+      },
       { label: 'QR tags', icon: <QrCode2Icon fontSize="inherit" />, href: `${APP_URL}/tags` },
-      { label: 'Marketplace', icon: <StorefrontIcon fontSize="inherit" />, href: `${APP_URL}/marketplace` },
+      {
+        label: 'Marketplace',
+        icon: <StorefrontIcon fontSize="inherit" />,
+        href: `${APP_URL}/marketplace`,
+      },
     ],
   },
   {
@@ -48,8 +57,16 @@ const COLUMNS: { title: string; links: FLink[] }[] = [
     links: [
       { label: 'For institutions', icon: <ApartmentIcon fontSize="inherit" />, to: '/partner' },
       { label: 'Pricing', icon: <LocalOfferIcon fontSize="inherit" />, to: '/pricing' },
-      { label: 'Contact', icon: <MailOutlineIcon fontSize="inherit" />, href: `mailto:${CONTACT_EMAIL}` },
-      { label: 'Safety', icon: <ShieldOutlinedIcon fontSize="inherit" />, href: `${APP_URL}/safety` },
+      {
+        label: 'Contact',
+        icon: <MailOutlinedIcon fontSize="inherit" />,
+        href: `mailto:${CONTACT_EMAIL}`,
+      },
+      {
+        label: 'Safety',
+        icon: <ShieldOutlinedIcon fontSize="inherit" />,
+        href: `${APP_URL}/safety`,
+      },
     ],
   },
   {
@@ -82,8 +99,8 @@ function FooterLink({ link }: { link: FLink }) {
     <Stack
       direction="row"
       spacing={1.1}
-      alignItems="center"
       sx={{
+        alignItems: 'center',
         color: MUTED,
         fontSize: 15,
         py: 0.5,
@@ -152,14 +169,17 @@ export function Footer() {
               }}
             >
               <Typography sx={{ color: 'rgba(255,253,248,0.72)', fontSize: 16, lineHeight: 1.7 }}>
-                West Africa&apos;s smart lost &amp; found. We reunite people with what they value through AI
-                matching, branded QR tags, and a community that shows up.
+                West Africa&apos;s smart lost &amp; found. We reunite people with what they value
+                through AI matching, branded QR tags, and a community that shows up.
               </Typography>
             </Box>
           </Box>
 
           <Box sx={{ justifySelf: { md: 'end' }, width: '100%', maxWidth: 460 }}>
-            <Typography className="b2u-display" sx={{ fontSize: 24, fontWeight: 600, color: PAPER }}>
+            <Typography
+              className="b2u-display"
+              sx={{ fontSize: 24, fontWeight: 600, color: PAPER }}
+            >
               Stay in the loop
             </Typography>
             <Typography sx={{ mt: 1, color: MUTED, fontSize: 14 }}>
@@ -200,7 +220,13 @@ export function Footer() {
                   type="email"
                   required
                   placeholder="your@email.com"
-                  sx={{ flex: 1, px: 1.5, color: PAPER, fontSize: 15, '& input::placeholder': { color: 'rgba(255,253,248,0.4)' } }}
+                  sx={{
+                    flex: 1,
+                    px: 1.5,
+                    color: PAPER,
+                    fontSize: 15,
+                    '& input::placeholder': { color: 'rgba(255,253,248,0.4)' },
+                  }}
                 />
                 <Button
                   type="submit"
@@ -233,7 +259,14 @@ export function Footer() {
           {COLUMNS.map((col) => (
             <Box key={col.title}>
               <Typography
-                sx={{ color: MARIGOLD, fontSize: 13, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', mb: 1.5 }}
+                sx={{
+                  color: MARIGOLD,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: '0.16em',
+                  textTransform: 'uppercase',
+                  mb: 1.5,
+                }}
               >
                 {col.title}
               </Typography>
@@ -266,7 +299,7 @@ export function Footer() {
           <Typography sx={{ fontSize: 13, color: MUTED, textAlign: { xs: 'center', md: 'left' } }}>
             © {new Date().getFullYear()} Back2u. All rights reserved.
           </Typography>
-          <Stack direction="row" spacing={1} justifyContent="center">
+          <Stack direction="row" spacing={1} sx={{ justifyContent: 'center' }}>
             {SOCIALS.map((s) => (
               <IconButton
                 key={s.label}
@@ -291,7 +324,12 @@ export function Footer() {
           </Stack>
           <Typography
             className="b2u-display"
-            sx={{ fontStyle: 'italic', fontSize: 14, color: MUTED, textAlign: { xs: 'center', md: 'right' } }}
+            sx={{
+              fontStyle: 'italic',
+              fontSize: 14,
+              color: MUTED,
+              textAlign: { xs: 'center', md: 'right' },
+            }}
           >
             &ldquo;Lost is just found, waiting.&rdquo;
           </Typography>

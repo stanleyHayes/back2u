@@ -70,7 +70,7 @@ export function RedeemPointsPage() {
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h3" fontWeight={700}>
+      <Typography variant="h3" sx={{ fontWeight: 700 }}>
         Redeem Points
       </Typography>
       <Typography color="text.secondary">
@@ -98,49 +98,57 @@ export function RedeemPointsPage() {
               {confirming ? 'Confirming…' : 'Confirm voucher'}
             </Button>
             {result && (
-              <Alert severity={result.success ? 'success' : 'error'}>
-                {result.message}
-              </Alert>
+              <Alert severity={result.success ? 'success' : 'error'}>{result.message}</Alert>
             )}
           </Stack>
         </CardContent>
       </Card>
 
-      <Typography variant="h6" fontWeight={700}>
+      <Typography variant="h6" sx={{ fontWeight: 700 }}>
         Recent exchanges
       </Typography>
 
       {isLoading && <ListSkeleton rows={3} avatar={false} />}
 
-      {error && (
-        <Alert severity="error">
-          Failed to load exchange history.
-        </Alert>
-      )}
+      {error && <Alert severity="error">Failed to load exchange history.</Alert>}
 
       {!institutionId && (
-        <Alert severity="warning">
-          Your account is not linked to an institution.
-        </Alert>
+        <Alert severity="warning">Your account is not linked to an institution.</Alert>
       )}
 
       {redemptions && redemptions.length === 0 && (
-        <EmptyState dense tone="marigold" icon={<ConfirmationNumberOutlinedIcon />} title="No exchanges yet" description="Confirmed point redemptions will show up here." />
+        <EmptyState
+          dense
+          tone="marigold"
+          icon={<ConfirmationNumberOutlinedIcon />}
+          title="No exchanges yet"
+          description="Confirmed point redemptions will show up here."
+        />
       )}
 
       {redemptions && redemptions.length > 0 && (
-        <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)' }} gap={2}>
+        <Box
+          sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}
+        >
           {redemptions.map((r) => (
             <Card key={r.id} variant="outlined">
               <CardContent>
                 <Stack spacing={1}>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography fontWeight={700} fontFamily="monospace">
+                  <Box
+                    sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  >
+                    <Typography sx={{ fontWeight: 700, fontFamily: 'monospace' }}>
                       {r.code}
                     </Typography>
                     <Chip
                       label={r.status}
-                      color={r.status === 'fulfilled' ? 'success' : r.status === 'pending' ? 'warning' : 'default'}
+                      color={
+                        r.status === 'fulfilled'
+                          ? 'success'
+                          : r.status === 'pending'
+                            ? 'warning'
+                            : 'default'
+                      }
                       size="small"
                     />
                   </Box>

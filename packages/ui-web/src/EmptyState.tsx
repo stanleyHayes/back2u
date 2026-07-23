@@ -133,8 +133,7 @@ export function EmptyState({
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={1.25}
-          justifyContent="center"
-          sx={{ mt: dense ? 2.5 : 3.5 }}
+          sx={{ justifyContent: 'center', mt: dense ? 2.5 : 3.5 }}
         >
           {actions.map((a) => {
             const isPrimary = (a.variant ?? 'primary') === 'primary';

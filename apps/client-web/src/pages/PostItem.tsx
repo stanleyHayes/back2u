@@ -30,7 +30,17 @@ import { AiAssistantBar } from '@back2u/ui-web';
 const INK = '#0B3D38';
 const TEAL = '#0F766E';
 const MARIGOLD = '#E0A106';
-const CATEGORIES = ['Phone', 'Wallet', 'Keys', 'Bag', 'ID', 'Laptop', 'Jewelry', 'Document', 'Other'];
+const CATEGORIES = [
+  'Phone',
+  'Wallet',
+  'Keys',
+  'Bag',
+  'ID',
+  'Laptop',
+  'Jewelry',
+  'Document',
+  'Other',
+];
 const STEPS = ['Type', 'Photos', 'Details', 'Location'];
 
 export function PostItemPage() {
@@ -83,7 +93,8 @@ export function PostItemPage() {
     if (images.length === 1 && !hasAutoSuggested.current) {
       hasAutoSuggested.current = true;
       setAiLoading(true);
-      api.describeImage(images[0]!.url)
+      api
+        .describeImage(images[0]!.url)
         .then((ai) => {
           setForm((prev) => ({
             ...prev,
@@ -117,7 +128,8 @@ export function PostItemPage() {
       let useLat = lat;
       if (!useLng || !useLat || coordsName !== name) {
         const [first] = await api.searchPlaces(name, { limit: 1 });
-        if (!first) throw new Error("We couldn't find that place. Try a nearby landmark, area, or town.");
+        if (!first)
+          throw new Error("We couldn't find that place. Try a nearby landmark, area, or town.");
         useLng = String(first.lng);
         useLat = String(first.lat);
       }
@@ -167,11 +179,28 @@ export function PostItemPage() {
   };
 
   return (
-    <Box maxWidth={760} mx="auto">
-      <Typography sx={{ color: TEAL, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', fontSize: 12, mb: 0.5 }}>
+    <Box sx={{ maxWidth: 760, mx: 'auto' }}>
+      <Typography
+        sx={{
+          color: TEAL,
+          fontWeight: 700,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          fontSize: 12,
+          mb: 0.5,
+        }}
+      >
         {form.kind === 'lost' ? 'Report a loss' : 'Report a find'}
       </Typography>
-      <Typography sx={{ fontFamily: '"Fraunces", Georgia, serif', fontWeight: 600, fontSize: 30, color: INK, mb: 3 }}>
+      <Typography
+        sx={{
+          fontFamily: '"Fraunces", Georgia, serif',
+          fontWeight: 600,
+          fontSize: 30,
+          color: INK,
+          mb: 3,
+        }}
+      >
         Post an item
       </Typography>
 
@@ -194,7 +223,11 @@ export function PostItemPage() {
         </Stepper>
 
         <Stack spacing={2.5}>
-          {err && <Alert severity="error" sx={{ borderRadius: 2 }}>{err}</Alert>}
+          {err && (
+            <Alert severity="error" sx={{ borderRadius: 2 }}>
+              {err}
+            </Alert>
+          )}
 
           {/* STEP 0 — Type */}
           {activeStep === 0 && (
@@ -215,7 +248,9 @@ export function PostItemPage() {
                   select
                   label="Classification"
                   value={form.classification}
-                  onChange={(e) => setForm({ ...form, classification: e.target.value as 'lost' | 'stolen' })}
+                  onChange={(e) =>
+                    setForm({ ...form, classification: e.target.value as 'lost' | 'stolen' })
+                  }
                   sx={{ flex: 1 }}
                 >
                   <MenuItem value="lost">Lost</MenuItem>
@@ -242,7 +277,9 @@ export function PostItemPage() {
             <Stack spacing={2}>
               <Typography sx={{ fontWeight: 700, color: INK }}>Add photos</Typography>
               <Typography variant="body2" color="text.secondary">
-                Clear photos dramatically improve AI matching. {aiAutoSuggestEnabled && 'We’ll auto-suggest a title and description from your first photo.'}
+                Clear photos dramatically improve AI matching.{' '}
+                {aiAutoSuggestEnabled &&
+                  'We’ll auto-suggest a title and description from your first photo.'}
               </Typography>
               <Box
                 component="label"
@@ -260,27 +297,46 @@ export function PostItemPage() {
                   '&:hover': { borderColor: TEAL, bgcolor: 'rgba(15,118,110,0.04)' },
                 }}
               >
-                {uploading ? <CircularProgress size={26} /> : <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 34, color: TEAL }} />}
-                <Typography sx={{ fontWeight: 600 }}>{uploading ? 'Uploading…' : 'Tap to add photos'}</Typography>
+                {uploading ? (
+                  <CircularProgress size={26} />
+                ) : (
+                  <AddPhotoAlternateOutlinedIcon sx={{ fontSize: 34, color: TEAL }} />
+                )}
+                <Typography sx={{ fontWeight: 600 }}>
+                  {uploading ? 'Uploading…' : 'Tap to add photos'}
+                </Typography>
                 <Typography variant="caption">Up to 8 images</Typography>
-                <input hidden type="file" multiple accept="image/*" onChange={(e) => onPickFiles(e.target.files)} />
+                <input
+                  hidden
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => onPickFiles(e.target.files)}
+                />
               </Box>
 
               {images.length > 0 && (
-                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }} useFlexGap>
                   {images.map((img) => (
                     <Box
                       key={img.publicId}
                       component="img"
                       src={img.url}
-                      sx={{ width: 88, height: 88, objectFit: 'cover', borderRadius: 2, border: '1px solid', borderColor: 'divider' }}
+                      sx={{
+                        width: 88,
+                        height: 88,
+                        objectFit: 'cover',
+                        borderRadius: 2,
+                        border: '1px solid',
+                        borderColor: 'divider',
+                      }}
                     />
                   ))}
                 </Stack>
               )}
 
               {aiLoading && (
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <CircularProgress size={16} />
                   <Typography variant="body2" color="text.secondary">
                     Analysing image…
@@ -294,7 +350,7 @@ export function PostItemPage() {
           {activeStep === 2 && (
             <Stack spacing={2.5}>
               <Typography sx={{ fontWeight: 700, color: INK }}>Describe it</Typography>
-              <Stack direction="row" spacing={1} alignItems="center">
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                 <TextField
                   label="Title"
                   required
@@ -332,7 +388,10 @@ export function PostItemPage() {
                 )}
               </Stack>
               <Box>
-                <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.75 }}>
+                <Stack
+                  direction="row"
+                  sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 0.75 }}
+                >
                   <Typography variant="caption" color="text.secondary">
                     Description
                   </Typography>
@@ -341,7 +400,15 @@ export function PostItemPage() {
                     value={form.description}
                     onChange={(text) => setForm((prev) => ({ ...prev, description: text }))}
                     assist={api.aiAssist.bind(api)}
-                    actions={['fix_grammar', 'improve_clarity', 'expand', 'formalize', 'make_casual', 'summarize', 'translate']}
+                    actions={[
+                      'fix_grammar',
+                      'improve_clarity',
+                      'expand',
+                      'formalize',
+                      'make_casual',
+                      'summarize',
+                      'translate',
+                    ]}
                   />
                 </Stack>
                 <TextField
@@ -355,7 +422,7 @@ export function PostItemPage() {
                 />
               </Box>
               {aiLoading && (
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <CircularProgress size={16} />
                   <Typography variant="body2" color="text.secondary">
                     Analysing image…
@@ -364,7 +431,12 @@ export function PostItemPage() {
               )}
               {suggestionsVisible && suggestedTags.length > 0 && (
                 <Box>
-                  <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{ alignItems: 'center', flexWrap: 'wrap' }}
+                    useFlexGap
+                  >
                     <Typography variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
                       AI suggests:
                     </Typography>
@@ -385,20 +457,29 @@ export function PostItemPage() {
                         sx={{ cursor: 'pointer' }}
                       />
                     ))}
-                    <Button size="small" onClick={() => setSuggestionsVisible(false)} sx={{ ml: 'auto' }}>
+                    <Button
+                      size="small"
+                      onClick={() => setSuggestionsVisible(false)}
+                      sx={{ ml: 'auto' }}
+                    >
                       Dismiss suggestions
                     </Button>
                   </Stack>
                 </Box>
               )}
               {form.tags && form.tags.length > 0 && (
-                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }} useFlexGap>
                   {form.tags.map((tag) => (
                     <Chip
                       key={tag}
                       label={tag}
                       size="small"
-                      onDelete={() => setForm((prev) => ({ ...prev, tags: (prev.tags ?? []).filter((t) => t !== tag) }))}
+                      onDelete={() =>
+                        setForm((prev) => ({
+                          ...prev,
+                          tags: (prev.tags ?? []).filter((t) => t !== tag),
+                        }))
+                      }
                     />
                   ))}
                 </Stack>
@@ -437,7 +518,7 @@ export function PostItemPage() {
               <TextField
                 type="datetime-local"
                 label="When"
-                InputLabelProps={{ shrink: true }}
+                slotProps={{ inputLabel: { shrink: true } }}
                 value={occurredAt}
                 onChange={(e) => setOccurredAt(e.target.value)}
               />
@@ -445,19 +526,35 @@ export function PostItemPage() {
                 label={`Reward (${DEFAULT_CURRENCY}, optional)`}
                 type="number"
                 onChange={(e) =>
-                  setForm({ ...form, rewardAmount: e.target.value ? Number(e.target.value) : undefined })
+                  setForm({
+                    ...form,
+                    rewardAmount: e.target.value ? Number(e.target.value) : undefined,
+                  })
                 }
               />
             </Stack>
           )}
 
           {/* Footer nav */}
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ pt: 1.5, borderTop: '1px solid', borderColor: 'divider' }}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              pt: 1.5,
+              borderTop: '1px solid',
+              borderColor: 'divider',
+            }}
+          >
             <Button
               onClick={handleBack}
               disabled={activeStep === 0}
               startIcon={<ArrowBackRoundedIcon />}
-              sx={{ color: 'text.secondary', fontWeight: 600, visibility: activeStep === 0 ? 'hidden' : 'visible' }}
+              sx={{
+                color: 'text.secondary',
+                fontWeight: 600,
+                visibility: activeStep === 0 ? 'hidden' : 'visible',
+              }}
             >
               Back
             </Button>
@@ -469,7 +566,14 @@ export function PostItemPage() {
                 onClick={submit}
                 variant="contained"
                 disabled={submitting || !stepValid(3)}
-                sx={{ bgcolor: MARIGOLD, color: INK, borderRadius: 999, px: 3, fontWeight: 700, '&:hover': { bgcolor: '#cf9305' } }}
+                sx={{
+                  bgcolor: MARIGOLD,
+                  color: INK,
+                  borderRadius: 999,
+                  px: 3,
+                  fontWeight: 700,
+                  '&:hover': { bgcolor: '#cf9305' },
+                }}
               >
                 {submitting ? 'Posting…' : 'Post item'}
               </Button>
@@ -479,7 +583,14 @@ export function PostItemPage() {
                 variant="contained"
                 disabled={!stepValid(activeStep)}
                 endIcon={<ArrowForwardRoundedIcon />}
-                sx={{ bgcolor: INK, color: '#FBF6EC', borderRadius: 999, px: 3, fontWeight: 700, '&:hover': { bgcolor: '#0a322e' } }}
+                sx={{
+                  bgcolor: INK,
+                  color: '#FBF6EC',
+                  borderRadius: 999,
+                  px: 3,
+                  fontWeight: 700,
+                  '&:hover': { bgcolor: '#0a322e' },
+                }}
               >
                 Continue
               </Button>

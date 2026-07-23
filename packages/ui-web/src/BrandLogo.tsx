@@ -6,7 +6,7 @@ const PAPER = '#FBF6EC';
 /** Back2u logo lockup: a tilted map-pin tag + Fraunces wordmark. */
 export function BrandLogo({ size = 30, onDark = false }: { size?: number; onDark?: boolean }) {
   return (
-    <Box display="flex" alignItems="center" gap={1}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <Box
         sx={{
           width: size,
@@ -20,7 +20,9 @@ export function BrandLogo({ size = 30, onDark = false }: { size?: number; onDark
           flexShrink: 0,
         }}
       >
-        <Box sx={{ width: size * 0.28, height: size * 0.28, borderRadius: '50%', bgcolor: PAPER }} />
+        <Box
+          sx={{ width: size * 0.28, height: size * 0.28, borderRadius: '50%', bgcolor: PAPER }}
+        />
       </Box>
       <Typography
         sx={{
