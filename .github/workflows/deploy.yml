@@ -25,7 +25,7 @@ jobs:
     name: Build static web bundles
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 10
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ secrets.EXPO_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 10
