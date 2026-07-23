@@ -132,8 +132,8 @@ importers:
         specifier: ^8.0.0
         version: 8.2.0
       inversify:
-        specifier: ^6.2.1
-        version: 6.2.2(reflect-metadata@0.2.2)
+        specifier: ^8.2.2
+        version: 8.2.2(reflect-metadata@0.2.2)
       ioredis:
         specifier: 5.10.1
         version: 5.10.1
@@ -1909,7 +1909,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {'0': node >=0.10.0}
+    engines: {node: '>=0.10.0'}
 
   '@expo/cli@0.22.28':
     resolution: {integrity: sha512-lvt72KNitGuixYD2l3SZmRKVu2G4zJpmg5V7WfUBNpmUU5oODBw/6qmiJ6kSLAlfDozscUk+BBGknBBzxUrwrA==}
@@ -2011,16 +2011,27 @@ packages:
   '@ide/backoff@1.0.0':
     resolution: {integrity: sha512-F0YfUDjvT+Mtt/R4xdl2X0EYCHMMiJqNLdxHD++jDT5ydEFIyqbCHh51Qx2E211dgZprPKhV7sHmnXKpLuvc5g==}
 
-  '@inversifyjs/common@1.4.0':
-    resolution: {integrity: sha512-qfRJ/3iOlCL/VfJq8+4o5X4oA14cZSBbpAmHsYj8EsIit1xDndoOl0xKOyglKtQD4u4gdNVxMHx4RWARk/I4QA==}
+  '@inversifyjs/common@2.0.1':
+    resolution: {integrity: sha512-pJAR4IAcT2jkYfZ9bD9XhtUDBLJRr8QOiSjb+2XyaHru6DLvu0VD2Id2iP7+tVRKkEe3XFUwDUEdKxcYlF699Q==}
 
-  '@inversifyjs/core@1.3.5':
-    resolution: {integrity: sha512-B4MFXabhNTAmrfgB+yeD6wd/GIvmvWC6IQ8Rh/j2C3Ix69kmqwz9pr8Jt3E+Nho9aEHOQCZaGmrALgtqRd+oEQ==}
-
-  '@inversifyjs/reflect-metadata-utils@0.2.4':
-    resolution: {integrity: sha512-u95rV3lKfG+NT2Uy/5vNzoDujos8vN8O18SSA5UyhxsGYd4GLQn/eUsGXfOsfa7m34eKrDelTKRUX1m/BcNX5w==}
+  '@inversifyjs/container@3.1.2':
+    resolution: {integrity: sha512-JWXC5FU4X5AOU+dboku3AMDl9ZTcwWpjX8sFHkrTaLeFjs0VxXRSlS5sY9/vELUvw1GQvPpA3Zxje2TzfyiPOA==}
     peerDependencies:
-      reflect-metadata: 0.2.2
+      reflect-metadata: ~0.2.2
+
+  '@inversifyjs/core@15.0.0':
+    resolution: {integrity: sha512-b+DHA9bWsACwxJPUsZfyiBUT2CulYeAtpbQwRgFjOaN13xnLtwFjySvu9HgaN0a41NOpeI/tJUj11ECF7VIUfg==}
+
+  '@inversifyjs/plugin@0.3.1':
+    resolution: {integrity: sha512-ByklTw731fydBCTMwMpkmwm+lv0U+JWm9NEqRsz3n5KzAC5Om2XtLjqzEC2w+8Ote3gVC3Qxsx6YmG9XLIZpvg==}
+
+  '@inversifyjs/prototype-utils@0.2.1':
+    resolution: {integrity: sha512-53cVE3cw+RxnSkGlg+jOFNSox2owJF9Fv3HgFKe4f+4aPullscltIiio88QRkx2Sc5yo3VlqPsXQFGw2CVJZnw==}
+
+  '@inversifyjs/reflect-metadata-utils@1.5.0':
+    resolution: {integrity: sha512-NpJVbRbuQ6Ao2vO+aw96un3oHDFCwXI0+pplsFt0Jh0gyR8DWk4m7ml/GBNMjdbeKVW/QgJ2S6NGXjk042uwqg==}
+    peerDependencies:
+      reflect-metadata: ~0.2.2
 
   '@ioredis/commands@1.5.1':
     resolution: {integrity: sha512-JH8ZL/ywcJyR9MmJ5BNqZllXNZQqQbnVZOqpPQqE1vHiFgAw4NHbvE0FOduNU8IX9babitBT46571OnPTT0Zcw==}
@@ -4670,7 +4681,7 @@ packages:
   git-raw-commits@4.0.0:
     resolution: {integrity: sha512-ICsMM1Wk8xSGMowkOmPrzo2Fgmfo4bMHLNX6ytHjajRJUqvHOw/TFapQ+QG75c3X/tTDDhOSRPGC52dDbNM8FQ==}
     engines: {node: '>=16'}
-    deprecated: This package is no longer maintained. For the JavaScript API, please use @conventional-changelog/git-client instead.
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   github-from-package@0.0.0:
@@ -4875,10 +4886,8 @@ packages:
   invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
 
-  inversify@6.2.2:
-    resolution: {integrity: sha512-KB836KHbZ9WrUnB8ax5MtadOwnqQYa+ZJO3KWbPFgcr4RIEnHM621VaqFZzOZd9+U7ln6upt9n0wJei7x2BNqw==}
-    peerDependencies:
-      reflect-metadata: ~0.2.2
+  inversify@8.2.2:
+    resolution: {integrity: sha512-BpxJsZl4mZX5dy6QfSLwKdz8VSd7B5pS7JTcH1kRrMpBsRr0AbCzYRawpfvEjqXvrJGZkJYoDYcAIdG8Rnylxw==}
 
   ioredis@5.10.1:
     resolution: {integrity: sha512-HuEDBTI70aYdx1v6U97SbNx9F1+svQKBDo30o0b9fw055LMepzpOOd0Ccg9Q6tbqmBSJaMuY0fB7yw9/vjBYCA==}
@@ -9323,16 +9332,31 @@ snapshots:
 
   '@ide/backoff@1.0.0': {}
 
-  '@inversifyjs/common@1.4.0': {}
+  '@inversifyjs/common@2.0.1': {}
 
-  '@inversifyjs/core@1.3.5(reflect-metadata@0.2.2)':
+  '@inversifyjs/container@3.1.2(reflect-metadata@0.2.2)':
     dependencies:
-      '@inversifyjs/common': 1.4.0
-      '@inversifyjs/reflect-metadata-utils': 0.2.4(reflect-metadata@0.2.2)
+      '@inversifyjs/common': 2.0.1
+      '@inversifyjs/core': 15.0.0(reflect-metadata@0.2.2)
+      '@inversifyjs/plugin': 0.3.1
+      '@inversifyjs/reflect-metadata-utils': 1.5.0(reflect-metadata@0.2.2)
+      reflect-metadata: 0.2.2
+
+  '@inversifyjs/core@15.0.0(reflect-metadata@0.2.2)':
+    dependencies:
+      '@inversifyjs/common': 2.0.1
+      '@inversifyjs/prototype-utils': 0.2.1
+      '@inversifyjs/reflect-metadata-utils': 1.5.0(reflect-metadata@0.2.2)
     transitivePeerDependencies:
       - reflect-metadata
 
-  '@inversifyjs/reflect-metadata-utils@0.2.4(reflect-metadata@0.2.2)':
+  '@inversifyjs/plugin@0.3.1': {}
+
+  '@inversifyjs/prototype-utils@0.2.1':
+    dependencies:
+      '@inversifyjs/common': 2.0.1
+
+  '@inversifyjs/reflect-metadata-utils@1.5.0(reflect-metadata@0.2.2)':
     dependencies:
       reflect-metadata: 0.2.2
 
@@ -12679,11 +12703,13 @@ snapshots:
     dependencies:
       loose-envify: 1.4.0
 
-  inversify@6.2.2(reflect-metadata@0.2.2):
+  inversify@8.2.2(reflect-metadata@0.2.2):
     dependencies:
-      '@inversifyjs/common': 1.4.0
-      '@inversifyjs/core': 1.3.5(reflect-metadata@0.2.2)
-      reflect-metadata: 0.2.2
+      '@inversifyjs/common': 2.0.1
+      '@inversifyjs/container': 3.1.2(reflect-metadata@0.2.2)
+      '@inversifyjs/core': 15.0.0(reflect-metadata@0.2.2)
+    transitivePeerDependencies:
+      - reflect-metadata
 
   ioredis@5.10.1:
     dependencies:

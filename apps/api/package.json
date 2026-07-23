@@ -34,7 +34,7 @@
     "express": "^5.0.1",
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.0.0",
-    "inversify": "^6.2.1",
+    "inversify": "^8.2.2",
     "ioredis": "5.10.1",
     "jsonwebtoken": "^9.0.2",
     "libsodium-wrappers": "^0.7.15",
