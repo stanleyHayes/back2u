@@ -1,27 +1,37 @@
+# Render Blueprint — Back2u API (free tier).
+#
+# Everything runs in ONE free web service: the Express API also runs the job
+# handlers inline and an in-process scheduler, so no paid Background Worker and
+# no paid Redis are required. (Redis is optional — set REDIS_URL later to move
+# to a durable BullMQ queue + separate worker when you outgrow the free tier.)
+#
+# MongoDB is NOT hosted on Render — create a free MongoDB Atlas M0 cluster and
+# paste its connection string into MONGO_URI in the Render dashboard.
+#
+# Free web services sleep after ~15 min of inactivity and cold-start on the next
+# request; scheduled jobs only run while the service is awake. Fine for staging
+# / demos. See DEPLOYMENT.md for the upgrade path.
+
 services:
   - type: web
     name: back2u-api
     runtime: docker
-    plan: starter
+    plan: free
     region: frankfurt
     rootDir: .
     dockerfilePath: apps/api/Dockerfile
+    # Run migrations, then boot the server (free tier has no preDeploy hook).
+    dockerCommand: sh -c "node dist/cli/migrate.js && node dist/server.js"
     healthCheckPath: /health
-    preDeployCommand: node dist/cli/migrate.js
-    envVars: &api-env
+    autoDeploy: true
+    envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 4000
-      - key: API_PUBLIC_URL
+      # --- Required ---
+      - key: MONGO_URI # MongoDB Atlas free (M0) connection string
         sync: false
-      - key: MONGO_URI
-        sync: false
-      - key: REDIS_URL
-        fromService:
-          name: back2u-redis
-          type: redis
-          property: connectionString
       - key: JWT_ACCESS_SECRET
         generateValue: true
       - key: JWT_REFRESH_SECRET
@@ -30,19 +40,22 @@ services:
         value: 15m
       - key: JWT_REFRESH_TTL
         value: 30d
-      - key: VAULT_MASTER_KEY
+      # Public URLs — API = this service's URL, APP = the client-web Vercel URL
+      - key: API_PUBLIC_URL
         sync: false
-      - key: SENTRY_DSN
+      - key: APP_PUBLIC_URL
         sync: false
-      - key: VAPID_PUBLIC_KEY
+      # CORS — comma-separated Vercel frontend origins (website, client-web, admin, partner)
+      - key: CORS_ORIGINS
         sync: false
-      - key: VAPID_PRIVATE_KEY
+      - key: CORS_PREVIEW_REGEX # optional: allow Vercel preview URLs, e.g. ^https://.*\.vercel\.app$
         sync: false
-      - key: VAPID_SUBJECT
+      # --- Optional integrations (leave blank to disable the feature) ---
+      - key: VAULT_MASTER_KEY # enables the encrypted memory vault
         sync: false
-      - key: RESEND_API_KEY
+      - key: ANTHROPIC_API_KEY # AI describe / assist
         sync: false
-      - key: RESEND_FROM
+      - key: MAPBOX_TOKEN # server-side geocoding for /v1/geo/search
         sync: false
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
@@ -50,41 +63,33 @@ services:
         sync: false
       - key: CLOUDINARY_API_SECRET
         sync: false
-      - key: OPENAI_API_KEY
+      - key: RESEND_API_KEY # transactional email
         sync: false
-      - key: MAPBOX_TOKEN
+      - key: RESEND_FROM
         sync: false
-      - key: TWILIO_ACCOUNT_SID
+      - key: VAPID_PUBLIC_KEY # web push
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: VAPID_SUBJECT
+        sync: false
+      - key: TWILIO_ACCOUNT_SID # SMS OTP
         sync: false
       - key: TWILIO_AUTH_TOKEN
         sync: false
       - key: TWILIO_FROM_NUMBER
         sync: false
-      - key: HUBTEL_CLIENT_ID
+      - key: HUBTEL_CLIENT_ID # escrow / mobile money (Ghana)
         sync: false
       - key: HUBTEL_CLIENT_SECRET
         sync: false
       - key: HUBTEL_MERCHANT_ACCOUNT
         sync: false
-      - key: EXPO_ACCESS_TOKEN
+      - key: PAYSTACK_SECRET_KEY # QR tag purchases
         sync: false
-      - key: CORS_ORIGINS
+      - key: PAYSTACK_PUBLIC_KEY
         sync: false
-      - key: CORS_PREVIEW_REGEX
+      - key: EXPO_ACCESS_TOKEN # mobile push
         sync: false
-
-  - type: worker
-    name: back2u-worker
-    runtime: docker
-    plan: starter
-    region: frankfurt
-    rootDir: .
-    dockerfilePath: apps/api/Dockerfile
-    dockerCommand: node dist/worker.js
-    envVars: *api-env
-
-  - type: redis
-    name: back2u-redis
-    plan: starter
-    region: frankfurt
-    ipAllowList: []
+      - key: SENTRY_DSN # error reporting
+        sync: false
