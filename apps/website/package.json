@@ -1,0 +1,37 @@
+{
+  "name": "@back2u/website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5176",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 5176",
+    "typecheck": "tsc -b --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@back2u/ui-web": "workspace:*",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.1.10",
+    "@mui/material": "^6.1.10",
+    "i18next": "^24.0.5",
+    "i18next-browser-languagedetector": "^8.0.2",
+    "mapbox-gl": "^3.24.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^15.4.0",
+    "react-map-gl": "^7.1.9",
+    "react-router-dom": "^6.30.3",
+    "supercluster": "^8.0.1"
+  },
+  "devDependencies": {
+    "@back2u/config": "workspace:*",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}

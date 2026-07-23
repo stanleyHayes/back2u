@@ -1,0 +1,26 @@
+# Default owner — adjust to your team
+*                                       @hayfordstanley
+
+# Backend (domain + use cases must be reviewed by API maintainers)
+/apps/api/src/domain/                   @hayfordstanley
+/apps/api/src/application/              @hayfordstanley
+/apps/api/src/infrastructure/           @hayfordstanley
+/apps/api/src/composition/              @hayfordstanley
+
+# Frontend
+/apps/client-web/                       @hayfordstanley
+/apps/admin/                            @hayfordstanley
+/apps/partner/                          @hayfordstanley
+/apps/website/                          @hayfordstanley
+/apps/client-mobile/                    @hayfordstanley
+
+# CI / infra (extra scrutiny)
+/.github/                               @hayfordstanley
+/render.yaml                            @hayfordstanley
+/docker-compose.yml                     @hayfordstanley
+/apps/api/Dockerfile                    @hayfordstanley
+/scripts/                               @hayfordstanley
+
+# Migrations (sensitive)
+/apps/api/migrations/                   @hayfordstanley
+/apps/api/src/infrastructure/persistence/mongo/migrations.ts  @hayfordstanley

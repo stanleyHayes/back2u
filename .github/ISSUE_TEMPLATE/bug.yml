@@ -1,0 +1,29 @@
+name: Bug report
+description: Something isn't working as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Concise description.
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations: { required: true }
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps; include sample inputs.
+  - type: input
+    id: app
+    attributes:
+      label: App
+      placeholder: api / client-web / admin / partner / website / client-mobile
+  - type: input
+    id: version
+    attributes:
+      label: Commit SHA / version

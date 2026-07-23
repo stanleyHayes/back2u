@@ -1,0 +1,90 @@
+services:
+  - type: web
+    name: back2u-api
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    rootDir: .
+    dockerfilePath: apps/api/Dockerfile
+    healthCheckPath: /health
+    preDeployCommand: node dist/cli/migrate.js
+    envVars: &api-env
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: API_PUBLIC_URL
+        sync: false
+      - key: MONGO_URI
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          name: back2u-redis
+          type: redis
+          property: connectionString
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_TTL
+        value: 15m
+      - key: JWT_REFRESH_TTL
+        value: 30d
+      - key: VAULT_MASTER_KEY
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+      - key: VAPID_PUBLIC_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: VAPID_SUBJECT
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: MAPBOX_TOKEN
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_FROM_NUMBER
+        sync: false
+      - key: HUBTEL_CLIENT_ID
+        sync: false
+      - key: HUBTEL_CLIENT_SECRET
+        sync: false
+      - key: HUBTEL_MERCHANT_ACCOUNT
+        sync: false
+      - key: EXPO_ACCESS_TOKEN
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: CORS_PREVIEW_REGEX
+        sync: false
+
+  - type: worker
+    name: back2u-worker
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    rootDir: .
+    dockerfilePath: apps/api/Dockerfile
+    dockerCommand: node dist/worker.js
+    envVars: *api-env
+
+  - type: redis
+    name: back2u-redis
+    plan: starter
+    region: frankfurt
+    ipAllowList: []

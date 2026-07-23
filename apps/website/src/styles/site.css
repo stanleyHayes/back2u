@@ -1,0 +1,170 @@
+/* Back2u marketing — atmospheric layer (grain, motion, utilities).
+   Palette + base body background live in the MUI theme (MuiCssBaseline). */
+
+:root {
+  --paper: #fbf6ec;
+  --paper-raised: #fffdf8;
+  --ink: #0b3d38;
+  --ink-soft: #3c544f;
+  --teal: #0f766e;
+  --teal-bright: #14b8a6;
+  --marigold: #e0a106;
+  --clay: #c2410c;
+  --line: rgba(11, 61, 56, 0.12);
+  --b2u-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Fine film grain over everything for tactile, printed feel. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.b2u-display {
+  /* Wins over MUI's emotion-injected body font on headings that use this class. */
+  font-family: 'Fraunces', Georgia, serif !important;
+  font-optical-sizing: auto;
+}
+
+/* Eyebrow / section kicker label */
+.b2u-eyebrow {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.b2u-eyebrow::before {
+  content: '';
+  width: 1.6em;
+  height: 2px;
+  background: var(--marigold);
+  border-radius: 2px;
+}
+
+/* Hand-drawn marigold underline under hero headline words */
+.b2u-underline {
+  position: relative;
+  white-space: nowrap;
+}
+.b2u-underline::after {
+  content: '';
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  bottom: 0.04em;
+  height: 0.34em;
+  background: linear-gradient(90deg, var(--marigold), #f3c969);
+  opacity: 0.5;
+  border-radius: 999px;
+  z-index: -1;
+  transform: rotate(-0.6deg);
+}
+
+/* ---- Motion: staggered load reveal ---- */
+@keyframes b2u-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+.b2u-rise {
+  opacity: 0;
+  animation: b2u-rise 0.9s var(--b2u-ease) forwards;
+}
+.b2u-d1 { animation-delay: 0.05s; }
+.b2u-d2 { animation-delay: 0.16s; }
+.b2u-d3 { animation-delay: 0.28s; }
+.b2u-d4 { animation-delay: 0.4s; }
+.b2u-d5 { animation-delay: 0.54s; }
+
+/* ---- Scroll reveal (IntersectionObserver toggles .is-in) ---- */
+.b2u-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s var(--b2u-ease), transform 0.7s var(--b2u-ease);
+  will-change: opacity, transform;
+}
+.b2u-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Radar / geo-fence hero motif ---- */
+.b2u-radar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+}
+.b2u-radar__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(15, 118, 110, 0.35);
+}
+.b2u-radar__pulse {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(20, 184, 166, 0.5);
+  animation: b2u-ping 3.6s var(--b2u-ease) infinite;
+}
+@keyframes b2u-ping {
+  0% { inset: 42%; opacity: 0.9; }
+  80% { opacity: 0; }
+  100% { inset: 0%; opacity: 0; }
+}
+.b2u-pin {
+  animation: b2u-float 5s ease-in-out infinite;
+}
+@keyframes b2u-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+.b2u-chip-float { animation: b2u-float 6s ease-in-out infinite; }
+.b2u-chip-float.delay { animation-delay: 1.4s; animation-duration: 7s; }
+
+/* ---- Live finds ticker (marquee) ---- */
+.b2u-marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.b2u-marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0;
+  min-width: 100%;
+  animation: b2u-scroll 38s linear infinite;
+}
+.b2u-marquee:hover .b2u-marquee__track {
+  animation-play-state: paused;
+}
+@keyframes b2u-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .b2u-rise,
+  .b2u-reveal,
+  .b2u-radar__pulse,
+  .b2u-pin,
+  .b2u-chip-float,
+  .b2u-marquee__track {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

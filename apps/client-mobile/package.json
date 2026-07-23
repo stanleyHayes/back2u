@@ -1,0 +1,41 @@
+{
+  "name": "@back2u/client-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "dev": "expo start",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
+    "build": "echo skip-build",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .expo .turbo"
+  },
+  "dependencies": {
+    "@back2u/api-client": "workspace:*",
+    "@back2u/shared-types": "workspace:*",
+    "@expo/vector-icons": "^14.0.4",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@tanstack/react-query": "^5.62.7",
+    "expo": "~52.0.20",
+    "expo-camera": "~16.0.10",
+    "expo-image": "~2.0.3",
+    "expo-image-picker": "~16.0.4",
+    "expo-location": "~18.0.10",
+    "expo-notifications": "~0.29.11",
+    "expo-router": "~4.0.13",
+    "expo-status-bar": "~2.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.5",
+    "react-native-maps": "1.18.0",
+    "react-native-paper": "^5.13.1",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.4.0",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "@types/react": "^18.3.18",
+    "typescript": "^5.7.2"
+  }
+}

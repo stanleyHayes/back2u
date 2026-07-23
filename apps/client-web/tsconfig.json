@@ -1,0 +1,7 @@
+{
+  "extends": "@back2u/config/tsconfig/react.json",
+  "compilerOptions": {
+    "types": ["vite/client"]
+  },
+  "include": ["src"]
+}

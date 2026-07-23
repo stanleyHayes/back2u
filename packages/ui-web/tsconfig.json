@@ -1,0 +1,4 @@
+{
+  "extends": "@back2u/config/tsconfig/react.json",
+  "include": ["src"]
+}

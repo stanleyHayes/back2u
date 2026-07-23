@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Back2u",
+    "slug": "back2u",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "back2u",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": { "backgroundColor": "#0F766E", "resizeMode": "contain" },
+    "assetBundlePatterns": ["**/*"],
+    "ios": { "supportsTablet": true, "bundleIdentifier": "app.back2u" },
+    "android": { "package": "app.back2u" },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Back2u to access your photos to attach images of lost or found items."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Back2u uses your location to alert you when items are reported nearby."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Back2u uses the camera to scan QR tags on lost items."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#0F766E"
+        }
+      ]
+    ],
+    "experiments": { "typedRoutes": true }
+  }
+}

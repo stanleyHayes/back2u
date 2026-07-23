@@ -1,0 +1,69 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  api-render:
+    name: Render — API + worker
+    runs-on: ubuntu-latest
+    if: ${{ secrets.RENDER_DEPLOY_HOOK_API != '' }}
+    steps:
+      - name: Trigger Render API service
+        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK_API }}"
+      - name: Trigger Render worker service
+        if: ${{ secrets.RENDER_DEPLOY_HOOK_WORKER != '' }}
+        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK_WORKER }}"
+
+  web-build:
+    name: Build static web bundles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile=false
+      - name: Build website + client-web + admin + partner
+        run: |
+          pnpm --filter @back2u/website build
+          pnpm --filter @back2u/client-web build
+          pnpm --filter @back2u/admin build
+          pnpm --filter @back2u/partner build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-bundles
+          path: |
+            apps/website/dist
+            apps/client-web/dist
+            apps/admin/dist
+            apps/partner/dist
+
+  mobile-eas:
+    name: EAS update (Expo)
+    runs-on: ubuntu-latest
+    if: ${{ secrets.EXPO_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile=false
+      - run: npx --yes eas-cli@latest update --branch main --message "${{ github.event.head_commit.message }}" --non-interactive
+        working-directory: apps/client-mobile
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}

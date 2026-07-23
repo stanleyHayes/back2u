@@ -1,0 +1,49 @@
+{
+  "name": "@back2u/client-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5173",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 5173",
+    "typecheck": "tsc -b --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install --with-deps",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@back2u/api-client": "workspace:*",
+    "@back2u/shared-types": "workspace:*",
+    "@back2u/ui-web": "workspace:*",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.1.10",
+    "@mui/material": "^6.1.10",
+    "@tanstack/react-query": "^5.62.7",
+    "i18next": "^24.0.5",
+    "i18next-browser-languagedetector": "^8.0.2",
+    "mapbox-gl": "^3.8.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^15.4.0",
+    "react-map-gl": "^7.1.8",
+    "react-router-dom": "^6.28.0",
+    "socket.io-client": "^4.8.1",
+    "supercluster": "^8.0.1",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@back2u/config": "workspace:*",
+    "@playwright/test": "^1.49.1",
+    "@types/geojson": "^7946.0.16",
+    "@types/mapbox-gl": "^3.4.1",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/supercluster": "^7.1.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}
