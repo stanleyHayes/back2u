@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:26-alpine AS base
 RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
 WORKDIR /repo
 
@@ -20,7 +20,7 @@ RUN pnpm --filter @back2u/api build
 RUN pnpm deploy --filter @back2u/api --prod /out
 
 # --- runtime ---
-FROM node:20-alpine AS runtime
+FROM node:26-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /out /app
