@@ -14,7 +14,7 @@
     "@back2u/ui-web": "workspace:*",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
-    "@mui/icons-material": "^6.1.10",
+    "@mui/icons-material": "^9.2.0",
     "@mui/material": "^6.1.10",
     "i18next": "^24.0.5",
     "i18next-browser-languagedetector": "^8.0.2",
