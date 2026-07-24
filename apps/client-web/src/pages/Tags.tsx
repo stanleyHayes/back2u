@@ -10,12 +10,12 @@ import { api } from '../lib/api.js';
 import { ShareButton } from '../components/ShareButton.js';
 import { PageHeader, SectionCard } from '../components/BrandPage.js';
 
-const INK = '#0B3D38';
+const INK = '#2E3D2F';
 const CLAY = '#C2410C';
 
 const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
   lost: { bg: 'rgba(194,65,12,0.12)', color: CLAY },
-  active: { bg: 'rgba(15,118,110,0.12)', color: 'primary.main' },
+  active: { bg: 'rgba(64,97,74,0.12)', color: 'primary.main' },
 };
 
 export function TagsPage() {
@@ -77,11 +77,11 @@ export function TagsPage() {
               disabled={!code || claim.isPending}
               sx={{
                 bgcolor: INK,
-                color: '#FBF6EC',
+                color: '#F2EFEA',
                 borderRadius: 999,
                 fontWeight: 700,
                 px: 3,
-                '&:hover': { bgcolor: '#0a322e' },
+                '&:hover': { bgcolor: '#243024' },
               }}
             >
               {claim.isPending ? 'Claiming…' : 'Claim'}
@@ -117,7 +117,7 @@ export function TagsPage() {
           >
             {data.map((t) => {
               const style = STATUS_STYLE[t.status] ?? {
-                bg: 'rgba(11,61,56,0.08)',
+                bg: 'rgba(46,61,47,0.08)',
                 color: 'text.primary',
               };
               return (

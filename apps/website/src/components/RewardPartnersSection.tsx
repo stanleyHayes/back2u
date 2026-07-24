@@ -3,9 +3,9 @@ import { Box, Button, Chip, Container, Typography } from '@mui/material';
 
 const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:4000';
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const TEAL = '#0F766E';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const TEAL = '#40614A';
 
 interface Partner {
   id: string;
@@ -54,10 +54,26 @@ export function RewardPartnersSection() {
   if (partners.length === 0) return null;
 
   return (
-    <Box component="section" aria-labelledby="rewards-heading" sx={{ bgcolor: '#fff', py: { xs: 8, md: 13 } }}>
+    <Box
+      component="section"
+      aria-labelledby="rewards-heading"
+      sx={{ bgcolor: '#fff', py: { xs: 8, md: 13 } }}
+    >
       <Container>
-        <Box data-reveal className="b2u-reveal" sx={{ textAlign: 'center', maxWidth: 660, mx: 'auto', mb: { xs: 5, md: 7 } }}>
-          <Typography sx={{ color: TEAL, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', fontSize: 13 }}>
+        <Box
+          data-reveal
+          className="b2u-reveal"
+          sx={{ textAlign: 'center', maxWidth: 660, mx: 'auto', mb: { xs: 5, md: 7 } }}
+        >
+          <Typography
+            sx={{
+              color: TEAL,
+              fontWeight: 700,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              fontSize: 13,
+            }}
+          >
             Reward partners
           </Typography>
           <Typography
@@ -69,8 +85,8 @@ export function RewardPartnersSection() {
             Spend your points where it counts
           </Typography>
           <Typography sx={{ mt: 2, color: 'text.secondary', fontSize: 18 }}>
-            Restaurants, malls and shops across Ghana have opted in to accept Back2u points. Return what you find —
-            then treat yourself at one of our partners.
+            Restaurants, malls and shops across Ghana have opted in to accept Back2u points. Return
+            what you find — then treat yourself at one of our partners.
           </Typography>
         </Box>
 
@@ -93,7 +109,10 @@ export function RewardPartnersSection() {
                 overflow: 'hidden',
                 bgcolor: 'background.paper',
                 transition: 'transform .15s, box-shadow .15s',
-                '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 24px 48px -36px rgba(11,61,56,0.5)' },
+                '&:hover': {
+                  transform: 'translateY(-3px)',
+                  boxShadow: '0 24px 48px -36px rgba(46,61,47,0.5)',
+                },
               }}
             >
               <Box
@@ -111,10 +130,20 @@ export function RewardPartnersSection() {
                     component="img"
                     src={p.logoUrl}
                     alt={p.name}
-                    sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    sx={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
                   />
                 ) : (
-                  <Typography className="b2u-display" sx={{ color: PAPER, fontSize: 32, fontWeight: 600 }}>
+                  <Typography
+                    className="b2u-display"
+                    sx={{ color: PAPER, fontSize: 32, fontWeight: 600 }}
+                  >
                     {p.name.charAt(0)}
                   </Typography>
                 )}
@@ -123,22 +152,37 @@ export function RewardPartnersSection() {
                 <Chip
                   label={TYPE_LABEL[p.type] ?? 'Partner'}
                   size="small"
-                  sx={{ bgcolor: 'rgba(15,118,110,0.1)', color: TEAL, fontWeight: 700, mb: 1 }}
+                  sx={{ bgcolor: 'rgba(64,97,74,0.1)', color: TEAL, fontWeight: 700, mb: 1 }}
                 />
-                <Typography className="b2u-display" sx={{ fontSize: 20, fontWeight: 600, color: INK }} noWrap>
+                <Typography
+                  className="b2u-display"
+                  sx={{ fontSize: 20, fontWeight: 600, color: INK }}
+                  noWrap
+                >
                   {p.name}
                 </Typography>
                 {p.description && (
                   <Typography
                     variant="body2"
                     color="text.secondary"
-                    sx={{ mt: 0.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                    sx={{
+                      mt: 0.5,
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                    }}
                   >
                     {p.description}
                   </Typography>
                 )}
                 {[p.place?.name, p.place?.city].filter(Boolean).length > 0 && (
-                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.75 }} noWrap>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: 'block', mt: 0.75 }}
+                    noWrap
+                  >
                     {[p.place?.name, p.place?.city].filter(Boolean).join(', ')}
                   </Typography>
                 )}
@@ -151,7 +195,12 @@ export function RewardPartnersSection() {
         </Box>
 
         <Box sx={{ textAlign: 'center', mt: 5 }}>
-          <Button variant="outlined" color="inherit" href={`${APP_URL}/rewards`} sx={{ color: 'text.primary' }}>
+          <Button
+            variant="outlined"
+            color="inherit"
+            href={`${APP_URL}/rewards`}
+            sx={{ color: 'text.primary' }}
+          >
             See all reward partners →
           </Button>
         </Box>

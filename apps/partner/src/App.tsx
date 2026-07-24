@@ -112,7 +112,7 @@ function Overview() {
             {
               label: 'Found',
               value: items.filter((i) => i.kind === 'found').length,
-              color: '#2DD4BF',
+              color: '#A8B5A0',
             },
             {
               label: 'Lost',
@@ -123,13 +123,13 @@ function Overview() {
         />
         <HBarChart
           title="Items by status"
-          color="#2DD4BF"
+          color="#A8B5A0"
           data={STATUS_ORDER.map((s) => ({
             label: s.charAt(0).toUpperCase() + s.slice(1),
             value: items.filter((i) => i.status === s).length,
           }))}
         />
-        <HBarChart title="Top categories" color="#E0A106" data={topCategories} />
+        <HBarChart title="Top categories" color="#8B6F4E" data={topCategories} />
       </Box>
     </Box>
   );

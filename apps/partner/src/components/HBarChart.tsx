@@ -4,7 +4,7 @@ import { Box, Stack, Typography } from '@mui/material';
 export function HBarChart({
   title,
   data,
-  color = '#2DD4BF',
+  color = '#A8B5A0',
 }: {
   title: string;
   data: { label: string; value: number }[];

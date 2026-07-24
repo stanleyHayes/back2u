@@ -3,8 +3,8 @@ import { Box, Stack, Typography } from '@mui/material';
 import { PageShell } from '../components/PageShell';
 import { AppStoreBadges } from '../components/AppStoreBadges';
 
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
 
 const PERKS = [
   { title: 'Snap on the go', body: 'Report a lost or found item in 30 seconds, wherever you are.' },
@@ -46,8 +46,8 @@ export function Download() {
             bgcolor: INK,
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0 40px 80px -40px rgba(11,61,56,.6)',
-            border: '8px solid #0a322e',
+            boxShadow: '0 40px 80px -40px rgba(46,61,47,.6)',
+            border: '8px solid #243024',
           }}
         >
           <Box
@@ -56,7 +56,7 @@ export function Download() {
               position: 'absolute',
               inset: 0,
               background:
-                'radial-gradient(20rem 16rem at 80% 110%, rgba(224,161,6,0.3), transparent 60%), radial-gradient(18rem 14rem at 10% -10%, rgba(20,184,166,0.32), transparent 60%)',
+                'radial-gradient(20rem 16rem at 80% 110%, rgba(139,111,78,0.3), transparent 60%), radial-gradient(18rem 14rem at 10% -10%, rgba(126,154,130,0.32), transparent 60%)',
             }}
           />
           <Stack
@@ -73,7 +73,7 @@ export function Download() {
                 width: 64,
                 height: 64,
                 borderRadius: '50% 50% 50% 8px',
-                background: 'linear-gradient(150deg, #0F766E, #14B8A6)',
+                background: 'linear-gradient(150deg, #40614A, #7E9A82)',
                 transform: 'rotate(-45deg)',
                 display: 'grid',
                 placeItems: 'center',
@@ -95,7 +95,7 @@ export function Download() {
             >
               Back2u
             </Typography>
-            <Typography sx={{ color: 'rgba(255,253,248,0.7)', fontSize: 13 }}>
+            <Typography sx={{ color: 'rgba(250,248,243,0.7)', fontSize: 13 }}>
               Reunite. Repeat.
             </Typography>
           </Stack>

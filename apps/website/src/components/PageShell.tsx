@@ -3,7 +3,7 @@ import { Box, Container, Stack, Typography } from '@mui/material';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
-const INK = '#0B3D38';
+const INK = '#2E3D2F';
 
 /** Header/footer wrapper for sub-pages (legal, download, 404). */
 export function PageShell({

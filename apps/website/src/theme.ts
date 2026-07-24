@@ -10,20 +10,20 @@ import { createTheme } from '@mui/material/styles';
 export type WebsiteMode = 'light' | 'dark';
 
 // Shared brand accents
-const TEAL = '#0F766E';
-const TEAL_BRIGHT = '#14B8A6';
-const MARIGOLD = '#E0A106';
+const TEAL = '#40614A';
+const TEAL_BRIGHT = '#7E9A82';
+const MARIGOLD = '#8B6F4E';
 const CLAY = '#C2410C';
 
 // Light ("paper") tokens
-const PAPER = '#FBF6EC';
-const PAPER_RAISED = '#FFFDF8';
-const INK = '#0B3D38';
+const PAPER = '#F2EFEA';
+const PAPER_RAISED = '#FAF8F3';
+const INK = '#2E3D2F';
 const INK_SOFT = '#3C544F';
 
 // Dark ("forest") tokens
-const FOREST = '#0C1512';
-const FOREST_RAISED = '#14201B';
+const FOREST = '#1C231B';
+const FOREST_RAISED = '#263026';
 const CREAM = '#EAF3ED';
 const CREAM_SOFT = 'rgba(210,232,222,0.66)';
 
@@ -42,21 +42,21 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
 
   const bodyGradients = dark
     ? [
-        `radial-gradient(60rem 60rem at 88% -8%, rgba(224,161,6,0.12), transparent 60%)`,
-        `radial-gradient(48rem 48rem at -6% 12%, rgba(20,184,166,0.14), transparent 55%)`,
-        `radial-gradient(70rem 50rem at 50% 120%, rgba(20,184,166,0.06), transparent 60%)`,
+        `radial-gradient(60rem 60rem at 88% -8%, rgba(139,111,78,0.12), transparent 60%)`,
+        `radial-gradient(48rem 48rem at -6% 12%, rgba(126,154,130,0.14), transparent 55%)`,
+        `radial-gradient(70rem 50rem at 50% 120%, rgba(126,154,130,0.06), transparent 60%)`,
       ]
     : [
-        `radial-gradient(60rem 60rem at 88% -8%, rgba(224,161,6,0.16), transparent 60%)`,
-        `radial-gradient(48rem 48rem at -6% 12%, rgba(20,184,166,0.14), transparent 55%)`,
-        `radial-gradient(70rem 50rem at 50% 120%, rgba(11,61,56,0.06), transparent 60%)`,
+        `radial-gradient(60rem 60rem at 88% -8%, rgba(139,111,78,0.16), transparent 60%)`,
+        `radial-gradient(48rem 48rem at -6% 12%, rgba(126,154,130,0.14), transparent 55%)`,
+        `radial-gradient(70rem 50rem at 50% 120%, rgba(46,61,47,0.06), transparent 60%)`,
       ];
 
   return createTheme({
     palette: {
       mode,
-      primary: { main: primaryMain, light: TEAL_BRIGHT, dark: '#0B5C55', contrastText: '#FFFDF8' },
-      secondary: { main: MARIGOLD, light: '#F3C969', dark: '#B97F05', contrastText: INK },
+      primary: { main: primaryMain, light: TEAL_BRIGHT, dark: '#0B5C55', contrastText: '#FAF8F3' },
+      secondary: { main: MARIGOLD, light: '#F3C969', dark: '#6F5940', contrastText: INK },
       error: { main: CLAY },
       success: { main: primaryMain },
       text: { primary: textPrimary, secondary: textSecondary },
@@ -90,7 +90,7 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
             textRendering: 'optimizeLegibility',
           },
           '#root': { minHeight: '100vh', position: 'relative', isolation: 'isolate' },
-          '::selection': { background: 'rgba(224,161,6,0.32)' },
+          '::selection': { background: 'rgba(139,111,78,0.32)' },
           '::view-transition-old(root), ::view-transition-new(root)': {
             animation: 'none',
             mixBlendMode: 'normal',
@@ -125,22 +125,22 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
             '&:focus-visible': {
               outline: `2px solid ${focusInk}`,
               outlineOffset: 2,
-              boxShadow: `0 0 0 4px ${dark ? 'rgba(234,243,237,0.18)' : 'rgba(11,61,56,0.14)'}`,
+              boxShadow: `0 0 0 4px ${dark ? 'rgba(234,243,237,0.18)' : 'rgba(46,61,47,0.14)'}`,
             },
           },
           sizeLarge: { paddingInline: 30, paddingBlock: 14, fontSize: '1.02rem' },
           contained: {
-            boxShadow: '0 1px 0 rgba(255,255,255,.4) inset, 0 10px 24px -12px rgba(11,61,56,.5)',
+            boxShadow: '0 1px 0 rgba(255,255,255,.4) inset, 0 10px 24px -12px rgba(46,61,47,.5)',
             '&:hover': {
               transform: 'translateY(-2px)',
-              boxShadow: '0 16px 30px -14px rgba(11,61,56,.55)',
+              boxShadow: '0 16px 30px -14px rgba(46,61,47,.55)',
             },
           },
           outlined: {
             borderColor: divider,
             '&:hover': {
               borderColor: primaryMain,
-              background: dark ? 'rgba(20,184,166,0.08)' : 'rgba(11,61,56,0.04)',
+              background: dark ? 'rgba(126,154,130,0.08)' : 'rgba(46,61,47,0.04)',
               transform: 'translateY(-2px)',
             },
           },
@@ -152,7 +152,7 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
           root: {
             borderRadius: 10,
             border: `1px solid ${divider}`,
-            boxShadow: dark ? '0 1px 2px rgba(0,0,0,.3)' : '0 1px 2px rgba(11,61,56,.04)',
+            boxShadow: dark ? '0 1px 2px rgba(0,0,0,.3)' : '0 1px 2px rgba(46,61,47,.04)',
             transition: 'transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .2s ease',
           },
         },

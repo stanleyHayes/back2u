@@ -8,11 +8,11 @@ import { shareLink } from '../lib/share.js';
 
 const DISPLAY = '"Black Ops One", Georgia, serif';
 const BODY = '"Outfit", system-ui, sans-serif';
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const PAPER_RAISED = '#FFFDF8';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const PAPER_RAISED = '#FAF8F3';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 const CLAY = '#C2410C';
 const MUTED = '#3C544F';
 
@@ -24,11 +24,11 @@ function Wordmark() {
           width: 30,
           height: 30,
           borderRadius: '11px 11px 11px 3px',
-          background: `linear-gradient(140deg, ${TEAL} 0%, #14B8A6 100%)`,
+          background: `linear-gradient(140deg, ${TEAL} 0%, #7E9A82 100%)`,
           display: 'grid',
           placeItems: 'center',
           transform: 'rotate(-6deg)',
-          boxShadow: '0 8px 16px -10px rgba(15,118,110,.9)',
+          boxShadow: '0 8px 16px -10px rgba(64,97,74,.9)',
         }}
       >
         <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: PAPER_RAISED }} />
@@ -59,7 +59,7 @@ function PinMark() {
           position: 'absolute',
           inset: -14,
           borderRadius: '50%',
-          border: '1.5px solid rgba(15,118,110,.25)',
+          border: '1.5px solid rgba(64,97,74,.25)',
         }}
       />
       <Box
@@ -83,11 +83,11 @@ function PinMark() {
           width: 72,
           height: 72,
           borderRadius: '50% 50% 50% 7px',
-          background: `linear-gradient(150deg, ${TEAL}, #14B8A6)`,
+          background: `linear-gradient(150deg, ${TEAL}, #7E9A82)`,
           transform: 'rotate(-45deg)',
           display: 'grid',
           placeItems: 'center',
-          boxShadow: '0 20px 38px -18px rgba(11,61,56,.7)',
+          boxShadow: '0 20px 38px -18px rgba(46,61,47,.7)',
         }}
       >
         <Box
@@ -147,17 +147,17 @@ export function ScanTagPage() {
         color: INK,
         backgroundColor: PAPER,
         backgroundImage: [
-          'radial-gradient(42rem 36rem at 88% -10%, rgba(224,161,6,0.18), transparent 60%)',
-          'radial-gradient(38rem 34rem at -8% 8%, rgba(20,184,166,0.16), transparent 58%)',
+          'radial-gradient(42rem 36rem at 88% -10%, rgba(139,111,78,0.18), transparent 60%)',
+          'radial-gradient(38rem 34rem at -8% 8%, rgba(126,154,130,0.16), transparent 58%)',
         ].join(','),
       }}
     >
       {/* Header */}
       <Box
         sx={{
-          borderBottom: '1px solid rgba(11,61,56,0.1)',
+          borderBottom: '1px solid rgba(46,61,47,0.1)',
           backdropFilter: 'blur(8px)',
-          bgcolor: 'rgba(251,246,236,0.7)',
+          bgcolor: 'rgba(242,239,234,0.7)',
         }}
       >
         <Container maxWidth="sm" sx={{ py: 1.75, display: 'flex', alignItems: 'center' }}>
@@ -174,7 +174,7 @@ export function ScanTagPage() {
               fontFamily: BODY,
               fontWeight: 700,
               px: 2.5,
-              '&:hover': { bgcolor: '#0a322e' },
+              '&:hover': { bgcolor: '#243024' },
             }}
           >
             Open app
@@ -219,8 +219,8 @@ export function ScanTagPage() {
           sx={{
             borderRadius: 5,
             bgcolor: PAPER_RAISED,
-            border: '1px solid rgba(11,61,56,0.1)',
-            boxShadow: '0 30px 60px -40px rgba(11,61,56,.5)',
+            border: '1px solid rgba(46,61,47,0.1)',
+            boxShadow: '0 30px 60px -40px rgba(46,61,47,.5)',
             p: { xs: 3, md: 4 },
           }}
         >
@@ -330,8 +330,8 @@ export function ScanTagPage() {
                       fontFamily: BODY,
                       fontWeight: 700,
                       py: 1.4,
-                      boxShadow: '0 14px 28px -16px rgba(224,161,6,.9)',
-                      '&:hover': { bgcolor: '#cf9305' },
+                      boxShadow: '0 14px 28px -16px rgba(139,111,78,.9)',
+                      '&:hover': { bgcolor: '#6F5940' },
                     }}
                   >
                     {scan.isPending ? 'Sending…' : 'Notify the owner'}
@@ -339,7 +339,7 @@ export function ScanTagPage() {
                 </>
               )}
 
-              <Box sx={{ pt: 1.5, borderTop: '1px dashed rgba(11,61,56,0.18)' }}>
+              <Box sx={{ pt: 1.5, borderTop: '1px dashed rgba(46,61,47,0.18)' }}>
                 <Typography sx={{ color: MUTED, fontSize: 14, mb: 1.25 }}>
                   Can&apos;t help directly? Share this tag so someone who can will see it.
                 </Typography>
@@ -352,9 +352,9 @@ export function ScanTagPage() {
                     fontFamily: BODY,
                     fontWeight: 700,
                     color: 'text.primary',
-                    border: '1.5px solid rgba(11,61,56,0.25)',
+                    border: '1.5px solid rgba(46,61,47,0.25)',
                     py: 1.2,
-                    '&:hover': { borderColor: INK, bgcolor: 'rgba(11,61,56,0.04)' },
+                    '&:hover': { borderColor: INK, bgcolor: 'rgba(46,61,47,0.04)' },
                   }}
                 >
                   Share this tag

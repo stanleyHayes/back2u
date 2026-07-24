@@ -7,10 +7,10 @@ import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 import { api } from '../lib/api.js';
 
 const DISPLAY = '"Black Ops One", Georgia, serif';
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 const CLAY = '#C2410C';
 
 const MEDAL = [MARIGOLD, TEAL, CLAY];
@@ -30,7 +30,7 @@ function Badges({ badges }: { badges: string[] }) {
           label={b.replace(/_/g, ' ')}
           size="small"
           sx={{
-            bgcolor: 'rgba(224,161,6,0.14)',
+            bgcolor: 'rgba(139,111,78,0.14)',
             color: '#8a6300',
             fontWeight: 600,
             textTransform: 'capitalize',
@@ -57,7 +57,7 @@ function PodiumCard({ e, place }: { e: LeaderboardEntryDTO; place: number }) {
         color: isFirst ? PAPER : 'text.primary',
         border: '1px solid',
         borderColor: isFirst ? 'transparent' : 'divider',
-        boxShadow: isFirst ? '0 30px 60px -34px rgba(11,61,56,.6)' : '0 1px 2px rgba(11,61,56,.05)',
+        boxShadow: isFirst ? '0 30px 60px -34px rgba(46,61,47,.6)' : '0 1px 2px rgba(46,61,47,.05)',
         position: 'relative',
       }}
     >

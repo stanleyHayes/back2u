@@ -27,9 +27,9 @@ import { isFlagEnabled } from '../lib/feature-flags.js';
 import { PlaceAutocomplete } from '../components/PlaceAutocomplete.js';
 import { AiAssistantBar } from '@back2u/ui-web';
 
-const INK = '#0B3D38';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 const CATEGORIES = [
   'Phone',
   'Wallet',
@@ -211,7 +211,7 @@ export function PostItemPage() {
           border: '1px solid',
           borderColor: 'divider',
           bgcolor: 'background.paper',
-          boxShadow: '0 30px 60px -48px rgba(11,61,56,0.5)',
+          boxShadow: '0 30px 60px -48px rgba(46,61,47,0.5)',
         }}
       >
         <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
@@ -296,7 +296,7 @@ export function PostItemPage() {
                   cursor: 'pointer',
                   color: 'text.secondary',
                   transition: 'border-color .15s, background-color .15s',
-                  '&:hover': { borderColor: TEAL, bgcolor: 'rgba(15,118,110,0.04)' },
+                  '&:hover': { borderColor: TEAL, bgcolor: 'rgba(64,97,74,0.04)' },
                 }}
               >
                 {uploading ? (
@@ -576,7 +576,7 @@ export function PostItemPage() {
                   borderRadius: 999,
                   px: 3,
                   fontWeight: 700,
-                  '&:hover': { bgcolor: '#cf9305' },
+                  '&:hover': { bgcolor: '#6F5940' },
                 }}
               >
                 {submitting ? 'Posting…' : 'Post item'}
@@ -589,11 +589,11 @@ export function PostItemPage() {
                 endIcon={<ArrowForwardRoundedIcon />}
                 sx={{
                   bgcolor: INK,
-                  color: '#FBF6EC',
+                  color: '#F2EFEA',
                   borderRadius: 999,
                   px: 3,
                   fontWeight: 700,
-                  '&:hover': { bgcolor: '#0a322e' },
+                  '&:hover': { bgcolor: '#243024' },
                 }}
               >
                 Continue

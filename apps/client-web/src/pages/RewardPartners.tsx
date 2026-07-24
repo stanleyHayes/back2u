@@ -12,10 +12,10 @@ import { EmptyState, CardGridSkeleton } from '@back2u/ui-web';
 import { api } from '../lib/api.js';
 import { PageHeader } from '../components/BrandPage.js';
 
-const INK = '#0B3D38';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
-const PAPER = '#FBF6EC';
+const INK = '#2E3D2F';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
+const PAPER = '#F2EFEA';
 
 const CATEGORIES: { key: string; label: string }[] = [
   { key: 'all', label: 'All partners' },
@@ -56,7 +56,7 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
         transition: 'transform .15s, box-shadow .15s',
         '&:hover': {
           transform: 'translateY(-3px)',
-          boxShadow: '0 24px 48px -36px rgba(11,61,56,0.5)',
+          boxShadow: '0 24px 48px -36px rgba(46,61,47,0.5)',
         },
       }}
     >
@@ -94,7 +94,7 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
             position: 'absolute',
             top: 10,
             left: 10,
-            bgcolor: 'rgba(251,246,236,0.92)',
+            bgcolor: 'rgba(242,239,234,0.92)',
             color: INK,
             fontWeight: 700,
           }}
@@ -144,7 +144,7 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
           size="small"
           sx={{
             alignSelf: 'flex-start',
-            bgcolor: 'rgba(224,161,6,0.14)',
+            bgcolor: 'rgba(139,111,78,0.14)',
             color: '#946a00',
             fontWeight: 700,
           }}
@@ -161,7 +161,7 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
               color: PAPER,
               borderRadius: 999,
               fontWeight: 700,
-              '&:hover': { bgcolor: '#0a322e' },
+              '&:hover': { bgcolor: '#243024' },
             }}
           >
             Redeem here
@@ -213,7 +213,7 @@ export function RewardPartnersPage() {
               color: category === c.key ? PAPER : 'text.primary',
               border: '1px solid',
               borderColor: category === c.key ? INK : 'divider',
-              '&:hover': { bgcolor: category === c.key ? '#0a322e' : 'rgba(15,118,110,0.06)' },
+              '&:hover': { bgcolor: category === c.key ? '#243024' : 'rgba(64,97,74,0.06)' },
             }}
           />
         ))}

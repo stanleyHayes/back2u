@@ -24,8 +24,8 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { uploadImageUrl } from '../lib/cloudinary-upload.js';
 
-const TEAL = '#2DD4BF';
-const MARIGOLD = '#E0A106';
+const TEAL = '#A8B5A0';
+const MARIGOLD = '#8B6F4E';
 const DISPLAY = '"Black Ops One", Georgia, serif';
 const PANEL = {
   p: { xs: 2.5, md: 3 },
@@ -180,7 +180,7 @@ export function PartnerProfilePage() {
         <Box
           sx={{
             height: 96,
-            background: `linear-gradient(120deg, ${TEAL} 0%, #0F766E 55%, #0B3D38 100%)`,
+            background: `linear-gradient(120deg, ${TEAL} 0%, #40614A 55%, #2E3D2F 100%)`,
           }}
         />
         <Box sx={{ px: { xs: 2.5, md: 3 }, pb: 3, bgcolor: 'background.paper' }}>
@@ -198,8 +198,8 @@ export function PartnerProfilePage() {
                 fontWeight: 800,
                 border: '4px solid',
                 borderColor: 'background.paper',
-                bgcolor: '#0F766E',
-                color: '#04201d',
+                bgcolor: '#40614A',
+                color: '#1C231B',
               }}
             >
               {initial}
@@ -219,7 +219,7 @@ export function PartnerProfilePage() {
                     size="small"
                     sx={{
                       textTransform: 'capitalize',
-                      bgcolor: 'rgba(45,212,191,0.14)',
+                      bgcolor: 'rgba(168,181,160,0.14)',
                       color: 'primary.main',
                       fontWeight: 700,
                     }}
@@ -290,8 +290,8 @@ export function PartnerProfilePage() {
                   sx={{
                     width: 56,
                     height: 56,
-                    bgcolor: '#0F766E',
-                    color: '#04201d',
+                    bgcolor: '#40614A',
+                    color: '#1C231B',
                     fontWeight: 800,
                   }}
                 >
@@ -327,7 +327,7 @@ export function PartnerProfilePage() {
                 disabled={saving || !dirty}
                 sx={{
                   bgcolor: TEAL,
-                  color: '#04201d',
+                  color: '#1C231B',
                   fontWeight: 700,
                   '&:hover': { bgcolor: '#5fe6d4' },
                 }}
@@ -375,7 +375,7 @@ export function PartnerProfilePage() {
                   sx={{
                     mt: 0.5,
                     textTransform: 'capitalize',
-                    bgcolor: 'rgba(224,161,6,0.16)',
+                    bgcolor: 'rgba(139,111,78,0.16)',
                     color: MARIGOLD,
                     fontWeight: 700,
                   }}

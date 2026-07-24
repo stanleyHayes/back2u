@@ -37,8 +37,8 @@ import { NotFound } from './pages/NotFound';
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
 const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:4000';
 
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
 
 interface FeatureFlagDTO {
   key: string;
@@ -296,11 +296,11 @@ function HeroRadar() {
           width: { xs: 92, md: 112 },
           height: { xs: 92, md: 112 },
           borderRadius: '50% 50% 50% 8px',
-          background: 'linear-gradient(150deg, #0F766E, #14B8A6)',
+          background: 'linear-gradient(150deg, #40614A, #7E9A82)',
           transform: 'rotate(-45deg)',
           display: 'grid',
           placeItems: 'center',
-          boxShadow: '0 26px 50px -20px rgba(11,61,56,.7)',
+          boxShadow: '0 26px 50px -20px rgba(46,61,47,.7)',
         }}
       >
         <Box
@@ -323,15 +323,15 @@ function HeroRadar() {
           px: 1.6,
           py: 1,
           borderRadius: 3,
-          bgcolor: '#FFFDF8',
-          border: '1px solid rgba(11,61,56,.1)',
-          boxShadow: '0 18px 36px -22px rgba(11,61,56,.6)',
+          bgcolor: '#FAF8F3',
+          border: '1px solid rgba(46,61,47,.1)',
+          boxShadow: '0 18px 36px -22px rgba(46,61,47,.6)',
           display: 'flex',
           alignItems: 'center',
           gap: 1,
         }}
       >
-        <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#0F766E' }} />
+        <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#40614A' }} />
         <Box>
           <Typography sx={{ fontSize: 12, fontWeight: 700, color: INK, lineHeight: 1.1 }}>
             Match found
@@ -349,14 +349,14 @@ function HeroRadar() {
           py: 1,
           borderRadius: 3,
           bgcolor: INK,
-          color: '#FFFDF8',
-          boxShadow: '0 18px 36px -22px rgba(11,61,56,.8)',
+          color: '#FAF8F3',
+          boxShadow: '0 18px 36px -22px rgba(46,61,47,.8)',
           display: 'flex',
           alignItems: 'center',
           gap: 1,
         }}
       >
-        <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#E0A106' }} />
+        <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#8B6F4E' }} />
         <Typography sx={{ fontSize: 12, fontWeight: 700 }}>Found near Accra Mall</Typography>
       </Box>
     </Box>
@@ -376,7 +376,7 @@ function Ticker({ items }: { items: ItemPreview[] }) {
         borderBlock: '1px solid',
         borderColor: 'divider',
         py: 1.5,
-        bgcolor: 'rgba(255,253,248,0.5)',
+        bgcolor: 'rgba(250,248,243,0.5)',
       }}
     >
       <Box className="b2u-marquee">
@@ -397,7 +397,7 @@ function Ticker({ items }: { items: ItemPreview[] }) {
                   width: 7,
                   height: 7,
                   borderRadius: '50%',
-                  bgcolor: it.kind === 'found' ? '#0F766E' : '#C2410C',
+                  bgcolor: it.kind === 'found' ? '#40614A' : '#C2410C',
                 }}
               />
               <Typography
@@ -407,7 +407,7 @@ function Ticker({ items }: { items: ItemPreview[] }) {
                   fontWeight: 700,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: it.kind === 'found' ? '#0F766E' : '#C2410C',
+                  color: it.kind === 'found' ? '#40614A' : '#C2410C',
                 }}
               >
                 {it.kind}
@@ -423,7 +423,7 @@ function Ticker({ items }: { items: ItemPreview[] }) {
                   width: 4,
                   height: 4,
                   borderRadius: '50%',
-                  bgcolor: 'rgba(11,61,56,.25)',
+                  bgcolor: 'rgba(46,61,47,.25)',
                   ml: 1.5,
                 }}
               />
@@ -494,7 +494,7 @@ function LandingPage() {
               >
                 <path
                   d="M3 12C66 5 150 4 210 7c40 2 90 5 147 2"
-                  stroke="#E0A106"
+                  stroke="#8B6F4E"
                   strokeWidth="5"
                   strokeLinecap="round"
                   opacity="0.55"
@@ -568,7 +568,7 @@ function LandingPage() {
               position: 'absolute',
               inset: 0,
               background:
-                'radial-gradient(40rem 30rem at 85% 120%, rgba(224,161,6,0.22), transparent 60%), radial-gradient(36rem 30rem at 5% -20%, rgba(20,184,166,0.18), transparent 60%)',
+                'radial-gradient(40rem 30rem at 85% 120%, rgba(139,111,78,0.22), transparent 60%), radial-gradient(36rem 30rem at 5% -20%, rgba(126,154,130,0.18), transparent 60%)',
             }}
           />
           <Container sx={{ position: 'relative' }}>
@@ -580,7 +580,7 @@ function LandingPage() {
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
-                color: 'rgba(255,253,248,0.65)',
+                color: 'rgba(250,248,243,0.65)',
                 mb: { xs: 3.5, md: 4.5 },
               }}
             >
@@ -607,7 +607,7 @@ function LandingPage() {
                     pl: { sm: i === 0 ? 0 : 4 },
                     borderLeft: {
                       xs: 'none',
-                      sm: i === 0 ? 'none' : '1px solid rgba(255,253,248,0.16)',
+                      sm: i === 0 ? 'none' : '1px solid rgba(250,248,243,0.16)',
                     },
                   }}
                 >
@@ -628,7 +628,7 @@ function LandingPage() {
                       fontSize: 14,
                       letterSpacing: '0.14em',
                       textTransform: 'uppercase',
-                      color: 'rgba(255,253,248,0.7)',
+                      color: 'rgba(250,248,243,0.7)',
                     }}
                   >
                     {s.l}
@@ -679,7 +679,7 @@ function LandingPage() {
                       transition: 'transform .2s, box-shadow .2s',
                       '&:hover': {
                         transform: 'translateY(-4px)',
-                        boxShadow: '0 26px 46px -30px rgba(11,61,56,.5)',
+                        boxShadow: '0 26px 46px -30px rgba(46,61,47,.5)',
                       },
                     }}
                   >
@@ -690,7 +690,7 @@ function LandingPage() {
                         height: 184,
                         borderRadius: '18px 18px 18px 4px',
                         overflow: 'hidden',
-                        bgcolor: isFound ? 'rgba(15,118,110,0.08)' : 'rgba(194,65,12,0.08)',
+                        bgcolor: isFound ? 'rgba(64,97,74,0.08)' : 'rgba(194,65,12,0.08)',
                       }}
                     >
                       {it.images[0]?.url ? (
@@ -732,9 +732,9 @@ function LandingPage() {
                           fontWeight: 700,
                           letterSpacing: '0.08em',
                           textTransform: 'uppercase',
-                          color: '#FFFDF8',
-                          bgcolor: isFound ? '#0F766E' : '#C2410C',
-                          boxShadow: '0 6px 14px -8px rgba(11,61,56,.8)',
+                          color: '#FAF8F3',
+                          bgcolor: isFound ? '#40614A' : '#C2410C',
+                          boxShadow: '0 6px 14px -8px rgba(46,61,47,.8)',
                         }}
                       >
                         {it.kind}
@@ -754,7 +754,7 @@ function LandingPage() {
                           fontSize: 11.5,
                           fontWeight: 700,
                           color: INK,
-                          bgcolor: 'rgba(251,246,236,0.92)',
+                          bgcolor: 'rgba(242,239,234,0.92)',
                           backdropFilter: 'blur(4px)',
                         }}
                       >
@@ -866,7 +866,7 @@ function LandingPage() {
                       placeItems: 'center',
                       fontSize: 30,
                       fontWeight: 600,
-                      color: i === 1 ? '#C2410C' : '#0F766E',
+                      color: i === 1 ? '#C2410C' : '#40614A',
                       position: 'relative',
                       zIndex: 1,
                     }}
@@ -929,7 +929,7 @@ function LandingPage() {
                   borderRight: { md: (i + 1) % 3 === 0 ? 'none' : '1px solid' },
                   borderRightColor: { md: 'divider' },
                   transition: 'background .2s',
-                  '&:hover': { bgcolor: 'rgba(15,118,110,0.04)' },
+                  '&:hover': { bgcolor: 'rgba(64,97,74,0.04)' },
                 }}
               >
                 <Typography
@@ -996,7 +996,7 @@ function LandingPage() {
                     fontSize: 40,
                     lineHeight: 1,
                     fontWeight: 700,
-                    color: '#E0A106',
+                    color: '#8B6F4E',
                     mb: 1.5,
                   }}
                 >
@@ -1014,8 +1014,8 @@ function LandingPage() {
                       justifyContent: 'center',
                       fontSize: 13,
                       fontWeight: 700,
-                      bgcolor: i === 1 ? 'rgba(224,161,6,0.2)' : 'rgba(11,61,56,0.08)',
-                      color: i === 1 ? '#E0A106' : INK,
+                      bgcolor: i === 1 ? 'rgba(139,111,78,0.2)' : 'rgba(46,61,47,0.08)',
+                      color: i === 1 ? '#8B6F4E' : INK,
                     }}
                   >
                     {tm.name.replace(/[^A-Z]/g, '').slice(0, 2)}
@@ -1086,7 +1086,7 @@ function LandingPage() {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'radial-gradient(30rem 24rem at 80% 120%, rgba(224,161,6,0.28), transparent 60%), radial-gradient(26rem 22rem at 10% -10%, rgba(20,184,166,0.22), transparent 60%)',
+                    'radial-gradient(30rem 24rem at 80% 120%, rgba(139,111,78,0.28), transparent 60%), radial-gradient(26rem 22rem at 10% -10%, rgba(126,154,130,0.22), transparent 60%)',
                 }}
               />
               <Box sx={{ position: 'relative' }}>
@@ -1101,7 +1101,7 @@ function LandingPage() {
                   sx={{
                     mt: 2.5,
                     fontSize: 18,
-                    color: 'rgba(255,253,248,0.78)',
+                    color: 'rgba(250,248,243,0.78)',
                     maxWidth: 520,
                     mx: 'auto',
                   }}
@@ -1127,8 +1127,8 @@ function LandingPage() {
                     href={`${APP_URL}/feed`}
                     sx={{
                       color: PAPER,
-                      borderColor: 'rgba(255,253,248,0.4)',
-                      '&:hover': { borderColor: PAPER, bgcolor: 'rgba(255,253,248,0.08)' },
+                      borderColor: 'rgba(250,248,243,0.4)',
+                      '&:hover': { borderColor: PAPER, bgcolor: 'rgba(250,248,243,0.08)' },
                     }}
                   >
                     Browse items

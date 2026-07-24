@@ -11,9 +11,9 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
 const DISPLAY = '"Black Ops One", Georgia, serif';
-const INK = '#0B3D38';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 const CLAY = '#C2410C';
 
 const pct = (n: number) => Math.round(n * 100);
@@ -31,7 +31,7 @@ function ConfidenceRing({ score }: { score: number }) {
         flexShrink: 0,
         display: 'grid',
         placeItems: 'center',
-        background: `conic-gradient(${color} ${p * 3.6}deg, rgba(11,61,56,0.1) 0deg)`,
+        background: `conic-gradient(${color} ${p * 3.6}deg, rgba(46,61,47,0.1) 0deg)`,
       }}
     >
       <Box
@@ -69,7 +69,7 @@ function SubScore({ label, value }: { label: string; value: number }) {
         sx={{
           height: 5,
           borderRadius: 3,
-          bgcolor: 'rgba(11,61,56,0.1)',
+          bgcolor: 'rgba(46,61,47,0.1)',
           mt: 0.4,
           overflow: 'hidden',
         }}
@@ -260,7 +260,7 @@ function ItemMatches({
                 gap: 2,
                 p: 2,
                 borderRadius: 3,
-                bgcolor: isReturned ? 'rgba(15,118,110,0.06)' : 'rgba(15,118,110,0.04)',
+                bgcolor: isReturned ? 'rgba(64,97,74,0.06)' : 'rgba(64,97,74,0.04)',
                 border: '1px solid',
                 borderColor: isReturned ? TEAL : 'divider',
               }}
@@ -319,7 +319,7 @@ function ItemMatches({
                         borderRadius: 999,
                         fontWeight: 700,
                         px: 2,
-                        '&:hover': { bgcolor: '#cf9305' },
+                        '&:hover': { bgcolor: '#6F5940' },
                       }}
                     >
                       Accept

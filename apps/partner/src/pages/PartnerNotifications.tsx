@@ -67,8 +67,8 @@ export function PartnerNotificationsPage() {
                 p: 2,
                 borderRadius: 2,
                 border: '1px solid',
-                borderColor: n.read ? 'divider' : 'rgba(45,212,191,0.35)',
-                bgcolor: n.read ? 'background.paper' : 'rgba(45,212,191,0.08)',
+                borderColor: n.read ? 'divider' : 'rgba(168,181,160,0.35)',
+                bgcolor: n.read ? 'background.paper' : 'rgba(168,181,160,0.08)',
                 cursor: n.read ? 'default' : 'pointer',
                 transition: 'background-color .15s',
               }}

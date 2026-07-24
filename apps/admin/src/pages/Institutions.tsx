@@ -156,7 +156,7 @@ export function InstitutionsPage() {
                 borderColor: 'divider',
                 bgcolor: 'background.paper',
                 transition: 'border-color .15s',
-                '&:hover': { borderColor: 'rgba(45,212,191,0.5)' },
+                '&:hover': { borderColor: 'rgba(168,181,160,0.5)' },
               }}
             >
               <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
@@ -168,8 +168,8 @@ export function InstitutionsPage() {
                     flexShrink: 0,
                     display: 'grid',
                     placeItems: 'center',
-                    bgcolor: 'rgba(45,212,191,0.12)',
-                    color: '#2DD4BF',
+                    bgcolor: 'rgba(168,181,160,0.12)',
+                    color: '#A8B5A0',
                     '& svg': { fontSize: 24 },
                   }}
                 >

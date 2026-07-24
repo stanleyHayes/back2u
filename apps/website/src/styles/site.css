@@ -2,13 +2,13 @@
    Palette + base body background live in the MUI theme (MuiCssBaseline). */
 
 :root {
-  --paper: #fbf6ec;
-  --paper-raised: #fffdf8;
-  --ink: #0b3d38;
+  --paper: #F2EFEA;
+  --paper-raised: #FAF8F3;
+  --ink: #2E3D2F;
   --ink-soft: #3c544f;
-  --teal: #0f766e;
-  --teal-bright: #14b8a6;
-  --marigold: #e0a106;
+  --teal: #40614A;
+  --teal-bright: #7E9A82;
+  --marigold: #8B6F4E;
   --clay: #c2410c;
   --line: rgba(11, 61, 56, 0.12);
   --b2u-ease: cubic-bezier(0.2, 0.7, 0.2, 1);

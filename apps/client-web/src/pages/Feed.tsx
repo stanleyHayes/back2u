@@ -36,8 +36,8 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { ItemCard } from '../components/ItemCard.js';
 
-const CAT_TEAL = '#0F766E';
-const CAT_INK = '#0B3D38';
+const CAT_TEAL = '#40614A';
+const CAT_INK = '#2E3D2F';
 
 type CategoryOption = { value: string; label: string; icon: ReactNode; desc: string };
 const CATEGORY_OPTIONS: CategoryOption[] = [
@@ -117,7 +117,7 @@ function categoryContent(icon: ReactNode, label: string, desc: string) {
           flexShrink: 0,
           display: 'grid',
           placeItems: 'center',
-          bgcolor: 'rgba(15,118,110,0.10)',
+          bgcolor: 'rgba(64,97,74,0.10)',
           color: CAT_TEAL,
           '& svg': { fontSize: 19 },
         }}

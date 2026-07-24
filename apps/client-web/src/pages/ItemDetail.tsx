@@ -39,7 +39,7 @@ function StarButton({ filled, onClick }: { filled: boolean; onClick: () => void 
   return (
     <Button
       onClick={onClick}
-      sx={{ minWidth: 36, fontSize: 24, color: filled ? '#E0A106' : 'text.disabled', p: 0 }}
+      sx={{ minWidth: 36, fontSize: 24, color: filled ? '#8B6F4E' : 'text.disabled', p: 0 }}
     >
       {filled ? '★' : '☆'}
     </Button>

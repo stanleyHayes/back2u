@@ -27,10 +27,10 @@ import { useAuth } from '../lib/auth.store.js';
 import { uploadAvatar } from '../lib/cloudinary-upload.js';
 import type { ItemDTO } from '@back2u/shared-types';
 
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 const CLAY = '#C2410C';
 const DISPLAY = '"Black Ops One", Georgia, serif';
 
@@ -116,7 +116,7 @@ function ProfileItemRow({ item, action }: { item: ItemDTO; action?: ReactNode })
         transition: 'transform .15s, box-shadow .15s',
         '&:hover': {
           transform: 'translateX(3px)',
-          boxShadow: '0 16px 30px -26px rgba(11,61,56,.5)',
+          boxShadow: '0 16px 30px -26px rgba(46,61,47,.5)',
         },
       }}
     >
@@ -131,7 +131,7 @@ function ProfileItemRow({ item, action }: { item: ItemDTO; action?: ReactNode })
           flexShrink: 0,
           display: 'grid',
           placeItems: 'center',
-          bgcolor: isFound ? 'rgba(15,118,110,0.08)' : 'rgba(194,65,12,0.08)',
+          bgcolor: isFound ? 'rgba(64,97,74,0.08)' : 'rgba(194,65,12,0.08)',
         }}
       >
         {item.images[0]?.url ? (
@@ -173,7 +173,7 @@ function ProfileItemRow({ item, action }: { item: ItemDTO; action?: ReactNode })
               textTransform: 'capitalize',
               height: 20,
               fontWeight: 700,
-              bgcolor: isFound ? 'rgba(15,118,110,0.12)' : 'rgba(194,65,12,0.12)',
+              bgcolor: isFound ? 'rgba(64,97,74,0.12)' : 'rgba(194,65,12,0.12)',
               color: isFound ? 'primary.main' : CLAY,
             }}
           />
@@ -456,7 +456,7 @@ export function ProfilePage() {
             position: 'absolute',
             inset: 0,
             backgroundImage:
-              'linear-gradient(rgba(255,253,248,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,253,248,0.05) 1px, transparent 1px)',
+              'linear-gradient(rgba(250,248,243,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(250,248,243,0.05) 1px, transparent 1px)',
             backgroundSize: '38px 38px',
             maskImage: 'radial-gradient(70% 70% at 80% 20%, #000, transparent)',
           }}
@@ -470,7 +470,7 @@ export function ProfilePage() {
             width: 320,
             height: 320,
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(224,161,6,0.22), transparent 60%)',
+            background: 'radial-gradient(circle, rgba(139,111,78,0.22), transparent 60%)',
           }}
         />
 
@@ -541,7 +541,7 @@ export function ProfilePage() {
             >
               {user.name}
             </Typography>
-            <Typography sx={{ color: 'rgba(255,253,248,0.7)', fontSize: 14.5 }}>
+            <Typography sx={{ color: 'rgba(250,248,243,0.7)', fontSize: 14.5 }}>
               {user.email}
             </Typography>
             <Stack direction="row" spacing={0.75} sx={{ mt: 1.25, flexWrap: 'wrap' }} useFlexGap>
@@ -560,9 +560,9 @@ export function ProfilePage() {
                   label={r.replace(/_/g, ' ')}
                   sx={{
                     textTransform: 'capitalize',
-                    bgcolor: 'rgba(255,253,248,0.1)',
+                    bgcolor: 'rgba(250,248,243,0.1)',
                     color: PAPER,
-                    border: '1px solid rgba(255,253,248,0.18)',
+                    border: '1px solid rgba(250,248,243,0.18)',
                   }}
                 />
               ))}
@@ -578,9 +578,9 @@ export function ProfilePage() {
                     user.phoneVerified ? `${user.phone} · verified` : `${user.phone} · unverified`
                   }
                   sx={{
-                    bgcolor: 'rgba(255,253,248,0.1)',
+                    bgcolor: 'rgba(250,248,243,0.1)',
                     color: PAPER,
-                    border: '1px solid rgba(255,253,248,0.18)',
+                    border: '1px solid rgba(250,248,243,0.18)',
                   }}
                 />
               )}
@@ -596,7 +596,7 @@ export function ProfilePage() {
                 fontWeight: 700,
                 borderRadius: 999,
                 px: 2,
-                border: '1px solid rgba(255,253,248,0.3)',
+                border: '1px solid rgba(250,248,243,0.3)',
                 alignSelf: { xs: 'stretch', sm: 'flex-start' },
                 '&:hover': { borderColor: MARIGOLD, color: MARIGOLD },
               }}
@@ -660,7 +660,7 @@ export function ProfilePage() {
                   borderRadius: 999,
                   px: 3,
                   fontWeight: 700,
-                  '&:hover': { bgcolor: '#0a322e' },
+                  '&:hover': { bgcolor: '#243024' },
                 }}
               >
                 {save.isPending ? 'Saving…' : 'Save changes'}
@@ -684,13 +684,13 @@ export function ProfilePage() {
               icon={<MilitaryTechOutlinedIcon />}
               label="Reputation score"
               value={user.reputationScore}
-              tone={{ main: TEAL, soft: 'rgba(15,118,110,0.12)' }}
+              tone={{ main: TEAL, soft: 'rgba(64,97,74,0.12)' }}
             />
             <StatCard
               icon={<SavingsOutlinedIcon />}
               label="Points balance"
               value={user.pointsBalance.toLocaleString()}
-              tone={{ main: MARIGOLD, soft: 'rgba(224,161,6,0.14)' }}
+              tone={{ main: MARIGOLD, soft: 'rgba(139,111,78,0.14)' }}
             />
             <StatCard
               icon={<VolunteerActivismOutlinedIcon />}

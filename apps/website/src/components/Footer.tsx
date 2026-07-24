@@ -27,9 +27,9 @@ import { AppStoreBadges } from './AppStoreBadges';
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
 const CONTACT_EMAIL =
   (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? 'hello@back2u.app';
-const PAPER = '#FBF6EC';
-const MARIGOLD = '#E0A106';
-const MUTED = 'rgba(255,253,248,0.62)';
+const PAPER = '#F2EFEA';
+const MARIGOLD = '#8B6F4E';
+const MUTED = 'rgba(250,248,243,0.62)';
 
 type FLink = { label: string; icon: React.ReactNode; to?: string; href?: string };
 
@@ -105,7 +105,7 @@ function FooterLink({ link }: { link: FLink }) {
         fontSize: 15,
         py: 0.5,
         transition: 'color .18s, transform .18s',
-        '& svg': { fontSize: 17, color: 'rgba(224,161,6,0.7)' },
+        '& svg': { fontSize: 17, color: 'rgba(139,111,78,0.7)' },
         '&:hover': { color: PAPER, transform: 'translateX(2px)' },
       }}
     >
@@ -141,7 +141,7 @@ export function Footer() {
       sx={{
         bgcolor: '#072c28',
         color: PAPER,
-        borderTop: '1px solid rgba(224,161,6,0.3)',
+        borderTop: '1px solid rgba(139,111,78,0.3)',
         pt: { xs: 7, md: 10 },
         pb: 4,
       }}
@@ -164,11 +164,11 @@ export function Footer() {
                 maxWidth: 420,
                 p: 2.5,
                 borderRadius: 3,
-                border: '1px solid rgba(255,253,248,0.08)',
-                bgcolor: 'rgba(255,253,248,0.03)',
+                border: '1px solid rgba(250,248,243,0.08)',
+                bgcolor: 'rgba(250,248,243,0.03)',
               }}
             >
-              <Typography sx={{ color: 'rgba(255,253,248,0.72)', fontSize: 16, lineHeight: 1.7 }}>
+              <Typography sx={{ color: 'rgba(250,248,243,0.72)', fontSize: 16, lineHeight: 1.7 }}>
                 West Africa&apos;s smart lost &amp; found. We reunite people with what they value
                 through AI matching, branded QR tags, and a community that shows up.
               </Typography>
@@ -191,8 +191,8 @@ export function Footer() {
                   mt: 2,
                   p: 2,
                   borderRadius: 2.5,
-                  border: '1px solid rgba(224,161,6,0.4)',
-                  bgcolor: 'rgba(224,161,6,0.08)',
+                  border: '1px solid rgba(139,111,78,0.4)',
+                  bgcolor: 'rgba(139,111,78,0.08)',
                   color: PAPER,
                   fontSize: 15,
                 }}
@@ -209,8 +209,8 @@ export function Footer() {
                   gap: 1,
                   p: 0.75,
                   borderRadius: 3,
-                  border: '1px solid rgba(255,253,248,0.14)',
-                  bgcolor: 'rgba(255,253,248,0.03)',
+                  border: '1px solid rgba(250,248,243,0.14)',
+                  bgcolor: 'rgba(250,248,243,0.03)',
                   alignItems: 'center',
                 }}
               >
@@ -225,7 +225,7 @@ export function Footer() {
                     px: 1.5,
                     color: PAPER,
                     fontSize: 15,
-                    '& input::placeholder': { color: 'rgba(255,253,248,0.4)' },
+                    '& input::placeholder': { color: 'rgba(250,248,243,0.4)' },
                   }}
                 />
                 <Button
@@ -233,11 +233,11 @@ export function Footer() {
                   variant="contained"
                   sx={{
                     bgcolor: MARIGOLD,
-                    color: '#0B3D38',
+                    color: '#2E3D2F',
                     fontWeight: 700,
                     borderRadius: 2,
                     px: 2.5,
-                    '&:hover': { bgcolor: '#cf9305' },
+                    '&:hover': { bgcolor: '#6F5940' },
                   }}
                 >
                   Subscribe
@@ -289,7 +289,7 @@ export function Footer() {
           sx={{
             mt: { xs: 5, md: 7 },
             pt: 3,
-            borderTop: '1px solid rgba(255,253,248,0.1)',
+            borderTop: '1px solid rgba(250,248,243,0.1)',
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', md: '1fr auto 1fr' },
             alignItems: 'center',
@@ -310,7 +310,7 @@ export function Footer() {
                 aria-label={s.label}
                 sx={{
                   color: MUTED,
-                  border: '1px solid rgba(255,253,248,0.14)',
+                  border: '1px solid rgba(250,248,243,0.14)',
                   borderRadius: 2,
                   width: 38,
                   height: 38,

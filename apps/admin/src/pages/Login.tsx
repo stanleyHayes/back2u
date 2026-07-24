@@ -22,10 +22,10 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
 const DISPLAY = '"Black Ops One", Georgia, serif';
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 
 const STATS = [
   { n: 'Verify', l: 'Ownership claims' },
@@ -109,7 +109,7 @@ export function LoginPage() {
               position: 'absolute',
               inset: 0,
               backgroundImage:
-                'linear-gradient(rgba(255,253,248,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,253,248,0.05) 1px, transparent 1px)',
+                'linear-gradient(rgba(250,248,243,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(250,248,243,0.05) 1px, transparent 1px)',
               backgroundSize: '40px 40px',
               maskImage: 'radial-gradient(60% 60% at 70% 40%, #000, transparent)',
             }}
@@ -123,7 +123,7 @@ export function LoginPage() {
               width: 420,
               height: 420,
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(224,161,6,0.2), transparent 60%)',
+              background: 'radial-gradient(circle, rgba(139,111,78,0.2), transparent 60%)',
             }}
           />
 
@@ -135,7 +135,7 @@ export function LoginPage() {
                 width: 32,
                 height: 32,
                 borderRadius: '37% 37% 37% 10%',
-                background: `linear-gradient(140deg, ${TEAL}, #14B8A6)`,
+                background: `linear-gradient(140deg, ${TEAL}, #7E9A82)`,
                 transform: 'rotate(-6deg)',
                 display: 'grid',
                 placeItems: 'center',
@@ -154,7 +154,7 @@ export function LoginPage() {
                 px: 1,
                 py: 0.25,
                 borderRadius: 1,
-                border: '1px solid rgba(255,253,248,0.25)',
+                border: '1px solid rgba(250,248,243,0.25)',
                 fontSize: 11,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -176,7 +176,7 @@ export function LoginPage() {
             >
               The operations console.
             </Typography>
-            <Typography sx={{ mt: 2, fontSize: 16, color: 'rgba(255,253,248,0.7)', maxWidth: 380 }}>
+            <Typography sx={{ mt: 2, fontSize: 16, color: 'rgba(250,248,243,0.7)', maxWidth: 380 }}>
               Verify ownership, triage partnership leads &amp; reports, confirm point redemptions,
               and keep the reunion engine running.
             </Typography>
@@ -193,7 +193,7 @@ export function LoginPage() {
                       fontSize: 12,
                       letterSpacing: '0.12em',
                       textTransform: 'uppercase',
-                      color: 'rgba(255,253,248,0.6)',
+                      color: 'rgba(250,248,243,0.6)',
                     }}
                   >
                     {s.l}
@@ -277,8 +277,8 @@ export function LoginPage() {
                       borderRadius: 999,
                       fontWeight: 700,
                       py: 1.4,
-                      boxShadow: '0 14px 28px -16px rgba(224,161,6,.9)',
-                      '&:hover': { bgcolor: '#cf9305' },
+                      boxShadow: '0 14px 28px -16px rgba(139,111,78,.9)',
+                      '&:hover': { bgcolor: '#6F5940' },
                     }}
                   >
                     {verify.isPending ? 'Verifying…' : 'Verify & sign in'}
@@ -354,8 +354,8 @@ export function LoginPage() {
                       borderRadius: 999,
                       fontWeight: 700,
                       py: 1.4,
-                      boxShadow: '0 14px 28px -16px rgba(224,161,6,.9)',
-                      '&:hover': { bgcolor: '#cf9305' },
+                      boxShadow: '0 14px 28px -16px rgba(139,111,78,.9)',
+                      '&:hover': { bgcolor: '#6F5940' },
                     }}
                   >
                     {login.isPending ? 'Signing in…' : 'Sign in'}

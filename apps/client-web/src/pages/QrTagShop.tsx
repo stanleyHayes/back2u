@@ -21,8 +21,8 @@ import { CardGridSkeleton } from '@back2u/ui-web';
 import { api } from '../lib/api.js';
 
 const DISPLAY = '"Black Ops One", Georgia, serif';
-const INK = '#0B3D38';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const MARIGOLD = '#8B6F4E';
 
 function majorCurrency(amount: number, currency: string) {
   const val = amount / 100;
@@ -154,7 +154,7 @@ export function QrTagShopPage() {
                 transition: 'transform .18s, box-shadow .18s',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 26px 46px -30px rgba(11,61,56,.5)',
+                  boxShadow: '0 26px 46px -30px rgba(46,61,47,.5)',
                 },
               }}
             >
@@ -171,7 +171,7 @@ export function QrTagShopPage() {
                   size="small"
                   label={`${p.quantity} tags`}
                   sx={{
-                    bgcolor: 'rgba(15,118,110,0.1)',
+                    bgcolor: 'rgba(64,97,74,0.1)',
                     color: 'primary.main',
                     width: 'fit-content',
                   }}
@@ -263,7 +263,7 @@ export function QrTagShopPage() {
                 color: INK,
                 borderRadius: 999,
                 fontWeight: 700,
-                '&:hover': { bgcolor: '#cf9305' },
+                '&:hover': { bgcolor: '#6F5940' },
               }}
               disabled={anyLoading}
               onClick={() => createOrder.mutate(cartItems)}

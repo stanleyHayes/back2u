@@ -2,8 +2,8 @@ import { Box, Stack, Typography } from '@mui/material';
 import type { ReactNode } from 'react';
 
 const TONES = {
-  teal: { main: '#2DD4BF', soft: 'rgba(45,212,191,0.12)' },
-  marigold: { main: '#E0A106', soft: 'rgba(224,161,6,0.14)' },
+  teal: { main: '#A8B5A0', soft: 'rgba(168,181,160,0.12)' },
+  marigold: { main: '#8B6F4E', soft: 'rgba(139,111,78,0.14)' },
   clay: { main: '#C2410C', soft: 'rgba(194,65,12,0.12)' },
 } as const;
 

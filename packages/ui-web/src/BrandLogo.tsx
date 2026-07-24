@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
-const PAPER = '#FBF6EC';
+const PAPER = '#F2EFEA';
 
 /**
  * The Back2u mark: a rounded "U" (Back2-U) that doubles as a return path — its
@@ -9,7 +9,7 @@ const PAPER = '#FBF6EC';
  */
 export function BrandMark({ size = 30, onDark = false }: { size?: number; onDark?: boolean }) {
   const gradId = 'b2uMark';
-  const dot = onDark ? '#04201d' : PAPER;
+  const dot = onDark ? '#1C231B' : PAPER;
   return (
     <Box
       component="svg"
@@ -19,8 +19,8 @@ export function BrandMark({ size = 30, onDark = false }: { size?: number; onDark
     >
       <defs>
         <linearGradient id={gradId} x1="8" y1="8" x2="40" y2="42" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#0F766E" />
-          <stop offset="1" stopColor="#2DD4BF" />
+          <stop stopColor="#40614A" />
+          <stop offset="1" stopColor="#A8B5A0" />
         </linearGradient>
       </defs>
       {/* the "U" — return path: down the left arm, round the base, up the right */}

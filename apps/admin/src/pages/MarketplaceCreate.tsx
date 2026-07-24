@@ -18,8 +18,8 @@ import { EmptyState, PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
-const TEAL = '#2DD4BF';
-const MARIGOLD = '#E0A106';
+const TEAL = '#A8B5A0';
+const MARIGOLD = '#8B6F4E';
 
 function closesIn(iso: string): string {
   const ms = new Date(iso).getTime() - Date.now();
@@ -128,7 +128,7 @@ export function MarketplaceCreatePage() {
           <Chip
             size="small"
             label={live.length}
-            sx={{ bgcolor: 'rgba(45,212,191,0.14)', color: TEAL, fontWeight: 700 }}
+            sx={{ bgcolor: 'rgba(168,181,160,0.14)', color: TEAL, fontWeight: 700 }}
           />
         )}
       </Stack>
@@ -190,7 +190,7 @@ export function MarketplaceCreatePage() {
                     height: 7,
                     borderRadius: '50%',
                     bgcolor: TEAL,
-                    boxShadow: `0 0 0 3px rgba(45,212,191,0.2)`,
+                    boxShadow: `0 0 0 3px rgba(168,181,160,0.2)`,
                   }}
                 />
                 <Typography

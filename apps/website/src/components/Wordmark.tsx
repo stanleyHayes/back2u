@@ -1,10 +1,10 @@
 import { Box, Typography } from '@mui/material';
 
-const PAPER = '#FBF6EC';
+const PAPER = '#F2EFEA';
 
 /** The Back2u return-loop mark: an arrow looping back on itself around a pin. */
 function Mark({ px, onDark }: { px: number; onDark: boolean }) {
-  const dot = onDark ? '#04201d' : PAPER;
+  const dot = onDark ? '#1C231B' : PAPER;
   return (
     <Box
       component="svg"
@@ -21,8 +21,8 @@ function Mark({ px, onDark }: { px: number; onDark: boolean }) {
           y2="42"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#0F766E" />
-          <stop offset="1" stopColor="#14B8A6" />
+          <stop stopColor="#40614A" />
+          <stop offset="1" stopColor="#7E9A82" />
         </linearGradient>
       </defs>
       <path

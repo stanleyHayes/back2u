@@ -9,8 +9,8 @@ import { useState } from 'react';
 import { api } from '../lib/api.js';
 import { PageHeader, SectionCard } from '../components/BrandPage.js';
 
-const INK = '#0B3D38';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const MARIGOLD = '#8B6F4E';
 
 export function VaultPage() {
   const qc = useQueryClient();
@@ -94,11 +94,11 @@ export function VaultPage() {
                 disabled={!form.label || create.isPending}
                 sx={{
                   bgcolor: INK,
-                  color: '#FBF6EC',
+                  color: '#F2EFEA',
                   borderRadius: 999,
                   fontWeight: 700,
                   px: 3,
-                  '&:hover': { bgcolor: '#0a322e' },
+                  '&:hover': { bgcolor: '#243024' },
                 }}
               >
                 {create.isPending ? 'Saving…' : 'Save to vault'}

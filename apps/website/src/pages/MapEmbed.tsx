@@ -24,9 +24,9 @@ const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
-const INK = '#0B3D38';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 const CLAY = '#C2410C';
 
 type ItemKind = 'lost' | 'found';
@@ -248,7 +248,7 @@ export function MapEmbed() {
             top: { xs: 8, md: 16 },
             left: { xs: 8, md: 16 },
             zIndex: 10,
-            bgcolor: 'rgba(251,246,236,0.92)',
+            bgcolor: 'rgba(242,239,234,0.92)',
             backdropFilter: 'blur(8px)',
             borderRadius: 3,
             p: 1.5,
@@ -293,7 +293,7 @@ export function MapEmbed() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              bgcolor: 'rgba(251,246,236,0.7)',
+              bgcolor: 'rgba(242,239,234,0.7)',
             }}
           >
             <CircularProgress color="primary" />
@@ -416,7 +416,7 @@ export function MapEmbed() {
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
                         fontSize: 11,
-                        color: selectedItem.kind === 'lost' ? CLAY : '#FFFDF8',
+                        color: selectedItem.kind === 'lost' ? CLAY : '#FAF8F3',
                         bgcolor: selectedItem.kind === 'lost' ? 'rgba(194,65,12,.1)' : TEAL,
                         borderRadius: 999,
                       }}

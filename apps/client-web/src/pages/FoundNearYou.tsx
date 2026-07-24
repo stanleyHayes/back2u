@@ -6,10 +6,10 @@ import type { ItemDTO } from '@back2u/shared-types';
 
 import { api } from '../lib/api.js';
 
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const MARIGOLD = '#E0A106';
-const TEAL = '#14B8A6';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const MARIGOLD = '#8B6F4E';
+const TEAL = '#7E9A82';
 
 type NearItem = ItemDTO & { dist: number };
 
@@ -191,8 +191,8 @@ export function FoundNearYouPage() {
           bgcolor: INK,
           backgroundImage: cameraOn
             ? 'none'
-            : 'radial-gradient(40rem 30rem at 80% 110%, rgba(224,161,6,0.25), transparent 60%), radial-gradient(36rem 28rem at 10% -10%, rgba(20,184,166,0.28), transparent 60%)',
-          boxShadow: '0 30px 70px -45px rgba(11,61,56,.6)',
+            : 'radial-gradient(40rem 30rem at 80% 110%, rgba(139,111,78,0.25), transparent 60%), radial-gradient(36rem 28rem at 10% -10%, rgba(126,154,130,0.28), transparent 60%)',
+          boxShadow: '0 30px 70px -45px rgba(46,61,47,.6)',
         }}
       >
         {/* camera feed */}
@@ -264,7 +264,7 @@ export function FoundNearYouPage() {
               <Typography sx={{ fontFamily: '"Black Ops One", serif', fontSize: 24, color: PAPER }}>
                 Nothing found within 5&nbsp;km
               </Typography>
-              <Typography sx={{ color: 'rgba(255,253,248,0.7)' }}>
+              <Typography sx={{ color: 'rgba(250,248,243,0.7)' }}>
                 Lucky you — or check back later as people report finds.
               </Typography>
             </Stack>
@@ -300,9 +300,9 @@ export function FoundNearYouPage() {
                   p: 0.75,
                   pr: 1.5,
                   borderRadius: 999,
-                  bgcolor: 'rgba(251,246,236,0.95)',
-                  border: `1px solid rgba(11,61,56,0.1)`,
-                  boxShadow: '0 14px 30px -18px rgba(11,61,56,.8)',
+                  bgcolor: 'rgba(242,239,234,0.95)',
+                  border: `1px solid rgba(46,61,47,0.1)`,
+                  boxShadow: '0 14px 30px -18px rgba(46,61,47,.8)',
                   backdropFilter: 'blur(4px)',
                 }}
               >

@@ -118,7 +118,7 @@ export function OverviewPage() {
               title="Lost vs found"
               centerLabel="items"
               slices={[
-                { label: 'Found', value: data?.itemsByKind.found ?? 0, color: '#2DD4BF' },
+                { label: 'Found', value: data?.itemsByKind.found ?? 0, color: '#A8B5A0' },
                 { label: 'Lost', value: data?.itemsByKind.lost ?? 0, color: '#C2410C' },
               ]}
             />
@@ -127,17 +127,17 @@ export function OverviewPage() {
               centerValue={`${((data?.matchSuccessRate ?? 0) * 100).toFixed(0)}%`}
               centerLabel="accepted"
               slices={[
-                { label: 'Accepted', value: data?.matchesAccepted ?? 0, color: '#2DD4BF' },
+                { label: 'Accepted', value: data?.matchesAccepted ?? 0, color: '#A8B5A0' },
                 {
                   label: 'Pending / rejected',
                   value: Math.max(0, (data?.matchesTotal ?? 0) - (data?.matchesAccepted ?? 0)),
-                  color: '#E0A106',
+                  color: '#8B6F4E',
                 },
               ]}
             />
             <HBarChart
               title="Items by status"
-              color="#2DD4BF"
+              color="#A8B5A0"
               data={ITEM_STATUS_ORDER.map((s) => ({
                 label: ITEM_STATUS_LABELS[s] ?? s,
                 value: data?.itemsByStatus[s] ?? 0,
@@ -156,7 +156,7 @@ export function OverviewPage() {
         ) : (
           <HBarChart
             title="Items by category"
-            color="#E0A106"
+            color="#8B6F4E"
             data={Object.entries(data?.itemsByCategory ?? {})
               .sort((a, b) => b[1] - a[1])
               .slice(0, 8)

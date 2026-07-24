@@ -9,8 +9,8 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { PageHeader, SectionCard } from '../components/BrandPage.js';
 
-const INK = '#0B3D38';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const MARIGOLD = '#8B6F4E';
 
 const STATUS_COLOR: Record<RedemptionStatus, 'default' | 'warning' | 'success' | 'error'> = {
   pending: 'warning',
@@ -131,7 +131,7 @@ export function RedeemPage() {
                     p: 3,
                     borderRadius: '20px 20px 20px 6px',
                     bgcolor: INK,
-                    color: '#FBF6EC',
+                    color: '#F2EFEA',
                     textAlign: 'center',
                   }}
                 >
@@ -175,7 +175,7 @@ export function RedeemPage() {
                     fontWeight: 700,
                     px: 3,
                     py: 1.3,
-                    '&:hover': { bgcolor: '#cf9305' },
+                    '&:hover': { bgcolor: '#6F5940' },
                   }}
                 >
                   {create.isPending ? 'Creating…' : 'Generate voucher'}

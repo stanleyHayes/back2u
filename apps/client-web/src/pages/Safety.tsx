@@ -10,7 +10,7 @@ import { AiAssistantBar } from '@back2u/ui-web';
 import { api } from '../lib/api.js';
 import { PageHeader, SectionCard } from '../components/BrandPage.js';
 
-const INK = '#0B3D38';
+const INK = '#2E3D2F';
 const CLAY = '#C2410C';
 
 const TARGETS = ['user', 'item', 'message', 'listing'] as const;
@@ -18,11 +18,11 @@ const REASONS = ['scam', 'harassment', 'spam', 'inappropriate', 'other'] as cons
 
 const inkBtn = {
   bgcolor: INK,
-  color: '#FBF6EC',
+  color: '#F2EFEA',
   borderRadius: 999,
   fontWeight: 700,
   px: 2.5,
-  '&:hover': { bgcolor: '#0a322e' },
+  '&:hover': { bgcolor: '#243024' },
 } as const;
 
 export function SafetyPage() {

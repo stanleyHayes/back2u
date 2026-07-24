@@ -36,17 +36,17 @@ function ItemCard({ item }: { item: ItemDTO }) {
         borderColor: 'divider',
         bgcolor: 'background.paper',
         transition: 'border-color .15s ease, transform .15s ease',
-        '&:hover': { borderColor: 'rgba(45,212,191,0.4)', transform: 'translateY(-2px)' },
+        '&:hover': { borderColor: 'rgba(168,181,160,0.4)', transform: 'translateY(-2px)' },
       }}
     >
       <Box
         sx={{
           position: 'relative',
           aspectRatio: '16/10',
-          bgcolor: 'rgba(45,212,191,0.08)',
+          bgcolor: 'rgba(168,181,160,0.08)',
           display: 'grid',
           placeItems: 'center',
-          color: '#2DD4BF',
+          color: '#A8B5A0',
         }}
       >
         {image ? (
@@ -68,8 +68,8 @@ function ItemCard({ item }: { item: ItemDTO }) {
             left: 10,
             textTransform: 'capitalize',
             fontWeight: 700,
-            bgcolor: item.kind === 'found' ? 'rgba(45,212,191,0.92)' : 'rgba(194,65,12,0.92)',
-            color: item.kind === 'found' ? '#04201d' : '#FFF3E8',
+            bgcolor: item.kind === 'found' ? 'rgba(168,181,160,0.92)' : 'rgba(194,65,12,0.92)',
+            color: item.kind === 'found' ? '#1C231B' : '#FFF3E8',
           }}
         />
         <Chip

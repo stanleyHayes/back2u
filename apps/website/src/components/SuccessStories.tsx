@@ -15,7 +15,7 @@ const STORIES: Story[] = [
     name: 'Ama K.',
     location: 'Accra',
     initials: 'AK',
-    avatarColor: '#0F766E',
+    avatarColor: '#40614A',
     lostItem: 'laptop',
     timeframe: '2 hours via AI match',
     body: 'I left my laptop in a taxi and posted it on Back2u within minutes. The AI matching engine surfaced a found item that looked identical, and I had it back before dinner.',
@@ -24,7 +24,7 @@ const STORIES: Story[] = [
     name: 'Kofi B.',
     location: 'Kumasi',
     initials: 'KB',
-    avatarColor: '#F59E0B',
+    avatarColor: '#8B6F4E',
     lostItem: 'backpack with QR tag',
     timeframe: 'instantly after scan',
     body: 'My backpack had a Back2u QR tag from the campus event. Someone found it, scanned the code, and I received an alert with the exact location instantly.',
@@ -83,8 +83,8 @@ export function SuccessStories() {
                 boxShadow: 'none',
                 transition: 'border-color .18s ease, box-shadow .18s ease',
                 '&:hover': {
-                  borderColor: 'rgba(11,61,56,0.3)',
-                  boxShadow: '0 6px 20px rgba(11,61,56,0.08)',
+                  borderColor: 'rgba(46,61,47,0.3)',
+                  boxShadow: '0 6px 20px rgba(46,61,47,0.08)',
                 },
               }}
             >
@@ -120,7 +120,7 @@ export function SuccessStories() {
                       borderRadius: 1,
                       fontSize: 13,
                       fontWeight: 600,
-                      bgcolor: 'rgba(11,61,56,0.07)',
+                      bgcolor: 'rgba(46,61,47,0.07)',
                       color: 'text.primary',
                     }}
                   >
@@ -133,7 +133,7 @@ export function SuccessStories() {
                       borderRadius: 1,
                       fontSize: 13,
                       fontWeight: 600,
-                      bgcolor: 'rgba(224,161,6,0.15)',
+                      bgcolor: 'rgba(139,111,78,0.15)',
                       color: '#8a6103',
                     }}
                   >

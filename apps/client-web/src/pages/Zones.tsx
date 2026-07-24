@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { api } from '../lib/api.js';
 import { PageHeader, SectionCard } from '../components/BrandPage.js';
 
-const INK = '#0B3D38';
+const INK = '#2E3D2F';
 
 export function ZonesPage() {
   const qc = useQueryClient();
@@ -72,11 +72,11 @@ export function ZonesPage() {
                 disabled={!name || create.isPending}
                 sx={{
                   bgcolor: INK,
-                  color: '#FBF6EC',
+                  color: '#F2EFEA',
                   borderRadius: 999,
                   fontWeight: 700,
                   px: 3,
-                  '&:hover': { bgcolor: '#0a322e' },
+                  '&:hover': { bgcolor: '#243024' },
                 }}
               >
                 {create.isPending ? 'Saving…' : 'Save zone'}
@@ -141,7 +141,7 @@ export function ZonesPage() {
                           label={ch}
                           sx={{
                             height: 20,
-                            bgcolor: 'rgba(15,118,110,0.12)',
+                            bgcolor: 'rgba(64,97,74,0.12)',
                             color: 'primary.main',
                             fontWeight: 600,
                             textTransform: 'capitalize',

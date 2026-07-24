@@ -25,10 +25,10 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { pushSupported, subscribeToPush } from '../lib/web-push.js';
 
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 
 const inkBtn = {
   bgcolor: INK,
@@ -36,7 +36,7 @@ const inkBtn = {
   borderRadius: 999,
   fontWeight: 700,
   px: 2.5,
-  '&:hover': { bgcolor: '#0a322e' },
+  '&:hover': { bgcolor: '#243024' },
 } as const;
 const outlineBtn = {
   borderRadius: 999,
@@ -83,7 +83,7 @@ function SettingCard({
             borderRadius: 2,
             display: 'grid',
             placeItems: 'center',
-            bgcolor: 'rgba(15,118,110,0.1)',
+            bgcolor: 'rgba(64,97,74,0.1)',
             color: 'primary.main',
             flexShrink: 0,
             '& svg': { fontSize: 21 },
@@ -424,7 +424,7 @@ export function SettingsPage() {
                 borderRadius: 999,
                 fontWeight: 700,
                 px: 2.5,
-                '&:hover': { bgcolor: '#cf9305' },
+                '&:hover': { bgcolor: '#6F5940' },
               }}
             >
               Redeem

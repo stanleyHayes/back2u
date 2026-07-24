@@ -32,7 +32,7 @@ const typeConfig: Record<
   NotificationDTO['type'],
   { icon: React.ReactNode; color: string; label: string } | undefined
 > = {
-  match: { icon: <LocalOfferOutlined />, color: '#0F766E', label: 'Match' },
+  match: { icon: <LocalOfferOutlined />, color: '#40614A', label: 'Match' },
   message: { icon: <ChatBubbleOutlined />, color: '#2563EB', label: 'Message' },
   courier: { icon: <LocalShippingOutlined />, color: '#D97706', label: 'Courier' },
   marketplace: { icon: <ShoppingBagOutlined />, color: '#7C3AED', label: 'Marketplace' },
@@ -69,7 +69,7 @@ function NotificationRow({
         cursor: 'pointer',
         borderRadius: 2,
         mb: 0.5,
-        bgcolor: n.read ? 'transparent' : 'rgba(15,118,110,0.06)',
+        bgcolor: n.read ? 'transparent' : 'rgba(64,97,74,0.06)',
         '&:hover': { bgcolor: 'action.hover' },
       }}
     >
@@ -88,7 +88,7 @@ function NotificationRow({
                   width: 8,
                   height: 8,
                   borderRadius: '50%',
-                  bgcolor: '#0F766E',
+                  bgcolor: '#40614A',
                 }}
               />
             )}

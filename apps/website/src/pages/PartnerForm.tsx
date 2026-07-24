@@ -35,9 +35,9 @@ import { BrandLogo } from '@back2u/ui-web';
 const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:4000';
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
 
-const INK = '#0B3D38';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 
 const STEPS = ['Institution', 'Contact', 'Volume & message'];
 
@@ -415,10 +415,10 @@ export function PartnerForm() {
                 p: { xs: 3, md: 4 },
                 borderRadius: '14px 14px 4px 14px',
                 color: '#EAF3ED',
-                background: 'linear-gradient(155deg, #0B3D38 0%, #0F766E 100%)',
+                background: 'linear-gradient(155deg, #2E3D2F 0%, #40614A 100%)',
                 overflow: 'hidden',
                 animation: 'b2uFadeUp .55s cubic-bezier(.2,.7,.2,1) both',
-                boxShadow: '0 30px 60px -40px rgba(11,61,56,0.7)',
+                boxShadow: '0 30px 60px -40px rgba(46,61,47,0.7)',
               }}
             >
               {/* decorative glow */}
@@ -431,7 +431,7 @@ export function PartnerForm() {
                   width: 260,
                   height: 260,
                   borderRadius: '50%',
-                  background: 'radial-gradient(circle, rgba(224,161,6,0.28), transparent 62%)',
+                  background: 'radial-gradient(circle, rgba(139,111,78,0.28), transparent 62%)',
                   pointerEvents: 'none',
                 }}
               />
@@ -482,8 +482,8 @@ export function PartnerForm() {
                           borderRadius: 2,
                           display: 'grid',
                           placeItems: 'center',
-                          bgcolor: 'rgba(255,253,248,0.12)',
-                          color: '#FFFDF8',
+                          bgcolor: 'rgba(250,248,243,0.12)',
+                          color: '#FAF8F3',
                           '& svg': { fontSize: 21 },
                         }}
                       >
@@ -507,7 +507,7 @@ export function PartnerForm() {
                   sx={{
                     mt: 3.5,
                     pt: 2.5,
-                    borderTop: '1px solid rgba(255,253,248,0.16)',
+                    borderTop: '1px solid rgba(250,248,243,0.16)',
                     flexWrap: 'wrap',
                     gap: 1,
                   }}
@@ -522,7 +522,7 @@ export function PartnerForm() {
                         px: 1.5,
                         py: 0.75,
                         borderRadius: 999,
-                        bgcolor: 'rgba(255,253,248,0.10)',
+                        bgcolor: 'rgba(250,248,243,0.10)',
                         '& svg': { fontSize: 17, color: '#F3C969' },
                       }}
                     >
@@ -544,7 +544,7 @@ export function PartnerForm() {
                 border: '1px solid',
                 borderColor: 'divider',
                 bgcolor: 'background.paper',
-                boxShadow: '0 30px 60px -48px rgba(11,61,56,0.5)',
+                boxShadow: '0 30px 60px -48px rgba(46,61,47,0.5)',
               }}
             >
               <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
@@ -779,7 +779,7 @@ export function PartnerForm() {
                         borderRadius: 999,
                         px: 3,
                         fontWeight: 700,
-                        '&:hover': { bgcolor: '#cf9305' },
+                        '&:hover': { bgcolor: '#6F5940' },
                       }}
                     >
                       {submitting ? (
@@ -796,11 +796,11 @@ export function PartnerForm() {
                       endIcon={<ArrowForwardRoundedIcon />}
                       sx={{
                         bgcolor: INK,
-                        color: '#FBF6EC',
+                        color: '#F2EFEA',
                         borderRadius: 999,
                         px: 3,
                         fontWeight: 700,
-                        '&:hover': { bgcolor: '#0a322e' },
+                        '&:hover': { bgcolor: '#243024' },
                       }}
                     >
                       Continue

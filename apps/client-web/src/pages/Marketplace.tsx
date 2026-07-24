@@ -23,9 +23,9 @@ import { useAuth } from '../lib/auth.store.js';
 import { isFlagEnabled } from '../lib/feature-flags.js';
 
 const DISPLAY = '"Black Ops One", Georgia, serif';
-const INK = '#0B3D38';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 
 const money = (n: number, c: string) => `${n.toLocaleString()} ${c}`;
 
@@ -188,7 +188,7 @@ function ListingCard({
         transition: 'transform .18s, box-shadow .18s',
         '&:hover': {
           transform: 'translateY(-4px)',
-          boxShadow: '0 26px 46px -30px rgba(11,61,56,.5)',
+          boxShadow: '0 26px 46px -30px rgba(46,61,47,.5)',
         },
       }}
     >
@@ -203,7 +203,7 @@ function ListingCard({
           borderRadius: '18px 18px 18px 4px',
           overflow: 'hidden',
           textDecoration: 'none',
-          bgcolor: isFound ? 'rgba(15,118,110,0.08)' : 'rgba(194,65,12,0.08)',
+          bgcolor: isFound ? 'rgba(64,97,74,0.08)' : 'rgba(194,65,12,0.08)',
         }}
       >
         {item?.imageUrl ? (
@@ -232,8 +232,8 @@ function ListingCard({
             fontSize: 11,
             fontWeight: 700,
             textTransform: 'capitalize',
-            color: '#FFFDF8',
-            bgcolor: live ? TEAL : 'rgba(11,61,56,0.75)',
+            color: '#FAF8F3',
+            bgcolor: live ? TEAL : 'rgba(46,61,47,0.75)',
           }}
         >
           {l.status}
@@ -250,7 +250,7 @@ function ListingCard({
             fontSize: 11.5,
             fontWeight: 700,
             color: INK,
-            bgcolor: 'rgba(251,246,236,0.92)',
+            bgcolor: 'rgba(242,239,234,0.92)',
             backdropFilter: 'blur(4px)',
           }}
         >
@@ -329,7 +329,7 @@ function ListingCard({
             <Chip
               size="small"
               label={`Proceeds → ${l.charityRecipient}`}
-              sx={{ mt: 0.75, bgcolor: 'rgba(15,118,110,0.1)', color: 'primary.main' }}
+              sx={{ mt: 0.75, bgcolor: 'rgba(64,97,74,0.1)', color: 'primary.main' }}
             />
           )}
         </Box>
@@ -356,7 +356,7 @@ function ListingCard({
             borderRadius: 999,
             fontWeight: 700,
             px: 2.5,
-            '&:hover': { bgcolor: '#cf9305' },
+            '&:hover': { bgcolor: '#6F5940' },
           }}
         >
           Bid

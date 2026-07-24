@@ -18,10 +18,10 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
 const DISPLAY = '"Black Ops One", Georgia, serif';
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 
 function BrandPanel() {
   return (
@@ -47,7 +47,7 @@ function BrandPanel() {
             width: 360,
             height: 360,
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(224,161,6,0.18), transparent 60%)',
+            background: 'radial-gradient(circle, rgba(139,111,78,0.18), transparent 60%)',
           }}
         />
         {[260, 190, 120].map((s) => (
@@ -60,7 +60,7 @@ function BrandPanel() {
               width: s,
               height: s,
               borderRadius: '50%',
-              border: '1px solid rgba(255,253,248,0.12)',
+              border: '1px solid rgba(250,248,243,0.12)',
             }}
           />
         ))}
@@ -72,7 +72,7 @@ function BrandPanel() {
             width: 44,
             height: 44,
             borderRadius: '50% 50% 50% 6px',
-            background: `linear-gradient(150deg, ${TEAL}, #14B8A6)`,
+            background: `linear-gradient(150deg, ${TEAL}, #7E9A82)`,
             transform: 'rotate(-45deg)',
             display: 'grid',
             placeItems: 'center',
@@ -96,7 +96,7 @@ function BrandPanel() {
             width: 30,
             height: 30,
             borderRadius: '37% 37% 37% 10%',
-            background: `linear-gradient(140deg, ${TEAL}, #14B8A6)`,
+            background: `linear-gradient(140deg, ${TEAL}, #7E9A82)`,
             transform: 'rotate(-6deg)',
             display: 'grid',
             placeItems: 'center',
@@ -123,7 +123,7 @@ function BrandPanel() {
         >
           Whatever you&apos;ve lost, let&apos;s get it back to you.
         </Typography>
-        <Typography sx={{ mt: 2, fontSize: 15, color: 'rgba(255,253,248,0.7)', maxWidth: 320 }}>
+        <Typography sx={{ mt: 2, fontSize: 15, color: 'rgba(250,248,243,0.7)', maxWidth: 320 }}>
           Sign in to track your matches, message finders anonymously, and claim what&apos;s yours.
         </Typography>
         <Stack direction="row" spacing={3} sx={{ mt: 4 }}>
@@ -140,7 +140,7 @@ function BrandPanel() {
                   fontSize: 12,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: 'rgba(255,253,248,0.6)',
+                  color: 'rgba(250,248,243,0.6)',
                 }}
               >
                 {s.l}
@@ -201,7 +201,7 @@ export function LoginPage() {
           overflow: 'hidden',
           border: '1px solid',
           borderColor: 'divider',
-          boxShadow: '0 40px 80px -50px rgba(11,61,56,.5)',
+          boxShadow: '0 40px 80px -50px rgba(46,61,47,.5)',
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
         }}
@@ -337,8 +337,8 @@ export function LoginPage() {
                   borderRadius: 999,
                   fontWeight: 700,
                   py: 1.4,
-                  boxShadow: '0 14px 28px -16px rgba(224,161,6,.9)',
-                  '&:hover': { bgcolor: '#cf9305' },
+                  boxShadow: '0 14px 28px -16px rgba(139,111,78,.9)',
+                  '&:hover': { bgcolor: '#6F5940' },
                 }}
               >
                 {loading ? 'Signing in…' : mfaToken ? 'Verify & sign in' : 'Sign in'}

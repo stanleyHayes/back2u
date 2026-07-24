@@ -15,8 +15,8 @@ export interface OnboardingTourProps {
   onClose: (completed: boolean) => void;
 }
 
-const TEAL = '#2DD4BF';
-const MARIGOLD = '#E0A106';
+const TEAL = '#A8B5A0';
+const MARIGOLD = '#8B6F4E';
 const CARD_W = 344;
 const GAP = 14;
 const PAD = 8;
@@ -167,7 +167,7 @@ export function OnboardingTour({ steps, open, onClose }: OnboardingTourProps) {
         <Typography sx={{ mt: 0.75, fontWeight: 700, fontSize: 17, lineHeight: 1.25 }}>
           {step.title}
         </Typography>
-        <Typography sx={{ mt: 1, fontSize: 14, lineHeight: 1.55, color: 'rgba(233,238,247,0.75)' }}>
+        <Typography sx={{ mt: 1, fontSize: 14, lineHeight: 1.55, color: 'rgba(226,232,224,0.75)' }}>
           {step.body}
         </Typography>
 
@@ -190,7 +190,7 @@ export function OnboardingTour({ steps, open, onClose }: OnboardingTourProps) {
           <Button
             size="small"
             onClick={() => onClose(false)}
-            sx={{ color: 'rgba(233,238,247,0.6)', minWidth: 0 }}
+            sx={{ color: 'rgba(226,232,224,0.6)', minWidth: 0 }}
           >
             Skip
           </Button>
@@ -214,8 +214,8 @@ export function OnboardingTour({ steps, open, onClose }: OnboardingTourProps) {
               borderRadius: 999,
               fontWeight: 700,
               bgcolor: MARIGOLD,
-              color: '#0B3D38',
-              '&:hover': { bgcolor: '#cf9305' },
+              color: '#2E3D2F',
+              '&:hover': { bgcolor: '#6F5940' },
             }}
           >
             {last ? 'Finish' : 'Next'}

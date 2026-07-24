@@ -8,10 +8,10 @@ import { EmptyState, PageHeader } from '@back2u/ui-web';
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
 
 const ORDER: Record<SubscriptionTier, number> = { free: 0, pro: 1, enterprise: 2 };
 const money = (minor: number, currency: string) =>
@@ -76,7 +76,7 @@ export function BillingPage() {
                 fontSize: 12,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
-                color: 'rgba(255,253,248,0.6)',
+                color: 'rgba(250,248,243,0.6)',
               }}
             >
               {inst.name}
@@ -93,7 +93,7 @@ export function BillingPage() {
             </Typography>
           </Box>
           {current !== 'free' && inst.subscriptionRenewsAt && (
-            <Typography sx={{ color: 'rgba(255,253,248,0.7)', fontSize: 14 }}>
+            <Typography sx={{ color: 'rgba(250,248,243,0.7)', fontSize: 14 }}>
               Renews {new Date(inst.subscriptionRenewsAt).toLocaleDateString()}
             </Typography>
           )}
@@ -134,7 +134,7 @@ export function BillingPage() {
                 borderColor: isCurrent ? TEAL : featured ? MARIGOLD : 'divider',
                 display: 'flex',
                 flexDirection: 'column',
-                boxShadow: featured ? '0 30px 60px -40px rgba(224,161,6,0.5)' : 'none',
+                boxShadow: featured ? '0 30px 60px -40px rgba(139,111,78,0.5)' : 'none',
               }}
             >
               {featured && !isCurrent && (
@@ -205,7 +205,7 @@ export function BillingPage() {
                         borderRadius: 999,
                         fontWeight: 700,
                         py: 1.1,
-                        '&:hover': { bgcolor: '#cf9305' },
+                        '&:hover': { bgcolor: '#6F5940' },
                       }
                     : {
                         borderRadius: 999,

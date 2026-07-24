@@ -20,8 +20,8 @@ import { CardGridSkeleton, EmptyState } from '@back2u/ui-web';
 import { api } from '../lib/api.js';
 import { PageHeader, SectionCard } from '../components/BrandPage.js';
 
-const INK = '#0B3D38';
-const TEAL = '#0F766E';
+const INK = '#2E3D2F';
+const TEAL = '#40614A';
 
 export function CourierPage() {
   const qc = useQueryClient();
@@ -149,11 +149,11 @@ export function CourierPage() {
                 disabled={!form.itemId || request.isPending}
                 sx={{
                   bgcolor: INK,
-                  color: '#FBF6EC',
+                  color: '#F2EFEA',
                   borderRadius: 999,
                   fontWeight: 700,
                   px: 3,
-                  '&:hover': { bgcolor: '#0a322e' },
+                  '&:hover': { bgcolor: '#243024' },
                 }}
               >
                 {request.isPending ? 'Requesting…' : 'Request a rider'}
@@ -224,7 +224,7 @@ export function CourierPage() {
                 borderRadius: '18px 18px 18px 4px',
                 border: '1px solid',
                 borderColor: 'divider',
-                bgcolor: 'rgba(15,118,110,0.05)',
+                bgcolor: 'rgba(64,97,74,0.05)',
               }}
             >
               <Stack spacing={1.5}>

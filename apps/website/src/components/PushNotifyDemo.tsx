@@ -90,7 +90,7 @@ export function PushNotifyDemo() {
                 bgcolor: 'background.paper',
                 border: 1,
                 borderColor: 'divider',
-                boxShadow: '0 12px 32px rgba(11,61,56,0.14)',
+                boxShadow: '0 12px 32px rgba(46,61,47,0.14)',
               }}
             >
               <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>

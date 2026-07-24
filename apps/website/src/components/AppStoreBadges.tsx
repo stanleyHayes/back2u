@@ -28,15 +28,15 @@ function Badge({
         px: 2,
         py: 1.1,
         borderRadius: 2.5,
-        bgcolor: '#0B3D38',
-        color: '#FFFDF8',
+        bgcolor: '#2E3D2F',
+        color: '#FAF8F3',
         textDecoration: 'none',
-        border: '1px solid rgba(255,253,248,0.16)',
+        border: '1px solid rgba(250,248,243,0.16)',
         transition: 'transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease',
-        boxShadow: '0 10px 24px -16px rgba(11,61,56,.8)',
+        boxShadow: '0 10px 24px -16px rgba(46,61,47,.8)',
         '&:hover': {
           transform: 'translateY(-2px)',
-          boxShadow: '0 16px 30px -16px rgba(11,61,56,.9)',
+          boxShadow: '0 16px 30px -16px rgba(46,61,47,.9)',
         },
       }}
     >
@@ -67,14 +67,14 @@ const PlayMark = (
   <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
     <path
       d="M3.6 2.3c-.3.2-.5.6-.5 1.1v17.2c0 .5.2.9.5 1.1l.1.1L13 12.1v-.2L3.7 2.2l-.1.1z"
-      fill="#14B8A6"
+      fill="#7E9A82"
     />
     <path
       d="M16.3 15.4 13 12.1v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.6 0 2.3l-3.9 2.2-.1.1z"
-      fill="#E0A106"
+      fill="#8B6F4E"
     />
     <path d="M16.4 15.3 13 12 3.6 21.7c.4.4 1 .4 1.6.1l11.2-6.5z" fill="#F3C969" />
-    <path d="M16.4 8.7 5.2 2.2c-.6-.3-1.2-.3-1.6.1L13 12l3.4-3.3z" fill="#0F766E" />
+    <path d="M16.4 8.7 5.2 2.2c-.6-.3-1.2-.3-1.6.1L13 12l3.4-3.3z" fill="#40614A" />
   </svg>
 );
 

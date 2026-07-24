@@ -2,8 +2,8 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import type { ReactNode } from 'react';
 
 const TONES = {
-  teal: { main: '#0F766E', soft: 'rgba(15,118,110,0.12)', glow: 'rgba(15,118,110,0.28)' },
-  marigold: { main: '#E0A106', soft: 'rgba(224,161,6,0.14)', glow: 'rgba(224,161,6,0.30)' },
+  teal: { main: '#40614A', soft: 'rgba(64,97,74,0.12)', glow: 'rgba(64,97,74,0.28)' },
+  marigold: { main: '#8B6F4E', soft: 'rgba(139,111,78,0.14)', glow: 'rgba(139,111,78,0.30)' },
   clay: { main: '#C2410C', soft: 'rgba(194,65,12,0.12)', glow: 'rgba(194,65,12,0.28)' },
 } as const;
 
@@ -106,7 +106,7 @@ export function EmptyState({
             borderRadius: '50%',
             display: 'grid',
             placeItems: 'center',
-            color: '#FFFDF8',
+            color: '#FAF8F3',
             background: `linear-gradient(150deg, ${t.main}, ${t.main}cc)`,
             boxShadow: `0 18px 34px -18px ${t.glow}`,
             animation: 'b2uFloat 4s ease-in-out infinite',
@@ -153,13 +153,13 @@ export function EmptyState({
                 sx={
                   isPrimary
                     ? {
-                        bgcolor: '#0B3D38',
-                        color: '#FBF6EC',
+                        bgcolor: '#2E3D2F',
+                        color: '#F2EFEA',
                         borderRadius: 999,
                         px: 2.5,
                         py: 1,
                         fontWeight: 700,
-                        '&:hover': { bgcolor: '#0a322e' },
+                        '&:hover': { bgcolor: '#243024' },
                       }
                     : {
                         borderRadius: 999,

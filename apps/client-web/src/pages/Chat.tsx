@@ -16,11 +16,11 @@ import { getSocket } from '../lib/socket.js';
 import { uploadImage } from '../lib/cloudinary-upload.js';
 import { ImageLightbox } from '../components/ImageLightbox.js';
 
-const INK = '#0B3D38';
-const PAPER = '#FBF6EC';
-const TEAL = '#0F766E';
-const MARIGOLD = '#E0A106';
-const AVATARS = ['#0F766E', '#C2410C', '#E0A106', '#6D28D9', '#0EA5E9', '#DB2777'];
+const INK = '#2E3D2F';
+const PAPER = '#F2EFEA';
+const TEAL = '#40614A';
+const MARIGOLD = '#8B6F4E';
+const AVATARS = ['#40614A', '#C2410C', '#8B6F4E', '#6D28D9', '#0EA5E9', '#DB2777'];
 
 function colorFor(s: string) {
   let h = 0;
@@ -271,7 +271,7 @@ export function ChatPage() {
           border: '1px solid',
           borderColor: 'divider',
           bgcolor: 'background.paper',
-          boxShadow: '0 30px 60px -45px rgba(11,61,56,0.5)',
+          boxShadow: '0 30px 60px -45px rgba(46,61,47,0.5)',
         }}
       >
         {/* Threads pane */}
@@ -283,7 +283,7 @@ export function ChatPage() {
             display: 'flex',
             flexDirection: 'column',
             minHeight: 0,
-            bgcolor: 'rgba(11,61,56,0.015)',
+            bgcolor: 'rgba(46,61,47,0.015)',
           }}
         >
           <Box sx={{ px: 2.5, py: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
@@ -369,7 +369,7 @@ export function ChatPage() {
                   px: 2.5,
                   py: 2,
                   background:
-                    'radial-gradient(120% 80% at 50% 0%, rgba(15,118,110,0.04), transparent 60%)',
+                    'radial-gradient(120% 80% at 50% 0%, rgba(64,97,74,0.04), transparent 60%)',
                 }}
               >
                 {messages === undefined ? (
@@ -395,9 +395,9 @@ export function ChatPage() {
                             maxWidth: '78%',
                             bgcolor: isMine ? INK : PAPER,
                             color: isMine ? PAPER : INK,
-                            border: isMine ? 'none' : '1px solid rgba(11,61,56,0.12)',
+                            border: isMine ? 'none' : '1px solid rgba(46,61,47,0.12)',
                             borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                            boxShadow: isMine ? '0 12px 24px -18px rgba(11,61,56,0.7)' : 'none',
+                            boxShadow: isMine ? '0 12px 24px -18px rgba(46,61,47,0.7)' : 'none',
                           }}
                         >
                           {m.body && (
@@ -475,7 +475,7 @@ export function ChatPage() {
                         px: 2,
                         py: 1.25,
                         bgcolor: PAPER,
-                        border: '1px solid rgba(11,61,56,0.12)',
+                        border: '1px solid rgba(46,61,47,0.12)',
                         borderRadius: '18px 18px 18px 4px',
                         display: 'flex',
                         gap: 0.6,
@@ -581,7 +581,7 @@ export function ChatPage() {
                     sx={{
                       bgcolor: canSend ? MARIGOLD : 'action.disabledBackground',
                       color: canSend ? INK : 'text.disabled',
-                      '&:hover': { bgcolor: canSend ? '#cf9305' : 'action.disabledBackground' },
+                      '&:hover': { bgcolor: canSend ? '#6F5940' : 'action.disabledBackground' },
                       transition: 'background-color .15s',
                     }}
                   >
@@ -625,11 +625,11 @@ function ThreadRow({
         display: 'flex',
         alignItems: 'center',
         gap: 1.25,
-        bgcolor: active ? 'rgba(15,118,110,0.10)' : 'transparent',
+        bgcolor: active ? 'rgba(64,97,74,0.10)' : 'transparent',
         border: '1px solid',
-        borderColor: active ? 'rgba(15,118,110,0.25)' : 'transparent',
+        borderColor: active ? 'rgba(64,97,74,0.25)' : 'transparent',
         transition: 'background-color .15s',
-        '&:hover': { bgcolor: active ? 'rgba(15,118,110,0.12)' : 'action.hover' },
+        '&:hover': { bgcolor: active ? 'rgba(64,97,74,0.12)' : 'action.hover' },
       }}
     >
       <Avatar name={name} size={42} />

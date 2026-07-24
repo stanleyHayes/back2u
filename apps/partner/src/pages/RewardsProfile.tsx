@@ -22,7 +22,7 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { uploadImageUrl } from '../lib/cloudinary-upload.js';
 
-const TEAL = '#2DD4BF';
+const TEAL = '#A8B5A0';
 const DISPLAY = '"Black Ops One", Georgia, serif';
 const PANEL = {
   p: { xs: 2.5, md: 3 },
@@ -201,7 +201,7 @@ export function RewardsProfilePage() {
                   sx={{
                     width: 64,
                     height: 48,
-                    bgcolor: 'rgba(45,212,191,0.15)',
+                    bgcolor: 'rgba(168,181,160,0.15)',
                     color: 'primary.main',
                   }}
                 >
@@ -244,7 +244,7 @@ export function RewardsProfilePage() {
                 disabled={saving || isLoading}
                 sx={{
                   bgcolor: TEAL,
-                  color: '#04201d',
+                  color: '#1C231B',
                   fontWeight: 700,
                   '&:hover': { bgcolor: '#5fe6d4' },
                 }}
@@ -268,7 +268,7 @@ export function RewardsProfilePage() {
                 overflow: 'hidden',
                 display: 'grid',
                 placeItems: 'center',
-                background: logoUrl ? undefined : `linear-gradient(135deg, ${TEAL}, #0B3D38)`,
+                background: logoUrl ? undefined : `linear-gradient(135deg, ${TEAL}, #2E3D2F)`,
               }}
             >
               {logoUrl ? (
@@ -302,7 +302,7 @@ export function RewardsProfilePage() {
               </Typography>
               <Typography
                 variant="caption"
-                sx={{ color: '#E0A106', fontWeight: 700, display: 'block', mt: 1 }}
+                sx={{ color: '#8B6F4E', fontWeight: 700, display: 'block', mt: 1 }}
               >
                 {TYPES.find((t) => t.value === type)?.label} · 100 pts ≈ GHS{' '}
                 {((100 * (Number(rate) || 0)) / 100).toFixed(2)}

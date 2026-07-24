@@ -20,8 +20,8 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { uploadAvatar } from '../lib/cloudinary-upload.js';
 
-const INK = '#0B3D38';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const MARIGOLD = '#8B6F4E';
 const STEPS = ['Photo ID', 'About you'];
 
 export function TrustedFinderApplyPage() {
@@ -142,7 +142,7 @@ export function TrustedFinderApplyPage() {
             border: '1px solid',
             borderColor: 'divider',
             bgcolor: 'background.paper',
-            boxShadow: '0 30px 60px -48px rgba(11,61,56,0.5)',
+            boxShadow: '0 30px 60px -48px rgba(46,61,47,0.5)',
           }}
         >
           <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
@@ -262,7 +262,7 @@ export function TrustedFinderApplyPage() {
                     borderRadius: 999,
                     px: 3,
                     fontWeight: 700,
-                    '&:hover': { bgcolor: '#cf9305' },
+                    '&:hover': { bgcolor: '#6F5940' },
                   }}
                 >
                   {apply.isPending ? 'Submitting…' : 'Submit application'}
@@ -275,11 +275,11 @@ export function TrustedFinderApplyPage() {
                   endIcon={<ArrowForwardRoundedIcon />}
                   sx={{
                     bgcolor: INK,
-                    color: '#FBF6EC',
+                    color: '#F2EFEA',
                     borderRadius: 999,
                     px: 3,
                     fontWeight: 700,
-                    '&:hover': { bgcolor: '#0a322e' },
+                    '&:hover': { bgcolor: '#243024' },
                   }}
                 >
                   Continue

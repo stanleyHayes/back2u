@@ -8,8 +8,8 @@ import type { ItemDTO } from '@back2u/shared-types';
 import { ShareButton } from './ShareButton.js';
 import { ImageLightbox } from './ImageLightbox.js';
 
-const INK = '#0B3D38';
-const TEAL = '#0F766E';
+const INK = '#2E3D2F';
+const TEAL = '#40614A';
 const CLAY = '#C2410C';
 
 function expiryChip(item: ItemDTO): { label: string; color: 'error' | 'warning' } | null {
@@ -51,7 +51,7 @@ export function ItemCard({
         transition: 'transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease',
         '&:hover': {
           transform: 'translateY(-4px)',
-          boxShadow: '0 26px 46px -30px rgba(11,61,56,.55)',
+          boxShadow: '0 26px 46px -30px rgba(46,61,47,.55)',
         },
       }}
     >
@@ -67,7 +67,7 @@ export function ItemCard({
             height: 180,
             borderRadius: '18px 18px 18px 4px',
             overflow: 'hidden',
-            bgcolor: isFound ? 'rgba(15,118,110,0.08)' : 'rgba(194,65,12,0.08)',
+            bgcolor: isFound ? 'rgba(64,97,74,0.08)' : 'rgba(194,65,12,0.08)',
           }}
         >
           {item.images[0]?.url ? (
@@ -115,9 +115,9 @@ export function ItemCard({
               fontWeight: 700,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              color: '#FFFDF8',
+              color: '#FAF8F3',
               bgcolor: isFound ? TEAL : CLAY,
-              boxShadow: '0 6px 14px -8px rgba(11,61,56,.8)',
+              boxShadow: '0 6px 14px -8px rgba(46,61,47,.8)',
             }}
           >
             {item.kind}
@@ -135,7 +135,7 @@ export function ItemCard({
                 fontSize: 12,
                 fontWeight: 700,
                 color: INK,
-                bgcolor: 'rgba(251,246,236,0.92)',
+                bgcolor: 'rgba(242,239,234,0.92)',
               }}
             >
               {distance}
@@ -181,10 +181,10 @@ export function ItemCard({
           variant="contained"
           sx={{
             bgcolor: INK,
-            color: '#FBF6EC',
+            color: '#F2EFEA',
             borderRadius: 999,
             fontWeight: 700,
-            '&:hover': { bgcolor: '#0a322e' },
+            '&:hover': { bgcolor: '#243024' },
           }}
         >
           {isFound ? 'Could be mine' : 'I found this'}

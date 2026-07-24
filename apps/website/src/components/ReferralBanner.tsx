@@ -16,7 +16,7 @@ export function ReferralBanner() {
     <Box
       sx={{
         py: { xs: 5, md: 6 },
-        background: `linear-gradient(135deg, #F59E0B 0%, #D97706 100%)`,
+        background: `linear-gradient(135deg, #8B6F4E 0%, #D97706 100%)`,
         color: '#fff',
       }}
     >
@@ -77,7 +77,7 @@ export function ReferralBanner() {
                     variant="contained"
                     size="small"
                     sx={{
-                      bgcolor: '#0F766E',
+                      bgcolor: '#40614A',
                       color: '#fff',
                       borderRadius: 2,
                       px: 3,

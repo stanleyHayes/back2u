@@ -52,8 +52,8 @@ import { useAuth } from '../lib/auth.store.js';
 import { useUi } from '../lib/ui.store.js';
 import { uploadImageUrl } from '../lib/cloudinary-upload.js';
 
-const INK = '#0B3D38';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const MARIGOLD = '#8B6F4E';
 
 const LANGUAGES: { value: Locale; label: string }[] = [
   { value: 'en', label: 'English' },
@@ -184,7 +184,7 @@ function ProfileSection() {
                   bottom: -4,
                   bgcolor: MARIGOLD,
                   color: INK,
-                  '&:hover': { bgcolor: '#cf9305' },
+                  '&:hover': { bgcolor: '#6F5940' },
                 }}
               >
                 {uploading ? (
@@ -232,7 +232,7 @@ function ProfileSection() {
               color: INK,
               borderRadius: 999,
               fontWeight: 700,
-              '&:hover': { bgcolor: '#cf9305' },
+              '&:hover': { bgcolor: '#6F5940' },
             }}
           >
             {save.isPending ? 'Saving…' : 'Save changes'}
@@ -363,7 +363,7 @@ function ChangePasswordCard() {
               color: INK,
               borderRadius: 999,
               fontWeight: 700,
-              '&:hover': { bgcolor: '#cf9305' },
+              '&:hover': { bgcolor: '#6F5940' },
             }}
           >
             {change.isPending ? 'Updating…' : 'Update password'}
@@ -462,7 +462,7 @@ function MfaCard() {
             color: INK,
             borderRadius: 999,
             fontWeight: 700,
-            '&:hover': { bgcolor: '#cf9305' },
+            '&:hover': { bgcolor: '#6F5940' },
           }}
         >
           Set up authenticator
@@ -551,7 +551,7 @@ function MfaCard() {
               color: INK,
               borderRadius: 999,
               fontWeight: 700,
-              '&:hover': { bgcolor: '#cf9305' },
+              '&:hover': { bgcolor: '#6F5940' },
             }}
           >
             {enable.isPending ? 'Verifying…' : 'Turn on MFA'}

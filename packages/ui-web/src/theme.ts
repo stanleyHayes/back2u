@@ -3,10 +3,10 @@ import { createTheme, type ThemeOptions } from '@mui/material/styles';
 const baseTokens: ThemeOptions = {
   palette: {
     mode: 'light',
-    primary: { main: '#0F766E' }, // teal — recovery / trust
-    secondary: { main: '#F59E0B' }, // amber — reward / found
+    primary: { main: '#40614A' }, // teal — recovery / trust
+    secondary: { main: '#8B6F4E' }, // amber — reward / found
     error: { main: '#DC2626' },
-    background: { default: '#F8FAFC', paper: '#FFFFFF' },
+    background: { default: '#F2EFEA', paper: '#FFFFFF' },
   },
   // Near-square by default: cards, inputs, menus get a small radius. Buttons
   // and nav pills opt back into fully-rounded via their own overrides / sx.
@@ -108,10 +108,10 @@ export const makeClientTheme = (mode: 'light' | 'dark') =>
     ? makeTheme({
         palette: {
           mode: 'dark',
-          primary: { main: '#2DD4BF' },
-          secondary: { main: '#F59E0B' },
+          primary: { main: '#A8B5A0' },
+          secondary: { main: '#8B6F4E' },
           error: { main: '#F87171' },
-          background: { default: '#0C1512', paper: '#14201B' },
+          background: { default: '#1C231B', paper: '#263026' },
           divider: 'rgba(210,232,222,0.10)',
           text: { primary: '#EAF3ED', secondary: 'rgba(210,232,222,0.66)' },
         },
@@ -120,7 +120,7 @@ export const makeClientTheme = (mode: 'light' | 'dark') =>
 
 /** Header/nav pill background for AppShell, per mode. */
 export const clientHeaderBg = (dark: boolean) =>
-  dark ? 'rgba(20,32,27,0.86)' : 'rgba(251,246,236,0.88)';
+  dark ? 'rgba(20,32,27,0.86)' : 'rgba(242,239,234,0.88)';
 
 /**
  * Shared "ink" surfaces for the admin & partner consoles. Deep forest-green
@@ -129,11 +129,11 @@ export const clientHeaderBg = (dark: boolean) =>
  */
 export const CONSOLE_INK = {
   /** Deepest surface: sidebar + collapsed rail. */
-  panel: '#06140F',
+  panel: '#161C15',
   /** Translucent topbar in dark mode. */
-  topbarDark: 'rgba(8,23,18,0.82)',
+  topbarDark: 'rgba(28,35,27,0.82)',
   /** Solid topbar in light mode (stays dark green). */
-  topbarLight: '#0A1F18',
+  topbarLight: '#223226',
 } as const;
 
 /**
@@ -148,18 +148,18 @@ export const makeConsoleTheme = (mode: 'light' | 'dark') =>
       mode === 'dark'
         ? {
             mode: 'dark',
-            primary: { main: '#2DD4BF' },
-            secondary: { main: '#E0A106' },
-            background: { default: '#08160F', paper: '#0F241C' },
+            primary: { main: '#A8B5A0' },
+            secondary: { main: '#8B6F4E' },
+            background: { default: '#1C231B', paper: '#263026' },
             divider: 'rgba(200,240,224,0.10)',
             text: { primary: '#EAF3ED', secondary: 'rgba(210,232,222,0.64)' },
           }
         : {
             mode: 'light',
-            primary: { main: '#0F766E' },
-            secondary: { main: '#B8860B' },
-            background: { default: '#EEF4F0', paper: '#FFFFFF' },
-            divider: 'rgba(11,61,56,0.14)',
-            text: { primary: '#0B241C', secondary: 'rgba(11,45,38,0.64)' },
+            primary: { main: '#40614A' },
+            secondary: { main: '#8B6F4E' },
+            background: { default: '#ECEAE2', paper: '#FFFFFF' },
+            divider: 'rgba(46,61,47,0.14)',
+            text: { primary: '#2E3D2F', secondary: 'rgba(46,61,47,0.66)' },
           },
   });

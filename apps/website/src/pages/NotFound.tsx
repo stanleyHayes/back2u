@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { PageShell } from '../components/PageShell';
 
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
-const INK = '#0B3D38';
+const INK = '#2E3D2F';
 
 export function NotFound() {
   return (

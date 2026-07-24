@@ -48,8 +48,8 @@ export interface AiAssistResult {
 
 type Tone = 'teal' | 'marigold' | 'clay';
 const TONES: Record<Tone, { main: string; soft: string }> = {
-  teal: { main: '#0F766E', soft: 'rgba(15,118,110,0.10)' },
-  marigold: { main: '#B8860B', soft: 'rgba(224,161,6,0.12)' },
+  teal: { main: '#40614A', soft: 'rgba(64,97,74,0.10)' },
+  marigold: { main: '#B8860B', soft: 'rgba(139,111,78,0.12)' },
   clay: { main: '#C2410C', soft: 'rgba(194,65,12,0.10)' },
 };
 

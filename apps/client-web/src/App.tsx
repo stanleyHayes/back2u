@@ -46,8 +46,8 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Link, NavLink, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-const INK = '#0B3D38';
-const MARIGOLD = '#E0A106';
+const INK = '#2E3D2F';
+const MARIGOLD = '#8B6F4E';
 
 const moreItemSx = {
   alignItems: 'flex-start',
@@ -72,8 +72,8 @@ function moreContent(icon: ReactNode, title: string, desc: string, danger = fals
           flexShrink: 0,
           display: 'grid',
           placeItems: 'center',
-          bgcolor: danger ? 'rgba(220,38,38,0.10)' : 'rgba(15,118,110,0.10)',
-          color: danger ? '#DC2626' : '#0F766E',
+          bgcolor: danger ? 'rgba(220,38,38,0.10)' : 'rgba(64,97,74,0.10)',
+          color: danger ? '#DC2626' : '#40614A',
           '& svg': { fontSize: 20 },
         }}
       >
@@ -104,7 +104,7 @@ function NavBtn({ to, end, children }: { to: string; end?: boolean; children: Re
         fontWeight: 600,
         borderRadius: 2,
         px: 1.5,
-        '&.active': { color: 'primary.main', bgcolor: 'rgba(15,118,110,0.1)' },
+        '&.active': { color: 'primary.main', bgcolor: 'rgba(64,97,74,0.1)' },
       }}
     >
       {children}
@@ -266,7 +266,7 @@ function NotificationBell() {
                 }}
                 sx={{
                   cursor: 'pointer',
-                  bgcolor: n.read ? 'transparent' : 'rgba(15,118,110,0.06)',
+                  bgcolor: n.read ? 'transparent' : 'rgba(64,97,74,0.06)',
                   '&:hover': { bgcolor: 'action.hover' },
                 }}
               >
@@ -512,7 +512,7 @@ function MobileNav({
               onClick={close}
               variant="contained"
               fullWidth
-              sx={{ bgcolor: INK, color: '#FBF6EC', borderRadius: 999, fontWeight: 700, mt: 1 }}
+              sx={{ bgcolor: INK, color: '#F2EFEA', borderRadius: 999, fontWeight: 700, mt: 1 }}
             >
               Get started
             </Button>
@@ -576,7 +576,7 @@ export function App() {
                     borderRadius: 999,
                     fontWeight: 700,
                     ml: 0.5,
-                    '&:hover': { bgcolor: '#cf9305' },
+                    '&:hover': { bgcolor: '#6F5940' },
                   }}
                 >
                   Post item
@@ -601,7 +601,7 @@ export function App() {
                         borderRadius: 3,
                         p: 0.5,
                         mt: 1,
-                        boxShadow: '0 26px 60px -34px rgba(11,61,56,0.55)',
+                        boxShadow: '0 26px 60px -34px rgba(46,61,47,0.55)',
                       },
                     },
                   }}
@@ -754,11 +754,11 @@ export function App() {
                   variant="contained"
                   sx={{
                     bgcolor: INK,
-                    color: '#FBF6EC',
+                    color: '#F2EFEA',
                     borderRadius: 999,
                     fontWeight: 700,
                     px: 2.5,
-                    '&:hover': { bgcolor: '#0a322e' },
+                    '&:hover': { bgcolor: '#243024' },
                   }}
                 >
                   Get started

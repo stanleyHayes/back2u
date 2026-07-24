@@ -65,8 +65,8 @@ function CourierJobCard({
               flexShrink: 0,
               display: 'grid',
               placeItems: 'center',
-              bgcolor: 'rgba(45,212,191,0.12)',
-              color: '#2DD4BF',
+              bgcolor: 'rgba(168,181,160,0.12)',
+              color: '#A8B5A0',
             }}
           >
             <LocalShippingOutlinedIcon sx={{ fontSize: 22 }} />
@@ -84,8 +84,8 @@ function CourierJobCard({
             size="small"
             sx={{
               textTransform: 'capitalize',
-              bgcolor: 'rgba(45,212,191,0.12)',
-              color: '#2DD4BF',
+              bgcolor: 'rgba(168,181,160,0.12)',
+              color: '#A8B5A0',
               fontWeight: 700,
             }}
           />
@@ -102,7 +102,7 @@ function CourierJobCard({
           }}
         >
           <RouteStop
-            marker={<Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: '#2DD4BF' }} />}
+            marker={<Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: '#A8B5A0' }} />}
             label="Pickup"
             name={job.pickup.name}
             sub={job.pickup.city}
@@ -117,7 +117,7 @@ function CourierJobCard({
           />
           <Box />
           <RouteStop
-            marker={<PlaceOutlinedIcon sx={{ fontSize: 16, color: '#E0A106' }} />}
+            marker={<PlaceOutlinedIcon sx={{ fontSize: 16, color: '#8B6F4E' }} />}
             label="Drop-off"
             name={job.dropoff.name}
             sub={job.dropoff.city}
@@ -134,7 +134,7 @@ function CourierJobCard({
             <Chip
               label={`${job.fee} ${job.currency}`}
               size="small"
-              sx={{ bgcolor: 'rgba(224,161,6,0.14)', color: '#E0A106', fontWeight: 700 }}
+              sx={{ bgcolor: 'rgba(139,111,78,0.14)', color: '#8B6F4E', fontWeight: 700 }}
             />
             {typeof job.estimatedDistanceKm === 'number' && (
               <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>

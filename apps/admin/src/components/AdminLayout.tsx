@@ -57,9 +57,9 @@ import { useAuth } from '../lib/auth.store.js';
 import { useUi } from '../lib/ui.store.js';
 
 const INK_PANEL = CONSOLE_INK.panel;
-const TEAL = '#2DD4BF';
-const MARIGOLD = '#E0A106';
-const MUTED = 'rgba(233,238,247,0.62)';
+const TEAL = '#A8B5A0';
+const MARIGOLD = '#8B6F4E';
+const MUTED = 'rgba(226,232,224,0.62)';
 const SIDEBAR_W = 256;
 const RAIL_W = 76;
 
@@ -177,7 +177,7 @@ function Connector({ last, active }: { last: boolean; active: boolean }) {
         top: 0,
         height: '100%',
         width: 20,
-        color: active ? MARIGOLD : 'rgba(233,238,247,0.16)',
+        color: active ? MARIGOLD : 'rgba(226,232,224,0.16)',
         transition: 'color .15s',
       }}
     >
@@ -221,9 +221,9 @@ function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: (
                 border: 0,
                 bgcolor: 'transparent',
                 cursor: 'pointer',
-                color: 'rgba(233,238,247,0.38)',
+                color: 'rgba(226,232,224,0.38)',
                 transition: 'color .15s',
-                '&:hover': { color: 'rgba(233,238,247,0.7)' },
+                '&:hover': { color: 'rgba(226,232,224,0.7)' },
               }}
             >
               <Typography
@@ -299,7 +299,7 @@ function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: (
                         component="span"
                         sx={{
                           display: 'inline-flex',
-                          color: active ? TEAL : 'rgba(233,238,247,0.5)',
+                          color: active ? TEAL : 'rgba(226,232,224,0.5)',
                           transition: 'color .15s',
                           '& > svg': { fontSize: 19 },
                         }}
@@ -432,8 +432,8 @@ function SidebarInner({
                 height: 36,
                 fontSize: 15,
                 fontWeight: 800,
-                color: '#04201d',
-                background: `linear-gradient(150deg, ${TEAL}, #0F766E)`,
+                color: '#1C231B',
+                background: `linear-gradient(150deg, ${TEAL}, #40614A)`,
               }}
             >
               {(user?.name ?? user?.email ?? '?').charAt(0).toUpperCase()}
@@ -500,7 +500,7 @@ function NotificationsBell() {
           <Badge
             badgeContent={unread?.count ?? 0}
             max={99}
-            sx={{ '& .MuiBadge-badge': { bgcolor: MARIGOLD, color: '#0B3D38', fontWeight: 700 } }}
+            sx={{ '& .MuiBadge-badge': { bgcolor: MARIGOLD, color: '#2E3D2F', fontWeight: 700 } }}
           >
             <NotificationsNoneOutlinedIcon />
           </Badge>
@@ -616,8 +616,8 @@ function AccountMenu() {
               height: 32,
               fontSize: 14,
               fontWeight: 800,
-              color: '#04201d',
-              background: `linear-gradient(150deg, ${TEAL}, #0F766E)`,
+              color: '#1C231B',
+              background: `linear-gradient(150deg, ${TEAL}, #40614A)`,
             }}
           >
             {(user?.name ?? user?.email ?? '?').charAt(0).toUpperCase()}
@@ -763,7 +763,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             backdropFilter: isDark ? 'saturate(150%) blur(10px)' : 'none',
             borderBottom: '1px solid rgba(255,255,255,0.07)',
             borderTop: '2px solid',
-            borderImage: 'linear-gradient(90deg, #0F766E, #E0A106, #0F766E) 1',
+            borderImage: 'linear-gradient(90deg, #40614A, #8B6F4E, #40614A) 1',
           }}
         >
           <IconButton

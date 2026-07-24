@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material';
 import type { ReactNode } from 'react';
 
-const TEAL = '#0F766E';
+const TEAL = '#40614A';
 
 /** Eyebrow + Black Ops One title + optional subtitle — the standard page header across the user app. */
 export function PageHeader({
