@@ -9,13 +9,14 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import type { Theme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { Link, NavLink } from 'react-router-dom';
-import { BrandMark } from '@back2u/ui-web';
+import { BrandMark, neuShadow } from '@back2u/ui-web';
 
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { toggleThemeWithReveal } from '../lib/theme-mode';
@@ -60,13 +61,21 @@ function TopLink({ link }: { link: NLink }) {
     letterSpacing: '0.06em',
     textTransform: 'uppercase',
     textDecoration: 'none',
+    px: 0.75,
     py: 1,
+    borderRadius: 999,
     transition: 'color .18s ease',
-    '&:hover': { color: 'primary.main' },
+    '&:hover': {
+      color: 'primary.main',
+      boxShadow: (t: Theme) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
+    },
   } as const;
 
   const underline = {
-    '&.active': { color: 'text.primary' },
+    '&.active': {
+      color: 'text.primary',
+      boxShadow: (t: Theme) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'inset'),
+    },
     '&.active::after': {
       content: '""',
       position: 'absolute',
@@ -109,15 +118,19 @@ function CtaPill({ full }: { full?: boolean }) {
         py: 0.5,
         borderRadius: 999,
         bgcolor: MARIGOLD,
-        color: INK,
+        color: '#F2EFEA',
         fontWeight: 800,
         fontSize: 14,
         textDecoration: 'none',
-        boxShadow: '0 10px 22px -12px rgba(139,111,78,0.9)',
+        boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
         transition: 'transform .18s ease, box-shadow .18s ease',
         '&:hover': {
           transform: 'translateY(-1px)',
-          boxShadow: '0 14px 26px -12px rgba(139,111,78,0.95)',
+          boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
+        },
+        '&:active': {
+          transform: 'translateY(0)',
+          boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'inset'),
         },
       }}
     >
@@ -152,6 +165,7 @@ export function Navbar() {
         zIndex: 30,
         px: { xs: 1.5, sm: 3 },
         pt: { xs: 1, sm: 1.5 },
+        pb: { xs: 0.5, sm: 0.75 },
       }}
     >
       <Box
@@ -161,18 +175,15 @@ export function Navbar() {
           display: 'flex',
           alignItems: 'stretch',
           minHeight: { xs: 64, md: 74 },
-          borderRadius: '20px',
+          borderRadius: { xs: '16px', md: '18px' },
           overflow: 'hidden',
-          border: '1px solid',
-          borderColor: 'divider',
           bgcolor: (t) => (t.palette.mode === 'dark' ? '#263026' : '#FAF8F3'),
-          boxShadow: (t) =>
-            t.palette.mode === 'dark'
-              ? '0 10px 30px rgba(0,0,0,0.45)'
-              : '0 12px 30px rgba(46,61,47,0.14)',
+          boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
+          position: 'relative',
         }}
       >
-        {/* Dark brand panel with a curved right edge */}
+        {/* Design #4 brand panel: square at the top-right, with one deep
+            bottom-right sweep cutting back into the panel. */}
         <Box
           component={Link}
           to="/"
@@ -183,10 +194,14 @@ export function Navbar() {
             gap: 1.5,
             flexShrink: 0,
             pl: { xs: 2, md: 3 },
-            pr: { xs: 2.5, md: 5 },
+            pr: { xs: 3, md: 6 },
             textDecoration: 'none',
             bgcolor: INK,
-            borderRadius: '0 40px 40px 0',
+            borderRadius: 0,
+            // The reference is an ellipse, not a quarter-circle: it travels
+            // the full panel height but only cuts roughly 54px back horizontally.
+            borderBottomRightRadius: { xs: '44px 58px', md: '54px 72px' },
+            boxShadow: '10px 0 26px -22px rgba(46,61,47,0.95)',
           }}
         >
           <BrandMark size={34} onDark />
@@ -231,7 +246,7 @@ export function Navbar() {
         >
           <Stack
             direction="row"
-            spacing={{ md: 2.5, lg: 3.5 }}
+            spacing={{ md: 2, lg: 3.15 }}
             sx={{ alignItems: 'center', display: { xs: 'none', md: 'flex' } }}
           >
             {LINKS.map((l) => (
@@ -252,7 +267,14 @@ export function Navbar() {
             <IconButton
               onClick={() => setOpen(true)}
               aria-label="Open menu"
-              sx={{ color: 'text.primary' }}
+              sx={{
+                color: 'text.primary',
+                width: 40,
+                height: 40,
+                bgcolor: (t) =>
+                  t.palette.mode === 'dark' ? 'rgba(242,239,234,0.06)' : 'rgba(46,61,47,0.045)',
+                '&:hover': { bgcolor: 'rgba(139,111,78,0.14)' },
+              }}
             >
               <MenuIcon />
             </IconButton>

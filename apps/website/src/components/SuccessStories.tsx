@@ -1,4 +1,5 @@
 import { Box, Container, Typography, Card, CardContent, Avatar } from '@mui/material';
+import { neuShadow } from '@back2u/ui-web';
 
 interface Story {
   name: string;
@@ -75,16 +76,17 @@ export function SuccessStories() {
               key={story.name}
               variant="outlined"
               sx={{
-                borderRadius: 2,
+                borderRadius: 3,
                 bgcolor: 'background.paper',
-                borderColor: 'divider',
+                border: 'none',
                 display: 'flex',
                 flexDirection: 'column',
-                boxShadow: 'none',
-                transition: 'border-color .18s ease, box-shadow .18s ease',
+                boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
+                transition: 'transform .18s ease, box-shadow .18s ease',
                 '&:hover': {
-                  borderColor: 'rgba(46,61,47,0.3)',
-                  boxShadow: '0 6px 20px rgba(46,61,47,0.08)',
+                  transform: 'translateY(-3px)',
+                  boxShadow: (t) =>
+                    neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
                 },
               }}
             >
@@ -100,6 +102,7 @@ export function SuccessStories() {
                       borderRadius: 1.5,
                       fontWeight: 600,
                       fontSize: 15,
+                      boxShadow: `7px 7px 16px ${story.avatarColor}52, -5px -5px 14px rgba(255,255,255,.72)`,
                     }}
                   >
                     {story.initials}

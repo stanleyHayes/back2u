@@ -550,7 +550,7 @@ export function ProfilePage() {
                   size="small"
                   icon={<WorkspacePremiumIcon sx={{ fontSize: 15, color: `${INK} !important` }} />}
                   label="Trusted Finder"
-                  sx={{ bgcolor: MARIGOLD, color: INK, fontWeight: 700 }}
+                  sx={{ bgcolor: MARIGOLD, color: '#F2EFEA', fontWeight: 700 }}
                 />
               )}
               {user.roles.map((r) => (

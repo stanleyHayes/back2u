@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Box, Button, Container, Paper, Snackbar, Stack, Typography } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { neuShadow } from '@back2u/ui-web';
 
 export function PushNotifyDemo() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -88,9 +89,8 @@ export function PushNotifyDemo() {
                 borderRadius: 2.5,
                 p: 2,
                 bgcolor: 'background.paper',
-                border: 1,
-                borderColor: 'divider',
-                boxShadow: '0 12px 32px rgba(46,61,47,0.14)',
+                border: 'none',
+                boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
               }}
             >
               <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>

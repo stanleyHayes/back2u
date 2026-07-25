@@ -315,7 +315,7 @@ function ItemMatches({
                       onClick={() => onAccept(m.id)}
                       sx={{
                         bgcolor: MARIGOLD,
-                        color: INK,
+                        color: '#F2EFEA',
                         borderRadius: 999,
                         fontWeight: 700,
                         px: 2,

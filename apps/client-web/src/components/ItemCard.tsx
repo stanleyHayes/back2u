@@ -4,6 +4,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import type { ItemDTO } from '@back2u/shared-types';
+import { neuShadow } from '@back2u/ui-web';
 
 import { ShareButton } from './ShareButton.js';
 import { ImageLightbox } from './ImageLightbox.js';
@@ -46,12 +47,12 @@ export function ItemCard({
         // custom brand "tag" shape — one sharp corner like the pin logo
         borderRadius: '24px 24px 24px 6px',
         bgcolor: 'background.paper',
-        border: '1px solid',
-        borderColor: 'divider',
+        border: 'none',
+        boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
         transition: 'transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease',
         '&:hover': {
           transform: 'translateY(-4px)',
-          boxShadow: '0 26px 46px -30px rgba(46,61,47,.55)',
+          boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
         },
       }}
     >

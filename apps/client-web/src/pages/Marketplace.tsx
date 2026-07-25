@@ -352,7 +352,7 @@ function ListingCard({
           disabled={!live || pending || !(Number(bid) > 0)}
           sx={{
             bgcolor: MARIGOLD,
-            color: INK,
+            color: '#F2EFEA',
             borderRadius: 999,
             fontWeight: 700,
             px: 2.5,

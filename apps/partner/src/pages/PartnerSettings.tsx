@@ -188,7 +188,7 @@ function ProfileSection() {
                   right: -4,
                   bottom: -4,
                   bgcolor: MARIGOLD,
-                  color: INK,
+                  color: '#F2EFEA',
                   '&:hover': { bgcolor: '#6F5940' },
                 }}
               >
@@ -234,7 +234,7 @@ function ProfileSection() {
             onClick={() => save.mutate()}
             sx={{
               bgcolor: MARIGOLD,
-              color: INK,
+              color: '#F2EFEA',
               borderRadius: 999,
               fontWeight: 700,
               '&:hover': { bgcolor: '#6F5940' },
@@ -365,7 +365,7 @@ function ChangePasswordCard() {
             onClick={() => change.mutate()}
             sx={{
               bgcolor: MARIGOLD,
-              color: INK,
+              color: '#F2EFEA',
               borderRadius: 999,
               fontWeight: 700,
               '&:hover': { bgcolor: '#6F5940' },
@@ -464,7 +464,7 @@ function MfaCard() {
           startIcon={<SecurityOutlinedIcon />}
           sx={{
             bgcolor: MARIGOLD,
-            color: INK,
+            color: '#F2EFEA',
             borderRadius: 999,
             fontWeight: 700,
             '&:hover': { bgcolor: '#6F5940' },
@@ -553,7 +553,7 @@ function MfaCard() {
             onClick={() => enable.mutate()}
             sx={{
               bgcolor: MARIGOLD,
-              color: INK,
+              color: '#F2EFEA',
               borderRadius: 999,
               fontWeight: 700,
               '&:hover': { bgcolor: '#6F5940' },

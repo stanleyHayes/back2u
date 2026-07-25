@@ -214,7 +214,7 @@ export function OnboardingTour({ steps, open, onClose }: OnboardingTourProps) {
               borderRadius: 999,
               fontWeight: 700,
               bgcolor: MARIGOLD,
-              color: '#2E3D2F',
+              color: '#F2EFEA',
               '&:hover': { bgcolor: '#6F5940' },
             }}
           >

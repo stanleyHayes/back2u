@@ -420,7 +420,7 @@ export function SettingsPage() {
               disabled={redeem <= 0 || redeemMut.isPending}
               sx={{
                 bgcolor: MARIGOLD,
-                color: INK,
+                color: '#F2EFEA',
                 borderRadius: 999,
                 fontWeight: 700,
                 px: 2.5,

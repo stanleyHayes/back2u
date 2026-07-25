@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { BrandMark } from '@back2u/ui-web';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -91,19 +92,7 @@ function BrandPanel() {
       </Box>
 
       <Box sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 1.2 }}>
-        <Box
-          sx={{
-            width: 30,
-            height: 30,
-            borderRadius: '37% 37% 37% 10%',
-            background: `linear-gradient(140deg, ${TEAL}, #7E9A82)`,
-            transform: 'rotate(-6deg)',
-            display: 'grid',
-            placeItems: 'center',
-          }}
-        >
-          <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: PAPER }} />
-        </Box>
+        <BrandMark size={32} onDark />
         <Typography
           sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, letterSpacing: '-0.03em' }}
         >
@@ -333,7 +322,7 @@ export function LoginPage() {
                 disabled={loading || (mfaToken !== null && code.length !== 6)}
                 sx={{
                   bgcolor: MARIGOLD,
-                  color: INK,
+                  color: '#F2EFEA',
                   borderRadius: 999,
                   fontWeight: 700,
                   py: 1.4,

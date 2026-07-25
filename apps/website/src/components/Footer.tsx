@@ -29,6 +29,8 @@ const CONTACT_EMAIL =
   (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? 'hello@back2u.app';
 const PAPER = '#F2EFEA';
 const MARIGOLD = '#8B6F4E';
+const FOOTER_NEU_SHADOW = '7px 7px 15px #031B18, -7px -7px 15px #0B403A';
+const FOOTER_NEU_INSET = 'inset 4px 4px 9px #031B18, inset -4px -4px 9px #0B403A';
 const MUTED = 'rgba(250,248,243,0.62)';
 
 type FLink = { label: string; icon: React.ReactNode; to?: string; href?: string };
@@ -164,8 +166,9 @@ export function Footer() {
                 maxWidth: 420,
                 p: 2.5,
                 borderRadius: 3,
-                border: '1px solid rgba(250,248,243,0.08)',
+                border: 'none',
                 bgcolor: 'rgba(250,248,243,0.03)',
+                boxShadow: FOOTER_NEU_SHADOW,
               }}
             >
               <Typography sx={{ color: 'rgba(250,248,243,0.72)', fontSize: 16, lineHeight: 1.7 }}>
@@ -209,8 +212,9 @@ export function Footer() {
                   gap: 1,
                   p: 0.75,
                   borderRadius: 3,
-                  border: '1px solid rgba(250,248,243,0.14)',
+                  border: 'none',
                   bgcolor: 'rgba(250,248,243,0.03)',
+                  boxShadow: FOOTER_NEU_INSET,
                   alignItems: 'center',
                 }}
               >
@@ -233,11 +237,13 @@ export function Footer() {
                   variant="contained"
                   sx={{
                     bgcolor: MARIGOLD,
-                    color: '#2E3D2F',
+                    color: '#F2EFEA',
                     fontWeight: 700,
                     borderRadius: 2,
                     px: 2.5,
-                    '&:hover': { bgcolor: '#6F5940' },
+                    boxShadow: FOOTER_NEU_SHADOW,
+                    '&:hover': { bgcolor: '#6F5940', boxShadow: FOOTER_NEU_SHADOW },
+                    '&:active': { boxShadow: FOOTER_NEU_INSET },
                   }}
                 >
                   Subscribe
@@ -310,12 +316,15 @@ export function Footer() {
                 aria-label={s.label}
                 sx={{
                   color: MUTED,
-                  border: '1px solid rgba(250,248,243,0.14)',
-                  borderRadius: 2,
+                  border: 'none',
+                  borderRadius: '50%',
                   width: 38,
                   height: 38,
+                  bgcolor: '#072c28',
+                  boxShadow: FOOTER_NEU_SHADOW,
                   transition: 'all .18s',
-                  '&:hover': { color: PAPER, borderColor: MARIGOLD, transform: 'translateY(-2px)' },
+                  '&:hover': { color: PAPER, bgcolor: '#0A3732', transform: 'translateY(-2px)' },
+                  '&:active': { boxShadow: FOOTER_NEU_INSET },
                 }}
               >
                 {s.icon}

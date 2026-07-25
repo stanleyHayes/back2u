@@ -15,7 +15,7 @@ import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { back2uTheme } from '@back2u/ui-web';
+import { back2uTheme, BrandMark } from '@back2u/ui-web';
 import type { AuthResponse } from '@back2u/shared-types';
 
 import { api } from '../lib/api.js';
@@ -130,19 +130,7 @@ export function LoginPage() {
           <Box
             sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 1.25 }}
           >
-            <Box
-              sx={{
-                width: 32,
-                height: 32,
-                borderRadius: '37% 37% 37% 10%',
-                background: `linear-gradient(140deg, ${TEAL}, #7E9A82)`,
-                transform: 'rotate(-6deg)',
-                display: 'grid',
-                placeItems: 'center',
-              }}
-            >
-              <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: PAPER }} />
-            </Box>
+            <BrandMark size={34} onDark />
             <Typography
               sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 23, letterSpacing: '-0.03em' }}
             >
@@ -273,7 +261,7 @@ export function LoginPage() {
                     disabled={code.length !== 6 || verify.isPending}
                     sx={{
                       bgcolor: MARIGOLD,
-                      color: INK,
+                      color: '#F2EFEA',
                       borderRadius: 999,
                       fontWeight: 700,
                       py: 1.4,
@@ -350,7 +338,7 @@ export function LoginPage() {
                     disabled={login.isPending}
                     sx={{
                       bgcolor: MARIGOLD,
-                      color: INK,
+                      color: '#F2EFEA',
                       borderRadius: 999,
                       fontWeight: 700,
                       py: 1.4,

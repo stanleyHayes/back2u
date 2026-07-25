@@ -63,6 +63,30 @@ const MUTED = 'rgba(226,232,224,0.62)';
 const SIDEBAR_W = 256;
 const RAIL_W = 76;
 
+// Header and sidebar actions always sit on forest-green surfaces, even when
+// the console content switches to light mode. Keep their material local so
+// they never inherit the light theme's white IconButton surface and shadow.
+const DARK_ACTION_SURFACE = {
+  color: '#E9EEF7',
+  backgroundColor: 'rgba(255,255,255,0.035)',
+  boxShadow: '6px 6px 13px rgba(8,13,8,0.62), -6px -6px 13px rgba(58,74,48,0.30)',
+  '&:hover': {
+    color: '#FFFFFF',
+    backgroundColor: 'rgba(168,181,160,0.11)',
+    boxShadow: '6px 6px 13px rgba(8,13,8,0.62), -6px -6px 13px rgba(58,74,48,0.30)',
+  },
+  '&:active': {
+    transform: 'translateY(0)',
+    boxShadow: 'inset 4px 4px 9px rgba(8,13,8,0.72), inset -4px -4px 9px rgba(58,74,48,0.28)',
+  },
+} as const;
+const DARK_HEADER_ACTION = {
+  ...DARK_ACTION_SURFACE,
+  width: 40,
+  height: 40,
+  flexShrink: 0,
+} as const;
+
 type NavItem = { to: string; label: string; icon: ReactNode };
 type NavGroup = { heading: string; items: NavItem[] };
 
@@ -453,7 +477,13 @@ function SidebarInner({
                 <IconButton
                   onClick={clear}
                   size="small"
-                  sx={{ color: MUTED, '&:hover': { color: '#fff' } }}
+                  sx={{
+                    ...DARK_ACTION_SURFACE,
+                    width: 34,
+                    height: 34,
+                    color: MUTED,
+                    '&:hover': { ...DARK_ACTION_SURFACE['&:hover'], color: '#fff' },
+                  }}
                 >
                   <LogoutIcon fontSize="small" />
                 </IconButton>
@@ -495,12 +525,12 @@ function NotificationsBell() {
         <IconButton
           data-tour="notifications"
           onClick={(e: MouseEvent<HTMLElement>) => setAnchor(e.currentTarget)}
-          sx={{ color: '#E9EEF7' }}
+          sx={DARK_HEADER_ACTION}
         >
           <Badge
             badgeContent={unread?.count ?? 0}
             max={99}
-            sx={{ '& .MuiBadge-badge': { bgcolor: MARIGOLD, color: '#2E3D2F', fontWeight: 700 } }}
+            sx={{ '& .MuiBadge-badge': { bgcolor: MARIGOLD, color: '#F2EFEA', fontWeight: 700 } }}
           >
             <NotificationsNoneOutlinedIcon />
           </Badge>
@@ -607,7 +637,7 @@ function AccountMenu() {
         <IconButton
           data-tour="account-menu"
           onClick={(e: MouseEvent<HTMLElement>) => setAnchor(e.currentTarget)}
-          sx={{ p: 0.5 }}
+          sx={{ ...DARK_HEADER_ACTION, p: 0.5 }}
         >
           <Avatar
             src={user?.avatarUrl}
@@ -764,14 +794,25 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             borderBottom: '1px solid rgba(255,255,255,0.07)',
             borderTop: '2px solid',
             borderImage: 'linear-gradient(90deg, #40614A, #8B6F4E, #40614A) 1',
+            '& .MuiIconButton-root': {
+              ...DARK_ACTION_SURFACE,
+              width: 40,
+              height: 40,
+              flexShrink: 0,
+            },
           }}
         >
           <IconButton
             onClick={() => setMobileOpen(true)}
-            sx={{ display: { xs: 'inline-flex', md: 'none' }, color: '#E9EEF7' }}
+            sx={{ ...DARK_HEADER_ACTION, display: { xs: 'inline-flex', md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
+          {/* Logo shows on mobile (the sidebar is a drawer); hidden on desktop
+              where the sidebar already carries it. */}
+          <Box sx={{ display: { xs: 'inline-flex', md: 'none' }, mr: 0.5 }}>
+            <BrandLogo size={22} onDark />
+          </Box>
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography
               noWrap
@@ -799,13 +840,13 @@ export function AdminLayout({ children }: { children: ReactNode }) {
                 onClick={(e) =>
                   circularThemeTransition(e, () => setThemeMode(isDark ? 'light' : 'dark'))
                 }
-                sx={{ color: '#E9EEF7' }}
+                sx={DARK_HEADER_ACTION}
               >
                 {isDark ? <LightModeOutlinedIcon /> : <DarkModeOutlinedIcon />}
               </IconButton>
             </Tooltip>
             <Tooltip title="Replay the tour">
-              <IconButton onClick={() => setTourOpen(true)} sx={{ color: '#E9EEF7' }}>
+              <IconButton onClick={() => setTourOpen(true)} sx={DARK_HEADER_ACTION}>
                 <HelpOutlineOutlinedIcon />
               </IconButton>
             </Tooltip>

@@ -39,6 +39,12 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
   const divider = dark ? 'rgba(210,232,222,0.12)' : 'rgba(11, 61, 56, 0.12)';
   const primaryMain = dark ? TEAL_BRIGHT : TEAL;
   const focusInk = dark ? CREAM : INK;
+  const neuRaised = dark
+    ? '10px 10px 24px rgba(10,15,9,0.78), -10px -10px 24px rgba(58,74,48,0.42)'
+    : '10px 10px 24px rgba(174,168,157,0.58), -10px -10px 24px rgba(255,255,255,0.98)';
+  const neuInset = dark
+    ? 'inset 5px 5px 12px rgba(10,15,9,0.78), inset -5px -5px 12px rgba(58,74,48,0.42)'
+    : 'inset 5px 5px 12px rgba(174,168,157,0.58), inset -5px -5px 12px rgba(255,255,255,0.98)';
 
   const bodyGradients = dark
     ? [
@@ -56,7 +62,7 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
     palette: {
       mode,
       primary: { main: primaryMain, light: TEAL_BRIGHT, dark: '#0B5C55', contrastText: '#FAF8F3' },
-      secondary: { main: MARIGOLD, light: '#F3C969', dark: '#6F5940', contrastText: INK },
+      secondary: { main: MARIGOLD, light: '#F3C969', dark: '#6F5940', contrastText: '#F2EFEA' },
       error: { main: CLAY },
       success: { main: primaryMain },
       text: { primary: textPrimary, secondary: textSecondary },
@@ -116,6 +122,8 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
         styleOverrides: {
           root: {
             borderRadius: 999,
+            border: 'none',
+            boxShadow: neuRaised,
             paddingInline: 22,
             paddingBlock: 9,
             transition:
@@ -127,37 +135,111 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
               outlineOffset: 2,
               boxShadow: `0 0 0 4px ${dark ? 'rgba(234,243,237,0.18)' : 'rgba(46,61,47,0.14)'}`,
             },
+            '&:active': {
+              transform: 'translateY(0)',
+              boxShadow: neuInset,
+            },
+            '&.Mui-disabled': { boxShadow: 'none' },
           },
           sizeLarge: { paddingInline: 30, paddingBlock: 14, fontSize: '1.02rem' },
           contained: {
-            boxShadow: '0 1px 0 rgba(255,255,255,.4) inset, 0 10px 24px -12px rgba(46,61,47,.5)',
+            boxShadow: neuRaised,
             '&:hover': {
               transform: 'translateY(-2px)',
-              boxShadow: '0 16px 30px -14px rgba(46,61,47,.55)',
+              boxShadow: neuRaised,
             },
           },
+          text: { backgroundColor: raised },
           outlined: {
-            borderColor: divider,
+            border: 'none',
+            backgroundColor: raised,
             '&:hover': {
-              borderColor: primaryMain,
               background: dark ? 'rgba(126,154,130,0.08)' : 'rgba(46,61,47,0.04)',
               transform: 'translateY(-2px)',
             },
           },
         },
       },
-      MuiPaper: { styleOverrides: { root: { backgroundImage: 'none' } } },
+      MuiButtonGroup: {
+        styleOverrides: {
+          root: {
+            borderRadius: 999,
+            overflow: 'hidden',
+            backgroundColor: raised,
+            boxShadow: neuRaised,
+          },
+          grouped: {
+            border: 'none !important',
+            boxShadow: 'none !important',
+            borderRadius: '0 !important',
+            '&:hover': { transform: 'none', boxShadow: 'none !important' },
+            '&:active': { transform: 'none', boxShadow: 'none !important' },
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: ({ ownerState }) => ({
+            backgroundImage: 'none',
+            ...(ownerState.elevation !== 0 && { border: 'none', boxShadow: neuRaised }),
+          }),
+          outlined: { border: 'none', boxShadow: neuRaised },
+        },
+      },
       MuiCard: {
         styleOverrides: {
           root: {
-            borderRadius: 10,
-            border: `1px solid ${divider}`,
-            boxShadow: dark ? '0 1px 2px rgba(0,0,0,.3)' : '0 1px 2px rgba(46,61,47,.04)',
+            borderRadius: 18,
+            border: 'none',
+            backgroundColor: raised,
+            boxShadow: neuRaised,
             transition: 'transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .2s ease',
           },
         },
       },
-      MuiChip: { styleOverrides: { root: { fontWeight: 600, letterSpacing: '0.01em' } } },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            border: 'none',
+            borderRadius: '50%',
+            backgroundColor: raised,
+            boxShadow: neuRaised,
+            transition: 'transform .15s ease, background-color .18s ease, box-shadow .18s ease',
+            '&:hover': {
+              backgroundColor: dark ? 'rgba(126,154,130,0.08)' : 'rgba(255,255,255,0.34)',
+              transform: 'translateY(-1px)',
+            },
+            '&:active': { transform: 'translateY(0)', boxShadow: neuInset },
+            '&.Mui-disabled': { boxShadow: 'none' },
+          },
+        },
+      },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            border: 'none',
+            backgroundColor: raised,
+            boxShadow: neuRaised,
+            fontWeight: 600,
+            letterSpacing: '0.01em',
+          },
+          clickable: { '&:active': { boxShadow: neuInset } },
+        },
+      },
+      MuiLink: {
+        styleOverrides: {
+          root: {
+            borderRadius: 999,
+            paddingInline: '0.35em',
+            transition: 'color .18s ease, background-color .18s ease, box-shadow .18s ease',
+            '&:hover': {
+              backgroundColor: dark ? 'rgba(126,154,130,0.07)' : 'rgba(255,255,255,0.3)',
+              boxShadow: neuRaised,
+            },
+            '&:active': { boxShadow: neuInset },
+          },
+        },
+      },
       MuiAccordion: {
         styleOverrides: {
           root: {

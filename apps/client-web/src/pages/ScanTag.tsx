@@ -324,7 +324,7 @@ export function ScanTagPage() {
                     disabled={!message.trim() || scan.isPending}
                     sx={{
                       bgcolor: MARIGOLD,
-                      color: INK,
+                      color: '#F2EFEA',
                       borderRadius: 999,
                       textTransform: 'none',
                       fontFamily: BODY,

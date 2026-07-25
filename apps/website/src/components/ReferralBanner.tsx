@@ -2,6 +2,8 @@ import { useState, FormEvent } from 'react';
 import { Box, Button, Container, Stack, TextField, Typography, Alert } from '@mui/material';
 
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
+const ORANGE_NEU_SHADOW = '7px 7px 16px #A95708, -7px -7px 16px #F49A25';
+const ORANGE_NEU_INSET = 'inset 4px 4px 9px #A95708, inset -4px -4px 9px #F49A25';
 
 export function ReferralBanner() {
   const [email, setEmail] = useState('');
@@ -68,6 +70,7 @@ export function ReferralBanner() {
                       '& .MuiOutlinedInput-root': {
                         bgcolor: 'rgba(255,255,255,0.95)',
                         borderRadius: 2,
+                        boxShadow: ORANGE_NEU_SHADOW,
                         '& fieldset': { border: 'none' },
                       },
                     }}
@@ -82,7 +85,9 @@ export function ReferralBanner() {
                       borderRadius: 2,
                       px: 3,
                       whiteSpace: 'nowrap',
-                      '&:hover': { bgcolor: '#115E59' },
+                      boxShadow: ORANGE_NEU_SHADOW,
+                      '&:hover': { bgcolor: '#36533E', boxShadow: ORANGE_NEU_SHADOW },
+                      '&:active': { boxShadow: ORANGE_NEU_INSET },
                     }}
                   >
                     Invite
@@ -109,7 +114,10 @@ export function ReferralBanner() {
                       textUnderlineOffset: 2,
                       p: 0,
                       minWidth: 0,
+                      bgcolor: 'transparent',
+                      boxShadow: 'none',
                       '&:hover': { bgcolor: 'transparent', opacity: 0.85 },
+                      '&:active': { boxShadow: 'none' },
                     }}
                   >
                     Learn more

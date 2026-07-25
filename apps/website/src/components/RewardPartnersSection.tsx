@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Chip, Container, Typography } from '@mui/material';
+import { neuShadow } from '@back2u/ui-web';
 
 const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:4000';
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
@@ -104,14 +105,15 @@ export function RewardPartnersSection() {
               className="b2u-reveal"
               sx={{
                 borderRadius: '24px 24px 24px 8px',
-                border: '1px solid',
-                borderColor: 'divider',
+                border: 'none',
                 overflow: 'hidden',
                 bgcolor: 'background.paper',
+                boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
                 transition: 'transform .15s, box-shadow .15s',
                 '&:hover': {
                   transform: 'translateY(-3px)',
-                  boxShadow: '0 24px 48px -36px rgba(46,61,47,0.5)',
+                  boxShadow: (t) =>
+                    neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
                 },
               }}
             >

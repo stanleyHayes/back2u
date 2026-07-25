@@ -1,4 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
+import { neuShadow } from '@back2u/ui-web';
 import type { ReactNode } from 'react';
 
 const TEAL = '#40614A';
@@ -67,9 +68,9 @@ export function SectionCard({
       sx={{
         p: { xs: 2.5, md: 3 },
         borderRadius: '20px 20px 20px 6px',
-        border: '1px solid',
-        borderColor: 'divider',
-        bgcolor: 'background.paper',
+        border: 'none',
+        bgcolor: 'background.default',
+        boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
       }}
     >
       {(icon || title) && (
@@ -77,14 +78,15 @@ export function SectionCard({
           {icon && (
             <Box
               sx={{
-                width: 40,
-                height: 40,
-                borderRadius: 2,
+                width: 44,
+                height: 44,
+                borderRadius: '50%',
                 display: 'grid',
                 placeItems: 'center',
-                bgcolor: `${accent}1f`,
+                bgcolor: 'background.default',
                 color: accent,
                 flexShrink: 0,
+                boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
                 '& svg': { fontSize: 21 },
               }}
             >

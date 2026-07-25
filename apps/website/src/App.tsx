@@ -15,6 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import ScheduleIcon from '@mui/icons-material/Schedule';
+import { neuShadow } from '@back2u/ui-web';
 
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -39,6 +40,8 @@ const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://
 
 const INK = '#2E3D2F';
 const PAPER = '#F2EFEA';
+const FOREST_NEU_SHADOW = '8px 8px 18px #182319, -8px -8px 18px #405443';
+const FOREST_NEU_INSET = 'inset 4px 4px 9px #182319, inset -4px -4px 9px #405443';
 
 interface FeatureFlagDTO {
   key: string;
@@ -673,13 +676,15 @@ function LandingPage() {
                       p: 1.25,
                       // brand "tag" card — one sharp corner like the pin logo
                       borderRadius: '24px 24px 24px 6px',
-                      border: '1px solid',
-                      borderColor: 'divider',
+                      border: 'none',
                       bgcolor: 'background.paper',
+                      boxShadow: (t) =>
+                        neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
                       transition: 'transform .2s, box-shadow .2s',
                       '&:hover': {
                         transform: 'translateY(-4px)',
-                        boxShadow: '0 26px 46px -30px rgba(46,61,47,.5)',
+                        boxShadow: (t) =>
+                          neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
                       },
                     }}
                   >
@@ -859,9 +864,10 @@ function LandingPage() {
                       height: 76,
                       mx: { md: 'auto' },
                       borderRadius: '50%',
-                      bgcolor: 'background.default',
-                      border: '1.5px solid',
-                      borderColor: 'divider',
+                      bgcolor: 'background.paper',
+                      border: 'none',
+                      boxShadow: (t) =>
+                        neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
                       display: 'grid',
                       placeItems: 'center',
                       fontSize: 30,
@@ -986,8 +992,11 @@ function LandingPage() {
                   borderRadius: 2,
                   bgcolor: i === 1 ? INK : 'background.paper',
                   color: i === 1 ? PAPER : 'text.primary',
-                  border: '1px solid',
-                  borderColor: i === 1 ? 'transparent' : 'divider',
+                  border: 'none',
+                  boxShadow:
+                    i === 1
+                      ? '10px 10px 24px rgba(25,35,26,.46), -7px -7px 20px rgba(91,113,92,.24)'
+                      : (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
                 }}
               >
                 <Box
@@ -1118,6 +1127,11 @@ function LandingPage() {
                     variant="contained"
                     color="secondary"
                     href={`${APP_URL}/register`}
+                    sx={{
+                      boxShadow: FOREST_NEU_SHADOW,
+                      '&:hover': { boxShadow: FOREST_NEU_SHADOW },
+                      '&:active': { boxShadow: FOREST_NEU_INSET },
+                    }}
                   >
                     Get started free
                   </Button>
@@ -1126,9 +1140,12 @@ function LandingPage() {
                     variant="outlined"
                     href={`${APP_URL}/feed`}
                     sx={{
-                      color: PAPER,
-                      borderColor: 'rgba(250,248,243,0.4)',
-                      '&:hover': { borderColor: PAPER, bgcolor: 'rgba(250,248,243,0.08)' },
+                      color: INK,
+                      bgcolor: '#FAF8F3',
+                      border: 'none',
+                      boxShadow: FOREST_NEU_SHADOW,
+                      '&:hover': { bgcolor: '#FFFFFF', boxShadow: FOREST_NEU_SHADOW },
+                      '&:active': { boxShadow: FOREST_NEU_INSET },
                     }}
                   >
                     Browse items

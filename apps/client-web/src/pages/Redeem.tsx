@@ -170,7 +170,7 @@ export function RedeemPage() {
                   disabled={!institutionId || points <= 0 || points > balance || create.isPending}
                   sx={{
                     bgcolor: MARIGOLD,
-                    color: INK,
+                    color: '#F2EFEA',
                     borderRadius: 999,
                     fontWeight: 700,
                     px: 3,

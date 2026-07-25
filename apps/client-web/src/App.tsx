@@ -48,6 +48,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const INK = '#2E3D2F';
 const MARIGOLD = '#8B6F4E';
+const NAV_NEU_SHADOW = '7px 7px 15px #0C1510, -7px -7px 15px #263A2D';
+const NAV_NEU_INSET = 'inset 4px 4px 9px #0C1510, inset -4px -4px 9px #263A2D';
 
 const moreItemSx = {
   alignItems: 'flex-start',
@@ -100,11 +102,33 @@ function NavBtn({ to, end, children }: { to: string; end?: boolean; children: Re
       to={to}
       end={end}
       sx={{
-        color: 'text.primary',
-        fontWeight: 600,
-        borderRadius: 2,
-        px: 1.5,
-        '&.active': { color: 'primary.main', bgcolor: 'rgba(64,97,74,0.1)' },
+        position: 'relative',
+        color: 'rgba(242,239,234,0.76)',
+        fontWeight: 700,
+        fontSize: 11.5,
+        letterSpacing: '0.055em',
+        textTransform: 'uppercase',
+        borderRadius: 0,
+        bgcolor: 'transparent',
+        boxShadow: 'none',
+        px: { lg: 1, xl: 1.35 },
+        py: 1.25,
+        minWidth: 0,
+        '&:hover': { color: '#F2EFEA', bgcolor: 'transparent' },
+        '&.active': {
+          color: '#A8B5A0',
+          bgcolor: 'transparent',
+          '&::after': {
+            content: '\"\"',
+            position: 'absolute',
+            left: 10,
+            right: 10,
+            bottom: 2,
+            height: 2,
+            borderRadius: 2,
+            bgcolor: '#A8B5A0',
+          },
+        },
       }}
     >
       {children}
@@ -119,7 +143,16 @@ function ThemeToggle() {
     <Tooltip title={dark ? 'Switch to light theme' : 'Switch to dark theme'}>
       <IconButton
         onClick={(e) => circularThemeTransition(e, () => setThemeMode(dark ? 'light' : 'dark'))}
-        sx={{ color: 'text.primary' }}
+        sx={{
+          color: '#F2EFEA',
+          width: 38,
+          height: 38,
+          border: 'none',
+          bgcolor: 'rgba(242,239,234,0.04)',
+          boxShadow: NAV_NEU_SHADOW,
+          '&:hover': { bgcolor: 'rgba(168,181,160,0.12)' },
+          '&:active': { boxShadow: NAV_NEU_INSET },
+        }}
         aria-label="Toggle theme"
       >
         {dark ? <LightModeOutlinedIcon /> : <DarkModeOutlinedIcon />}
@@ -202,7 +235,16 @@ function NotificationBell() {
       <IconButton
         size="small"
         onClick={(e) => setAnchor(e.currentTarget)}
-        sx={{ color: 'text.primary' }}
+        sx={{
+          color: '#F2EFEA',
+          width: 38,
+          height: 38,
+          border: 'none',
+          bgcolor: 'rgba(242,239,234,0.04)',
+          boxShadow: NAV_NEU_SHADOW,
+          '&:hover': { bgcolor: 'rgba(168,181,160,0.12)' },
+          '&:active': { boxShadow: NAV_NEU_INSET },
+        }}
       >
         <Badge badgeContent={count} color="error">
           <NotificationsNoneOutlined />
@@ -464,7 +506,7 @@ function MobileNav({
             fullWidth
             sx={{
               bgcolor: MARIGOLD,
-              color: INK,
+              color: '#F2EFEA',
               borderRadius: 999,
               fontWeight: 700,
               mb: 1,
@@ -551,7 +593,7 @@ export function App() {
         <>
           <Stack
             direction="row"
-            spacing={{ xs: 0.25, md: 0.75 }}
+            spacing={{ xs: 0.25, md: 0.4 }}
             sx={{ alignItems: 'center', display: { xs: 'none', lg: 'flex' } }}
           >
             <NavBtn to="/" end>
@@ -562,28 +604,47 @@ export function App() {
             <NavBtn to="/marketplace">Marketplace</NavBtn>
             {user ? (
               <>
-                <NavBtn to="/bookmarks">Bookmarks</NavBtn>
                 <NavBtn to="/matches">Matches</NavBtn>
                 <NavBtn to="/chat">Chat</NavBtn>
                 <NotificationBell />
                 <Button
                   component={Link}
                   to="/post"
-                  variant="contained"
                   sx={{
-                    bgcolor: MARIGOLD,
-                    color: INK,
+                    bgcolor: 'transparent',
+                    color: '#A8B5A0',
+                    border: 'none',
+                    boxShadow: NAV_NEU_SHADOW,
                     borderRadius: 999,
                     fontWeight: 700,
-                    ml: 0.5,
-                    '&:hover': { bgcolor: '#6F5940' },
+                    fontSize: 12,
+                    letterSpacing: '0.035em',
+                    textTransform: 'uppercase',
+                    px: 2.1,
+                    ml: 0.75,
+                    '&:hover': {
+                      bgcolor: '#A8B5A0',
+                      color: '#17221D',
+                    },
                   }}
                 >
                   Post item
                 </Button>
                 <Button
                   color="inherit"
-                  sx={{ color: 'text.primary', fontWeight: 600 }}
+                  endIcon={<MenuIcon sx={{ fontSize: '18px !important' }} />}
+                  sx={{
+                    color: 'rgba(242,239,234,0.78)',
+                    fontWeight: 700,
+                    fontSize: 11.5,
+                    letterSpacing: '0.055em',
+                    textTransform: 'uppercase',
+                    minWidth: 0,
+                    px: 1.25,
+                    bgcolor: 'transparent',
+                    boxShadow: 'none',
+                    '&:hover': { color: '#F2EFEA', bgcolor: 'rgba(242,239,234,0.06)' },
+                  }}
                   onClick={(e) => setMore(e.currentTarget)}
                 >
                   More
@@ -744,21 +805,34 @@ export function App() {
                 <Button
                   component={Link}
                   to="/login"
-                  sx={{ color: 'text.primary', fontWeight: 600 }}
+                  sx={{
+                    color: 'rgba(242,239,234,0.78)',
+                    fontWeight: 700,
+                    fontSize: 12,
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                    bgcolor: 'transparent',
+                    boxShadow: 'none',
+                  }}
                 >
                   Sign in
                 </Button>
                 <Button
                   component={Link}
                   to="/register"
-                  variant="contained"
                   sx={{
-                    bgcolor: INK,
-                    color: '#F2EFEA',
+                    bgcolor: 'transparent',
+                    color: '#A8B5A0',
+                    border: 'none',
+                    boxShadow: NAV_NEU_SHADOW,
                     borderRadius: 999,
                     fontWeight: 700,
                     px: 2.5,
-                    '&:hover': { bgcolor: '#243024' },
+                    fontSize: 12,
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                    '&:hover': { bgcolor: '#A8B5A0', color: '#17221D' },
+                    '&:active': { boxShadow: NAV_NEU_INSET },
                   }}
                 >
                   Get started

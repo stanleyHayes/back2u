@@ -146,7 +146,7 @@ export function BillingPage() {
                     top: -12,
                     right: 16,
                     bgcolor: MARIGOLD,
-                    color: INK,
+                    color: '#F2EFEA',
                     fontWeight: 700,
                   }}
                 />
@@ -201,7 +201,7 @@ export function BillingPage() {
                   isUpgrade
                     ? {
                         bgcolor: MARIGOLD,
-                        color: INK,
+                        color: '#F2EFEA',
                         borderRadius: 999,
                         fontWeight: 700,
                         py: 1.1,

@@ -260,7 +260,7 @@ export function QrTagShopPage() {
               sx={{
                 mt: 2,
                 bgcolor: MARIGOLD,
-                color: INK,
+                color: '#F2EFEA',
                 borderRadius: 999,
                 fontWeight: 700,
                 '&:hover': { bgcolor: '#6F5940' },

@@ -9,12 +9,22 @@ function Badge({
   eyebrow,
   label,
   icon,
+  tone,
 }: {
   href: string;
   eyebrow: string;
   label: string;
   icon: React.ReactNode;
+  tone: 'light' | 'dark';
 }) {
+  const raisedShadow =
+    tone === 'dark'
+      ? '7px 7px 15px #182319, -7px -7px 15px #405443, inset 1px 1px 1px rgba(255,255,255,.12)'
+      : '8px 8px 18px rgba(174,168,157,.52), -8px -8px 18px rgba(255,255,255,.96), inset 1px 1px 1px rgba(255,255,255,.12)';
+  const pressedShadow =
+    tone === 'dark'
+      ? 'inset 4px 4px 9px #182319, inset -4px -4px 9px #405443'
+      : 'inset 4px 4px 9px rgba(174,168,157,.52), inset -4px -4px 9px rgba(255,255,255,.96)';
   return (
     <Box
       component="a"
@@ -31,13 +41,14 @@ function Badge({
         bgcolor: '#2E3D2F',
         color: '#FAF8F3',
         textDecoration: 'none',
-        border: '1px solid rgba(250,248,243,0.16)',
+        border: 'none',
         transition: 'transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease',
-        boxShadow: '0 10px 24px -16px rgba(46,61,47,.8)',
+        boxShadow: raisedShadow,
         '&:hover': {
           transform: 'translateY(-2px)',
-          boxShadow: '0 16px 30px -16px rgba(46,61,47,.9)',
+          boxShadow: raisedShadow,
         },
+        '&:active': { transform: 'translateY(0)', boxShadow: pressedShadow },
       }}
     >
       <Box sx={{ display: 'grid', placeItems: 'center', width: 26, height: 26, flexShrink: 0 }}>
@@ -86,8 +97,20 @@ export function AppStoreBadges({ tone = 'light' }: { tone?: 'light' | 'dark' }) 
       useFlexGap
       sx={{ flexWrap: 'wrap', opacity: tone === 'dark' ? 1 : 0.98 }}
     >
-      <Badge href={APP_STORE_URL} eyebrow="Download on the" label="App Store" icon={AppleMark} />
-      <Badge href={PLAY_STORE_URL} eyebrow="Get it on" label="Google Play" icon={PlayMark} />
+      <Badge
+        href={APP_STORE_URL}
+        eyebrow="Download on the"
+        label="App Store"
+        icon={AppleMark}
+        tone={tone}
+      />
+      <Badge
+        href={PLAY_STORE_URL}
+        eyebrow="Get it on"
+        label="Google Play"
+        icon={PlayMark}
+        tone={tone}
+      />
     </Stack>
   );
 }

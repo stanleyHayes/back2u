@@ -775,7 +775,7 @@ export function PartnerForm() {
                       disabled={submitting || !stepValid(STEPS.length - 1)}
                       sx={{
                         bgcolor: MARIGOLD,
-                        color: INK,
+                        color: '#F2EFEA',
                         borderRadius: 999,
                         px: 3,
                         fontWeight: 700,

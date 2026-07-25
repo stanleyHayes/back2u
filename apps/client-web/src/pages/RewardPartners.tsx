@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { InstitutionDTO } from '@back2u/shared-types';
-import { EmptyState, CardGridSkeleton } from '@back2u/ui-web';
+import { EmptyState, CardGridSkeleton, neuShadow } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 import { PageHeader } from '../components/BrandPage.js';
@@ -49,14 +49,14 @@ function PartnerCard({ p }: { p: InstitutionDTO }) {
         display: 'flex',
         flexDirection: 'column',
         borderRadius: '24px 24px 24px 8px',
-        border: '1px solid',
-        borderColor: 'divider',
+        border: 'none',
         bgcolor: 'background.paper',
+        boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
         overflow: 'hidden',
         transition: 'transform .15s, box-shadow .15s',
         '&:hover': {
           transform: 'translateY(-3px)',
-          boxShadow: '0 24px 48px -36px rgba(46,61,47,0.5)',
+          boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
         },
       }}
     >
