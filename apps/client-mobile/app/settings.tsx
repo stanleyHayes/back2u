@@ -2,11 +2,13 @@ import type { Locale } from '@back2u/shared-types';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Alert, ScrollView, View } from 'react-native';
+import { Alert, Linking, ScrollView, View } from 'react-native';
 import { Button, Card, HelperText, Menu, Text, TextInput } from 'react-native-paper';
 
 import { api } from '../src/lib/api';
 import { useAuth } from '../src/lib/auth.store';
+
+const WEB_URL = (process.env.EXPO_PUBLIC_WEBSITE_URL as string | undefined) ?? 'https://back2u.app';
 
 const LOCALES: { code: Locale; label: string }[] = [
   { code: 'en', label: 'English' },
@@ -28,7 +30,10 @@ export default function SettingsScreen() {
   const exportMut = useMutation({ mutationFn: () => api.exportAccount() });
   const deleteMut = useMutation({
     mutationFn: () => api.deleteAccount(),
-    onSuccess: () => { clear(); router.replace('/login'); },
+    onSuccess: () => {
+      clear();
+      router.replace('/login');
+    },
     onError: () =>
       Alert.alert('Could not delete account', 'Something went wrong. Please try again.'),
   });
@@ -61,40 +66,91 @@ export default function SettingsScreen() {
             }
           >
             {LOCALES.map((l) => (
-              <Menu.Item key={l.code} onPress={() => { setLocale(l.code); setLocaleMenu(false); }} title={l.label} />
+              <Menu.Item
+                key={l.code}
+                onPress={() => {
+                  setLocale(l.code);
+                  setLocaleMenu(false);
+                }}
+                title={l.label}
+              />
             ))}
           </Menu>
         </Card.Content>
-        <Card.Actions><Button onPress={() => setLoc.mutate()} loading={setLoc.isPending}>Save</Button></Card.Actions>
+        <Card.Actions>
+          <Button onPress={() => setLoc.mutate()} loading={setLoc.isPending}>
+            Save
+          </Button>
+        </Card.Actions>
       </Card>
 
       <Card>
         <Card.Title title="Identity" />
         <Card.Actions>
-          <Link href="/verify-email" asChild><Button>Verify email</Button></Link>
-          <Link href="/verify-phone" asChild><Button>Verify phone</Button></Link>
+          <Link href="/verify-email" asChild>
+            <Button>Verify email</Button>
+          </Link>
+          <Link href="/verify-phone" asChild>
+            <Button>Verify phone</Button>
+          </Link>
         </Card.Actions>
       </Card>
 
       <Card>
         <Card.Title title="Redeem points" subtitle={`Balance: ${user?.pointsBalance ?? 0}`} />
         <Card.Content>
-          <TextInput label="Points" value={redeem} onChangeText={setRedeem} keyboardType="numeric" />
-          {redeemMut.isSuccess && <HelperText type="info">Balance: {redeemMut.data.pointsBalance}</HelperText>}
+          <TextInput
+            label="Points"
+            value={redeem}
+            onChangeText={setRedeem}
+            keyboardType="numeric"
+          />
+          {redeemMut.isSuccess && (
+            <HelperText type="info">Balance: {redeemMut.data.pointsBalance}</HelperText>
+          )}
         </Card.Content>
-        <Card.Actions><Button mode="contained" onPress={() => redeemMut.mutate()} loading={redeemMut.isPending}>Redeem</Button></Card.Actions>
+        <Card.Actions>
+          <Button mode="contained" onPress={() => redeemMut.mutate()} loading={redeemMut.isPending}>
+            Redeem
+          </Button>
+        </Card.Actions>
       </Card>
 
       <Card>
-        <Card.Title title="Privacy" />
+        <Card.Title title="Privacy & data" />
+        <Card.Content>
+          <HelperText type="info">
+            Export a copy of your data, or permanently delete your account. Deleting is
+            irreversible.
+          </HelperText>
+        </Card.Content>
         <Card.Actions>
-          <Button onPress={() => exportMut.mutate()} loading={exportMut.isPending}>Export data</Button>
-          <Button textColor="red" onPress={confirmDelete} loading={deleteMut.isPending}>Delete account</Button>
+          <Button onPress={() => exportMut.mutate()} loading={exportMut.isPending}>
+            Export data
+          </Button>
+          <Button textColor="red" onPress={confirmDelete} loading={deleteMut.isPending}>
+            Delete account
+          </Button>
+        </Card.Actions>
+      </Card>
+
+      <Card>
+        <Card.Title title="Legal" />
+        <Card.Actions>
+          <Button onPress={() => Linking.openURL(`${WEB_URL}/privacy`)}>Privacy Policy</Button>
+          <Button onPress={() => Linking.openURL(`${WEB_URL}/terms`)}>Terms of Service</Button>
         </Card.Actions>
       </Card>
 
       <View style={{ height: 16 }} />
-      <Button onPress={() => { clear(); router.replace('/login'); }}>Sign out</Button>
+      <Button
+        onPress={() => {
+          clear();
+          router.replace('/login');
+        }}
+      >
+        Sign out
+      </Button>
     </ScrollView>
   );
 }

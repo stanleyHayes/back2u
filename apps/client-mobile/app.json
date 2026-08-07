@@ -2,15 +2,75 @@
   "expo": {
     "name": "Back2u",
     "slug": "back2u",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "back2u",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "splash": { "backgroundColor": "#0F766E", "resizeMode": "contain" },
+    "primaryColor": "#40614A",
+    "description": "Smart lost & found. Snap a photo, drop a pin, and AI reunites lost items with their owners — across campuses, malls, transit and more.",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#2E3D2F",
+      "resizeMode": "contain"
+    },
     "assetBundlePatterns": ["**/*"],
-    "ios": { "supportsTablet": true, "bundleIdentifier": "app.back2u" },
-    "android": { "package": "app.back2u" },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.back2u",
+      "buildNumber": "1",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "Back2u uses the camera to scan QR tags and take photos of lost or found items.",
+        "NSPhotoLibraryUsageDescription": "Back2u accesses your photos so you can attach images of lost or found items.",
+        "NSLocationWhenInUseUsageDescription": "Back2u uses your location to show items reported near you and to tag where an item was found."
+      },
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": ["C617.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+            "NSPrivacyAccessedAPITypeReasons": ["35F9.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
+            "NSPrivacyAccessedAPITypeReasons": ["E174.1"]
+          }
+        ]
+      }
+    },
+    "android": {
+      "package": "app.back2u",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#2E3D2F"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.POST_NOTIFICATIONS"
+      ],
+      "blockedPermissions": [
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
+    },
     "plugins": [
       "expo-router",
       [
@@ -22,7 +82,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Back2u uses your location to alert you when items are reported nearby."
+          "locationWhenInUsePermission": "Back2u uses your location to show items reported near you and to tag where an item was found."
         }
       ],
       [
@@ -34,10 +94,16 @@
       [
         "expo-notifications",
         {
-          "color": "#0F766E"
+          "icon": "./assets/notification-icon.png",
+          "color": "#40614A"
         }
       ]
     ],
-    "experiments": { "typedRoutes": true }
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }
