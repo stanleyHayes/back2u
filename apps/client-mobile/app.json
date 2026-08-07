@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Back2u",
+    "name": "bak2me",
     "slug": "back2u",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,9 +25,9 @@
       },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "NSCameraUsageDescription": "Back2u uses the camera to scan QR tags and take photos of lost or found items.",
-        "NSPhotoLibraryUsageDescription": "Back2u accesses your photos so you can attach images of lost or found items.",
-        "NSLocationWhenInUseUsageDescription": "Back2u uses your location to show items reported near you and to tag where an item was found."
+        "NSCameraUsageDescription": "bak2me uses the camera to scan QR tags and take photos of lost or found items.",
+        "NSPhotoLibraryUsageDescription": "bak2me accesses your photos so you can attach images of lost or found items.",
+        "NSLocationWhenInUseUsageDescription": "bak2me uses your location to show items reported near you and to tag where an item was found."
       },
       "privacyManifests": {
         "NSPrivacyAccessedAPITypes": [
@@ -76,19 +76,19 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow Back2u to access your photos to attach images of lost or found items."
+          "photosPermission": "Allow bak2me to access your photos to attach images of lost or found items."
         }
       ],
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Back2u uses your location to show items reported near you and to tag where an item was found."
+          "locationWhenInUsePermission": "bak2me uses your location to show items reported near you and to tag where an item was found."
         }
       ],
       [
         "expo-camera",
         {
-          "cameraPermission": "Back2u uses the camera to scan QR tags on lost items."
+          "cameraPermission": "bak2me uses the camera to scan QR tags on lost items."
         }
       ],
       [

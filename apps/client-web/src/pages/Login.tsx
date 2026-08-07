@@ -96,7 +96,7 @@ function BrandPanel() {
         <Typography
           sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 22, letterSpacing: '-0.03em' }}
         >
-          Back2u
+          bak2me
         </Typography>
       </Box>
 

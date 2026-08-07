@@ -818,7 +818,7 @@ export function PartnerLayout({ children }: { children: ReactNode }) {
               {current?.label ?? 'Partner'}
             </Typography>
             <Typography noWrap sx={{ fontSize: 12.5, color: MUTED }}>
-              Back2u partner portal
+              bak2me partner portal
             </Typography>
           </Box>
 

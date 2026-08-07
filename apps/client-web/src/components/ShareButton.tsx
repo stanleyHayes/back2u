@@ -123,7 +123,7 @@ export function ShareButton({
   const handleNativeShare = () =>
     handleAction(async () => {
       const { url, message } = await getShareData();
-      const shareTitle = title || 'Back2u';
+      const shareTitle = title || 'bak2me';
       if (navigator.share) {
         try {
           await navigator.share({ title: shareTitle, text: message, url });

@@ -15,23 +15,45 @@
       href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Outfit:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Back2u — Lost &amp; found, smarter.</title>
+    <title>bak2me — Lost &amp; found, smarter.</title>
   </head>
   <body>
     <div id="root">
       <style>
         @keyframes b2uSplashRise {
-          from { opacity: 0; transform: translateY(18px) scale(.97) }
-          to { opacity: 1; transform: translateY(0) scale(1) }
+          from {
+            opacity: 0;
+            transform: translateY(18px) scale(0.97);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
         }
-        @keyframes b2uSplashOrbit { to { transform: rotate(360deg) } }
+        @keyframes b2uSplashOrbit {
+          to {
+            transform: rotate(360deg);
+          }
+        }
         @keyframes b2uSplashPulse {
-          0%, 100% { transform: scale(.88); opacity: .34 }
-          50% { transform: scale(1); opacity: 1 }
+          0%,
+          100% {
+            transform: scale(0.88);
+            opacity: 0.34;
+          }
+          50% {
+            transform: scale(1);
+            opacity: 1;
+          }
         }
         @keyframes b2uSplashSweep {
-          0% { transform: translateX(-115%) }
-          55%, 100% { transform: translateX(310%) }
+          0% {
+            transform: translateX(-115%);
+          }
+          55%,
+          100% {
+            transform: translateX(310%);
+          }
         }
         #b2u-splash {
           position: fixed;
@@ -40,15 +62,19 @@
           display: grid;
           place-items: center;
           overflow: hidden;
-          color: #2E3D2F;
+          color: #2e3d2f;
           background:
-            radial-gradient(circle at 50% 42%, rgba(126,154,130,.10), transparent 28rem),
-            #FFFFFF;
-          font-family: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+            radial-gradient(circle at 50% 42%, rgba(126, 154, 130, 0.1), transparent 28rem), #ffffff;
+          font-family:
+            'Outfit',
+            system-ui,
+            -apple-system,
+            'Segoe UI',
+            sans-serif;
         }
         #b2u-splash::before,
         #b2u-splash::after {
-          content: "";
+          content: '';
           position: absolute;
           width: min(46vw, 560px);
           aspect-ratio: 1;
@@ -59,13 +85,15 @@
         #b2u-splash::before {
           top: -31vw;
           right: -16vw;
-          background: rgba(64,97,74,.06);
-          box-shadow: inset 18px 18px 42px rgba(190,198,193,.28), inset -18px -18px 42px #fff;
+          background: rgba(64, 97, 74, 0.06);
+          box-shadow:
+            inset 18px 18px 42px rgba(190, 198, 193, 0.28),
+            inset -18px -18px 42px #fff;
         }
         #b2u-splash::after {
           bottom: -34vw;
           left: -18vw;
-          background: rgba(139,111,78,.055);
+          background: rgba(139, 111, 78, 0.055);
         }
         #b2u-splash .stage {
           position: relative;
@@ -75,9 +103,11 @@
           width: min(88vw, 520px);
           padding: 44px 32px 34px;
           border-radius: 38px 38px 38px 12px;
-          background: rgba(255,255,255,.76);
-          box-shadow: 20px 20px 46px rgba(190,198,193,.48), -20px -20px 46px #fff;
-          animation: b2uSplashRise .65s cubic-bezier(.2,.7,.2,1) both;
+          background: rgba(255, 255, 255, 0.76);
+          box-shadow:
+            20px 20px 46px rgba(190, 198, 193, 0.48),
+            -20px -20px 46px #fff;
+          animation: b2uSplashRise 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) both;
           isolation: isolate;
         }
         #b2u-splash .route {
@@ -91,12 +121,14 @@
         #b2u-splash .orbit {
           position: absolute;
           inset: 0;
-          border: 1px solid rgba(64,97,74,.12);
+          border: 1px solid rgba(64, 97, 74, 0.12);
           border-radius: 50%;
-          box-shadow: inset 7px 7px 14px rgba(190,198,193,.38), inset -7px -7px 14px #fff;
+          box-shadow:
+            inset 7px 7px 14px rgba(190, 198, 193, 0.38),
+            inset -7px -7px 14px #fff;
         }
         #b2u-splash .orbit::after {
-          content: "";
+          content: '';
           position: absolute;
           top: 11px;
           left: 50%;
@@ -104,10 +136,12 @@
           height: 9px;
           margin-left: -4.5px;
           border-radius: 50%;
-          background: #8B6F4E;
-          box-shadow: 0 0 0 7px rgba(139,111,78,.10);
+          background: #8b6f4e;
+          box-shadow: 0 0 0 7px rgba(139, 111, 78, 0.1);
         }
-        #b2u-splash .orbit:first-child { animation: b2uSplashOrbit 5.8s linear infinite }
+        #b2u-splash .orbit:first-child {
+          animation: b2uSplashOrbit 5.8s linear infinite;
+        }
         #b2u-splash .mark {
           position: relative;
           width: 104px;
@@ -116,32 +150,37 @@
           place-items: center;
           border-radius: 50% 50% 50% 22%;
           background: #203126;
-          box-shadow: 12px 12px 24px rgba(28,49,36,.25), -10px -10px 22px #fff;
+          box-shadow:
+            12px 12px 24px rgba(28, 49, 36, 0.25),
+            -10px -10px 22px #fff;
         }
-        #b2u-splash .mark svg { width: 59px; height: 59px }
+        #b2u-splash .mark svg {
+          width: 59px;
+          height: 59px;
+        }
         #b2u-splash .eyebrow {
           margin: 0 0 7px;
-          color: #8B6F4E;
+          color: #8b6f4e;
           font-size: 11px;
           font-weight: 800;
-          letter-spacing: .22em;
+          letter-spacing: 0.22em;
           text-transform: uppercase;
         }
         #b2u-splash .wordmark {
           margin: 0;
           color: #203126;
-          font-family: "Black Ops One", Georgia, serif;
+          font-family: 'Black Ops One', Georgia, serif;
           font-size: clamp(36px, 8vw, 52px);
           font-weight: 400;
           line-height: 1;
-          letter-spacing: -.035em;
+          letter-spacing: -0.035em;
         }
         #b2u-splash .promise {
           margin: 12px 0 29px;
-          color: rgba(46,61,47,.68);
+          color: rgba(46, 61, 47, 0.68);
           font-size: 14px;
           font-weight: 600;
-          letter-spacing: .12em;
+          letter-spacing: 0.12em;
         }
         #b2u-splash .progress {
           position: relative;
@@ -149,17 +188,19 @@
           height: 6px;
           overflow: hidden;
           border-radius: 99px;
-          background: #F3F5F3;
-          box-shadow: inset 3px 3px 6px rgba(190,198,193,.52), inset -3px -3px 6px #fff;
+          background: #f3f5f3;
+          box-shadow:
+            inset 3px 3px 6px rgba(190, 198, 193, 0.52),
+            inset -3px -3px 6px #fff;
         }
         #b2u-splash .progress::after {
-          content: "";
+          content: '';
           position: absolute;
           inset: 0;
           width: 36%;
           border-radius: inherit;
-          background: linear-gradient(90deg, #40614A, #8AA68E);
-          box-shadow: 0 0 12px rgba(64,97,74,.34);
+          background: linear-gradient(90deg, #40614a, #8aa68e);
+          box-shadow: 0 0 12px rgba(64, 97, 74, 0.34);
           animation: b2uSplashSweep 1.45s ease-in-out infinite;
         }
         #b2u-splash .status {
@@ -167,57 +208,135 @@
           align-items: center;
           gap: 8px;
           margin-top: 14px;
-          color: rgba(46,61,47,.52);
+          color: rgba(46, 61, 47, 0.52);
           font-size: 11px;
           font-weight: 700;
-          letter-spacing: .13em;
+          letter-spacing: 0.13em;
           text-transform: uppercase;
         }
         #b2u-splash .status i {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #40614A;
+          background: #40614a;
           animation: b2uSplashPulse 1.2s ease-in-out infinite;
         }
         @media (prefers-color-scheme: dark) {
-          #b2u-splash { color: #EAF3ED; background: radial-gradient(circle at 50% 42%, rgba(126,154,130,.13), transparent 28rem), #1C231B }
-          #b2u-splash .stage { background: rgba(38,48,38,.88); box-shadow: 20px 20px 46px rgba(8,13,8,.62), -16px -16px 40px rgba(58,74,48,.26) }
-          #b2u-splash .orbit { border-color: rgba(234,243,237,.08); box-shadow: inset 7px 7px 14px rgba(8,13,8,.56), inset -7px -7px 14px rgba(58,74,48,.26) }
-          #b2u-splash .mark { background: #17241B; box-shadow: 12px 12px 24px rgba(8,13,8,.62), -8px -8px 18px rgba(58,74,48,.28) }
-          #b2u-splash .wordmark { color: #EAF3ED }
-          #b2u-splash .promise { color: rgba(234,243,237,.62) }
-          #b2u-splash .progress { background: #202A21; box-shadow: inset 3px 3px 6px rgba(8,13,8,.62), inset -3px -3px 6px rgba(58,74,48,.24) }
-          #b2u-splash .status { color: rgba(234,243,237,.48) }
-          #b2u-splash::before { background: rgba(126,154,130,.04); box-shadow: none }
+          #b2u-splash {
+            color: #eaf3ed;
+            background:
+              radial-gradient(circle at 50% 42%, rgba(126, 154, 130, 0.13), transparent 28rem),
+              #1c231b;
+          }
+          #b2u-splash .stage {
+            background: rgba(38, 48, 38, 0.88);
+            box-shadow:
+              20px 20px 46px rgba(8, 13, 8, 0.62),
+              -16px -16px 40px rgba(58, 74, 48, 0.26);
+          }
+          #b2u-splash .orbit {
+            border-color: rgba(234, 243, 237, 0.08);
+            box-shadow:
+              inset 7px 7px 14px rgba(8, 13, 8, 0.56),
+              inset -7px -7px 14px rgba(58, 74, 48, 0.26);
+          }
+          #b2u-splash .mark {
+            background: #17241b;
+            box-shadow:
+              12px 12px 24px rgba(8, 13, 8, 0.62),
+              -8px -8px 18px rgba(58, 74, 48, 0.28);
+          }
+          #b2u-splash .wordmark {
+            color: #eaf3ed;
+          }
+          #b2u-splash .promise {
+            color: rgba(234, 243, 237, 0.62);
+          }
+          #b2u-splash .progress {
+            background: #202a21;
+            box-shadow:
+              inset 3px 3px 6px rgba(8, 13, 8, 0.62),
+              inset -3px -3px 6px rgba(58, 74, 48, 0.24);
+          }
+          #b2u-splash .status {
+            color: rgba(234, 243, 237, 0.48);
+          }
+          #b2u-splash::before {
+            background: rgba(126, 154, 130, 0.04);
+            box-shadow: none;
+          }
         }
         @media (max-width: 520px) {
-          #b2u-splash .stage { width: min(88vw, 390px); padding: 36px 24px 29px; border-radius: 30px 30px 30px 10px }
-          #b2u-splash .route { width: 132px; height: 132px; margin-bottom: 21px }
-          #b2u-splash .mark { width: 92px; height: 92px }
-          #b2u-splash .mark svg { width: 53px; height: 53px }
+          #b2u-splash .stage {
+            width: min(88vw, 390px);
+            padding: 36px 24px 29px;
+            border-radius: 30px 30px 30px 10px;
+          }
+          #b2u-splash .route {
+            width: 132px;
+            height: 132px;
+            margin-bottom: 21px;
+          }
+          #b2u-splash .mark {
+            width: 92px;
+            height: 92px;
+          }
+          #b2u-splash .mark svg {
+            width: 53px;
+            height: 53px;
+          }
         }
         @media (prefers-reduced-motion: reduce) {
-          #b2u-splash .stage, #b2u-splash .orbit:first-child, #b2u-splash .progress::after, #b2u-splash .status i { animation: none }
-          #b2u-splash .progress::after { transform: translateX(85%) }
+          #b2u-splash .stage,
+          #b2u-splash .orbit:first-child,
+          #b2u-splash .progress::after,
+          #b2u-splash .status i {
+            animation: none;
+          }
+          #b2u-splash .progress::after {
+            transform: translateX(85%);
+          }
         }
       </style>
-      <div id="b2u-splash" role="status" aria-live="polite" aria-label="Back2u is loading">
+      <div id="b2u-splash" role="status" aria-live="polite" aria-label="bak2me is loading">
         <div class="stage">
           <div class="route" aria-hidden="true">
             <span class="orbit"></span>
             <div class="mark">
               <svg viewBox="0 0 48 48" fill="none">
-                <defs><linearGradient id="s" x1="8" y1="8" x2="40" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#F4F7F4" /><stop offset="1" stop-color="#A8B5A0" /></linearGradient></defs>
-                <path d="M13 12 L13 27 A 11 11 0 0 0 35 27 L35 14.5" stroke="url(#s)" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" />
+                <defs>
+                  <linearGradient
+                    id="s"
+                    x1="8"
+                    y1="8"
+                    x2="40"
+                    y2="42"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stop-color="#F4F7F4" />
+                    <stop offset="1" stop-color="#A8B5A0" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M13 12 L13 27 A 11 11 0 0 0 35 27 L35 14.5"
+                  stroke="url(#s)"
+                  stroke-width="4.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
                 <path d="M35 5.5 L29.8 13 L40.2 13 Z" fill="url(#s)" />
-                <path d="M24 15.5 c-3.4 0 -6.1 2.7 -6.1 6 c0 4.3 6.1 9.6 6.1 9.6 s6.1 -5.3 6.1 -9.6 c0 -3.3 -2.7 -6 -6.1 -6 z" fill="url(#s)" />
-                <circle cx="24" cy="21.5" r="2.4" fill="#203126" />
+                <g fill="url(#s)">
+                  <rect x="21.7" y="12.5" width="4.6" height="13" rx="2.3" />
+                  <path
+                    d="M17.2 20.8 h13.6 a2.3 2.3 0 0 1 2.3 2.3 v2.7 a5.6 5.6 0 0 1 -5.6 5.6 h-6.9 a5.6 5.6 0 0 1 -5.6 -5.6 v-2.7 a2.3 2.3 0 0 1 2.3 -2.3 z"
+                  />
+                  <path d="M17.2 23 a2.6 2.6 0 0 0 -3 1.7 a1.5 1.5 0 0 0 1.1 1.9 l1.9 0.4 z" />
+                </g>
               </svg>
             </div>
           </div>
           <p class="eyebrow">Ghana's recovery network</p>
-          <h1 class="wordmark">Back2u</h1>
+          <h1 class="wordmark">bak2me</h1>
           <p class="promise">Lost. Found. Returned.</p>
           <div class="progress" aria-hidden="true"></div>
           <div class="status"><i></i><span>Connecting the community</span></div>

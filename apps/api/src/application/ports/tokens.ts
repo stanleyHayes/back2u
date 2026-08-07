@@ -57,7 +57,7 @@ export const TOKENS = {
   PerceptualHash: Symbol.for('PerceptualHash'),
   PdfReportService: Symbol.for('PdfReportService'),
   I18nService: Symbol.for('I18nService'),
-  TwilioSignatureVerifier: Symbol.for('TwilioSignatureVerifier'),
+  InboundSmsVerifier: Symbol.for('InboundSmsVerifier'),
   ErrorReporter: Symbol.for('ErrorReporter'),
   Scheduler: Symbol.for('Scheduler'),
   Queue: Symbol.for('Queue'),

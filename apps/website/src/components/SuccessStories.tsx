@@ -19,7 +19,7 @@ const STORIES: Story[] = [
     avatarColor: '#40614A',
     lostItem: 'laptop',
     timeframe: '2 hours via AI match',
-    body: 'I left my laptop in a taxi and posted it on Back2u within minutes. The AI matching engine surfaced a found item that looked identical, and I had it back before dinner.',
+    body: 'I left my laptop in a taxi and posted it on bak2me within minutes. The AI matching engine surfaced a found item that looked identical, and I had it back before dinner.',
   },
   {
     name: 'Kofi B.',
@@ -28,7 +28,7 @@ const STORIES: Story[] = [
     avatarColor: '#8B6F4E',
     lostItem: 'backpack with QR tag',
     timeframe: 'instantly after scan',
-    body: 'My backpack had a Back2u QR tag from the campus event. Someone found it, scanned the code, and I received an alert with the exact location instantly.',
+    body: 'My backpack had a bak2me QR tag from the campus event. Someone found it, scanned the code, and I received an alert with the exact location instantly.',
   },
   {
     name: 'Efua M.',
@@ -37,7 +37,7 @@ const STORIES: Story[] = [
     avatarColor: '#2563EB',
     lostItem: 'phone at campus',
     timeframe: '5 minutes via security partner',
-    body: 'I dropped my phone in the library and panicked when I realized it was gone. The campus security team had already logged it in Back2u, so pickup took five minutes.',
+    body: 'I dropped my phone in the library and panicked when I realized it was gone. The campus security team had already logged it in bak2me, so pickup took five minutes.',
   },
   {
     name: 'Kwame O.',

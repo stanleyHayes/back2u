@@ -282,7 +282,7 @@ export function Pricing() {
       >
         <Container>
           <Typography color="text.secondary" sx={{ fontSize: 14 }}>
-            © {new Date().getFullYear()} Back2u. All rights reserved.
+            © {new Date().getFullYear()} bak2me. All rights reserved.
           </Typography>
         </Container>
       </Box>

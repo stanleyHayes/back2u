@@ -1,4 +1,4 @@
-# Back2u — Smart Lost & Found Ecosystem
+# bak2me — Smart Lost & Found Ecosystem
 
 AI-powered platform that reunites people with their lost belongings. Built as a TypeScript monorepo with a hexagonal-architecture Express backend, four React + MUI web apps, and an Expo mobile app.
 
@@ -6,14 +6,14 @@ AI-powered platform that reunites people with their lost belongings. Built as a 
 
 Every push and PR runs `.github/workflows/ci.yml`:
 
-| Stage | What runs |
-| --- | --- |
-| Lint + typecheck | `pnpm typecheck` across the workspace |
-| Unit tests | Pure-domain entity specs (`pnpm --filter @back2u/api test:unit`) |
-| Integration tests | Use-case suite against `mongodb-memory-server` |
-| HTTP smoke | Supertest against `buildApp(buildContainer())` |
-| Build | `pnpm build` (turbo, all apps) |
-| Docker (main only) | `docker buildx` of the API image to verify the Dockerfile |
+| Stage              | What runs                                                        |
+| ------------------ | ---------------------------------------------------------------- |
+| Lint + typecheck   | `pnpm typecheck` across the workspace                            |
+| Unit tests         | Pure-domain entity specs (`pnpm --filter @back2u/api test:unit`) |
+| Integration tests  | Use-case suite against `mongodb-memory-server`                   |
+| HTTP smoke         | Supertest against `buildApp(buildContainer())`                   |
+| Build              | `pnpm build` (turbo, all apps)                                   |
+| Docker (main only) | `docker buildx` of the API image to verify the Dockerfile        |
 
 `.github/workflows/deploy.yml` runs on `main`:
 
@@ -61,18 +61,18 @@ Rotate secrets at any time: `./scripts/setup-keys.sh > .env.secrets`.
 
 Add the keys to `.env` (and to Render Dashboard → Environment for production). Each row tells you which features stay disabled until the key is set.
 
-| Provider | Free tier | Sign up | Env keys | Disables when blank |
-| --- | --- | --- | --- | --- |
-| **MongoDB Atlas** | 512 MB | [cloud.mongodb.com](https://cloud.mongodb.com) | `MONGO_URI` | Required — app won't boot |
-| **Redis** | Render free 25 MB | Render dashboard add-on | `REDIS_URL` | Match generation falls back to in-process (single instance only) |
-| **OpenAI** | Pay-as-you-go | [platform.openai.com](https://platform.openai.com) | `OPENAI_API_KEY` | AI matching, AI describe, AI verification, moderation |
-| **Cloudinary** | 25 credits/mo | [cloudinary.com](https://cloudinary.com) | `CLOUDINARY_*` (3 keys) | Image uploads, signed PDF storage |
-| **Resend** | 3k emails/mo | [resend.com](https://resend.com) | `RESEND_API_KEY`, `RESEND_FROM` | Welcome / match / chat / reset emails |
-| **Mapbox** | 50k loads/mo | [account.mapbox.com](https://account.mapbox.com) | `MAPBOX_TOKEN`, `VITE_MAPBOX_TOKEN`, `EXPO_PUBLIC_MAPBOX_TOKEN` | Map page, geocoding |
-| **Twilio** | $15 trial credit | [twilio.com](https://twilio.com) | `TWILIO_*` (3 keys) | Phone OTP, SMS fallback, inbound SMS |
-| **Hubtel** | Per-transaction | [hubtel.com](https://hubtel.com) | `HUBTEL_*` (3 keys) | Mobile-money escrow (reward hold/release) |
-| **Expo push** | Free | EAS dashboard | `EXPO_ACCESS_TOKEN` | Push notifications to mobile devices |
-| **Sentry** | 5k events/mo | [sentry.io](https://sentry.io) | `SENTRY_DSN` | Production error reporting (logger fallback in dev) |
+| Provider          | Free tier         | Sign up                                            | Env keys                                                        | Disables when blank                                              |
+| ----------------- | ----------------- | -------------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **MongoDB Atlas** | 512 MB            | [cloud.mongodb.com](https://cloud.mongodb.com)     | `MONGO_URI`                                                     | Required — app won't boot                                        |
+| **Redis**         | Render free 25 MB | Render dashboard add-on                            | `REDIS_URL`                                                     | Match generation falls back to in-process (single instance only) |
+| **OpenAI**        | Pay-as-you-go     | [platform.openai.com](https://platform.openai.com) | `OPENAI_API_KEY`                                                | AI matching, AI describe, AI verification, moderation            |
+| **Cloudinary**    | 25 credits/mo     | [cloudinary.com](https://cloudinary.com)           | `CLOUDINARY_*` (3 keys)                                         | Image uploads, signed PDF storage                                |
+| **Resend**        | 3k emails/mo      | [resend.com](https://resend.com)                   | `RESEND_API_KEY`, `RESEND_FROM`                                 | Welcome / match / chat / reset emails                            |
+| **Mapbox**        | 50k loads/mo      | [account.mapbox.com](https://account.mapbox.com)   | `MAPBOX_TOKEN`, `VITE_MAPBOX_TOKEN`, `EXPO_PUBLIC_MAPBOX_TOKEN` | Map page, geocoding                                              |
+| **Twilio**        | $15 trial credit  | [twilio.com](https://twilio.com)                   | `TWILIO_*` (3 keys)                                             | Phone OTP, SMS fallback, inbound SMS                             |
+| **Hubtel**        | Per-transaction   | [hubtel.com](https://hubtel.com)                   | `HUBTEL_*` (3 keys)                                             | Mobile-money escrow (reward hold/release)                        |
+| **Expo push**     | Free              | EAS dashboard                                      | `EXPO_ACCESS_TOKEN`                                             | Push notifications to mobile devices                             |
+| **Sentry**        | 5k events/mo      | [sentry.io](https://sentry.io)                     | `SENTRY_DSN`                                                    | Production error reporting (logger fallback in dev)              |
 
 Generate dev secrets locally:
 
@@ -82,35 +82,36 @@ Generate dev secrets locally:
 
 ## Web ↔ Mobile parity
 
-| Feature                                 | Backend | Web | Mobile |
-| --------------------------------------- | :-----: | :-: | :----: |
-| Register / Login / Logout                | ✓ | ✓ | ✓ |
-| Forgot / reset password                  | ✓ | ✓ | ✓ |
-| Email verification                       | ✓ | ✓ | ✓ |
-| Phone OTP                                | ✓ | ✓ | ✓ |
-| Comprehensive GDPR export                | ✓ | ✓ | ✓ |
-| Account deletion (anonymise)             | ✓ | ✓ | ✓ |
-| Feed / Item / Post / Matches / Chat      | ✓ | ✓ | ✓ |
-| AI describe (1-tap autofill)             | ✓ | ✓ | hookable |
-| QR tags (claim / lost / list)            | ✓ | ✓ | ✓ |
-| QR tag scan (camera)                     | ✓ | n/a | ✓ |
-| Memory vault (encrypted at rest)         | ✓ | ✓ | ✓ |
-| Marketplace + bidding                    | ✓ | ✓ | ✓ |
-| Leaderboard + badges                     | ✓ | ✓ | ✓ |
-| Map / hotspots                           | ✓ | ✓ (Mapbox) | ✓ (list) |
-| Courier (request + open jobs)            | ✓ | ✓ | ✓ |
-| Verification flow                        | ✓ | ✓ | ✓ |
-| Settings (locale + redeem + privacy)     | ✓ | ✓ | ✓ |
-| Block / report safety                    | ✓ | ✓ | ✓ |
-| Zone subscriptions (polygon)             | ✓ | ✓ | ✓ |
-| Police-case PDF                          | ✓ | ✓ | ✓ |
-| Share card                               | ✓ | ✓ | ✓ |
-| Web push subscribe (browser)             | ✓ | ✓ | n/a |
-| Expo push token (auto on login)          | ✓ | n/a | ✓ |
+| Feature                              | Backend |    Web     |  Mobile  |
+| ------------------------------------ | :-----: | :--------: | :------: |
+| Register / Login / Logout            |    ✓    |     ✓      |    ✓     |
+| Forgot / reset password              |    ✓    |     ✓      |    ✓     |
+| Email verification                   |    ✓    |     ✓      |    ✓     |
+| Phone OTP                            |    ✓    |     ✓      |    ✓     |
+| Comprehensive GDPR export            |    ✓    |     ✓      |    ✓     |
+| Account deletion (anonymise)         |    ✓    |     ✓      |    ✓     |
+| Feed / Item / Post / Matches / Chat  |    ✓    |     ✓      |    ✓     |
+| AI describe (1-tap autofill)         |    ✓    |     ✓      | hookable |
+| QR tags (claim / lost / list)        |    ✓    |     ✓      |    ✓     |
+| QR tag scan (camera)                 |    ✓    |    n/a     |    ✓     |
+| Memory vault (encrypted at rest)     |    ✓    |     ✓      |    ✓     |
+| Marketplace + bidding                |    ✓    |     ✓      |    ✓     |
+| Leaderboard + badges                 |    ✓    |     ✓      |    ✓     |
+| Map / hotspots                       |    ✓    | ✓ (Mapbox) | ✓ (list) |
+| Courier (request + open jobs)        |    ✓    |     ✓      |    ✓     |
+| Verification flow                    |    ✓    |     ✓      |    ✓     |
+| Settings (locale + redeem + privacy) |    ✓    |     ✓      |    ✓     |
+| Block / report safety                |    ✓    |     ✓      |    ✓     |
+| Zone subscriptions (polygon)         |    ✓    |     ✓      |    ✓     |
+| Police-case PDF                      |    ✓    |     ✓      |    ✓     |
+| Share card                           |    ✓    |     ✓      |    ✓     |
+| Web push subscribe (browser)         |    ✓    |     ✓      |   n/a    |
+| Expo push token (auto on login)      |    ✓    |    n/a     |    ✓     |
 
 ## Production-readiness status
 
 **In place (Tier 1 — security/correctness/compliance):**
+
 - Argon2id passwords, JWT access tokens, server-stored rotating refresh tokens with revocation + logout
 - Phone OTP, email verification, password reset (issue+confirm), comprehensive GDPR data export, account deletion with PII anonymisation
 - Idempotency middleware on all mutating routes (`Idempotency-Key` header, 24h replay-safe)
@@ -138,18 +139,19 @@ Generate dev secrets locally:
 
 **Decisions baked in (swap via single container binding):**
 
-| Concern         | Default                                       | Swap path |
-| --------------- | --------------------------------------------- | --------- |
-| Queue           | BullMQ + Redis                                 | `IQueue` / `IQueueWorker` bindings |
-| Vault crypto    | libsodium with `VAULT_MASTER_KEY`              | `IVaultCipher` (KMS-ready) |
-| PDF             | pdfkit in-process                              | `IPdfReportService` |
-| Error reporting | Sentry (`SENTRY_DSN`) → falls back to logger   | `IErrorReporter` |
-| Visual matching | OpenAI gpt-4o-mini                              | `IAiMatchingService` |
-| Web push        | `web-push` + VAPID                              | `IWebPushService` |
+| Concern         | Default                                      | Swap path                          |
+| --------------- | -------------------------------------------- | ---------------------------------- |
+| Queue           | BullMQ + Redis                               | `IQueue` / `IQueueWorker` bindings |
+| Vault crypto    | libsodium with `VAULT_MASTER_KEY`            | `IVaultCipher` (KMS-ready)         |
+| PDF             | pdfkit in-process                            | `IPdfReportService`                |
+| Error reporting | Sentry (`SENTRY_DSN`) → falls back to logger | `IErrorReporter`                   |
+| Visual matching | OpenAI gpt-4o-mini                           | `IAiMatchingService`               |
+| Web push        | `web-push` + VAPID                           | `IWebPushService`                  |
 
 ## Feature set
 
 ### From the original spec
+
 - AI-powered matching (visual + text + geo + time)
 - Geo-fenced lost zones with hotspot map
 - Proof-of-ownership verification with AI consistency scoring + admin review
@@ -167,6 +169,7 @@ Generate dev secrets locally:
 - Trusted Finder Network (auto-promoted at 10 successful returns)
 
 ### Research-driven additions
+
 - Bluetooth/NFC heartbeat — crowdsourced "last seen" pings via `/v1/tags/heartbeat`
 - SMS + WhatsApp fallback (Twilio inbound parser at `/v1/sms/inbound`)
 - Mobile-money escrow (Hubtel adapter) — held on reward creation, released on confirmed return
@@ -180,23 +183,23 @@ Generate dev secrets locally:
 
 ## Stack
 
-| Layer        | Tech                                                                             |
-| ------------ | -------------------------------------------------------------------------------- |
-| Backend      | Node 20 + Express 5, TypeScript, Inversify (DI), Mongoose 8, Zod, Socket.IO      |
-| Domain shape | Hexagonal architecture (domain → application/ports → infrastructure → interfaces) |
-| Auth         | Email + password (Argon2id) → JWT access + refresh; phone OTP via Twilio         |
-| Storage      | MongoDB (geo + text + 2dsphere on tags/zones), Cloudinary (images, signed)       |
+| Layer        | Tech                                                                               |
+| ------------ | ---------------------------------------------------------------------------------- |
+| Backend      | Node 20 + Express 5, TypeScript, Inversify (DI), Mongoose 8, Zod, Socket.IO        |
+| Domain shape | Hexagonal architecture (domain → application/ports → infrastructure → interfaces)  |
+| Auth         | Email + password (Argon2id) → JWT access + refresh; phone OTP via Twilio           |
+| Storage      | MongoDB (geo + text + 2dsphere on tags/zones), Cloudinary (images, signed)         |
 | AI           | OpenAI `text-embedding-3-large` + `gpt-4o-mini` vision + moderation + verification |
-| Email        | Resend                                                                           |
-| SMS          | Twilio                                                                           |
-| Payments     | Hubtel mobile-money escrow                                                       |
-| Push         | Expo push                                                                        |
-| Maps/geocode | Mapbox                                                                           |
-| Realtime     | Socket.IO (chat + match + courier + tag-scan + zone alerts)                      |
-| Frontends    | React 18 + Vite + MUI 6 + TanStack Query + Zustand + react-router                |
-| Mobile       | Expo SDK 52 + expo-router + react-native-paper                                   |
-| Monorepo     | pnpm workspaces + Turborepo                                                      |
-| Deploy       | API → Render (Docker). Web apps → any static host. Mobile → EAS.                 |
+| Email        | Resend                                                                             |
+| SMS          | Twilio                                                                             |
+| Payments     | Hubtel mobile-money escrow                                                         |
+| Push         | Expo push                                                                          |
+| Maps/geocode | Mapbox                                                                             |
+| Realtime     | Socket.IO (chat + match + courier + tag-scan + zone alerts)                        |
+| Frontends    | React 18 + Vite + MUI 6 + TanStack Query + Zustand + react-router                  |
+| Mobile       | Expo SDK 52 + expo-router + react-native-paper                                     |
+| Monorepo     | pnpm workspaces + Turborepo                                                        |
+| Deploy       | API → Render (Docker). Web apps → any static host. Mobile → EAS.                   |
 
 ## Repo layout
 

@@ -127,7 +127,7 @@ const TESTIMONIALS = [
     name: 'Ama K.',
     role: 'Accra',
     quote:
-      'I left my laptop in a taxi. Back2u matched it within 2 hours. The verification flow made me feel safe.',
+      'I left my laptop in a taxi. bak2me matched it within 2 hours. The verification flow made me feel safe.',
   },
   {
     name: 'Kofi B.',
@@ -144,7 +144,7 @@ const TESTIMONIALS = [
 
 const FAQS = [
   {
-    q: 'Is Back2u free to use?',
+    q: 'Is bak2me free to use?',
     a: 'Yes. Posting items, browsing matches, and chatting are free. Rewards and courier services involve optional fees set by users.',
   },
   {
@@ -160,7 +160,7 @@ const FAQS = [
     a: 'Waterproof stickers with a unique code. When scanned, they show a contact form without revealing your identity.',
   },
   {
-    q: 'Can institutions partner with Back2u?',
+    q: 'Can institutions partner with bak2me?',
     a: 'Absolutely. Universities, malls, airports, and transit hubs can onboard to manage lost & found at scale.',
   },
 ];
@@ -903,7 +903,7 @@ function LandingPage() {
         {/* Features — editorial grid */}
         <Container sx={{ py: { xs: 8, md: 13 } }}>
           <Box data-reveal className="b2u-reveal" sx={{ maxWidth: 620, mb: { xs: 5, md: 7 } }}>
-            <Kicker>Why Back2u</Kicker>
+            <Kicker>Why bak2me</Kicker>
             <Typography
               className="b2u-display"
               component="h2"
@@ -1115,7 +1115,7 @@ function LandingPage() {
                     mx: 'auto',
                   }}
                 >
-                  Join thousands across Ghana who trust Back2u to reunite them with what matters.
+                  Join thousands across Ghana who trust bak2me to reunite them with what matters.
                 </Typography>
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}

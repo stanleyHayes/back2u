@@ -6,9 +6,10 @@
 export const openApiSpec = {
   openapi: '3.1.0',
   info: {
-    title: 'Back2u API',
+    title: 'bak2me API',
     version: '1.0.0',
-    description: 'Smart Lost & Found API. All responses are `{ data: T }`. Errors are `{ error: { code, message, details? } }`.',
+    description:
+      'Smart Lost & Found API. All responses are `{ data: T }`. Errors are `{ error: { code, message, details? } }`.',
   },
   servers: [{ url: '/' }],
   components: {
@@ -40,7 +41,23 @@ export const openApiSpec = {
       post: {
         summary: 'Register',
         security: [],
-        requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', required: ['email', 'password', 'name'], properties: { email: { type: 'string', format: 'email' }, password: { type: 'string', minLength: 8 }, name: { type: 'string' }, phone: { type: 'string' } } } } } },
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['email', 'password', 'name'],
+                properties: {
+                  email: { type: 'string', format: 'email' },
+                  password: { type: 'string', minLength: 8 },
+                  name: { type: 'string' },
+                  phone: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
         responses: { 201: { description: 'Created' }, 409: { description: 'Email in use' } },
       },
     },
@@ -51,7 +68,9 @@ export const openApiSpec = {
     '/v1/auth/phone/verify': { post: { summary: 'Verify phone OTP' } },
     '/v1/auth/email/request-verification': { post: { summary: 'Request email verification' } },
     '/v1/auth/email/confirm': { post: { summary: 'Confirm email verification' } },
-    '/v1/auth/password/request-reset': { post: { summary: 'Request password reset', security: [] } },
+    '/v1/auth/password/request-reset': {
+      post: { summary: 'Request password reset', security: [] },
+    },
     '/v1/auth/password/confirm': { post: { summary: 'Confirm password reset', security: [] } },
     '/v1/me/push-token': { post: { summary: 'Register Expo push token' } },
     '/v1/me/locale': { post: { summary: 'Set locale' } },
@@ -69,7 +88,9 @@ export const openApiSpec = {
     },
     '/v1/items/{id}/matches': { get: { summary: 'List AI-suggested matches for an item' } },
     '/v1/items/{id}/bump': { post: { summary: 'Bump item expiry' } },
-    '/v1/items/autocomplete': { get: { summary: 'Autocomplete cities & categories', security: [] } },
+    '/v1/items/autocomplete': {
+      get: { summary: 'Autocomplete cities & categories', security: [] },
+    },
     '/v1/matches/{id}/accept': { post: { summary: 'Accept a match (opens chat thread)' } },
     '/v1/matches/{id}/reject': { post: { summary: 'Reject a match' } },
     '/v1/chat/threads': { get: { summary: 'List my threads' } },
@@ -82,17 +103,23 @@ export const openApiSpec = {
     '/v1/tags/mine': { get: { summary: 'List my QR tags' } },
     '/v1/tags/mint': { post: { summary: 'Mint blank QR tags (admin)' } },
     '/v1/tags/claim': { post: { summary: 'Claim a QR tag by code' } },
-    '/v1/tags/{code}/scan': { post: { summary: 'Anonymous finder contact for a scanned tag', security: [] } },
+    '/v1/tags/{code}/scan': {
+      post: { summary: 'Anonymous finder contact for a scanned tag', security: [] },
+    },
     '/v1/tags/heartbeat': { post: { summary: 'Crowdsourced BLE/QR heartbeat', security: [] } },
     '/v1/tags/{code}/lost': { post: { summary: 'Mark a tagged item lost' } },
     '/v1/verifications': { post: { summary: 'Submit ownership-verification claim' } },
-    '/v1/verifications/questions': { get: { summary: 'Standard verification questions', security: [] } },
+    '/v1/verifications/questions': {
+      get: { summary: 'Standard verification questions', security: [] },
+    },
     '/v1/verifications/pending': { get: { summary: 'Pending verifications (admin)' } },
     '/v1/verifications/{id}/decide': { post: { summary: 'Approve / reject (admin)' } },
     '/v1/courier/jobs': { post: { summary: 'Request a courier job' } },
     '/v1/courier/jobs/open': { get: { summary: 'List open jobs (courier role)' } },
     '/v1/courier/jobs/{id}/accept': { post: { summary: 'Accept job (courier role)' } },
-    '/v1/courier/jobs/{id}/transition': { post: { summary: 'pickup / in_transit / deliver / cancel' } },
+    '/v1/courier/jobs/{id}/transition': {
+      post: { summary: 'pickup / in_transit / deliver / cancel' },
+    },
     '/v1/vault': {
       get: { summary: 'List my vault entries (decrypted server-side)' },
       post: { summary: 'Create vault entry (sensitive fields encrypted)' },
@@ -117,7 +144,9 @@ export const openApiSpec = {
     '/v1/institutions/{id}': { get: { summary: 'Get institution', security: [] } },
     '/v1/leaderboard': { get: { summary: 'Top finders', security: [] } },
     '/v1/share/items/{id}/share-card': { get: { summary: 'Social share card', security: [] } },
-    '/v1/sms/inbound': { post: { summary: 'Twilio inbound webhook (signature-verified)', security: [] } },
+    '/v1/sms/inbound': {
+      post: { summary: 'Arkesel inbound SMS webhook (shared-secret)', security: [] },
+    },
     '/v1/audit': { get: { summary: 'Audit log (admin)' } },
     '/v1/safety/blocks': {
       get: { summary: 'List my blocks' },

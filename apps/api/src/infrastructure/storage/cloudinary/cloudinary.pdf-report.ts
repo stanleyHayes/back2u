@@ -7,7 +7,14 @@ import { TOKENS } from '../../../application/ports/tokens.js';
 import type { Env } from '../../../config/env.js';
 
 type ReportInput = {
-  item: { title: string; description: string; serialNumber?: string; imei?: string; place: string; occurredAt: Date };
+  item: {
+    title: string;
+    description: string;
+    serialNumber?: string;
+    imei?: string;
+    place: string;
+    occurredAt: Date;
+  };
   user: { name: string; email: string; phone?: string };
 };
 
@@ -19,7 +26,9 @@ export class PdfKitReportService implements IPdfReportService {
     @inject(TOKENS.Env) env: Env,
     @inject(TOKENS.Logger) private readonly logger: ILogger,
   ) {
-    this.enabled = Boolean(env.CLOUDINARY_CLOUD_NAME && env.CLOUDINARY_API_KEY && env.CLOUDINARY_API_SECRET);
+    this.enabled = Boolean(
+      env.CLOUDINARY_CLOUD_NAME && env.CLOUDINARY_API_KEY && env.CLOUDINARY_API_SECRET,
+    );
     if (this.enabled) {
       cloudinary.config({
         cloud_name: env.CLOUDINARY_CLOUD_NAME!,
@@ -41,7 +50,8 @@ export class PdfKitReportService implements IPdfReportService {
     const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         { folder: 'police-reports', resource_type: 'raw', format: 'pdf' },
-        (err, res) => (err || !res ? reject(err ?? new Error('cloudinary upload failed')) : resolve(res)),
+        (err, res) =>
+          err || !res ? reject(err ?? new Error('cloudinary upload failed')) : resolve(res),
       );
       stream.end(pdf);
     });
@@ -56,7 +66,7 @@ export class PdfKitReportService implements IPdfReportService {
       doc.on('end', () => resolve(Buffer.concat(chunks)));
       doc.on('error', reject);
 
-      doc.fontSize(20).text('Back2u — Stolen Item Report', { align: 'center' });
+      doc.fontSize(20).text('bak2me — Stolen Item Report', { align: 'center' });
       doc.moveDown();
       doc.fontSize(12).text(`Generated: ${new Date().toISOString()}`);
       doc.moveDown();

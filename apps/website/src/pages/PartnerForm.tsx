@@ -359,7 +359,7 @@ export function PartnerForm() {
         >
           <Container>
             <Typography color="text.secondary" sx={{ fontSize: 14 }}>
-              © {new Date().getFullYear()} Back2u. All rights reserved.
+              © {new Date().getFullYear()} bak2me. All rights reserved.
             </Typography>
           </Container>
         </Box>
@@ -457,7 +457,7 @@ export function PartnerForm() {
                     mb: 1.25,
                   }}
                 >
-                  Partner with Back2u
+                  Partner with bak2me
                 </Typography>
                 <Typography
                   sx={{ fontSize: 15.5, color: 'rgba(234,243,237,0.82)', mb: 3, maxWidth: 380 }}
@@ -826,7 +826,7 @@ export function PartnerForm() {
       >
         <Container>
           <Typography color="text.secondary" sx={{ fontSize: 14 }}>
-            © {new Date().getFullYear()} Back2u. All rights reserved.
+            © {new Date().getFullYear()} bak2me. All rights reserved.
           </Typography>
         </Container>
       </Box>

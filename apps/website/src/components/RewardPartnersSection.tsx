@@ -34,7 +34,7 @@ const TYPE_LABEL: Record<string, string> = {
 
 /**
  * Marketing-site strip advertising the partners that have OPTED IN to accept
- * Back2u points (rewardsListed === true). Renders nothing until at least one exists.
+ * bak2me points (rewardsListed === true). Renders nothing until at least one exists.
  */
 export function RewardPartnersSection() {
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -86,7 +86,7 @@ export function RewardPartnersSection() {
             Spend your points where it counts
           </Typography>
           <Typography sx={{ mt: 2, color: 'text.secondary', fontSize: 18 }}>
-            Restaurants, malls and shops across Ghana have opted in to accept Back2u points. Return
+            Restaurants, malls and shops across Ghana have opted in to accept bak2me points. Return
             what you find — then treat yourself at one of our partners.
           </Typography>
         </Box>

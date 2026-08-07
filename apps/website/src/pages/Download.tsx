@@ -24,7 +24,7 @@ export function Download() {
           component="h1"
           sx={{ mt: 2, fontSize: { xs: 38, md: 56 }, fontWeight: 600, color: INK }}
         >
-          Back2u in your pocket
+          bak2me in your pocket
         </Typography>
         <Typography sx={{ mt: 2.5, color: 'text.secondary', fontSize: 18, lineHeight: 1.7 }}>
           Lost &amp; found happens on the move — in taxis, on campuses, at the mall. The mobile app
@@ -93,7 +93,7 @@ export function Download() {
               className="b2u-display"
               sx={{ color: PAPER, fontSize: 22, fontWeight: 600 }}
             >
-              Back2u
+              bak2me
             </Typography>
             <Typography sx={{ color: 'rgba(250,248,243,0.7)', fontSize: 13 }}>
               Reunite. Repeat.

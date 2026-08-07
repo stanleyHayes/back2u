@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 
 /**
- * Back2u marketing theme — "warm editorial reunion".
+ * bak2me marketing theme — "warm editorial reunion".
  * Paper-and-ink magazine aesthetic: warm paper ground, deep-teal ink,
  * marigold + clay accents. Black Ops One (display face) + Hanken Grotesk (body).
  * Now mode-aware: a deep forest-green ground carries the same brand in dark.

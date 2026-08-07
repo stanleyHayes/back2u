@@ -27,7 +27,7 @@ import type { IQueue, IQueueWorker, JobName } from '../application/ports/queue.j
 import type {
   IAppUrls,
   IScheduler,
-  ITwilioSignatureVerifier,
+  IInboundSmsVerifier,
   IWebPushService,
 } from '../application/ports/extra-services.js';
 import type { IWebPushSubscriptionRepository } from '../infrastructure/persistence/mongo/repositories/web-push.repo.mongo.js';
@@ -183,7 +183,7 @@ class NoopQueueWorker implements IQueueWorker {
   async stop() {}
 }
 
-class NoopTwilioSignature implements ITwilioSignatureVerifier {
+class NoopInboundSmsVerifier implements IInboundSmsVerifier {
   verify(): boolean {
     return true;
   }
@@ -198,7 +198,9 @@ class NoopWebPushSubscriptionRepo implements IWebPushSubscriptionRepository {
 }
 
 class NoopCache implements ICache {
-  async get<T>(): Promise<T | null> { return null; }
+  async get<T>(): Promise<T | null> {
+    return null;
+  }
   async set(): Promise<void> {}
   async del(): Promise<void> {}
   async invalidatePattern(): Promise<void> {}
@@ -214,9 +216,15 @@ export function buildTestContainer(envOverride?: Env): Container {
   c.rebind<IWebPushService>(TOKENS.WebPushService).toConstantValue(new NoopWebPushService());
   c.rebind<IPaymentEscrowService>(TOKENS.PaymentEscrow).toConstantValue(new NoopPaymentEscrow());
   c.rebind<IImageStorage>(TOKENS.ImageStorage).toConstantValue(new NoopImageStorage());
-  c.rebind<IAiMatchingService>(TOKENS.AiMatchingService).toConstantValue(new StubAiMatchingService());
-  c.rebind<IAiVerificationService>(TOKENS.AiVerificationService).toConstantValue(new NoopAiVerification());
-  c.rebind<IContentModeration>(TOKENS.ContentModeration).toConstantValue(new NoopContentModeration());
+  c.rebind<IAiMatchingService>(TOKENS.AiMatchingService).toConstantValue(
+    new StubAiMatchingService(),
+  );
+  c.rebind<IAiVerificationService>(TOKENS.AiVerificationService).toConstantValue(
+    new NoopAiVerification(),
+  );
+  c.rebind<IContentModeration>(TOKENS.ContentModeration).toConstantValue(
+    new NoopContentModeration(),
+  );
   c.rebind<IGeocodingService>(TOKENS.GeocodingService).toConstantValue(new NoopGeocoding());
   c.rebind<IRealtimeBus>(TOKENS.RealtimeBus).toConstantValue(new NoopRealtimeBus());
   c.rebind<IPerceptualHashService>(TOKENS.PerceptualHash).toConstantValue(new NoopPerceptualHash());
@@ -226,7 +234,9 @@ export function buildTestContainer(envOverride?: Env): Container {
   c.rebind<IScheduler>(TOKENS.Scheduler).toConstantValue(new NoopScheduler());
   c.rebind<IQueue>(TOKENS.Queue).toConstantValue(new NoopQueue());
   c.rebind<IQueueWorker>(TOKENS.QueueWorker).toConstantValue(new NoopQueueWorker());
-  c.rebind<ITwilioSignatureVerifier>(TOKENS.TwilioSignatureVerifier).toConstantValue(new NoopTwilioSignature());
+  c.rebind<IInboundSmsVerifier>(TOKENS.InboundSmsVerifier).toConstantValue(
+    new NoopInboundSmsVerifier(),
+  );
   c.rebind<IWebPushSubscriptionRepository>(TOKENS.WebPushSubscriptionRepository).toConstantValue(
     new NoopWebPushSubscriptionRepo(),
   );

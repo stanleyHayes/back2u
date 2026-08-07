@@ -1,10 +1,11 @@
-export interface ITwilioSignatureVerifier {
-  verify(signature: string | undefined, url: string, params: Record<string, string>): boolean;
+export interface IInboundSmsVerifier {
+  /** Validates a shared secret carried by an inbound SMS webhook (constant-time). */
+  verify(secret: string | undefined): boolean;
 }
 
 /** Builds links into the public web app for emails/SMS/push. Env-driven for white-label/staging. */
 export interface IAppUrls {
-  /** Base URL of the web app, e.g. https://back2u.app */
+  /** Base URL of the web app, e.g. https://bak2me.com */
   app(): string;
   /** Public QR scan / tag landing page for a tag code. */
   tag(code: string): string;
@@ -23,6 +24,11 @@ export interface IScheduler {
 }
 
 export interface IWebPushService {
-  send(subscription: unknown, title: string, body: string, data?: Record<string, unknown>): Promise<void>;
+  send(
+    subscription: unknown,
+    title: string,
+    body: string,
+    data?: Record<string, unknown>,
+  ): Promise<void>;
   vapidPublicKey(): string | null;
 }

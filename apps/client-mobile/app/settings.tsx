@@ -8,7 +8,7 @@ import { Button, Card, HelperText, Menu, Text, TextInput } from 'react-native-pa
 import { api } from '../src/lib/api';
 import { useAuth } from '../src/lib/auth.store';
 
-const WEB_URL = (process.env.EXPO_PUBLIC_WEBSITE_URL as string | undefined) ?? 'https://back2u.app';
+const WEB_URL = (process.env.EXPO_PUBLIC_WEBSITE_URL as string | undefined) ?? 'https://bak2me.com';
 
 const LOCALES: { code: Locale; label: string }[] = [
   { code: 'en', label: 'English' },

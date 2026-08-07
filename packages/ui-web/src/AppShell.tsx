@@ -86,7 +86,7 @@ export function AppShell({
                   letterSpacing: '-0.02em',
                 }}
               >
-                Back2u
+                bak2me
               </Typography>
               <Typography
                 sx={{

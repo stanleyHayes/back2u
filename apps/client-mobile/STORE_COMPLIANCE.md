@@ -1,4 +1,4 @@
-# Back2u Mobile — App Store & Play Store Compliance
+# bak2me Mobile — App Store & Play Store Compliance
 
 Status of store-readiness for `apps/client-mobile` (Expo / React Native). Items marked
 **[code ✓]** are done in this repo; **[you]** are console/account steps only you can do.
@@ -27,7 +27,7 @@ Status of store-readiness for `apps/client-mobile` (Expo / React Native). Items 
   Google’s in-app deletion requirement). Irreversible, confirmed with a dialog.
 - **Data export in-app** [code ✓] — Settings → “Export data”.
 - **Privacy Policy & Terms links in-app** [code ✓] — Settings → “Legal” opens
-  `${EXPO_PUBLIC_WEBSITE_URL}/privacy` and `/terms` (defaults to `https://back2u.app`).
+  `${EXPO_PUBLIC_WEBSITE_URL}/privacy` and `/terms` (defaults to `https://bak2me.com`).
 - **EAS build/submit config** [code ✓] — `eas.json` (development / preview / production
   profiles + submit credentials placeholders).
 
@@ -55,9 +55,9 @@ Apple team id; Google Play service-account JSON), then `eas submit -p ios|androi
 
 The in-app Legal links point at the marketing site. Make sure these are live and reachable:
 
-- `https://back2u.app/privacy` — must describe **what data is collected, why, retention, and
+- `https://bak2me.com/privacy` — must describe **what data is collected, why, retention, and
   how to request deletion**, plus a contact email.
-- `https://back2u.app/terms`.
+- `https://bak2me.com/terms`.
 - **Google Play also requires a web URL to request account deletion.** Either the privacy page
   explains it, or add a dedicated `/delete-account` page. (In-app deletion alone is not enough
   for Play — it wants a URL reachable without installing the app.)
@@ -67,7 +67,7 @@ The in-app Legal links point at the marketing site. Make sure these are live and
 Declare data collected, all **linked to the user**, **used for App Functionality**, **not used
 for tracking**:
 
-| Category                 | Examples in Back2u                               |
+| Category                 | Examples in bak2me                               |
 | ------------------------ | ------------------------------------------------ |
 | Contact Info             | email, name, phone (optional)                    |
 | User Content             | item photos, chat messages                       |

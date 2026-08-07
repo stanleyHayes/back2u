@@ -77,7 +77,7 @@ const EMAIL_PREFS: { key: keyof EmailPreferences; label: string; desc: string }[
   {
     key: 'marketing',
     label: 'Product news',
-    desc: 'Occasional feature announcements from Back2u.',
+    desc: 'Occasional feature announcements from bak2me.',
   },
 ];
 
@@ -164,7 +164,7 @@ function ProfileSection() {
     <Stack spacing={2.5}>
       <SettingCard
         title="Profile"
-        desc="How you appear to the Back2u team and in redemption receipts."
+        desc="How you appear to the bak2me team and in redemption receipts."
       >
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
@@ -258,7 +258,7 @@ function ProfileSection() {
 
       <SettingCard
         title="Email"
-        desc="Sign-in identity for the partner portal. Contact Back2u support to change it."
+        desc="Sign-in identity for the partner portal. Contact bak2me support to change it."
         action={
           user.emailVerified ? (
             <Chip
@@ -649,7 +649,7 @@ function PreferencesSection() {
 
       <SettingCard
         title="Language"
-        desc="Used for the emails and notifications Back2u sends to your account."
+        desc="Used for the emails and notifications bak2me sends to your account."
       >
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
           <TextField

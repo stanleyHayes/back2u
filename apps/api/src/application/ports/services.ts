@@ -26,15 +26,56 @@ export interface ITokenService {
 
 export interface IEmailService {
   sendWelcome(to: string, name: string, locale?: Locale): Promise<void>;
-  sendMatchAlert(to: string, name: string, itemTitle: string, matchUrl: string, locale?: Locale): Promise<void>;
+  sendMatchAlert(
+    to: string,
+    name: string,
+    itemTitle: string,
+    matchUrl: string,
+    locale?: Locale,
+  ): Promise<void>;
   sendChatNotification(to: string, name: string, threadUrl: string, locale?: Locale): Promise<void>;
   sendPasswordReset(to: string, name: string, resetUrl: string, locale?: Locale): Promise<void>;
-  sendTagScanContact(to: string, ownerName: string, finderMessage: string, replyUrl: string): Promise<void>;
-  sendExpiryReminder(to: string, name: string, itemTitle: string, itemUrl: string, locale?: Locale): Promise<void>;
-  sendUrgentExpiryReminder(to: string, name: string, itemTitle: string, itemUrl: string, locale?: Locale): Promise<void>;
-  sendCourierUpdate(to: string, name: string, subject: string, body: string, locale?: Locale): Promise<void>;
-  sendMarketplaceAlert(to: string, name: string, subject: string, body: string, locale?: Locale): Promise<void>;
-  sendGenericNotification(to: string, name: string, subject: string, body: string, locale?: Locale): Promise<void>;
+  sendTagScanContact(
+    to: string,
+    ownerName: string,
+    finderMessage: string,
+    replyUrl: string,
+  ): Promise<void>;
+  sendExpiryReminder(
+    to: string,
+    name: string,
+    itemTitle: string,
+    itemUrl: string,
+    locale?: Locale,
+  ): Promise<void>;
+  sendUrgentExpiryReminder(
+    to: string,
+    name: string,
+    itemTitle: string,
+    itemUrl: string,
+    locale?: Locale,
+  ): Promise<void>;
+  sendCourierUpdate(
+    to: string,
+    name: string,
+    subject: string,
+    body: string,
+    locale?: Locale,
+  ): Promise<void>;
+  sendMarketplaceAlert(
+    to: string,
+    name: string,
+    subject: string,
+    body: string,
+    locale?: Locale,
+  ): Promise<void>;
+  sendGenericNotification(
+    to: string,
+    name: string,
+    subject: string,
+    body: string,
+    locale?: Locale,
+  ): Promise<void>;
 }
 
 export interface UploadSignature {
@@ -73,13 +114,18 @@ export interface ITextGenerationService {
 }
 
 export interface IGeocodingService {
-  forward(query: string): Promise<{ name: string; lng: number; lat: number; city?: string; country?: string } | null>;
+  forward(
+    query: string,
+  ): Promise<{ name: string; lng: number; lat: number; city?: string; country?: string } | null>;
   /** Return multiple ranked place suggestions for an autocomplete experience. */
   suggest(
     query: string,
     opts?: { limit?: number; proximity?: { lng: number; lat: number }; country?: string },
   ): Promise<Array<{ name: string; lng: number; lat: number; city?: string; country?: string }>>;
-  reverse(lng: number, lat: number): Promise<{ name: string; city?: string; country?: string } | null>;
+  reverse(
+    lng: number,
+    lat: number,
+  ): Promise<{ name: string; city?: string; country?: string } | null>;
 }
 
 export interface IRealtimeBus {
@@ -106,11 +152,22 @@ export interface ISmsService {
 }
 
 export interface IPushService {
-  send(tokens: string[], title: string, body: string, data?: Record<string, unknown>): Promise<void>;
+  send(
+    tokens: string[],
+    title: string,
+    body: string,
+    data?: Record<string, unknown>,
+  ): Promise<void>;
 }
 
 export interface IPaymentEscrowService {
-  hold(input: { rewardId: Id; amount: number; currency: string; payerPhone?: string }): Promise<{ providerRef: string }>;
+  hold(input: {
+    rewardId: Id;
+    amount: number;
+    currency: string;
+    payerPhone?: string;
+    payerEmail?: string;
+  }): Promise<{ providerRef: string }>;
   release(input: { providerRef: string; recipientPhone: string }): Promise<void>;
   refund(providerRef: string): Promise<void>;
 }
@@ -123,7 +180,14 @@ export interface IPerceptualHashService {
 
 export interface IPdfReportService {
   buildStolenItemReport(input: {
-    item: { title: string; description: string; serialNumber?: string; imei?: string; place: string; occurredAt: Date };
+    item: {
+      title: string;
+      description: string;
+      serialNumber?: string;
+      imei?: string;
+      place: string;
+      occurredAt: Date;
+    };
     user: { name: string; email: string; phone?: string };
   }): Promise<{ url: string }>;
 }

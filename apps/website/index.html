@@ -7,21 +7,27 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta
       name="description"
-      content="Back2u — AI-powered lost and found. Post a lost or found item, get matched in seconds, and reunite people with what they value."
+      content="bak2me — AI-powered lost and found. Post a lost or found item, get matched in seconds, and reunite people with what they value."
     />
-    <meta property="og:title" content="Back2u — Reunite people with what they value." />
-    <meta property="og:description" content="AI-powered lost & found. Snap a photo, drop a pin, and our AI does the matching." />
+    <meta property="og:title" content="bak2me — Reunite people with what they value." />
+    <meta
+      property="og:description"
+      content="AI-powered lost & found. Snap a photo, drop a pin, and our AI does the matching."
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://back2u.app" />
-    <meta property="og:image" content="https://back2u.app/og-image.png" />
+    <meta property="og:url" content="https://bak2me.com" />
+    <meta property="og:image" content="https://bak2me.com/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Back2u — Reunite people with what they value." />
-    <meta name="twitter:description" content="AI-powered lost & found. Snap a photo, drop a pin, and our AI does the matching." />
-    <meta name="twitter:image" content="https://back2u.app/og-image.png" />
-    <link rel="canonical" href="https://back2u.app/" />
+    <meta name="twitter:title" content="bak2me — Reunite people with what they value." />
+    <meta
+      name="twitter:description"
+      content="AI-powered lost & found. Snap a photo, drop a pin, and our AI does the matching."
+    />
+    <meta name="twitter:image" content="https://bak2me.com/og-image.png" />
+    <link rel="canonical" href="https://bak2me.com/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <title>Back2u — Reunite people with what they value.</title>
+    <title>bak2me — Reunite people with what they value.</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Outfit:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -30,22 +36,93 @@
   <body>
     <div id="root">
       <style>
-        @keyframes b2uSplashPulse { 0%,100% { transform: scale(1); opacity: .85 } 50% { transform: scale(1.08); opacity: 1 } }
-        @keyframes b2uSplashSlide { from { transform: translateX(-100%) } to { transform: translateX(320%) } }
-        #b2u-splash { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; background: #F2EFEA }
-        @media (prefers-color-scheme: dark) { #b2u-splash { background: #1C231B } }
-        #b2u-splash svg { width: 66px; height: 66px; animation: b2uSplashPulse 1.4s ease-in-out infinite }
-        #b2u-splash .bar { position: relative; width: 120px; height: 3px; border-radius: 99px; overflow: hidden; background: rgba(64,97,74,.18) }
-        #b2u-splash .bar::after { content: ""; position: absolute; inset: 0; width: 38%; border-radius: 99px; background: #7E9A82; animation: b2uSplashSlide 1.1s ease-in-out infinite }
-        @media (prefers-reduced-motion: reduce) { #b2u-splash svg, #b2u-splash .bar::after { animation: none } }
+        @keyframes b2uSplashPulse {
+          0%,
+          100% {
+            transform: scale(1);
+            opacity: 0.85;
+          }
+          50% {
+            transform: scale(1.08);
+            opacity: 1;
+          }
+        }
+        @keyframes b2uSplashSlide {
+          from {
+            transform: translateX(-100%);
+          }
+          to {
+            transform: translateX(320%);
+          }
+        }
+        #b2u-splash {
+          position: fixed;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 22px;
+          background: #f2efea;
+        }
+        @media (prefers-color-scheme: dark) {
+          #b2u-splash {
+            background: #1c231b;
+          }
+        }
+        #b2u-splash svg {
+          width: 66px;
+          height: 66px;
+          animation: b2uSplashPulse 1.4s ease-in-out infinite;
+        }
+        #b2u-splash .bar {
+          position: relative;
+          width: 120px;
+          height: 3px;
+          border-radius: 99px;
+          overflow: hidden;
+          background: rgba(64, 97, 74, 0.18);
+        }
+        #b2u-splash .bar::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          width: 38%;
+          border-radius: 99px;
+          background: #7e9a82;
+          animation: b2uSplashSlide 1.1s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          #b2u-splash svg,
+          #b2u-splash .bar::after {
+            animation: none;
+          }
+        }
       </style>
       <div id="b2u-splash">
-        <svg viewBox="0 0 48 48" fill="none" aria-label="Back2u loading">
-          <defs><linearGradient id="s" x1="8" y1="8" x2="40" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#40614A" /><stop offset="1" stop-color="#7E9A82" /></linearGradient></defs>
-          <path d="M13 12 L13 27 A 11 11 0 0 0 35 27 L35 14.5" fill="none" stroke="url(#s)" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" />
+        <svg viewBox="0 0 48 48" fill="none" aria-label="bak2me loading">
+          <defs>
+            <linearGradient id="s" x1="8" y1="8" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#40614A" />
+              <stop offset="1" stop-color="#7E9A82" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M13 12 L13 27 A 11 11 0 0 0 35 27 L35 14.5"
+            fill="none"
+            stroke="url(#s)"
+            stroke-width="4.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
           <path d="M35 5.5 L29.8 13 L40.2 13 Z" fill="url(#s)" />
-          <path d="M24 15.5 c-3.4 0 -6.1 2.7 -6.1 6 c0 4.3 6.1 9.6 6.1 9.6 s6.1 -5.3 6.1 -9.6 c0 -3.3 -2.7 -6 -6.1 -6 z" fill="url(#s)" />
-          <circle cx="24" cy="21.5" r="2.4" fill="#F2EFEA" />
+          <g fill="url(#s)">
+            <rect x="21.7" y="12.5" width="4.6" height="13" rx="2.3" />
+            <path
+              d="M17.2 20.8 h13.6 a2.3 2.3 0 0 1 2.3 2.3 v2.7 a5.6 5.6 0 0 1 -5.6 5.6 h-6.9 a5.6 5.6 0 0 1 -5.6 -5.6 v-2.7 a2.3 2.3 0 0 1 2.3 -2.3 z"
+            />
+            <path d="M17.2 23 a2.6 2.6 0 0 0 -3 1.7 a1.5 1.5 0 0 0 1.1 1.9 l1.9 0.4 z" />
+          </g>
         </svg>
         <div class="bar"></div>
       </div>

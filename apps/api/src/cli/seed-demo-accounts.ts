@@ -24,7 +24,7 @@ const ACCOUNTS: { email: string; name: string; roles?: UserRole[]; points?: numb
   { email: 'ama@back2u.app', name: 'Ama Mensah', points: 330 },
   { email: 'kofi@back2u.app', name: 'Kofi Boateng', points: 1240 },
   { email: 'akosua@back2u.app', name: 'Akosua Owusu', points: 760 },
-  { email: 'admin@back2u.app', name: 'Back2u Admin', roles: ['admin', 'super_admin'] },
+  { email: 'admin@back2u.app', name: 'bak2me Admin', roles: ['admin', 'super_admin'] },
   { email: 'partner@back2u.app', name: 'Bookshop Partner', roles: ['partner_admin'] },
 ];
 

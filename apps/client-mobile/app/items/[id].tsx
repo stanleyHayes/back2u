@@ -9,13 +9,21 @@ import { useAuth } from '../../src/lib/auth.store';
 export default function ItemDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const user = useAuth((s) => s.user);
-  const { data: item } = useQuery({ queryKey: ['item', id], queryFn: () => api.getItem(id!), enabled: !!id });
+  const { data: item } = useQuery({
+    queryKey: ['item', id],
+    queryFn: () => api.getItem(id!),
+    enabled: !!id,
+  });
 
   const share = useMutation({
     mutationFn: () => api.getShareCard(id!),
     onSuccess: async (card) => {
       try {
-        await Share.share({ message: `${card.message}\n${card.url}`, url: card.url, title: 'Back2u' });
+        await Share.share({
+          message: `${card.message}\n${card.url}`,
+          url: card.url,
+          title: 'bak2me',
+        });
       } catch {
         // User cancelled — no-op.
       }
@@ -44,20 +52,28 @@ export default function ItemDetailScreen() {
       </View>
       <Text variant="headlineMedium">{item.title}</Text>
       <Text>{item.description}</Text>
-      <Text variant="bodySmall">{item.place.name} · {new Date(item.occurredAt).toLocaleString()}</Text>
+      <Text variant="bodySmall">
+        {item.place.name} · {new Date(item.occurredAt).toLocaleString()}
+      </Text>
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
-        <Button onPress={() => share.mutate()} loading={share.isPending}>Share</Button>
+        <Button onPress={() => share.mutate()} loading={share.isPending}>
+          Share
+        </Button>
         {!isOwner && user && (
           <Link href={`/verification/${item.id}`} asChild>
             <Button mode="contained">I'm the owner</Button>
           </Link>
         )}
         {isOwner && item.classification === 'stolen' && (
-          <Button onPress={() => policeReport.mutate()} loading={policeReport.isPending}>Police report</Button>
+          <Button onPress={() => policeReport.mutate()} loading={policeReport.isPending}>
+            Police report
+          </Button>
         )}
         {!isOwner && user && (
-          <Button textColor="red" onPress={() => report.mutate()}>{report.isSuccess ? 'Reported' : 'Report'}</Button>
+          <Button textColor="red" onPress={() => report.mutate()}>
+            {report.isSuccess ? 'Reported' : 'Report'}
+          </Button>
         )}
       </View>
       {policeReport.isSuccess && policeReport.data.pdfUrl && (
@@ -66,7 +82,11 @@ export default function ItemDetailScreen() {
       {policeReport.isError && <HelperText type="error">Could not generate report.</HelperText>}
 
       {item.images.map((img) => (
-        <Image key={img.publicId} source={{ uri: img.url }} style={{ width: '100%', height: 240, marginTop: 12, borderRadius: 12 }} />
+        <Image
+          key={img.publicId}
+          source={{ uri: img.url }}
+          style={{ width: '100%', height: 240, marginTop: 12, borderRadius: 12 }}
+        />
       ))}
     </ScrollView>
   );

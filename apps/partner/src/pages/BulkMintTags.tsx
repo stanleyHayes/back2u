@@ -20,7 +20,7 @@ import { EmptyState, PageHeader } from '@back2u/ui-web';
 import { api } from '../lib/api.js';
 
 const PUBLIC_URL =
-  (import.meta.env.VITE_APP_PUBLIC_URL as string | undefined) ?? 'https://back2u.app';
+  (import.meta.env.VITE_APP_PUBLIC_URL as string | undefined) ?? 'https://bak2me.com';
 
 function tagScanUrl(code: string): string {
   return `${PUBLIC_URL}/tags/${encodeURIComponent(code)}`;
@@ -79,7 +79,7 @@ export function BulkMintTagsPage() {
       <PageHeader
         icon={<QrCode2OutlinedIcon />}
         title="Mint QR tags"
-        description="Generate a batch of Back2u QR tags to print and attach to items handed in at your venue."
+        description="Generate a batch of bak2me QR tags to print and attach to items handed in at your venue."
       />
 
       <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>

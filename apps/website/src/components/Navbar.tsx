@@ -187,7 +187,7 @@ export function Navbar() {
         <Box
           component={Link}
           to="/"
-          aria-label="Back2u home"
+          aria-label="bak2me home"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -216,7 +216,7 @@ export function Navbar() {
                 letterSpacing: '-0.02em',
               }}
             >
-              Back2u
+              bak2me
             </Typography>
             <Typography
               sx={{
@@ -294,7 +294,7 @@ export function Navbar() {
                 className="b2u-display"
                 sx={{ fontWeight: 600, fontSize: 19, color: 'text.primary' }}
               >
-                Back2u
+                bak2me
               </Typography>
             </Stack>
             <IconButton onClick={() => setOpen(false)} aria-label="Close menu">

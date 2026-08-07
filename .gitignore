@@ -7,6 +7,9 @@ coverage
 .env
 .env.local
 .env.*.local
+# API production env holds real secrets — never commit it.
+# (Frontend .env.production files hold only public VITE_* vars and stay tracked.)
+apps/api/.env.production
 .DS_Store
 *.log
 .vscode/*

@@ -6,7 +6,7 @@ const schema = z.object({
   API_PUBLIC_URL: z.string().url().default('http://localhost:4000'),
   // Public base URL of the user-facing web app; used to build links in
   // emails, SMS, and push notifications. Override per environment / white-label.
-  APP_PUBLIC_URL: z.string().url().default('https://back2u.app'),
+  APP_PUBLIC_URL: z.string().url().default('https://bak2me.com'),
 
   MONGO_URI: z.string().min(1),
 
@@ -16,7 +16,7 @@ const schema = z.object({
   JWT_REFRESH_TTL: z.string().default('30d'),
 
   RESEND_API_KEY: z.string().optional(),
-  RESEND_FROM: z.string().default('Back2u <no-reply@back2u.app>'),
+  RESEND_FROM: z.string().default('bak2me <no-reply@bak2me.com>'),
 
   CLOUDINARY_CLOUD_NAME: z.string().optional(),
   CLOUDINARY_API_KEY: z.string().optional(),
@@ -25,13 +25,9 @@ const schema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
   MAPBOX_TOKEN: z.string().optional(),
 
-  TWILIO_ACCOUNT_SID: z.string().optional(),
-  TWILIO_AUTH_TOKEN: z.string().optional(),
-  TWILIO_FROM_NUMBER: z.string().optional(),
-
-  HUBTEL_CLIENT_ID: z.string().optional(),
-  HUBTEL_CLIENT_SECRET: z.string().optional(),
-  HUBTEL_MERCHANT_ACCOUNT: z.string().optional(),
+  ARKESEL_API_KEY: z.string().optional(),
+  ARKESEL_SENDER_ID: z.string().optional(),
+  ARKESEL_WEBHOOK_SECRET: z.string().optional(),
 
   PAYSTACK_SECRET_KEY: z.string().optional(),
   PAYSTACK_PUBLIC_KEY: z.string().optional(),
@@ -43,7 +39,7 @@ const schema = z.object({
 
   VAPID_PUBLIC_KEY: z.string().optional(),
   VAPID_PRIVATE_KEY: z.string().optional(),
-  VAPID_SUBJECT: z.string().default('mailto:no-reply@back2u.app'),
+  VAPID_SUBJECT: z.string().default('mailto:no-reply@bak2me.com'),
   SENTRY_DSN: z.string().optional(),
   REDIS_URL: z.string().optional(),
   VAULT_MASTER_KEY: z.string().optional(),

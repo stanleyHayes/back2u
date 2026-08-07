@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('client-web smoke', () => {
   test('home renders the brand and feed CTA', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Back2u/i);
+    await expect(page).toHaveTitle(/bak2me/i);
     await expect(page.getByRole('heading', { name: /Lost.*found/i })).toBeVisible();
   });
 

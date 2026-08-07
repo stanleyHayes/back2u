@@ -26,7 +26,7 @@ import { AppStoreBadges } from './AppStoreBadges';
 
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
 const CONTACT_EMAIL =
-  (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? 'hello@back2u.app';
+  (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? 'hello@bak2me.com';
 const PAPER = '#F2EFEA';
 const MARIGOLD = '#8B6F4E';
 const FOOTER_NEU_SHADOW = '7px 7px 15px #031B18, -7px -7px 15px #0B403A';
@@ -303,7 +303,7 @@ export function Footer() {
           }}
         >
           <Typography sx={{ fontSize: 13, color: MUTED, textAlign: { xs: 'center', md: 'left' } }}>
-            © {new Date().getFullYear()} Back2u. All rights reserved.
+            © {new Date().getFullYear()} bak2me. All rights reserved.
           </Typography>
           <Stack direction="row" spacing={1} sx={{ justifyContent: 'center' }}>
             {SOCIALS.map((s) => (

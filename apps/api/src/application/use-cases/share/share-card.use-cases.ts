@@ -28,7 +28,7 @@ export class GetShareCardUseCase {
         ? `${apiPublicUrl.replace(/\/$/, '')}/v1/share/items/${s.id}`
         : this.appUrls.itemDetail(s.id),
       imageUrl: s.images[0]?.url ?? '',
-      message: `${verb}: ${s.title} — ${s.place.name}. Help reunite it with its owner on Back2u.`,
+      message: `${verb}: ${s.title} — ${s.place.name}. Help reunite it with its owner on bak2me.`,
     };
   }
 }

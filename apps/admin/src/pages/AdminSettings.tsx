@@ -75,7 +75,7 @@ const EMAIL_PREFS: { key: keyof EmailPreferences; label: string; desc: string }[
   {
     key: 'marketing',
     label: 'Product news',
-    desc: 'Occasional feature announcements from Back2u.',
+    desc: 'Occasional feature announcements from bak2me.',
   },
 ];
 
@@ -644,7 +644,7 @@ function PreferencesSection() {
 
       <SettingCard
         title="Language"
-        desc="Used for the emails and notifications Back2u sends to your account."
+        desc="Used for the emails and notifications bak2me sends to your account."
       >
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
           <TextField

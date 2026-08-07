@@ -8,7 +8,7 @@ export const resources = {
       hero: {
         title: 'Reunite people with what they value.',
         subtitle:
-          'Back2u is a smart lost & found ecosystem. Snap a photo, drop a pin, and our AI does the matching — across taxis, campuses, malls, and airports.',
+          'bak2me is a smart lost & found ecosystem. Snap a photo, drop a pin, and our AI does the matching — across taxis, campuses, malls, and airports.',
       },
       cta: {
         postLost: 'Post a lost item',
@@ -24,18 +24,18 @@ export const resources = {
   fr: {
     translation: {
       hero: {
-        title: 'Rassemblez les gens avec ce qu\'ils chérissent.',
+        title: "Rassemblez les gens avec ce qu'ils chérissent.",
         subtitle:
-          'Back2u est un écosystème intelligent d\'objets trouvés. Prenez une photo, géolocalisez, et notre IA fait le reste — taxis, campus, centres commerciaux et aéroports.',
+          "bak2me est un écosystème intelligent d'objets trouvés. Prenez une photo, géolocalisez, et notre IA fait le reste — taxis, campus, centres commerciaux et aéroports.",
       },
       cta: {
         postLost: 'Signaler un objet perdu',
-        foundSomething: 'J\'ai trouvé quelque chose',
+        foundSomething: "J'ai trouvé quelque chose",
       },
       nav: {
         browse: 'Parcourir',
         signIn: 'Se connecter',
-        openApp: 'Ouvrir l\'app',
+        openApp: "Ouvrir l'app",
       },
     },
   },
@@ -44,7 +44,7 @@ export const resources = {
       hero: {
         title: 'Mmoa nnipa ma wɔne nneɛma a wɔpɛ bɛhyia.',
         subtitle:
-          'Back2u yɛ nneɛma a wɔawɔ no hwehwɛbea a ɛwɔ nyansa. Fa foto, kyere bea, na yɛn AI bɛbɔ mmɔden — taxi, sukuu, mall ne airport so.',
+          'bak2me yɛ nneɛma a wɔawɔ no hwehwɛbea a ɛwɔ nyansa. Fa foto, kyere bea, na yɛn AI bɛbɔ mmɔden — taxi, sukuu, mall ne airport so.',
       },
       cta: {
         postLost: 'Bɔ nneɛma a wɔawɔ no ho dawuru',
@@ -62,7 +62,7 @@ export const resources = {
       hero: {
         title: 'Tsɔɔ nii ni ehe fɛɛ eŋɔ.',
         subtitle:
-          'Back2u yɛ nɔŋŋmɔ kɛ ji wolo yaa ŋmɔ. Gbe nitsumɔ, tsɔɔ kɛji, kɛ e-nyamma kɛha jɛmɔ — taxi, sukul, mall kɛ airport.',
+          'bak2me yɛ nɔŋŋmɔ kɛ ji wolo yaa ŋmɔ. Gbe nitsumɔ, tsɔɔ kɛji, kɛ e-nyamma kɛha jɛmɔ — taxi, sukul, mall kɛ airport.',
       },
       cta: {
         postLost: 'Bɔ wolo nɔ ho dawuru',
@@ -80,7 +80,7 @@ export const resources = {
       hero: {
         title: 'Kpe ɖe amewo kple nusiwo wodi ho dzi.',
         subtitle:
-          'Back2u nye nu dzɔdzɔe si le aɖaŋuɖo ŋuti. Ta alɔme, ɖo teƒe, eye míaƒe AI awɔ eŋu — taxi, suku, mall kple airport dzi.',
+          'bak2me nye nu dzɔdzɔe si le aɖaŋuɖo ŋuti. Ta alɔme, ɖo teƒe, eye míaƒe AI awɔ eŋu — taxi, suku, mall kple airport dzi.',
       },
       cta: {
         postLost: 'Bla aɖaŋuɖo ŋuti',

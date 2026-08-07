@@ -1,31 +1,29 @@
 import express, { Router } from 'express';
 import type { Container } from 'inversify';
 
-import { TOKENS } from '../../../application/ports/tokens.js';
 import { HandleInboundSmsUseCase } from '../../../application/use-cases/sms/sms-inbound.use-case.js';
-import type { Env } from '../../../config/env.js';
-
-const escapeXml = (s: string): string =>
-  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-
-const twiml = (message?: string): string =>
-  `<?xml version="1.0" encoding="UTF-8"?><Response>${message ? `<Message>${escapeXml(message)}</Message>` : ''}</Response>`;
 
 export const smsRouter = (c: Container): Router => {
   const r = Router();
 
-  // Twilio posts application/x-www-form-urlencoded payloads.
+  // Arkesel posts inbound SMS / delivery callbacks as JSON or urlencoded form data.
   r.use(express.urlencoded({ extended: false }));
+  r.use(express.json());
 
   r.post('/inbound', async (req, res, next) => {
     try {
-      const env = c.get<Env>(TOKENS.Env);
-      const url = `${env.API_PUBLIC_URL}${req.originalUrl}`;
-      const signature = req.headers['x-twilio-signature'] as string | undefined;
-      const payload = (req.body ?? {}) as Record<string, string>;
-      // The use-case verifies the Twilio request signature (throws 401 on mismatch).
-      const { reply } = await c.get(HandleInboundSmsUseCase).execute(payload, signature, url);
-      res.type('text/xml').send(twiml(reply));
+      // Arkesel does not sign requests; the callback URL carries a shared secret
+      // as `?token=` (or an `x-webhook-secret` header) which the use-case verifies.
+      const secret =
+        (req.query.token as string | undefined) ??
+        (req.headers['x-webhook-secret'] as string | undefined);
+      const payload = { ...(req.query as Record<string, string>), ...(req.body ?? {}) } as Record<
+        string,
+        string
+      >;
+      const { reply } = await c.get(HandleInboundSmsUseCase).execute(payload, secret);
+      // Arkesel only needs a 2xx ack; the reply (if any) is sent via the SMS API.
+      res.json({ ok: true, reply });
     } catch (e) {
       next(e);
     }

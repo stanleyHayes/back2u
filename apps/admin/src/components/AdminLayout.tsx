@@ -827,7 +827,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
               {current?.label ?? 'Console'}
             </Typography>
             <Typography noWrap sx={{ fontSize: 12.5, color: MUTED }}>
-              Back2u operations console
+              bak2me operations console
             </Typography>
           </Box>
 

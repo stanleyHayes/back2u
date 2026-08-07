@@ -226,7 +226,7 @@ export function RewardPartnersPage() {
           tone="marigold"
           icon={<StorefrontOutlinedIcon />}
           title="No reward partners here yet"
-          description="We're signing up restaurants, malls and shops where you can spend your points. Check back soon — or tell your favourite spot about Back2u."
+          description="We're signing up restaurants, malls and shops where you can spend your points. Check back soon — or tell your favourite spot about bak2me."
           actions={[{ label: 'Earn more points', href: '/' }]}
         />
       ) : (

@@ -135,7 +135,7 @@ export function LoginPage() {
             <Typography
               sx={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 23, letterSpacing: '-0.03em' }}
             >
-              Back2u
+              bak2me
             </Typography>
             <Box
               sx={{

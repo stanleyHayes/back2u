@@ -40,7 +40,7 @@ export class RequestEmailVerificationUseCase {
       .sendGenericNotification(
         user.snapshot.email,
         user.snapshot.name,
-        'Your Back2u verification code',
+        'Your bak2me verification code',
         `Your verification code is ${code}. It expires in 10 minutes.`,
         user.snapshot.locale,
       )

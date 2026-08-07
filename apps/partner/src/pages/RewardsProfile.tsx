@@ -126,7 +126,7 @@ export function RewardsProfilePage() {
         <PageHeader
           icon={<StorefrontOutlinedIcon />}
           title="Rewards storefront"
-          description="Opt in to the Back2u rewards directory so members can discover you and spend their finder points at your venue. Your storefront is advertised for free across the app."
+          description="Opt in to the bak2me rewards directory so members can discover you and spend their finder points at your venue. Your storefront is advertised for free across the app."
         />
       </Box>
 

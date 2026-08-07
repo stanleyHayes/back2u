@@ -1,6 +1,6 @@
 # Security policy
 
-Please report vulnerabilities privately to **security@back2u.app**. Do not open a public issue.
+Please report vulnerabilities privately to **security@bak2me.com**. Do not open a public issue.
 
 We aim to acknowledge within 48 hours and resolve critical issues within 14 days.
 

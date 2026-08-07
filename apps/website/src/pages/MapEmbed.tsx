@@ -119,7 +119,7 @@ export function MapEmbed() {
   const [selectedItem, setSelectedItem] = useState<ItemPreview | null>(null);
 
   useEffect(() => {
-    document.title = 'Live Map — Back2u';
+    document.title = 'Live Map — bak2me';
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
       meta.setAttribute(
@@ -128,12 +128,12 @@ export function MapEmbed() {
       );
     }
     return () => {
-      document.title = 'Back2u — Reunite people with what they value.';
+      document.title = 'bak2me — Reunite people with what they value.';
       const m = document.querySelector('meta[name="description"]');
       if (m) {
         m.setAttribute(
           'content',
-          'Back2u — AI-powered lost and found. Post a lost or found item, get matched in seconds, and reunite people with what they value.',
+          'bak2me — AI-powered lost and found. Post a lost or found item, get matched in seconds, and reunite people with what they value.',
         );
       }
     };

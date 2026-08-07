@@ -241,7 +241,7 @@ import type { IBlockRepository, IReportRepository } from '../application/ports/s
 import type {
   IAppUrls,
   IScheduler,
-  ITwilioSignatureVerifier,
+  IInboundSmsVerifier,
   IWebPushService,
 } from '../application/ports/extra-services.js';
 import { AppUrls } from '../infrastructure/config/app-urls.js';
@@ -278,7 +278,7 @@ import { StaticI18nService } from '../infrastructure/i18n/i18n.service.js';
 import { MapboxGeocoding } from '../infrastructure/maps/mapbox/mapbox.geocoding.js';
 import { LibsodiumVaultCipher } from '../infrastructure/crypto/libsodium.cipher.js';
 import { CompositeErrorReporter } from '../infrastructure/observability/composite.reporter.js';
-import { HubtelMomoEscrow } from '../infrastructure/payments/momo/hubtel.escrow.js';
+import { PaystackEscrow } from '../infrastructure/payments/paystack/paystack.escrow.js';
 import { BullmqQueue } from '../infrastructure/queue/bullmq.queue.js';
 import { BullmqWorker } from '../infrastructure/queue/bullmq.worker.js';
 import { ShaPerceptualHash } from '../infrastructure/perceptual_hash/sharp.phash.js';
@@ -342,8 +342,8 @@ import { PinoAppLogger } from '../infrastructure/security/pino-logger.js';
 import { SystemClock } from '../infrastructure/security/system-clock.js';
 import { CloudinaryImageStorage } from '../infrastructure/storage/cloudinary/cloudinary.image-storage.js';
 import { SocketIoBus } from '../infrastructure/realtime/socketio.bus.js';
-import { TwilioSmsService } from '../infrastructure/sms/twilio/twilio.sms-service.js';
-import { TwilioSignatureVerifier } from '../infrastructure/sms/twilio/twilio.signature.js';
+import { ArkeselSmsService } from '../infrastructure/sms/arkesel/arkesel.sms-service.js';
+import { ArkeselWebhookVerifier } from '../infrastructure/sms/arkesel/arkesel.webhook.js';
 import { RedisCache } from '../infrastructure/cache/redis-cache.js';
 import { PaystackService } from '../infrastructure/payments/paystack/paystack.service.js';
 import type { ICache } from '../application/ports/cache.js';
@@ -410,14 +410,14 @@ export function buildContainer(envOverride?: Env): Container {
   c.bind<ITokenService>(TOKENS.TokenService).to(JwtTokenService);
   c.bind<II18nService>(TOKENS.I18nService).to(StaticI18nService);
   c.bind<IEmailService>(TOKENS.EmailService).to(ResendEmailService);
-  c.bind<ISmsService>(TOKENS.SmsService).to(TwilioSmsService);
-  c.bind<ITwilioSignatureVerifier>(TOKENS.TwilioSignatureVerifier).to(TwilioSignatureVerifier);
+  c.bind<ISmsService>(TOKENS.SmsService).to(ArkeselSmsService);
+  c.bind<IInboundSmsVerifier>(TOKENS.InboundSmsVerifier).to(ArkeselWebhookVerifier);
   c.bind<IPushService>(TOKENS.PushService).to(ExpoPushService);
   c.bind<IWebPushService>(TOKENS.WebPushService).to(WebPushService);
   c.bind<IWebPushSubscriptionRepository>(TOKENS.WebPushSubscriptionRepository).to(
     MongoWebPushSubscriptionRepository,
   );
-  c.bind<IPaymentEscrowService>(TOKENS.PaymentEscrow).to(HubtelMomoEscrow);
+  c.bind<IPaymentEscrowService>(TOKENS.PaymentEscrow).to(PaystackEscrow);
   c.bind<IImageStorage>(TOKENS.ImageStorage).to(CloudinaryImageStorage);
   c.bind<IAiMatchingService>(TOKENS.AiMatchingService).to(AnthropicMatchingService);
   c.bind<IAiVerificationService>(TOKENS.AiVerificationService).to(AnthropicVerificationService);

@@ -270,7 +270,7 @@ export const clientHeaderBg = (dark: boolean) =>
 
 /**
  * Shared "ink" surfaces for the admin & partner consoles. Deep forest-green
- * (not blue) to match the Back2u brand — the sidebar/topbar stay dark in both
+ * (not blue) to match the bak2me brand — the sidebar/topbar stay dark in both
  * light and dark mode, so these are exported for the layouts to reuse.
  */
 export const CONSOLE_INK = {

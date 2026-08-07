@@ -36,7 +36,8 @@ export class CreateItemUseCase {
     @inject(TOKENS.ItemRepository) private readonly items: IItemRepository,
     @inject(TOKENS.UserRepository) private readonly users: IUserRepository,
     @inject(TOKENS.RewardRepository) private readonly rewards: IRewardRepository,
-    @inject(TOKENS.ModerationQueueRepository) private readonly moderationQueue: IModerationQueueRepository,
+    @inject(TOKENS.ModerationQueueRepository)
+    private readonly moderationQueue: IModerationQueueRepository,
     @inject(TOKENS.ZoneSubscriptionRepository) private readonly zones: IZoneSubscriptionRepository,
     @inject(TOKENS.AiMatchingService) private readonly ai: IAiMatchingService,
     @inject(TOKENS.ContentModeration) private readonly moderation: IContentModeration,
@@ -131,7 +132,10 @@ export class CreateItemUseCase {
           );
         }
       } catch (err) {
-        this.logger.warn('perceptual hash failed', { itemId: item.id, error: (err as Error).message });
+        this.logger.warn('perceptual hash failed', {
+          itemId: item.id,
+          error: (err as Error).message,
+        });
       }
     }
 
@@ -149,6 +153,7 @@ export class CreateItemUseCase {
         amount: reward.snapshot.amount,
         currency: reward.snapshot.currency,
         payerPhone: poster?.snapshot.phone,
+        payerEmail: poster?.snapshot.email,
       });
       reward.hold();
       await this.rewards.save(reward);
@@ -171,7 +176,10 @@ export class CreateItemUseCase {
     });
     // Immediate pass so matches exist even when the queue worker is not running.
     void this.generateMatches.execute(item.id).catch((err: unknown) =>
-      this.logger.warn('match generation failed', { itemId: item.id, error: (err as Error).message }),
+      this.logger.warn('match generation failed', {
+        itemId: item.id,
+        error: (err as Error).message,
+      }),
     );
 
     return toItemDTO(item);

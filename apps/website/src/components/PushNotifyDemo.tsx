@@ -16,7 +16,7 @@ export function PushNotifyDemo() {
 
     if (Notification.permission === 'granted') {
       // eslint-disable-next-line no-new
-      new Notification('Back2u Alert', {
+      new Notification('bak2me Alert', {
         body: 'iPhone 14 found near Accra Mall — possible match for your lost item',
         icon: '/favicon.ico',
       });
@@ -24,7 +24,7 @@ export function PushNotifyDemo() {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
         // eslint-disable-next-line no-new
-        new Notification('Back2u Alert', {
+        new Notification('bak2me Alert', {
           body: 'iPhone 14 found near Accra Mall — possible match for your lost item',
           icon: '/favicon.ico',
         });
@@ -110,7 +110,7 @@ export function PushNotifyDemo() {
                 </Box>
                 <Box>
                   <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                    Back2u Alert
+                    bak2me Alert
                   </Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
                     iPhone 14 found near Accra Mall — possible match for your lost item

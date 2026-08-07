@@ -113,6 +113,30 @@ export class PaystackService {
     return json.data;
   }
 
+  /** Refunds a (partially) paid transaction by its reference. Amount in minor units; omit for a full refund. */
+  async refundTransaction(reference: string, amountMinor?: number): Promise<void> {
+    if (!this.secretKey) throw new Error('Paystack not configured');
+
+    const res = await fetch('https://api.paystack.co/refund', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.secretKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        transaction: reference,
+        ...(amountMinor ? { amount: amountMinor } : {}),
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Paystack refund failed: ${res.status} ${text}`);
+    }
+    const json = (await res.json()) as { status: boolean; message: string };
+    if (!json.status) throw new Error(`Paystack refund failed: ${json.message}`);
+  }
+
   verifyWebhookSignature(body: string, signature: string): boolean {
     if (!this.secretKey) return false;
     // Paystack HMAC-SHA512 signature verification

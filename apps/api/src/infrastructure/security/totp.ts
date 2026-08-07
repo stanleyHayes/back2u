@@ -89,7 +89,7 @@ export function verifyTotp(secretBase32: string, code: string, window = 1): bool
 
 /** Builds the otpauth:// URL that authenticator apps read from a QR code. */
 export function otpauthUrl(opts: { secret: string; accountName: string; issuer?: string }): string {
-  const issuer = opts.issuer ?? 'Back2u';
+  const issuer = opts.issuer ?? 'bak2me';
   const label = `${encodeURIComponent(issuer)}:${encodeURIComponent(opts.accountName)}`;
   const params = new URLSearchParams({
     secret: opts.secret,

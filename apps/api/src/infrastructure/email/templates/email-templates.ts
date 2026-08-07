@@ -22,7 +22,7 @@ function layout(title: string, bodyHtml: string): string {
         ${bodyHtml}
       </div>
       <p style="margin:16px 0 0;font-size:12px;color:#6b7280;text-align:center;">
-        Back2u &mdash; reuniting people with their lost belongings.
+        bak2me &mdash; reuniting people with their lost belongings.
       </p>
     </div>
   </body>
@@ -36,12 +36,18 @@ const button = (url: string, label: string): string =>
   `<p style="margin:24px 0;"><a href="${escapeHtml(url)}" style="background:#2563eb;color:#ffffff;padding:12px 24px;border-radius:6px;text-decoration:none;font-size:14px;display:inline-block;">${escapeHtml(label)}</a></p>`;
 
 export function welcomeEmail(name: string): EmailTemplate {
-  const subject = 'Welcome to Back2u';
-  const text = `Hi ${name}, welcome to Back2u! Report lost items, list found ones, and help reunite people with their belongings.`;
+  const subject = 'Welcome to bak2me';
+  const text = `Hi ${name}, welcome to bak2me! Report lost items, list found ones, and help reunite people with their belongings.`;
   return {
     subject,
     text,
-    html: layout(subject, p(`Hi ${name},`) + p('Welcome to Back2u! Report lost items, list found ones, and help reunite people with their belongings.')),
+    html: layout(
+      subject,
+      p(`Hi ${name},`) +
+        p(
+          'Welcome to bak2me! Report lost items, list found ones, and help reunite people with their belongings.',
+        ),
+    ),
   };
 }
 
@@ -51,47 +57,72 @@ export function matchAlertEmail(name: string, itemTitle: string, matchUrl: strin
   return {
     subject,
     text,
-    html: layout(subject, p(`Hi ${name},`) + p(`We found a possible match for "${itemTitle}".`) + button(matchUrl, 'Review match')),
+    html: layout(
+      subject,
+      p(`Hi ${name},`) +
+        p(`We found a possible match for "${itemTitle}".`) +
+        button(matchUrl, 'Review match'),
+    ),
   };
 }
 
 export function chatNotificationEmail(name: string, threadUrl: string): EmailTemplate {
-  const subject = 'New message on Back2u';
+  const subject = 'New message on bak2me';
   const text = `Hi ${name}, you have a new message. Open the conversation: ${threadUrl}`;
   return {
     subject,
     text,
-    html: layout(subject, p(`Hi ${name},`) + p('You have a new message waiting for you.') + button(threadUrl, 'Open conversation')),
+    html: layout(
+      subject,
+      p(`Hi ${name},`) +
+        p('You have a new message waiting for you.') +
+        button(threadUrl, 'Open conversation'),
+    ),
   };
 }
 
 export function passwordResetEmail(name: string, resetUrl: string): EmailTemplate {
-  const subject = 'Reset your Back2u password';
+  const subject = 'Reset your bak2me password';
   const text = `Hi ${name}, use this link to reset your password: ${resetUrl} — if you did not request this, ignore this email.`;
   return {
     subject,
     text,
     html: layout(
       subject,
-      p(`Hi ${name},`) + p('Use the button below to reset your password. If you did not request this, you can ignore this email.') + button(resetUrl, 'Reset password'),
+      p(`Hi ${name},`) +
+        p(
+          'Use the button below to reset your password. If you did not request this, you can ignore this email.',
+        ) +
+        button(resetUrl, 'Reset password'),
     ),
   };
 }
 
-export function tagScanContactEmail(ownerName: string, finderMessage: string, replyUrl: string): EmailTemplate {
-  const subject = 'Someone scanned your Back2u tag';
+export function tagScanContactEmail(
+  ownerName: string,
+  finderMessage: string,
+  replyUrl: string,
+): EmailTemplate {
+  const subject = 'Someone scanned your bak2me tag';
   const text = `Hi ${ownerName}, someone scanned your tag and says: "${finderMessage}". Reply here: ${replyUrl}`;
   return {
     subject,
     text,
     html: layout(
       subject,
-      p(`Hi ${ownerName},`) + p('Someone scanned your Back2u tag and left you a message:') + p(`"${finderMessage}"`) + button(replyUrl, 'Reply'),
+      p(`Hi ${ownerName},`) +
+        p('Someone scanned your bak2me tag and left you a message:') +
+        p(`"${finderMessage}"`) +
+        button(replyUrl, 'Reply'),
     ),
   };
 }
 
-export function expiryReminderEmail(name: string, itemTitle: string, itemUrl: string): EmailTemplate {
+export function expiryReminderEmail(
+  name: string,
+  itemTitle: string,
+  itemUrl: string,
+): EmailTemplate {
   const subject = `Your listing "${itemTitle}" expires soon`;
   const text = `Hi ${name}, your listing "${itemTitle}" expires in 3 days. Renew it here: ${itemUrl}`;
   return {
@@ -99,12 +130,18 @@ export function expiryReminderEmail(name: string, itemTitle: string, itemUrl: st
     text,
     html: layout(
       subject,
-      p(`Hi ${name},`) + p(`Your listing "${itemTitle}" expires in 3 days. Renew it to keep it visible.`) + button(itemUrl, 'View listing'),
+      p(`Hi ${name},`) +
+        p(`Your listing "${itemTitle}" expires in 3 days. Renew it to keep it visible.`) +
+        button(itemUrl, 'View listing'),
     ),
   };
 }
 
-export function urgentExpiryReminderEmail(name: string, itemTitle: string, itemUrl: string): EmailTemplate {
+export function urgentExpiryReminderEmail(
+  name: string,
+  itemTitle: string,
+  itemUrl: string,
+): EmailTemplate {
   const subject = `Final notice: "${itemTitle}" expires tomorrow`;
   const text = `Hi ${name}, your listing "${itemTitle}" expires tomorrow. Renew it now: ${itemUrl}`;
   return {
@@ -112,7 +149,11 @@ export function urgentExpiryReminderEmail(name: string, itemTitle: string, itemU
     text,
     html: layout(
       subject,
-      p(`Hi ${name},`) + p(`Your listing "${itemTitle}" expires tomorrow. This is your final reminder — renew it now to keep it visible.`) + button(itemUrl, 'Renew now'),
+      p(`Hi ${name},`) +
+        p(
+          `Your listing "${itemTitle}" expires tomorrow. This is your final reminder — renew it now to keep it visible.`,
+        ) +
+        button(itemUrl, 'Renew now'),
     ),
   };
 }

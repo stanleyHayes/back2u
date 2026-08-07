@@ -5,7 +5,9 @@ import type { Request, Response } from 'express';
 
 function getVersion(): string {
   try {
-    const pkg = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')) as { version?: string };
+    const pkg = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')) as {
+      version?: string;
+    };
     return pkg.version ?? '0.1.0';
   } catch {
     return '0.1.0';
@@ -15,10 +17,10 @@ function getVersion(): string {
 export const openApiSpec = {
   openapi: '3.0.3',
   info: {
-    title: 'Back2u API',
-    description: 'Back2u REST API documentation. Built with Express + Zod.',
+    title: 'bak2me API',
+    description: 'bak2me REST API documentation. Built with Express + Zod.',
     version: getVersion(),
-    contact: { name: 'Back2u Support' },
+    contact: { name: 'bak2me Support' },
   },
   servers: [
     {
@@ -110,7 +112,15 @@ export const openApiSpec = {
             type: 'array',
             items: {
               type: 'string',
-              enum: ['user', 'finder', 'trusted_finder', 'courier', 'partner_admin', 'admin', 'super_admin'],
+              enum: [
+                'user',
+                'finder',
+                'trusted_finder',
+                'courier',
+                'partner_admin',
+                'admin',
+                'super_admin',
+              ],
             },
           },
           status: { type: 'string', enum: ['active', 'banned', 'suspended'] },
@@ -139,7 +149,17 @@ export const openApiSpec = {
           },
           createdAt: { type: 'string', format: 'date-time' },
         },
-        required: ['id', 'email', 'name', 'roles', 'reputationScore', 'pointsBalance', 'emailVerified', 'emailPreferences', 'createdAt'],
+        required: [
+          'id',
+          'email',
+          'name',
+          'roles',
+          'reputationScore',
+          'pointsBalance',
+          'emailVerified',
+          'emailPreferences',
+          'createdAt',
+        ],
       },
       ItemDTO: {
         type: 'object',
@@ -149,7 +169,16 @@ export const openApiSpec = {
           classification: { type: 'string', enum: ['lost', 'stolen'] },
           status: {
             type: 'string',
-            enum: ['open', 'matched', 'claimed', 'returned', 'closed', 'archived', 'auctioned', 'donated'],
+            enum: [
+              'open',
+              'matched',
+              'claimed',
+              'returned',
+              'closed',
+              'archived',
+              'auctioned',
+              'donated',
+            ],
           },
           title: { type: 'string' },
           description: { type: 'string' },
@@ -171,7 +200,22 @@ export const openApiSpec = {
           flaggedForReview: { type: 'boolean' },
           bookmarkCount: { type: 'integer' },
         },
-        required: ['id', 'kind', 'classification', 'status', 'title', 'description', 'category', 'tags', 'images', 'place', 'occurredAt', 'postedById', 'createdAt', 'updatedAt'],
+        required: [
+          'id',
+          'kind',
+          'classification',
+          'status',
+          'title',
+          'description',
+          'category',
+          'tags',
+          'images',
+          'place',
+          'occurredAt',
+          'postedById',
+          'createdAt',
+          'updatedAt',
+        ],
       },
       MatchDTO: {
         type: 'object',
@@ -190,7 +234,18 @@ export const openApiSpec = {
           returnedAt: { type: 'string', format: 'date-time' },
           createdAt: { type: 'string', format: 'date-time' },
         },
-        required: ['id', 'lostItemId', 'foundItemId', 'score', 'imageScore', 'textScore', 'geoScore', 'timeScore', 'status', 'createdAt'],
+        required: [
+          'id',
+          'lostItemId',
+          'foundItemId',
+          'score',
+          'imageScore',
+          'textScore',
+          'geoScore',
+          'timeScore',
+          'status',
+          'createdAt',
+        ],
       },
       ChatMessageDTO: {
         type: 'object',
@@ -202,7 +257,14 @@ export const openApiSpec = {
           createdAt: { type: 'string', format: 'date-time' },
           flagged: { type: 'boolean' },
           readBy: { type: 'array', items: { type: 'string' } },
-          images: { type: 'array', items: { type: 'object', properties: { url: { type: 'string', format: 'uri' } }, required: ['url'] } },
+          images: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: { url: { type: 'string', format: 'uri' } },
+              required: ['url'],
+            },
+          },
         },
         required: ['id', 'threadId', 'authorId', 'body', 'createdAt'],
       },
@@ -254,7 +316,20 @@ export const openApiSpec = {
           estimatedDistanceKm: { type: 'number' },
           estimatedDurationMin: { type: 'number' },
         },
-        required: ['id', 'itemId', 'pickup', 'dropoff', 'fee', 'currency', 'status', 'requesterId', 'pickupCode', 'deliveryCode', 'createdAt', 'updatedAt'],
+        required: [
+          'id',
+          'itemId',
+          'pickup',
+          'dropoff',
+          'fee',
+          'currency',
+          'status',
+          'requesterId',
+          'pickupCode',
+          'deliveryCode',
+          'createdAt',
+          'updatedAt',
+        ],
       },
       MarketplaceListingDTO: {
         type: 'object',
@@ -330,7 +405,21 @@ export const openApiSpec = {
           itemsPerDay: { type: 'array', items: { type: 'integer' } },
           matchesPerDay: { type: 'array', items: { type: 'integer' } },
         },
-        required: ['users', 'itemsByStatus', 'itemsTotal', 'marketplaceListings', 'marketplaceBids', 'institutions', 'courierJobs', 'matchesTotal', 'matchesAccepted', 'matchSuccessRate', 'usersPerDay', 'itemsPerDay', 'matchesPerDay'],
+        required: [
+          'users',
+          'itemsByStatus',
+          'itemsTotal',
+          'marketplaceListings',
+          'marketplaceBids',
+          'institutions',
+          'courierJobs',
+          'matchesTotal',
+          'matchesAccepted',
+          'matchSuccessRate',
+          'usersPerDay',
+          'itemsPerDay',
+          'matchesPerDay',
+        ],
       },
       PartnerStatsDTO: {
         type: 'object',
@@ -347,7 +436,19 @@ export const openApiSpec = {
           recentItems: { type: 'array', items: { $ref: '#/components/schemas/ItemDTO' } },
           recentRedemptions: { type: 'array', items: { type: 'object' } },
         },
-        required: ['totalItems', 'openItems', 'matchedItems', 'returnedItems', 'itemsByStatus', 'totalRedemptions', 'totalPointsRedeemed', 'totalCourierJobs', 'activeCourierJobs', 'recentItems', 'recentRedemptions'],
+        required: [
+          'totalItems',
+          'openItems',
+          'matchedItems',
+          'returnedItems',
+          'itemsByStatus',
+          'totalRedemptions',
+          'totalPointsRedeemed',
+          'totalCourierJobs',
+          'activeCourierJobs',
+          'recentItems',
+          'recentRedemptions',
+        ],
       },
       HealthCheck: {
         type: 'object',
@@ -370,11 +471,15 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Service is healthy',
-            content: { 'application/json': { schema: { $ref: '#/components/schemas/HealthCheck' } } },
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/HealthCheck' } },
+            },
           },
           '503': {
             description: 'Service is degraded',
-            content: { 'application/json': { schema: { $ref: '#/components/schemas/HealthCheck' } } },
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/HealthCheck' } },
+            },
           },
         },
       },
@@ -404,7 +509,9 @@ export const openApiSpec = {
         responses: {
           '201': {
             description: 'User registered',
-            content: { 'application/json': { schema: { $ref: '#/components/schemas/AuthResponse' } } },
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/AuthResponse' } },
+            },
           },
           '400': {
             description: 'Validation error',
@@ -436,7 +543,9 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Authenticated',
-            content: { 'application/json': { schema: { $ref: '#/components/schemas/AuthResponse' } } },
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/AuthResponse' } },
+            },
           },
           '401': {
             description: 'Invalid credentials',
@@ -467,7 +576,9 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'New tokens',
-            content: { 'application/json': { schema: { $ref: '#/components/schemas/AuthResponse' } } },
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/AuthResponse' } },
+            },
           },
           '401': {
             description: 'Invalid or expired refresh token',
@@ -485,7 +596,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Current user',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/UserDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/UserDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
           '401': {
             description: 'Unauthorized',
@@ -501,7 +619,23 @@ export const openApiSpec = {
         operationId: 'listItems',
         parameters: [
           { name: 'kind', in: 'query', schema: { type: 'string', enum: ['lost', 'found'] } },
-          { name: 'status', in: 'query', schema: { type: 'string', enum: ['open', 'matched', 'claimed', 'returned', 'closed', 'archived', 'auctioned', 'donated'] } },
+          {
+            name: 'status',
+            in: 'query',
+            schema: {
+              type: 'string',
+              enum: [
+                'open',
+                'matched',
+                'claimed',
+                'returned',
+                'closed',
+                'archived',
+                'auctioned',
+                'donated',
+              ],
+            },
+          },
           { name: 'category', in: 'query', schema: { type: 'string' } },
           { name: 'text', in: 'query', schema: { type: 'string' } },
           { name: 'search', in: 'query', schema: { type: 'string' } },
@@ -513,12 +647,18 @@ export const openApiSpec = {
           { name: 'pageSize', in: 'query', schema: { type: 'integer', default: 20 } },
           { name: 'lng', in: 'query', schema: { type: 'number' } },
           { name: 'lat', in: 'query', schema: { type: 'number' } },
-          { name: 'radius', in: 'query', schema: { type: 'integer', description: 'Radius in meters' } },
+          {
+            name: 'radius',
+            in: 'query',
+            schema: { type: 'integer', description: 'Radius in meters' },
+          },
         ],
         responses: {
           '200': {
             description: 'Paginated list of items',
-            content: { 'application/json': { schema: { $ref: '#/components/schemas/PaginatedItems' } } },
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/PaginatedItems' } },
+            },
           },
         },
       },
@@ -540,13 +680,26 @@ export const openApiSpec = {
                   description: { type: 'string', minLength: 2, maxLength: 2000 },
                   category: { type: 'string', minLength: 2, maxLength: 60 },
                   tags: { type: 'array', items: { type: 'string' }, maxItems: 20 },
-                  images: { type: 'array', items: { $ref: '#/components/schemas/ItemImage' }, minItems: 1, maxItems: 8 },
+                  images: {
+                    type: 'array',
+                    items: { $ref: '#/components/schemas/ItemImage' },
+                    minItems: 1,
+                    maxItems: 8,
+                  },
                   place: { $ref: '#/components/schemas/PlaceRef' },
                   occurredAt: { type: 'string', format: 'date-time' },
                   rewardAmount: { type: 'integer', minimum: 0 },
                   institutionId: { type: 'string' },
                 },
-                required: ['kind', 'title', 'description', 'category', 'images', 'place', 'occurredAt'],
+                required: [
+                  'kind',
+                  'title',
+                  'description',
+                  'category',
+                  'images',
+                  'place',
+                  'occurredAt',
+                ],
               },
             },
           },
@@ -554,7 +707,14 @@ export const openApiSpec = {
         responses: {
           '201': {
             description: 'Item created',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/ItemDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/ItemDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
           '400': {
             description: 'Validation error',
@@ -572,7 +732,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Item details',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/ItemDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/ItemDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
           '404': {
             description: 'Item not found',
@@ -598,7 +765,10 @@ export const openApiSpec = {
                   category: { type: 'string', minLength: 2, maxLength: 60 },
                   tags: { type: 'array', items: { type: 'string' }, maxItems: 20 },
                   classification: { type: 'string', enum: ['lost', 'stolen'] },
-                  status: { type: 'string', enum: ['open', 'matched', 'claimed', 'returned', 'closed', 'archived'] },
+                  status: {
+                    type: 'string',
+                    enum: ['open', 'matched', 'claimed', 'returned', 'closed', 'archived'],
+                  },
                 },
               },
             },
@@ -607,7 +777,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Item updated',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/ItemDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/ItemDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
           '404': {
             description: 'Item not found',
@@ -650,7 +827,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Match accepted',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/MatchDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/MatchDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
           '404': {
             description: 'Match not found',
@@ -669,7 +853,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Match rejected',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/MatchDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/MatchDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -684,7 +875,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Return confirmed',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/MatchDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/MatchDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -749,7 +947,15 @@ export const openApiSpec = {
                 type: 'object',
                 properties: {
                   body: { type: 'string', maxLength: 2000 },
-                  images: { type: 'array', items: { type: 'object', properties: { url: { type: 'string', format: 'uri' } }, required: ['url'] }, maxItems: 3 },
+                  images: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: { url: { type: 'string', format: 'uri' } },
+                      required: ['url'],
+                    },
+                    maxItems: 3,
+                  },
                 },
                 required: ['body'],
               },
@@ -759,7 +965,14 @@ export const openApiSpec = {
         responses: {
           '201': {
             description: 'Message sent',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/ChatMessageDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/ChatMessageDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -773,7 +986,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Tag details',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/QrTagDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/QrTagDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
           '404': {
             description: 'Tag not found',
@@ -860,7 +1080,14 @@ export const openApiSpec = {
         responses: {
           '201': {
             description: 'Job created',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/CourierJobDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/CourierJobDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -874,7 +1101,11 @@ export const openApiSpec = {
         parameters: [
           { name: 'lng', in: 'query', schema: { type: 'number' } },
           { name: 'lat', in: 'query', schema: { type: 'number' } },
-          { name: 'radius', in: 'query', schema: { type: 'integer', description: 'Radius in meters' } },
+          {
+            name: 'radius',
+            in: 'query',
+            schema: { type: 'integer', description: 'Radius in meters' },
+          },
         ],
         responses: {
           '200': {
@@ -903,7 +1134,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Job accepted',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/CourierJobDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/CourierJobDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -922,7 +1160,10 @@ export const openApiSpec = {
               schema: {
                 type: 'object',
                 properties: {
-                  transition: { type: 'string', enum: ['pickup', 'in_transit', 'deliver', 'cancel'] },
+                  transition: {
+                    type: 'string',
+                    enum: ['pickup', 'in_transit', 'deliver', 'cancel'],
+                  },
                   code: { type: 'string', description: 'Pickup or delivery code' },
                 },
                 required: ['transition'],
@@ -933,7 +1174,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'State transitioned',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/CourierJobDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/CourierJobDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -950,7 +1198,10 @@ export const openApiSpec = {
               'application/json': {
                 schema: {
                   properties: {
-                    data: { type: 'array', items: { $ref: '#/components/schemas/MarketplaceListingDTO' } },
+                    data: {
+                      type: 'array',
+                      items: { $ref: '#/components/schemas/MarketplaceListingDTO' },
+                    },
                   },
                   required: ['data'],
                 },
@@ -1014,7 +1265,14 @@ export const openApiSpec = {
         responses: {
           '201': {
             description: 'Bid placed',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/BidDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/BidDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -1081,7 +1339,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Status updated',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/UserDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/UserDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -1095,7 +1360,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Admin stats',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/AdminStatsDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/AdminStatsDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -1134,7 +1406,16 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Flag cleared',
-            content: { 'application/json': { schema: { properties: { data: { type: 'object', properties: { success: { type: 'boolean' } } } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: {
+                    data: { type: 'object', properties: { success: { type: 'boolean' } } },
+                  },
+                  required: ['data'],
+                },
+              },
+            },
           },
         },
       },
@@ -1148,7 +1429,14 @@ export const openApiSpec = {
         responses: {
           '200': {
             description: 'Partner stats',
-            content: { 'application/json': { schema: { properties: { data: { $ref: '#/components/schemas/PartnerStatsDTO' } }, required: ['data'] } } },
+            content: {
+              'application/json': {
+                schema: {
+                  properties: { data: { $ref: '#/components/schemas/PartnerStatsDTO' } },
+                  required: ['data'],
+                },
+              },
+            },
           },
           '403': {
             description: 'User not linked to an institution',
@@ -1162,7 +1450,7 @@ export const openApiSpec = {
 
 export function swaggerUiHandler() {
   return swaggerUi.setup(openApiSpec as unknown as swaggerUi.JsonObject, {
-    customSiteTitle: 'Back2u API Docs',
+    customSiteTitle: 'bak2me API Docs',
     explorer: true,
   });
 }

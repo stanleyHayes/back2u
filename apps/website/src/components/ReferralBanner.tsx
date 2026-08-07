@@ -38,7 +38,7 @@ export function ReferralBanner() {
               Invite a friend, both get 50 points
             </Typography>
             <Typography sx={{ opacity: 0.95, maxWidth: 480 }}>
-              The more people on Back2u, the faster lost items get found.
+              The more people on bak2me, the faster lost items get found.
             </Typography>
           </Box>
 

@@ -42,7 +42,7 @@ function Wordmark() {
           color: 'text.primary',
         }}
       >
-        Back2u
+        bak2me
       </Typography>
     </Box>
   );
@@ -128,10 +128,10 @@ export function ScanTagPage() {
 
   const handleShare = async () => {
     const result = await shareLink({
-      title: 'Back2u',
+      title: 'bak2me',
       text: tag?.itemLabel
-        ? `Help reunite this "${tag.itemLabel}" with its owner via Back2u.`
-        : 'Help reunite this item with its owner — open this Back2u tag.',
+        ? `Help reunite this "${tag.itemLabel}" with its owner via bak2me.`
+        : 'Help reunite this item with its owner — open this bak2me tag.',
       url: window.location.href,
     });
     if (result === 'copied') setShared(true);
@@ -196,7 +196,7 @@ export function ScanTagPage() {
               color: 'primary.main',
             }}
           >
-            Back2u QR tag
+            bak2me QR tag
           </Box>
           <Typography
             sx={{
@@ -389,7 +389,7 @@ export function ScanTagPage() {
           <span>Free</span>
         </Stack>
         <Typography sx={{ color: MUTED, textAlign: 'center', mt: 1.5, fontSize: 13, opacity: 0.8 }}>
-          Powered by Back2u — the smart lost &amp; found ecosystem.
+          Powered by bak2me — the smart lost &amp; found ecosystem.
         </Typography>
       </Container>
     </Box>

@@ -6,7 +6,7 @@ export function Privacy() {
       <LegalProse
         title="Privacy Policy"
         updated="30 May 2026"
-        intro="Back2u helps reunite people with what they value. Handling lost belongings means handling personal data with care. This policy explains what we collect, why, and the choices you have."
+        intro="bak2me helps reunite people with what they value. Handling lost belongings means handling personal data with care. This policy explains what we collect, why, and the choices you have."
         sections={[
           {
             heading: 'What we collect',

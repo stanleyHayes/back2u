@@ -6,11 +6,11 @@ export function Terms() {
       <LegalProse
         title="Terms of Service"
         updated="30 May 2026"
-        intro="These terms govern your use of Back2u. By creating an account or using the service, you agree to them. Please read them — they keep the community safe and fair."
+        intro="These terms govern your use of bak2me. By creating an account or using the service, you agree to them. Please read them — they keep the community safe and fair."
         sections={[
           {
-            heading: 'Using Back2u',
-            body: 'You must be old enough to form a binding contract in your country to use Back2u. You are responsible for the accuracy of what you post and for keeping your account secure. Do not impersonate others or post on behalf of someone without permission.',
+            heading: 'Using bak2me',
+            body: 'You must be old enough to form a binding contract in your country to use bak2me. You are responsible for the accuracy of what you post and for keeping your account secure. Do not impersonate others or post on behalf of someone without permission.',
           },
           {
             heading: 'Posting items',
@@ -30,7 +30,7 @@ export function Terms() {
           },
           {
             heading: 'Liability',
-            body: 'Back2u is a platform that connects people; we do not take custody of items and cannot guarantee a reunion. To the extent permitted by law, we are not liable for loss, damage, or disputes arising between users. Always meet safely and use the in-app tools.',
+            body: 'bak2me is a platform that connects people; we do not take custody of items and cannot guarantee a reunion. To the extent permitted by law, we are not liable for loss, damage, or disputes arising between users. Always meet safely and use the in-app tools.',
           },
           {
             heading: 'Changes',

@@ -1,4 +1,4 @@
-# Render Blueprint — Back2u API (free tier).
+# Render Blueprint — bak2me API (free tier).
 #
 # Everything runs in ONE free web service: the Express API also runs the job
 # handlers inline and an in-process scheduler, so no paid Background Worker and
@@ -73,19 +73,13 @@ services:
         sync: false
       - key: VAPID_SUBJECT
         sync: false
-      - key: TWILIO_ACCOUNT_SID # SMS OTP
+      - key: ARKESEL_API_KEY # SMS OTP (Arkesel — Ghana)
         sync: false
-      - key: TWILIO_AUTH_TOKEN
+      - key: ARKESEL_SENDER_ID # registered alphanumeric sender ID, e.g. bak2me
         sync: false
-      - key: TWILIO_FROM_NUMBER
+      - key: ARKESEL_WEBHOOK_SECRET # shared secret for the inbound SMS callback URL
         sync: false
-      - key: HUBTEL_CLIENT_ID # escrow / mobile money (Ghana)
-        sync: false
-      - key: HUBTEL_CLIENT_SECRET
-        sync: false
-      - key: HUBTEL_MERCHANT_ACCOUNT
-        sync: false
-      - key: PAYSTACK_SECRET_KEY # QR tag purchases
+      - key: PAYSTACK_SECRET_KEY # payments: QR tag purchases + reward escrow (Ghana)
         sync: false
       - key: PAYSTACK_PUBLIC_KEY
         sync: false

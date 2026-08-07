@@ -2,8 +2,12 @@
 self.addEventListener('push', (event) => {
   if (!event.data) return;
   let payload = {};
-  try { payload = event.data.json(); } catch { payload = { title: 'Back2u', body: event.data.text() }; }
-  const { title = 'Back2u', body = '', data = {} } = payload;
+  try {
+    payload = event.data.json();
+  } catch {
+    payload = { title: 'bak2me', body: event.data.text() };
+  }
+  const { title = 'bak2me', body = '', data = {} } = payload;
   event.waitUntil(self.registration.showNotification(title, { body, data, icon: '/favicon.svg' }));
 });
 

@@ -1,6 +1,6 @@
 # Deployment
 
-Back2u ships as **one backend on Render** (free tier) and **four static frontends on Vercel**.
+bak2me ships as **one backend on Render** (free tier) and **four static frontends on Vercel**.
 MongoDB is hosted separately on **MongoDB Atlas** (free M0). Everything below can run at $0 —
 paid tiers are only needed to remove the free-tier limitations noted at the end.
 

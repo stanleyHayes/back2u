@@ -3,13 +3,12 @@ import { Box, Typography } from '@mui/material';
 const PAPER = '#F2EFEA';
 
 /**
- * The Back2u mark: a rounded "U" (Back2-U) that doubles as a return path — its
+ * The bak2me mark: a rounded "U" (bak-2-U) that doubles as a return path — its
  * right arm rises into an arrowhead pointing up and out toward you (the item
- * coming back), cradling a location pin at its centre.
+ * coming back), cradling a hand pointing up and out at you — "back to you".
  */
-export function BrandMark({ size = 30, onDark = false }: { size?: number; onDark?: boolean }) {
+export function BrandMark({ size = 30 }: { size?: number; onDark?: boolean }) {
   const gradId = 'b2uMark';
-  const dot = onDark ? '#1C231B' : PAPER;
   return (
     <Box
       component="svg"
@@ -34,17 +33,17 @@ export function BrandMark({ size = 30, onDark = false }: { size?: number; onDark
       />
       {/* arrowhead on the right arm, pointing up & out toward the viewer */}
       <path d="M35 5.5 L29.8 13 L40.2 13 Z" fill={`url(#${gradId})`} />
-      {/* location pin nested in the U's cradle */}
-      <path
-        d="M24 15.5 c-3.4 0 -6.1 2.7 -6.1 6 c0 4.3 6.1 9.6 6.1 9.6 s6.1 -5.3 6.1 -9.6 c0 -3.3 -2.7 -6 -6.1 -6 z"
-        fill={`url(#${gradId})`}
-      />
-      <circle cx="24" cy="21.5" r="2.4" fill={dot} />
+      {/* hand pointing up & out at you, nested in the U's cradle — "back to you" */}
+      <g fill={`url(#${gradId})`}>
+        <rect x="21.7" y="12.5" width="4.6" height="13" rx="2.3" />
+        <path d="M17.2 20.8 h13.6 a2.3 2.3 0 0 1 2.3 2.3 v2.7 a5.6 5.6 0 0 1 -5.6 5.6 h-6.9 a5.6 5.6 0 0 1 -5.6 -5.6 v-2.7 a2.3 2.3 0 0 1 2.3 -2.3 z" />
+        <path d="M17.2 23 a2.6 2.6 0 0 0 -3 1.7 a1.5 1.5 0 0 0 1.1 1.9 l1.9 0.4 z" />
+      </g>
     </Box>
   );
 }
 
-/** Back2u logo lockup: the return-loop pin mark + Black Ops One wordmark. */
+/** bak2me logo lockup: the return-loop pin mark + Black Ops One wordmark. */
 export function BrandLogo({
   size = 30,
   onDark = false,
@@ -71,7 +70,7 @@ export function BrandLogo({
             lineHeight: 1,
           }}
         >
-          Back2u
+          bak2me
         </Typography>
       )}
     </Box>

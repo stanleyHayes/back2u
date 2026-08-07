@@ -3,16 +3,17 @@ import { inject, injectable } from 'inversify';
 import { UnauthorizedError } from '../../../domain/shared/errors.js';
 import type { IQrTagRepository, IUserRepository } from '../../ports/repositories.js';
 import type { ILogger, IRealtimeBus, ISmsService } from '../../ports/services.js';
-import type { ITwilioSignatureVerifier } from '../../ports/extra-services.js';
+import type { IInboundSmsVerifier } from '../../ports/extra-services.js';
 import { TOKENS } from '../../ports/tokens.js';
 
-const HELP_REPLY = 'Back2u commands: LOST <tag code> to report a tagged item lost, FOUND <tag code> to notify its owner.';
+const HELP_REPLY =
+  'bak2me commands: LOST <tag code> to report a tagged item lost, FOUND <tag code> to notify its owner.';
 
 @injectable()
 export class HandleInboundSmsUseCase {
   constructor(
     @inject(TOKENS.SmsService) private readonly sms: ISmsService,
-    @inject(TOKENS.TwilioSignatureVerifier) private readonly verifier: ITwilioSignatureVerifier,
+    @inject(TOKENS.InboundSmsVerifier) private readonly verifier: IInboundSmsVerifier,
     @inject(TOKENS.UserRepository) private readonly users: IUserRepository,
     @inject(TOKENS.QrTagRepository) private readonly tags: IQrTagRepository,
     @inject(TOKENS.RealtimeBus) private readonly bus: IRealtimeBus,
@@ -21,11 +22,10 @@ export class HandleInboundSmsUseCase {
 
   async execute(
     payload: Record<string, string>,
-    signature: string | undefined,
-    url: string,
+    secret: string | undefined,
   ): Promise<{ reply: string }> {
-    if (!this.verifier.verify(signature, url, payload)) {
-      throw new UnauthorizedError('Invalid Twilio signature');
+    if (!this.verifier.verify(secret)) {
+      throw new UnauthorizedError('Invalid inbound SMS webhook secret');
     }
     const parsed = this.sms.parseInbound(payload);
     if (!parsed) return { reply: HELP_REPLY };
@@ -34,21 +34,22 @@ export class HandleInboundSmsUseCase {
     const command = (commandRaw ?? '').toUpperCase();
     const code = (codeRaw ?? '').trim();
 
-    if ((command === 'LOST' || command === 'FOUND') && !code) {
-      return { reply: HELP_REPLY };
-    }
+    const reply =
+      (command === 'LOST' || command === 'FOUND') && !code
+        ? HELP_REPLY
+        : command === 'LOST'
+          ? await this.handleLost(parsed.fromPhone, code)
+          : command === 'FOUND'
+            ? await this.handleFound(parsed.fromPhone, code)
+            : HELP_REPLY;
 
-    switch (command) {
-      case 'LOST':
-        return { reply: await this.handleLost(parsed.fromPhone, code) };
-      case 'FOUND':
-        return { reply: await this.handleFound(parsed.fromPhone, code) };
-      case 'STOP':
-      case 'START':
-      case 'HELP':
-      default:
-        return { reply: HELP_REPLY };
-    }
+    // Arkesel has no synchronous reply channel (unlike Twilio's TwiML response),
+    // so send the reply back out over the SMS API.
+    await this.sms
+      .send(parsed.fromPhone, reply)
+      .catch((err) => this.logger.warn('inbound sms reply failed', { err: String(err) }));
+
+    return { reply };
   }
 
   private async handleLost(fromPhone: string, code: string): Promise<string> {

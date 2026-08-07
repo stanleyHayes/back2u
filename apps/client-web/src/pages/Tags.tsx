@@ -44,7 +44,7 @@ export function TagsPage() {
       <PageHeader
         eyebrow="Protect your stuff"
         title="QR tags"
-        subtitle="Stick a Back2u QR sticker on your laptop, keys, or wallet. Anyone who scans it can message you anonymously the moment they find it."
+        subtitle="Stick a bak2me QR sticker on your laptop, keys, or wallet. Anyone who scans it can message you anonymously the moment they find it."
       />
 
       <Stack spacing={2.5}>
@@ -171,10 +171,10 @@ export function TagsPage() {
                       url={`${window.location.origin}/tags/${t.code}`}
                       message={
                         t.itemLabel
-                          ? `Found my "${t.itemLabel}"? Scan or open this Back2u tag to let me know.`
-                          : 'Found this? Open this Back2u tag to message the owner anonymously.'
+                          ? `Found my "${t.itemLabel}"? Scan or open this bak2me tag to let me know.`
+                          : 'Found this? Open this bak2me tag to message the owner anonymously.'
                       }
-                      title="Back2u QR tag"
+                      title="bak2me QR tag"
                       size="small"
                     />
                     {t.status !== 'lost' && (
