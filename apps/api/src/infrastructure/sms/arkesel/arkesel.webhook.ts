@@ -7,11 +7,17 @@ import { TOKENS } from '../../../application/ports/tokens.js';
 import type { Env } from '../../../config/env.js';
 
 /**
- * Verifies inbound Arkesel webhook calls. Arkesel does not sign requests, so the
- * callback URL carries a shared secret (as a `?token=` query param or an
- * `x-webhook-secret` header) that we compare — in constant time — against
- * ARKESEL_WEBHOOK_SECRET. If no secret is configured, all inbound calls are
- * rejected (fail closed).
+ * Verifies inbound Arkesel webhook calls via a shared secret compared in constant
+ * time against ARKESEL_WEBHOOK_SECRET. If no secret is configured, all inbound
+ * calls are rejected (fail closed).
+ *
+ * SECURITY NOTE: this is a deliberate but weaker control than Twilio's per-request
+ * HMAC signature — Arkesel does not sign requests, so a static bearer secret is the
+ * only option. Because a static secret is replayable and easily leaked (esp. via
+ * URLs), defend in depth: prefer the `x-webhook-secret` header over `?token=`
+ * (routes), never forward the secret into app logic (routes), only send billed SMS
+ * replies for verified successful actions (use-case), and rate-limit / IP-allowlist
+ * this route to Arkesel's servers at the edge.
  */
 @injectable()
 export class ArkeselWebhookVerifier implements IInboundSmsVerifier {

@@ -35,7 +35,8 @@ export class ArkeselSmsService implements ISmsService {
 
   async send(toPhone: string, body: string): Promise<void> {
     if (!this.apiKey || !this.senderId) {
-      this.logger.info('sms noop (no Arkesel keys)', { toPhone, body });
+      // Never log `body` — for OTP sends it contains the one-time code in cleartext.
+      this.logger.info('sms noop (no Arkesel keys)', { toPhone, bodyLength: body.length });
       return;
     }
     // Arkesel expects international format without the leading "+", e.g. 233541234567.
