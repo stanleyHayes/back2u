@@ -24,7 +24,9 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   if (res.headersSent) return;
 
   if (err instanceof ZodError) {
-    res.status(400).json(body('validation', 'Invalid request', err.flatten()));
+    // 422 (not 400) so request-schema validation is consistent with the domain
+    // ValidationError, which also returns 422 'validation'.
+    res.status(422).json(body('validation', 'Invalid request', err.flatten()));
     return;
   }
 
@@ -35,10 +37,14 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   }
 
   // http-errors style (body-parser JSON syntax errors, payload too large, …)
-  const status = Number((err as { status?: unknown; statusCode?: unknown })?.status ??
-    (err as { statusCode?: unknown })?.statusCode);
+  const status = Number(
+    (err as { status?: unknown; statusCode?: unknown })?.status ??
+      (err as { statusCode?: unknown })?.statusCode,
+  );
   if (Number.isInteger(status) && status >= 400 && status < 500) {
-    res.status(status).json(body('bad_request', err instanceof Error ? err.message : 'Bad request'));
+    res
+      .status(status)
+      .json(body('bad_request', err instanceof Error ? err.message : 'Bad request'));
     return;
   }
 

@@ -20,7 +20,10 @@ export function healthRouter(redis: Redis | null): Router {
 
     res.status(mongoUp ? 200 : 503).json({
       status: mongoUp ? 'ok' : 'degraded',
+      // Deployed build marker — the git SHA on Render, else 'dev' locally.
+      version: process.env.APP_VERSION ?? process.env.RENDER_GIT_COMMIT ?? 'dev',
       uptime: Math.floor(process.uptime()),
+      db: mongoUp ? 'connected' : 'disconnected',
       mongo: { readyState, connected: mongoUp },
       redis: redisStatus,
       timestamp: new Date().toISOString(),
