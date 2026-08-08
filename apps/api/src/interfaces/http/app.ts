@@ -49,7 +49,13 @@ import { reviewRouter } from './routes/review.routes.js';
 import { swaggerUiAssets, swaggerUiHandler, swaggerJsonHandler } from './swagger.js';
 import { errorHandler, notFoundHandler } from './middleware/error.js';
 import { idempotency } from './middleware/idempotency.js';
-import { authLimiter, publicLimiter, strictLimiter, partnerApiLimiter } from './middleware/rate-limit.js';
+import {
+  authLimiter,
+  publicLimiter,
+  strictLimiter,
+  partnerApiLimiter,
+  smsInboundLimiter,
+} from './middleware/rate-limit.js';
 import { tracingMiddleware } from './middleware/tracing.js';
 import { performanceMiddleware, getMetrics } from './middleware/performance.js';
 import { requireVerifiedEmail } from './middleware/require-verified.js';
@@ -86,7 +92,9 @@ export function buildApp(c: Container): Express {
   const allowList = env.CORS_ORIGINS.split(',').map((s) => s.trim());
   // Anchor the pattern: an unanchored env regex would match (and credential)
   // any origin that merely contains the pattern as a substring.
-  const previewRegex = env.CORS_PREVIEW_REGEX ? new RegExp(`^(?:${env.CORS_PREVIEW_REGEX})$`) : null;
+  const previewRegex = env.CORS_PREVIEW_REGEX
+    ? new RegExp(`^(?:${env.CORS_PREVIEW_REGEX})$`)
+    : null;
   const corsDelegate: CorsOptionsDelegate = (req, cb) => {
     const origin = req.headers.origin;
     if (!origin) return cb(null, { origin: false });
@@ -112,7 +120,11 @@ export function buildApp(c: Container): Express {
     res.json({ metrics: getMetrics(), generatedAt: new Date().toISOString() });
   });
   app.use('/v1/auth', authLimiter(redis), authRouter(c));
-  app.use('/v1/auth', authLimiter(redis), authExtraRouter(c, `${env.API_PUBLIC_URL}/reset-password`));
+  app.use(
+    '/v1/auth',
+    authLimiter(redis),
+    authExtraRouter(c, `${env.API_PUBLIC_URL}/reset-password`),
+  );
   app.use('/v1/me', strictLimiter(redis), meExtrasRouter(c));
   app.use('/v1/account', strictLimiter(redis), accountRouter(c));
   app.use('/v1/items', publicLimiter(redis), itemsRouter(c));
@@ -133,7 +145,7 @@ export function buildApp(c: Container): Express {
   app.use('/v1/institutions', publicLimiter(redis), institutionsRouter(c));
   app.use('/v1/leaderboard', publicLimiter(redis), leaderboardRouter(c));
   app.use('/v1/share', strictLimiter(redis), shareRouter(c, env.API_PUBLIC_URL));
-  app.use('/v1/sms', strictLimiter(redis), smsRouter(c));
+  app.use('/v1/sms', smsInboundLimiter(redis), smsRouter(c));
   app.use('/v1/users', strictLimiter(redis), usersRouter(c));
   app.use('/v1/admin', strictLimiter(redis), adminRouter(c));
   app.use('/v1/partner', strictLimiter(redis), partnerRouter(c));

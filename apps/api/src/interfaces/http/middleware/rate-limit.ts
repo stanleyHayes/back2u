@@ -16,7 +16,10 @@ class RedisStore implements Store {
 
   private key(key: string): { k: string; resetTime: Date } {
     const windowStart = Math.floor(Date.now() / this.windowMs) * this.windowMs;
-    return { k: `rl:${this.name}:${key}:${windowStart}`, resetTime: new Date(windowStart + this.windowMs) };
+    return {
+      k: `rl:${this.name}:${key}:${windowStart}`,
+      resetTime: new Date(windowStart + this.windowMs),
+    };
   }
 
   async increment(key: string): Promise<IncrementResponse> {
@@ -47,5 +50,10 @@ function limiter(redis: Redis | null, prefix: string, windowMs: number, limit: n
 
 export const authLimiter = (redis: Redis | null) => limiter(redis, 'auth', 5 * 60_000, 10);
 export const strictLimiter = (redis: Redis | null) => limiter(redis, 'strict', 15 * 60_000, 100);
+// Inbound SMS webhook: tight burst cap. Every inbound can trigger a billed reply
+// SMS, and the endpoint is gated only by a static shared secret, so keep this low.
+export const smsInboundLimiter = (redis: Redis | null) =>
+  limiter(redis, 'sms-inbound', 5 * 60_000, 30);
 export const publicLimiter = (redis: Redis | null) => limiter(redis, 'public', 15 * 60_000, 300);
-export const partnerApiLimiter = (redis: Redis | null) => limiter(redis, 'partner', 15 * 60_000, 600);
+export const partnerApiLimiter = (redis: Redis | null) =>
+  limiter(redis, 'partner', 15 * 60_000, 600);
