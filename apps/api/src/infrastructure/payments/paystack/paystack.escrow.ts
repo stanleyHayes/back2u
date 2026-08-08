@@ -12,10 +12,10 @@ import { PaystackService } from './paystack.service.js';
  *            poster. Resilient — a payment-side failure never blocks item
  *            creation; the reward is still recorded and can be settled later.
  * - refund:  issues a Paystack refund against the held transaction reference.
- * - release: finder payouts go through the Paystack Transfers API, which needs
- *            the recipient's mobile-money provider + account details (not just a
- *            phone). Until those are collected we log the payout as pending so it
- *            can be settled from the Paystack dashboard.
+ * - release: pays the finder via the Paystack Transfers API (create mobile-money
+ *            recipient -> initiate transfer). Needs the finder's momo provider +
+ *            number; when those are missing it logs the payout as pending for
+ *            manual settlement from the Paystack dashboard instead of failing.
  */
 @injectable()
 export class PaystackEscrow implements IPaymentEscrowService {
