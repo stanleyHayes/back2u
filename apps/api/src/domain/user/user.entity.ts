@@ -1,4 +1,4 @@
-import type { EmailPreferences, Locale, UserRole } from '@back2u/shared-types';
+import type { EmailPreferences, Locale, MomoProvider, UserRole } from '@back2u/shared-types';
 
 import { ConflictError, ValidationError } from '../shared/errors.js';
 import type { Id } from '../shared/id.js';
@@ -10,6 +10,10 @@ export interface UserSnapshot {
   passwordHash: string;
   phone?: string;
   avatarUrl?: string;
+  /** Mobile-money payout provider for released rewards. */
+  momoProvider?: MomoProvider;
+  /** Mobile-money payout number (defaults to `phone` if unset). */
+  momoNumber?: string;
   roles: UserRole[];
   status: 'active' | 'banned' | 'suspended';
   reputationScore: number;
@@ -204,6 +208,8 @@ export class User {
     name?: string;
     phone?: string;
     avatarUrl?: string;
+    momoProvider?: MomoProvider;
+    momoNumber?: string;
     emailPreferences?: EmailPreferences;
   }): void {
     if (input.name !== undefined) {
@@ -223,6 +229,13 @@ export class User {
     if (input.avatarUrl !== undefined) {
       const avatarUrl = input.avatarUrl.trim();
       this.state.avatarUrl = avatarUrl.length > 0 ? avatarUrl : undefined;
+    }
+    if (input.momoProvider !== undefined) {
+      this.state.momoProvider = input.momoProvider;
+    }
+    if (input.momoNumber !== undefined) {
+      const momoNumber = input.momoNumber.trim();
+      this.state.momoNumber = momoNumber.length > 0 ? momoNumber : undefined;
     }
     if (input.emailPreferences !== undefined) {
       this.state.emailPreferences = { ...this.state.emailPreferences, ...input.emailPreferences };

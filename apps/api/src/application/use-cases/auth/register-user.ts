@@ -29,6 +29,8 @@ export function toUserDTO(user: User): UserDTO {
     name: s.name,
     phone: s.phone,
     avatarUrl: s.avatarUrl,
+    momoProvider: s.momoProvider,
+    momoNumber: s.momoNumber,
     roles: s.roles,
     status: s.status,
     reputationScore: s.reputationScore,

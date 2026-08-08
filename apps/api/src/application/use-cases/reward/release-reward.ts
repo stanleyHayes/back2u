@@ -13,7 +13,12 @@ import type {
   IRewardRepository,
   IUserRepository,
 } from '../../ports/repositories.js';
-import type { ILogger, IPaymentEscrowService, IPushService, IRealtimeBus } from '../../ports/services.js';
+import type {
+  ILogger,
+  IPaymentEscrowService,
+  IPushService,
+  IRealtimeBus,
+} from '../../ports/services.js';
 import { TOKENS } from '../../ports/tokens.js';
 import type { Env } from '../../../config/env.js';
 
@@ -65,7 +70,12 @@ export class ReleaseRewardUseCase {
     try {
       await this.escrow.release({
         providerRef: reward.snapshot.id,
-        recipientPhone: finder.snapshot.phone ?? '',
+        // Prefer the finder's dedicated payout number; fall back to their phone.
+        recipientPhone: finder.snapshot.momoNumber ?? finder.snapshot.phone ?? '',
+        recipientName: finder.snapshot.name,
+        recipientProvider: finder.snapshot.momoProvider,
+        amountMinor: reward.netPayout,
+        currency: reward.snapshot.currency,
       });
     } catch (err) {
       this.logger.warn('escrow release failed', { rewardId, err: String(err) });

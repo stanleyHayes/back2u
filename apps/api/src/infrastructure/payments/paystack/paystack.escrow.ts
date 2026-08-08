@@ -61,14 +61,62 @@ export class PaystackEscrow implements IPaymentEscrowService {
     }
   }
 
-  async release(input: { providerRef: string; recipientPhone: string }): Promise<void> {
+  async release(input: {
+    providerRef: string;
+    recipientPhone: string;
+    recipientName?: string;
+    recipientProvider?: string;
+    amountMinor?: number;
+    currency?: string;
+  }): Promise<void> {
     if (!this.paystack.isEnabled()) {
-      this.logger.info('escrow release noop (Paystack not configured)', input);
+      this.logger.info('escrow release noop (Paystack not configured)', {
+        providerRef: input.providerRef,
+      });
       return;
     }
-    // Paystack Transfers require a recipient (mobile-money provider + account),
-    // which the reward model does not yet carry. Log for dashboard settlement.
-    this.logger.info('reward payout pending Paystack Transfer settlement', input);
+    const account = input.recipientPhone.replace(/[^\d]/g, '');
+    // A live Paystack Transfer needs the finder's momo provider + a payout amount.
+    // Without them (finder hasn't set payout details), leave it for manual
+    // settlement from the Paystack dashboard rather than failing the release.
+    if (!input.recipientProvider || !input.amountMinor || !account) {
+      this.logger.info(
+        'reward payout pending — missing momo details; settle via Paystack dashboard',
+        {
+          providerRef: input.providerRef,
+          hasProvider: !!input.recipientProvider,
+          hasAmount: !!input.amountMinor,
+        },
+      );
+      return;
+    }
+    try {
+      const { recipientCode } = await this.paystack.createTransferRecipient({
+        name: input.recipientName || 'bak2me finder',
+        accountNumber: account,
+        bankCode: input.recipientProvider,
+        currency: input.currency,
+      });
+      const { transferCode, status } = await this.paystack.initiateTransfer({
+        amountMinor: input.amountMinor,
+        recipientCode,
+        reason: `bak2me reward payout ${input.providerRef}`,
+        reference: `payout-${input.providerRef}`,
+        currency: input.currency,
+      });
+      this.logger.info('reward payout initiated', {
+        providerRef: input.providerRef,
+        transferCode,
+        status,
+      });
+    } catch (err) {
+      // Don't fail the reward release on a payout hiccup — the reward is already
+      // marked released; surface for dashboard settlement / retry.
+      this.logger.warn('reward payout failed; settle via Paystack dashboard', {
+        providerRef: input.providerRef,
+        err: String(err),
+      });
+    }
   }
 
   async refund(providerRef: string): Promise<void> {

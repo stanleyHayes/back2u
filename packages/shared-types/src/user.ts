@@ -1,5 +1,8 @@
 import type { Locale, UserRole } from './enums.js';
 
+/** Paystack Ghana mobile-money provider codes (bank_code for a mobile_money recipient). */
+export type MomoProvider = 'MTN' | 'VOD' | 'ATL';
+
 export interface EmailPreferences {
   marketing?: boolean;
   matches?: boolean;
@@ -14,6 +17,10 @@ export interface UserDTO {
   name: string;
   phone?: string;
   avatarUrl?: string;
+  /** Mobile-money payout provider for released rewards. */
+  momoProvider?: MomoProvider;
+  /** Mobile-money payout number (defaults to `phone` if unset). */
+  momoNumber?: string;
   roles: UserRole[];
   status?: 'active' | 'banned' | 'suspended';
   reputationScore: number;
@@ -55,6 +62,8 @@ export interface UpdateProfileInput {
   name?: string;
   phone?: string;
   avatarUrl?: string;
+  momoProvider?: MomoProvider;
+  momoNumber?: string;
   emailPreferences?: EmailPreferences;
 }
 

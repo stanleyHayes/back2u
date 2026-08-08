@@ -137,6 +137,94 @@ export class PaystackService {
     if (!json.status) throw new Error(`Paystack refund failed: ${json.message}`);
   }
 
+  /**
+   * Creates a Paystack transfer recipient for a Ghana mobile-money number.
+   * `bankCode` is the momo provider code (MTN / VOD / ATL). Returns the reusable
+   * recipient_code used to initiate transfers.
+   */
+  async createTransferRecipient(input: {
+    name: string;
+    accountNumber: string;
+    bankCode: string;
+    currency?: string;
+  }): Promise<{ recipientCode: string }> {
+    if (!this.secretKey) throw new Error('Paystack not configured');
+
+    const res = await fetch('https://api.paystack.co/transferrecipient', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.secretKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'mobile_money',
+        name: input.name,
+        account_number: input.accountNumber,
+        bank_code: input.bankCode,
+        currency: input.currency ?? 'GHS',
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Paystack create recipient failed: ${res.status} ${text}`);
+    }
+    const json = (await res.json()) as {
+      status: boolean;
+      message: string;
+      data?: { recipient_code: string };
+    };
+    if (!json.status || !json.data?.recipient_code) {
+      throw new Error(`Paystack create recipient failed: ${json.message}`);
+    }
+    return { recipientCode: json.data.recipient_code };
+  }
+
+  /**
+   * Initiates a transfer from the Paystack balance to a recipient. `amountMinor`
+   * is in the subunit (pesewa/kobo). Requires transfers to be enabled on the
+   * account (and OTP-for-transfers disabled for fully automated payouts).
+   */
+  async initiateTransfer(input: {
+    amountMinor: number;
+    recipientCode: string;
+    reason?: string;
+    reference?: string;
+    currency?: string;
+  }): Promise<{ transferCode: string; status: string }> {
+    if (!this.secretKey) throw new Error('Paystack not configured');
+
+    const res = await fetch('https://api.paystack.co/transfer', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.secretKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        source: 'balance',
+        amount: input.amountMinor,
+        recipient: input.recipientCode,
+        reason: input.reason,
+        reference: input.reference,
+        currency: input.currency ?? 'GHS',
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Paystack transfer failed: ${res.status} ${text}`);
+    }
+    const json = (await res.json()) as {
+      status: boolean;
+      message: string;
+      data?: { transfer_code: string; status: string };
+    };
+    if (!json.status || !json.data?.transfer_code) {
+      throw new Error(`Paystack transfer failed: ${json.message}`);
+    }
+    return { transferCode: json.data.transfer_code, status: json.data.status };
+  }
+
   verifyWebhookSignature(body: string, signature: string): boolean {
     if (!this.secretKey) return false;
     // Paystack HMAC-SHA512 signature verification

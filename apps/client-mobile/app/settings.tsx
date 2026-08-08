@@ -1,4 +1,4 @@
-import type { Locale } from '@back2u/shared-types';
+import type { Locale, MomoProvider } from '@back2u/shared-types';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -18,15 +18,33 @@ const LOCALES: { code: Locale; label: string }[] = [
   { code: 'ee', label: 'Ewe' },
 ];
 
+const MOMO_PROVIDERS: { code: MomoProvider; label: string }[] = [
+  { code: 'MTN', label: 'MTN MoMo' },
+  { code: 'VOD', label: 'Telecel Cash' },
+  { code: 'ATL', label: 'AirtelTigo Money' },
+];
+
 export default function SettingsScreen() {
   const router = useRouter();
   const { user, clear } = useAuth();
   const [locale, setLocale] = useState<Locale>(user?.locale ?? 'en');
   const [localeMenu, setLocaleMenu] = useState(false);
   const [redeem, setRedeem] = useState('0');
+  const [momoProvider, setMomoProvider] = useState<MomoProvider | undefined>(user?.momoProvider);
+  const [momoNumber, setMomoNumber] = useState(user?.momoNumber ?? '');
+  const [momoMenu, setMomoMenu] = useState(false);
 
   const setLoc = useMutation({ mutationFn: () => api.setLocale(locale) });
   const redeemMut = useMutation({ mutationFn: () => api.redeemPoints(Number(redeem)) });
+  const payoutMut = useMutation({
+    mutationFn: () => api.updateProfile({ momoProvider, momoNumber: momoNumber.trim() }),
+    onSuccess: (updated) => {
+      const { accessToken, refreshToken } = useAuth.getState();
+      if (accessToken && refreshToken) {
+        useAuth.getState().set({ user: updated, accessToken, refreshToken });
+      }
+    },
+  });
   const exportMut = useMutation({ mutationFn: () => api.exportAccount() });
   const deleteMut = useMutation({
     mutationFn: () => api.deleteAccount(),
@@ -112,6 +130,56 @@ export default function SettingsScreen() {
         <Card.Actions>
           <Button mode="contained" onPress={() => redeemMut.mutate()} loading={redeemMut.isPending}>
             Redeem
+          </Button>
+        </Card.Actions>
+      </Card>
+
+      <Card>
+        <Card.Title
+          title="Reward payout"
+          subtitle="Mobile money account we send released rewards to"
+        />
+        <Card.Content style={{ gap: 8 }}>
+          <Menu
+            visible={momoMenu}
+            onDismiss={() => setMomoMenu(false)}
+            anchor={
+              <Button mode="outlined" onPress={() => setMomoMenu(true)}>
+                {MOMO_PROVIDERS.find((p) => p.code === momoProvider)?.label ?? 'Select provider'}
+              </Button>
+            }
+          >
+            {MOMO_PROVIDERS.map((p) => (
+              <Menu.Item
+                key={p.code}
+                onPress={() => {
+                  setMomoProvider(p.code);
+                  setMomoMenu(false);
+                }}
+                title={p.label}
+              />
+            ))}
+          </Menu>
+          <TextInput
+            label="Mobile money number"
+            value={momoNumber}
+            onChangeText={setMomoNumber}
+            keyboardType="phone-pad"
+            placeholder="233…"
+          />
+          {payoutMut.isSuccess && <HelperText type="info">Payout details saved.</HelperText>}
+          {payoutMut.isError && (
+            <HelperText type="error">Could not save. Please try again.</HelperText>
+          )}
+        </Card.Content>
+        <Card.Actions>
+          <Button
+            mode="contained"
+            onPress={() => payoutMut.mutate()}
+            loading={payoutMut.isPending}
+            disabled={!momoProvider || momoNumber.trim().length < 6}
+          >
+            Save payout details
           </Button>
         </Card.Actions>
       </Card>

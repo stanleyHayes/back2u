@@ -168,7 +168,16 @@ export interface IPaymentEscrowService {
     payerPhone?: string;
     payerEmail?: string;
   }): Promise<{ providerRef: string }>;
-  release(input: { providerRef: string; recipientPhone: string }): Promise<void>;
+  release(input: {
+    providerRef: string;
+    recipientPhone: string;
+    recipientName?: string;
+    /** Mobile-money provider code (MTN/VOD/ATL). Required for a live payout. */
+    recipientProvider?: string;
+    /** Payout amount in minor units. Required for a live payout. */
+    amountMinor?: number;
+    currency?: string;
+  }): Promise<void>;
   refund(providerRef: string): Promise<void>;
 }
 

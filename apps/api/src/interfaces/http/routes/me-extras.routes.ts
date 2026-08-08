@@ -31,6 +31,8 @@ const UpdateProfileSchema = z.object({
   name: z.string().min(1).optional(),
   phone: z.string().optional(),
   avatarUrl: z.string().optional(),
+  momoProvider: z.enum(['MTN', 'VOD', 'ATL']).optional(),
+  momoNumber: z.string().optional(),
   emailPreferences: EmailPreferencesSchema.optional(),
 });
 

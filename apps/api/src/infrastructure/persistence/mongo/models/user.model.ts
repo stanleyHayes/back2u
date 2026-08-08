@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import type { EmailPreferences, Locale, UserRole } from '@back2u/shared-types';
+import type { EmailPreferences, Locale, MomoProvider, UserRole } from '@back2u/shared-types';
 
 export interface UserDoc {
   _id: string;
@@ -9,6 +9,8 @@ export interface UserDoc {
   passwordHash: string;
   phone?: string;
   avatarUrl?: string;
+  momoProvider?: MomoProvider;
+  momoNumber?: string;
   roles: UserRole[];
   status: 'active' | 'banned' | 'suspended';
   reputationScore: number;
@@ -51,6 +53,8 @@ const userSchema = new mongoose.Schema<UserDoc>(
     passwordHash: { type: String, required: true },
     phone: { type: String },
     avatarUrl: { type: String },
+    momoProvider: { type: String, enum: ['MTN', 'VOD', 'ATL'] },
+    momoNumber: { type: String },
     roles: {
       type: [String],
       enum: [
