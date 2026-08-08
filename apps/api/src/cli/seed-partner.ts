@@ -16,7 +16,7 @@ import type { IPasswordHasher } from '../application/ports/services.js';
  * Additive seed: creates a partner_admin login linked to an institution so the
  * partner portal can be used. Idempotent — skips if the account already exists.
  */
-const EMAIL = 'partner@back2u.app';
+const EMAIL = 'partner@bak2me.com';
 const PASSWORD = 'Password123!';
 
 async function main() {

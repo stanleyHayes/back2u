@@ -21,11 +21,11 @@ import type { IPasswordHasher } from '../application/ports/services.js';
 const PASSWORD = process.env.SEED_DEMO_PASSWORD ?? 'Back2u-Demo-2026!';
 
 const ACCOUNTS: { email: string; name: string; roles?: UserRole[]; points?: number }[] = [
-  { email: 'ama@back2u.app', name: 'Ama Mensah', points: 330 },
-  { email: 'kofi@back2u.app', name: 'Kofi Boateng', points: 1240 },
-  { email: 'akosua@back2u.app', name: 'Akosua Owusu', points: 760 },
-  { email: 'admin@back2u.app', name: 'bak2me Admin', roles: ['admin', 'super_admin'] },
-  { email: 'partner@back2u.app', name: 'Bookshop Partner', roles: ['partner_admin'] },
+  { email: 'ama@bak2me.com', name: 'Ama Mensah', points: 330 },
+  { email: 'kofi@bak2me.com', name: 'Kofi Boateng', points: 1240 },
+  { email: 'akosua@bak2me.com', name: 'Akosua Owusu', points: 760 },
+  { email: 'admin@bak2me.com', name: 'bak2me Admin', roles: ['admin', 'super_admin'] },
+  { email: 'partner@bak2me.com', name: 'Bookshop Partner', roles: ['partner_admin'] },
 ];
 
 async function main() {

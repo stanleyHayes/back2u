@@ -10,7 +10,10 @@ import { PinoAppLogger } from '../infrastructure/security/pino-logger.js';
 import { Item } from '../domain/item/item.entity.js';
 import { MarketplaceListing } from '../domain/marketplace_listing/marketplace-listing.entity.js';
 import { newId } from '../domain/shared/id.js';
-import type { IItemRepository, IMarketplaceListingRepository } from '../application/ports/repositories.js';
+import type {
+  IItemRepository,
+  IMarketplaceListingRepository,
+} from '../application/ports/repositories.js';
 
 /**
  * Additive seed: creates a handful of "unclaimed" found items + live marketplace
@@ -26,16 +29,50 @@ const PLACE = {
 };
 
 const STOCK = [
-  { title: 'Unclaimed iPhone 13 (space grey)', category: 'Phone', price: 8000, buyNow: 14000, days: 5, img: 1011,
-    desc: 'Found at the Accra Mall food court and never claimed past the holding window. Factory reset, screen intact. Proceeds top up the finder rewards pool.' },
-  { title: 'Black leather laptop bag', category: 'Bag', price: 3000, buyNow: 6000, days: 7, img: 1027,
-    desc: 'Handed in at Kotoka Airport lost & found and unclaimed. Good condition, contents removed.' },
-  { title: 'Casio wristwatch (silver)', category: 'Jewelry', price: 1500, days: 3, img: 1062, charity: 'UG Welfare Fund',
-    desc: 'Recovered at the University of Ghana. Working order. Listed for charity — proceeds to the campus welfare fund.' },
-  { title: 'Set of car & house keys', category: 'Keys', price: 500, days: 9, img: 1080,
-    desc: 'Found near Osu on a branded fob. Listed so the value can be recycled into the rewards pool.' },
-  { title: 'Wireless over-ear headphones', category: 'Other', price: 2500, buyNow: 5000, days: 6, img: 1084,
-    desc: 'Unclaimed found item from Labadi. Tested — charges and pairs cleanly. Light wear.' },
+  {
+    title: 'Unclaimed iPhone 13 (space grey)',
+    category: 'Phone',
+    price: 8000,
+    buyNow: 14000,
+    days: 5,
+    img: 1011,
+    desc: 'Found at the Accra Mall food court and never claimed past the holding window. Factory reset, screen intact. Proceeds top up the finder rewards pool.',
+  },
+  {
+    title: 'Black leather laptop bag',
+    category: 'Bag',
+    price: 3000,
+    buyNow: 6000,
+    days: 7,
+    img: 1027,
+    desc: 'Handed in at Kotoka Airport lost & found and unclaimed. Good condition, contents removed.',
+  },
+  {
+    title: 'Casio wristwatch (silver)',
+    category: 'Jewelry',
+    price: 1500,
+    days: 3,
+    img: 1062,
+    charity: 'UG Welfare Fund',
+    desc: 'Recovered at the University of Ghana. Working order. Listed for charity — proceeds to the campus welfare fund.',
+  },
+  {
+    title: 'Set of car & house keys',
+    category: 'Keys',
+    price: 500,
+    days: 9,
+    img: 1080,
+    desc: 'Found near Osu on a branded fob. Listed so the value can be recycled into the rewards pool.',
+  },
+  {
+    title: 'Wireless over-ear headphones',
+    category: 'Other',
+    price: 2500,
+    buyNow: 5000,
+    days: 6,
+    img: 1084,
+    desc: 'Unclaimed found item from Labadi. Tested — charges and pairs cleanly. Light wear.',
+  },
 ];
 
 async function main() {
@@ -59,7 +96,7 @@ async function main() {
   }
 
   const UserModel = mongoose.model('User');
-  const admin = await UserModel.findOne({ email: 'admin@back2u.app' }).lean();
+  const admin = await UserModel.findOne({ email: 'admin@bak2me.com' }).lean();
   const anyUser = admin ?? (await UserModel.findOne().lean());
   const postedById = ((anyUser as { _id?: string } | null)?._id as string) ?? newId();
 
@@ -73,7 +110,9 @@ async function main() {
       description: s.desc,
       category: s.category,
       tags: [s.category, 'unclaimed'],
-      images: [{ url: `https://picsum.photos/seed/b2u-mp-${s.img}/640/480`, publicId: `mp-${s.img}` }],
+      images: [
+        { url: `https://picsum.photos/seed/b2u-mp-${s.img}/640/480`, publicId: `mp-${s.img}` },
+      ],
       place: PLACE,
       occurredAt: new Date(Date.now() - 90 * 86_400_000),
       postedById,

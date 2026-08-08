@@ -93,7 +93,7 @@ Both stores require working demo credentials for a login-gated app. Provide, in 
 notes / Play “App access”:
 
 ```
-Email:    ama@back2u.app
+Email:    ama@bak2me.com
 Password: Back2u-Demo-2026!
 ```
 

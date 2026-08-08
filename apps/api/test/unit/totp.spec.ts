@@ -63,8 +63,8 @@ describe('totp', () => {
   });
 
   it('builds a scannable otpauth URL', () => {
-    const url = otpauthUrl({ secret: RFC_SECRET, accountName: 'admin@back2u.app' });
-    expect(url).toContain('otpauth://totp/bak2me:admin%40back2u.app');
+    const url = otpauthUrl({ secret: RFC_SECRET, accountName: 'admin@bak2me.com' });
+    expect(url).toContain('otpauth://totp/bak2me:admin%40bak2me.com');
     expect(url).toContain(`secret=${RFC_SECRET}`);
     expect(url).toContain('issuer=bak2me');
     expect(url).toContain('digits=6');
