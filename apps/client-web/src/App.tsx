@@ -195,6 +195,7 @@ import { NotificationsPage } from './pages/Notifications.js';
 import { ScanTagPage } from './pages/ScanTag.js';
 import { RedeemPage } from './pages/Redeem.js';
 import { RewardPartnersPage } from './pages/RewardPartners.js';
+import { RewardShopPage } from './pages/RewardShop.js';
 import { FoundNearYouPage } from './pages/FoundNearYou.js';
 import { NotFoundPage } from './pages/NotFound.js';
 import { TrustedFinderApplyPage } from './pages/TrustedFinderApply.js';
@@ -398,6 +399,12 @@ const MOBILE_MORE: MobileLink[] = [
     label: 'Reward partners',
     desc: 'Where to spend your points',
     icon: <StorefrontOutlinedIcon />,
+  },
+  {
+    to: '/reward-shop',
+    label: 'Reward shop',
+    desc: 'Spend your points',
+    icon: <RedeemOutlinedIcon />,
   },
   {
     to: '/near',
@@ -896,6 +903,7 @@ export function App() {
         />
         <Route path="/bookmarks" element={user ? <BookmarksPage /> : <Navigate to="/login" />} />
         <Route path="/redeem" element={user ? <RedeemPage /> : <Navigate to="/login" />} />
+        <Route path="/reward-shop" element={user ? <RewardShopPage /> : <Navigate to="/login" />} />
         <Route path="/near" element={user ? <FoundNearYouPage /> : <Navigate to="/login" />} />
         <Route
           path="/trusted-finder/apply"

@@ -16,6 +16,9 @@ const STATUS_COLOR: Record<RedemptionStatus, 'default' | 'warning' | 'success' |
   pending: 'warning',
   fulfilled: 'success',
   cancelled: 'error',
+  // A lapsed reservation is not a failure — the points and stock went back.
+  expired: 'default',
+  reversed: 'error',
 };
 
 const money = (minor: number, currency: string) => `${(minor / 100).toFixed(2)} ${currency}`;

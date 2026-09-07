@@ -41,6 +41,8 @@ import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
+import PolicyOutlinedIcon from '@mui/icons-material/PolicyOutlined';
+import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -99,6 +101,7 @@ export const NAV: NavGroup[] = [
       { to: '/trusted-finder', label: 'Trusted Finder', icon: <WorkspacePremiumOutlinedIcon /> },
       { to: '/moderation', label: 'Moderation', icon: <GavelOutlinedIcon /> },
       { to: '/safety', label: 'Safety reports', icon: <HealthAndSafetyOutlinedIcon /> },
+      { to: '/trust', label: 'Trust & Safety', icon: <PolicyOutlinedIcon /> },
     ],
   },
   {
@@ -119,6 +122,7 @@ export const NAV: NavGroup[] = [
   {
     heading: 'System',
     items: [
+      { to: '/business-rules', label: 'Business rules', icon: <TuneOutlinedIcon /> },
       { to: '/feature-flags', label: 'Feature flags', icon: <ToggleOnOutlinedIcon /> },
       { to: '/audit', label: 'Audit log', icon: <ReceiptLongOutlinedIcon /> },
     ],
@@ -142,7 +146,17 @@ const TOUR_STEPS: TourStep[] = [
   {
     target: '[data-tour="sidebar"]',
     title: 'Everything starts in the sidebar',
-    body: 'Work is grouped: Operations (verifications, moderation, safety), Commerce (marketplace, redemptions), Network (users, institutions, leads) and System (flags, audit log). Click a group heading to fold it away.',
+    body: 'Work is grouped: Operations (verifications, moderation, safety, Trust & Safety), Commerce (marketplace, redemptions), Network (users, institutions, leads) and System (business rules, flags, audit log). Click a group heading to fold it away.',
+  },
+  {
+    target: '[data-tour="sidebar"]',
+    title: 'Trust & Safety is where held recoveries land',
+    body: 'When the anti-collusion engine cannot clear a recovery on its own it waits here for a human. You will see why it was held — repeated pairings, a shared device, a shared payout number — and can clear it, dismiss it, or confirm fraud. Confirming fraud reverses every award on that recovery and suspends both people involved, so read the signals first.',
+  },
+  {
+    target: '[data-tour="sidebar"]',
+    title: 'Business rules tune the economy',
+    body: 'Points per action, how much each evidence path is worth, earning caps, holding periods and the risk thresholds all live in System → Business rules. Nothing is hardcoded: a change applies to the very next award and is recorded on the audit log with who made it.',
   },
   {
     target: '[data-tour="collapse"]',

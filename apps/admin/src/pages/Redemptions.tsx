@@ -22,6 +22,9 @@ const STATUS_COLOR: Record<RedemptionStatus, 'default' | 'warning' | 'success' |
   pending: 'warning',
   fulfilled: 'success',
   cancelled: 'error',
+  // A lapsed reservation is not a failure — the points and stock went back.
+  expired: 'default',
+  reversed: 'error',
 };
 
 function money(minor: number, currency: string): string {

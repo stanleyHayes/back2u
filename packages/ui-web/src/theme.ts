@@ -1,4 +1,11 @@
-import { createTheme, type Theme, type ThemeOptions } from '@mui/material/styles';
+import {
+  alpha,
+  createTheme,
+  darken,
+  lighten,
+  type Theme,
+  type ThemeOptions,
+} from '@mui/material/styles';
 
 // --- Neumorphic (soft-UI) shadow tokens, mode-aware ---
 // Raised = extruded from the surface; inset = pressed in. Derived from the
@@ -185,12 +192,45 @@ const baseTokens: ThemeOptions = {
     },
     MuiChip: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          border: 'none',
-          backgroundColor: theme.palette.background.paper,
-          boxShadow: neuShadow(theme.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
-          fontWeight: 600,
-        }),
+        /**
+         * The neumorphic paper background is only right for a neutral chip.
+         * Applying it to every chip stripped the background from coloured ones
+         * while leaving MUI's contrast text in place — which rendered a
+         * `success` status as black-on-dark at a 1.5:1 contrast ratio, well
+         * under the 4.5:1 WCAG AA floor. Coloured chips instead get a tint of
+         * their own palette colour with that colour as the label.
+         */
+        root: ({ theme, ownerState }) => {
+          const shadow = neuShadow(theme.palette.mode === 'dark' ? 'dark' : 'light', 'raised');
+          const colour = ownerState?.color;
+          const isNeutral = !colour || colour === 'default';
+
+          if (isNeutral || ownerState?.variant === 'outlined') {
+            return {
+              border: ownerState?.variant === 'outlined' ? undefined : 'none',
+              ...(ownerState?.variant === 'outlined'
+                ? {}
+                : { backgroundColor: theme.palette.background.paper, boxShadow: shadow }),
+              fontWeight: 600,
+            };
+          }
+
+          const main = theme.palette[colour]?.main ?? theme.palette.primary.main;
+          return {
+            border: 'none',
+            // Readable in both modes: the label keeps the palette hue at full
+            // strength, over a low-alpha wash of the same hue.
+            backgroundColor: alpha(main, theme.palette.mode === 'dark' ? 0.22 : 0.14),
+            // Shifted hard enough to clear 4.5:1 against the tint in both
+            // modes — MUI's warning/success hues are mid-tone, so a light
+            // shift alone leaves the label under the WCAG AA floor.
+            color: theme.palette.mode === 'dark' ? lighten(main, 0.45) : darken(main, 0.45),
+            boxShadow: 'none',
+            fontWeight: 600,
+            '& .MuiChip-label': { color: 'inherit' },
+            '& .MuiChip-icon, & .MuiChip-deleteIcon': { color: 'inherit' },
+          };
+        },
         clickable: ({ theme }) => ({
           '&:active': {
             boxShadow: neuShadow(theme.palette.mode === 'dark' ? 'dark' : 'light', 'inset'),

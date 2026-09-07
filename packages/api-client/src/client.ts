@@ -1,5 +1,33 @@
 import type {
+  AcceptCustodyInput,
+  CreateRewardOfferInput,
+  PartnerRewardAnalyticsDTO,
+  RewardOfferDTO,
+  RewardOfferListingDTO,
+  UpdateRewardOfferInput,
+  AddPartnerStaffInput,
+  AdjustPointsInput,
   AdminStatsDTO,
+  BusinessRulesDTO,
+  CreatePartnerLocationInput,
+  CustodyRecordDTO,
+  CustodyReceiptDTO,
+  CustodyStatus,
+  PartnerLocationDTO,
+  PartnerStaffDTO,
+  PartnerTier,
+  PartnerTrustStatus,
+  PartnerTrustSummaryDTO,
+  PointEntryStatus,
+  PointLedgerEntryDTO,
+  PointsSummaryDTO,
+  RecoveryCaseDTO,
+  RecoveryCaseDetailDTO,
+  RecoveryCaseStatus,
+  ReleaseCustodyInput,
+  ReviewRiskAssessmentInput,
+  RiskAssessmentDTO,
+  UpdateBusinessRulesInput,
   AiAssistInput,
   AiAssistResult,
   AuditLogDTO,
@@ -909,5 +937,183 @@ export class Back2uClient {
       `/v1/features/${encodeURIComponent(key)}/rollout`,
       input,
     );
+  }
+
+  // ---- BakPoints ----
+  getPointsSummary() {
+    return this.request<PointsSummaryDTO>('GET', '/v1/points/summary');
+  }
+  listMyPointLedger(filter: { status?: PointEntryStatus; page?: number; pageSize?: number } = {}) {
+    const qs = new URLSearchParams();
+    if (filter.status) qs.set('status', filter.status);
+    if (filter.page) qs.set('page', String(filter.page));
+    if (filter.pageSize) qs.set('pageSize', String(filter.pageSize));
+    return this.request<{ entries: PointLedgerEntryDTO[]; total: number }>(
+      'GET',
+      `/v1/points/ledger?${qs.toString()}`,
+    );
+  }
+
+  // ---- Trust & Safety (admin) ----
+  getBusinessRules() {
+    return this.request<BusinessRulesDTO>('GET', '/v1/admin/trust/business-rules');
+  }
+  updateBusinessRules(input: UpdateBusinessRulesInput) {
+    return this.request<BusinessRulesDTO>('PATCH', '/v1/admin/trust/business-rules', input);
+  }
+  listOpenRiskAssessments(filter: { page?: number; pageSize?: number } = {}) {
+    const qs = new URLSearchParams();
+    if (filter.page) qs.set('page', String(filter.page));
+    if (filter.pageSize) qs.set('pageSize', String(filter.pageSize));
+    return this.request<{ items: RiskAssessmentDTO[]; total: number }>(
+      'GET',
+      `/v1/admin/trust/risk?${qs.toString()}`,
+    );
+  }
+  getRiskAssessment(id: string) {
+    return this.request<RiskAssessmentDTO>('GET', `/v1/admin/trust/risk/${encodeURIComponent(id)}`);
+  }
+  reviewRiskAssessment(id: string, input: ReviewRiskAssessmentInput) {
+    return this.request<RiskAssessmentDTO>(
+      'POST',
+      `/v1/admin/trust/risk/${encodeURIComponent(id)}/review`,
+      input,
+    );
+  }
+  adjustPoints(input: AdjustPointsInput) {
+    return this.request<PointLedgerEntryDTO>('POST', '/v1/admin/trust/points/adjust', input);
+  }
+  reversePointsEntry(id: string, note: string) {
+    return this.request<PointLedgerEntryDTO>(
+      'POST',
+      `/v1/admin/trust/points/${encodeURIComponent(id)}/reverse`,
+      { note },
+    );
+  }
+  getPartnerTrustSummary(institutionId: string) {
+    return this.request<PartnerTrustSummaryDTO>(
+      'GET',
+      `/v1/admin/trust/partners/${encodeURIComponent(institutionId)}`,
+    );
+  }
+  setPartnerStanding(
+    institutionId: string,
+    input: { tier?: PartnerTier; trustStatus?: PartnerTrustStatus; note?: string },
+  ) {
+    return this.request<{
+      institutionId: string;
+      tier: PartnerTier;
+      trustStatus: PartnerTrustStatus;
+    }>('PATCH', `/v1/admin/trust/partners/${encodeURIComponent(institutionId)}/standing`, input);
+  }
+
+  // ---- Recovery Points & custody (partner) ----
+  listPartnerLocations() {
+    return this.request<PartnerLocationDTO[]>('GET', '/v1/custody/locations');
+  }
+  createPartnerLocation(input: CreatePartnerLocationInput) {
+    return this.request<PartnerLocationDTO>('POST', '/v1/custody/locations', input);
+  }
+  deactivatePartnerLocation(id: string) {
+    return this.request<PartnerLocationDTO>(
+      'DELETE',
+      `/v1/custody/locations/${encodeURIComponent(id)}`,
+    );
+  }
+  listCustodyAtLocation(
+    locationId: string,
+    filter: { status?: CustodyStatus; page?: number; pageSize?: number } = {},
+  ) {
+    const qs = new URLSearchParams();
+    if (filter.status) qs.set('status', filter.status);
+    if (filter.page) qs.set('page', String(filter.page));
+    if (filter.pageSize) qs.set('pageSize', String(filter.pageSize));
+    return this.request<{ records: (CustodyRecordDTO & { itemTitle?: string })[]; total: number }>(
+      'GET',
+      `/v1/custody/locations/${encodeURIComponent(locationId)}/custody?${qs.toString()}`,
+    );
+  }
+  listPartnerStaff() {
+    return this.request<PartnerStaffDTO[]>('GET', '/v1/custody/staff');
+  }
+  addPartnerStaff(input: AddPartnerStaffInput) {
+    return this.request<PartnerStaffDTO>('POST', '/v1/custody/staff', input);
+  }
+  removePartnerStaff(id: string) {
+    return this.request<PartnerStaffDTO>('DELETE', `/v1/custody/staff/${encodeURIComponent(id)}`);
+  }
+  acceptCustody(input: AcceptCustodyInput) {
+    return this.request<CustodyReceiptDTO>('POST', '/v1/custody/custody', input);
+  }
+  issueReleaseCode(custodyRecordId: string, claimantId: string) {
+    return this.request<{ issued: true; sentTo: 'sms' | 'notification' }>(
+      'POST',
+      `/v1/custody/custody/${encodeURIComponent(custodyRecordId)}/release-code`,
+      { claimantId },
+    );
+  }
+  releaseCustody(custodyRecordId: string, input: ReleaseCustodyInput) {
+    return this.request<CustodyRecordDTO>(
+      'POST',
+      `/v1/custody/custody/${encodeURIComponent(custodyRecordId)}/release`,
+      input,
+    );
+  }
+  listInstitutionRecoveryCases(
+    filter: { status?: RecoveryCaseStatus; page?: number; pageSize?: number } = {},
+  ) {
+    const qs = new URLSearchParams();
+    if (filter.status) qs.set('status', filter.status);
+    if (filter.page) qs.set('page', String(filter.page));
+    if (filter.pageSize) qs.set('pageSize', String(filter.pageSize));
+    return this.request<{ cases: (RecoveryCaseDTO & { itemTitle?: string })[]; total: number }>(
+      'GET',
+      `/v1/custody/cases?${qs.toString()}`,
+    );
+  }
+  getMyPartnerTrust() {
+    return this.request<PartnerTrustSummaryDTO>('GET', '/v1/custody/trust');
+  }
+
+  // ---- Recovery cases (chain of custody) ----
+  listMyRecoveryCases() {
+    return this.request<RecoveryCaseDTO[]>('GET', '/v1/recoveries/mine');
+  }
+  getRecoveryCase(id: string) {
+    return this.request<RecoveryCaseDetailDTO>('GET', `/v1/recoveries/${encodeURIComponent(id)}`);
+  }
+
+  // ---- Rewards marketplace (partner-funded benefits) ----
+  listRewardCatalog(filter: { institutionId?: string; page?: number; pageSize?: number } = {}) {
+    const qs = new URLSearchParams();
+    if (filter.institutionId) qs.set('institutionId', filter.institutionId);
+    if (filter.page) qs.set('page', String(filter.page));
+    if (filter.pageSize) qs.set('pageSize', String(filter.pageSize));
+    return this.request<{ offers: RewardOfferListingDTO[]; total: number }>(
+      'GET',
+      `/v1/reward-catalog?${qs.toString()}`,
+    );
+  }
+  reserveReward(offerId: string) {
+    return this.request<RedemptionDTO>(
+      'POST',
+      `/v1/reward-catalog/${encodeURIComponent(offerId)}/reserve`,
+    );
+  }
+  listMyRewardOffers() {
+    return this.request<RewardOfferDTO[]>('GET', '/v1/reward-catalog/manage');
+  }
+  createRewardOffer(input: CreateRewardOfferInput) {
+    return this.request<RewardOfferDTO>('POST', '/v1/reward-catalog/manage', input);
+  }
+  updateRewardOffer(offerId: string, input: UpdateRewardOfferInput) {
+    return this.request<RewardOfferDTO>(
+      'PATCH',
+      `/v1/reward-catalog/manage/${encodeURIComponent(offerId)}`,
+      input,
+    );
+  }
+  getPartnerRewardAnalytics() {
+    return this.request<PartnerRewardAnalyticsDTO>('GET', '/v1/reward-catalog/manage/analytics');
   }
 }

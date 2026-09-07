@@ -17,6 +17,8 @@ import { PartnerAnalyticsPage } from './pages/PartnerAnalytics.js';
 import { PartnerItemsPage } from './pages/PartnerItems.js';
 import { PartnerItemDetailPage } from './pages/PartnerItemDetail.js';
 import { RedeemPointsPage } from './pages/RedeemPoints.js';
+import { RewardsCatalogPage } from './pages/RewardsCatalog.js';
+import { RecoveryPointPage } from './pages/RecoveryPoint.js';
 import { RewardsProfilePage } from './pages/RewardsProfile.js';
 import { BillingPage } from './pages/Billing.js';
 import { PartnerNotificationsPage } from './pages/PartnerNotifications.js';
@@ -171,6 +173,8 @@ export function App() {
         <Route path="/courier" element={<CourierJobsPage />} />
         <Route path="/tags/mint" element={<BulkMintTagsPage />} />
         <Route path="/redeem" element={<RedeemPointsPage />} />
+        <Route path="/reward-shop" element={<RewardsCatalogPage />} />
+        <Route path="/recovery-point" element={<RecoveryPointPage />} />
         <Route path="/rewards-profile" element={<RewardsProfilePage />} />
         <Route path="/billing" element={<BillingPage />} />
         <Route path="/notifications" element={<PartnerNotificationsPage />} />

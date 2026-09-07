@@ -34,6 +34,8 @@ import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlin
 import { IconButton, Tooltip } from '@mui/material';
 import { EmptyState, PageHeader } from '@back2u/ui-web';
 
+import { TRUST_LEVEL_LABELS } from '@back2u/shared-types';
+
 import { api } from '../lib/api.js';
 
 const STATUS_COLOR: Record<string, 'success' | 'error' | 'warning' | 'default'> = {
@@ -256,7 +258,7 @@ export function UsersPage() {
                 <TableCell>Roles</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Points</TableCell>
-                <TableCell>Reputation</TableCell>
+                <TableCell>Trust</TableCell>
                 <TableCell>Joined</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
@@ -298,7 +300,18 @@ export function UsersPage() {
                     />
                   </TableCell>
                   <TableCell>{user.pointsBalance}</TableCell>
-                  <TableCell>{user.reputationScore}</TableCell>
+                  <TableCell>
+                    <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>
+                      <span>{user.trustScore ?? user.reputationScore}</span>
+                      {user.trustLevel ? (
+                        <Chip
+                          size="small"
+                          variant="outlined"
+                          label={TRUST_LEVEL_LABELS[user.trustLevel]}
+                        />
+                      ) : null}
+                    </Stack>
+                  </TableCell>
                   <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell align="right">
                     <Stack direction="row" spacing={0.25} sx={{ justifyContent: 'flex-end' }}>

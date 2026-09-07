@@ -35,6 +35,7 @@ import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
 import TwoWheelerOutlinedIcon from '@mui/icons-material/TwoWheelerOutlined';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import RedeemOutlinedIcon from '@mui/icons-material/RedeemOutlined';
+import LoyaltyOutlinedIcon from '@mui/icons-material/LoyaltyOutlined';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
@@ -94,6 +95,7 @@ export const NAV: NavGroup[] = [
   {
     heading: 'Logistics',
     items: [
+      { to: '/recovery-point', label: 'Recovery Point', icon: <StorefrontOutlinedIcon /> },
       { to: '/courier', label: 'Courier jobs', icon: <TwoWheelerOutlinedIcon /> },
       { to: '/tags/mint', label: 'Mint QR tags', icon: <QrCode2Icon /> },
     ],
@@ -102,6 +104,7 @@ export const NAV: NavGroup[] = [
     heading: 'Commerce',
     items: [
       { to: '/redeem', label: 'Redeem points', icon: <RedeemOutlinedIcon /> },
+      { to: '/reward-shop', label: 'Reward shop', icon: <LoyaltyOutlinedIcon /> },
       { to: '/rewards-profile', label: 'Rewards storefront', icon: <StorefrontOutlinedIcon /> },
       { to: '/billing', label: 'Billing', icon: <CreditCardOutlinedIcon /> },
     ],
@@ -126,7 +129,22 @@ const TOUR_STEPS: TourStep[] = [
   {
     target: '[data-tour="sidebar"]',
     title: 'Everything starts in the sidebar',
-    body: 'Operations tracks items reported at your venue with analytics. Logistics covers courier jobs and QR tag minting. Commerce is where you redeem finder points, run your rewards storefront and manage billing. Click a group heading to fold it away.',
+    body: 'Operations tracks items reported at your venue with analytics. Logistics covers your Recovery Point counter, courier jobs and QR tag minting. Commerce is where you redeem finder points, stock the reward shop, run your storefront listing and manage billing. Click a group heading to fold it away.',
+  },
+  {
+    target: '[data-tour="sidebar"]',
+    title: 'Recovery Point is your counter',
+    body: 'Set up the desks where you accept found property, add the staff who can handle it, and record each item as it comes in — its condition, what is inside, and which bin it goes to. The finder gets a receipt code on the spot.',
+  },
+  {
+    target: '[data-tour="sidebar"]',
+    title: 'Releasing an item is a two-step handover',
+    body: 'You never hand something over on a name alone. Send the owner a collection code, then type back the code they read to you. The code only works for that one person, expires in 30 minutes, and stops working after five wrong tries.',
+  },
+  {
+    target: '[data-tour="sidebar"]',
+    title: 'The reward shop is yours to stock',
+    body: 'Members earn BakPoints returning property; the reward shop is where they spend them with you. You fund the perk, set how many there are, how long a claim is held, and whether it is open to everyone or reserved for members with a proven track record.',
   },
   {
     target: '[data-tour="collapse"]',

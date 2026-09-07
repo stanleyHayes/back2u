@@ -17,6 +17,8 @@ import { UsersPage } from './pages/Users.js';
 import { VerificationsPage } from './pages/Verifications.js';
 import { TrustedFinderApplicationsPage } from './pages/TrustedFinderApplications.js';
 import { FeatureFlagsPage } from './pages/FeatureFlags.js';
+import { TrustSafetyPage } from './pages/TrustSafety.js';
+import { BusinessRulesPage } from './pages/BusinessRules.js';
 import { AdminProfilePage } from './pages/AdminProfile.js';
 import { AdminSettingsPage } from './pages/AdminSettings.js';
 import { NotFoundPage } from './pages/NotFound.js';
@@ -56,6 +58,8 @@ export function App() {
         <Route path="/leads" element={<InstitutionLeadsPage />} />
         <Route path="/moderation" element={<ModerationQueuePage />} />
         <Route path="/safety" element={<SafetyReportsPage />} />
+        <Route path="/trust" element={<TrustSafetyPage />} />
+        <Route path="/business-rules" element={<BusinessRulesPage />} />
         <Route path="/redemptions" element={<RedemptionsPage />} />
         <Route path="/audit" element={<AuditLogPage />} />
         <Route path="/feature-flags" element={<FeatureFlagsPage />} />

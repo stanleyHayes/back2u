@@ -26,6 +26,7 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { uploadAvatar } from '../lib/cloudinary-upload.js';
 import type { ItemDTO } from '@back2u/shared-types';
+import { TRUST_LEVEL_LABELS } from '@back2u/shared-types';
 
 const INK = '#2E3D2F';
 const PAPER = '#F2EFEA';
@@ -682,8 +683,8 @@ export function ProfilePage() {
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 2.5 }}>
             <StatCard
               icon={<MilitaryTechOutlinedIcon />}
-              label="Reputation score"
-              value={user.reputationScore}
+              label={user.trustLevel ? TRUST_LEVEL_LABELS[user.trustLevel] : 'Trust score'}
+              value={user.trustScore ?? user.reputationScore}
               tone={{ main: TEAL, soft: 'rgba(64,97,74,0.12)' }}
             />
             <StatCard
