@@ -131,12 +131,17 @@ describe('Reward release flow (integration)', () => {
     const reward = await rewards.findById(rewardId);
     expect(reward!.snapshot.status).toBe('released');
 
-    // Verify finder gets points and successful return
     // (return confirmation + reward release both increment successfulReturns)
-    const meB = await request(app)
-      .get('/v1/auth/me')
-      .set('Authorization', `Bearer ${tokenB}`);
+    const meB = await request(app).get('/v1/auth/me').set('Authorization', `Bearer ${tokenB}`);
     expect(meB.body.data.successfulReturns).toBe(2);
-    expect(meB.body.data.pointsBalance).toBeGreaterThan(0);
+    // Spec §14: a cash reward does not automatically increase BakPoints, and the
+    // recovery's own points stay pending until the §4 holding period elapses.
+    expect(meB.body.data.pointsBalance).toBe(0);
+
+    const summaryB = await request(app)
+      .get('/v1/points/summary')
+      .set('Authorization', `Bearer ${tokenB}`);
+    expect(summaryB.body.data.balance).toBe(0);
+    expect(summaryB.body.data.pending).toBeGreaterThan(0);
   });
 });

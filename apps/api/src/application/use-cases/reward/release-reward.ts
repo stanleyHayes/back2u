@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify';
 import { AuditLog } from '../../../domain/audit/audit-log.entity.js';
 import { Notification } from '../../../domain/notification/notification.entity.js';
 import type { Reward } from '../../../domain/reward/reward.entity.js';
-import { ForbiddenError, NotFoundError } from '../../../domain/shared/errors.js';
+import { ConflictError, ForbiddenError, NotFoundError } from '../../../domain/shared/errors.js';
 import { newId, type Id } from '../../../domain/shared/id.js';
 import type {
   IAuditLogRepository,
@@ -19,6 +19,7 @@ import type {
   IPushService,
   IRealtimeBus,
 } from '../../ports/services.js';
+import type { IRiskAssessmentRepository } from '../../ports/points-repos.js';
 import { TOKENS } from '../../ports/tokens.js';
 import type { Env } from '../../../config/env.js';
 
@@ -47,6 +48,7 @@ export class ReleaseRewardUseCase {
     @inject(TOKENS.NotificationRepository) private readonly notifications: INotificationRepository,
     @inject(TOKENS.AuditLogRepository) private readonly audit: IAuditLogRepository,
     @inject(TOKENS.PaymentEscrow) private readonly escrow: IPaymentEscrowService,
+    @inject(TOKENS.RiskAssessmentRepository) private readonly risks: IRiskAssessmentRepository,
     @inject(TOKENS.PushService) private readonly push: IPushService,
     @inject(TOKENS.RealtimeBus) private readonly bus: IRealtimeBus,
     @inject(TOKENS.Logger) private readonly logger: ILogger,
@@ -64,24 +66,33 @@ export class ReleaseRewardUseCase {
     const finder = await this.users.findById(finderId);
     if (!finder) throw new NotFoundError('Finder');
 
+    // §14: owner-funded money is released only after the fraud checks pass.
+    // Paying out under an open high-risk investigation would settle the exact
+    // collusion the Trust & Safety queue exists to catch.
+    if (await this.risks.hasOpenBlockingForUser(finderId)) {
+      throw new ConflictError('Reward is held pending a Trust & Safety review');
+    }
+
+    // Move the money BEFORE marking the reward released. The old order marked it
+    // released first and swallowed a payout failure, so the owner, the finder
+    // and the audit log were all told the money had moved when it had not — and
+    // the reward could never be released again because it was no longer `held`.
+    await this.escrow.release({
+      providerRef: reward.snapshot.id,
+      // Prefer the finder's dedicated payout number; fall back to their phone.
+      recipientPhone: finder.snapshot.momoNumber ?? finder.snapshot.phone ?? '',
+      recipientName: finder.snapshot.name,
+      recipientProvider: finder.snapshot.momoProvider,
+      amountMinor: reward.previewNetPayout(this.env.PLATFORM_COMMISSION_RATE),
+      currency: reward.snapshot.currency,
+    });
+
     reward.release(finderId, this.env.PLATFORM_COMMISSION_RATE);
     await this.rewards.save(reward);
 
-    try {
-      await this.escrow.release({
-        providerRef: reward.snapshot.id,
-        // Prefer the finder's dedicated payout number; fall back to their phone.
-        recipientPhone: finder.snapshot.momoNumber ?? finder.snapshot.phone ?? '',
-        recipientName: finder.snapshot.name,
-        recipientProvider: finder.snapshot.momoProvider,
-        amountMinor: reward.netPayout,
-        currency: reward.snapshot.currency,
-      });
-    } catch (err) {
-      this.logger.warn('escrow release failed', { rewardId, err: String(err) });
-    }
-
-    finder.awardPoints(reward.snapshot.pointsBonus, 10);
+    // §14: a cash reward does not automatically increase BakPoints, and §16
+    // keeps trust separate from both. Paying someone cannot raise their Trust
+    // Score, so nothing is credited here beyond the recovery itself.
     finder.recordSuccessfulReturn();
     await this.users.save(finder);
 

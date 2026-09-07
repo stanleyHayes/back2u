@@ -1,7 +1,10 @@
 import { injectable } from 'inversify';
 
 import type { ICourierJobRepository } from '../../../../application/ports/repositories.js';
-import { CourierJob, type CourierJobSnapshot } from '../../../../domain/courier/courier-job.entity.js';
+import {
+  CourierJob,
+  type CourierJobSnapshot,
+} from '../../../../domain/courier/courier-job.entity.js';
 import type { Id } from '../../../../domain/shared/id.js';
 import { CourierJobModel, type CourierJobDoc } from '../models/courier.model.js';
 
@@ -19,6 +22,13 @@ export class MongoCourierJobRepository implements ICourierJobRepository {
 
   async findById(id: Id): Promise<CourierJob | null> {
     const doc = await CourierJobModel.findById(id).lean<CourierJobDoc | null>();
+    return doc ? CourierJob.rehydrate(toSnapshot(doc)) : null;
+  }
+
+  async findDeliveredForItem(itemId: Id): Promise<CourierJob | null> {
+    const doc = await CourierJobModel.findOne({ itemId, status: 'delivered' })
+      .sort({ updatedAt: -1 })
+      .lean<CourierJobDoc | null>();
     return doc ? CourierJob.rehydrate(toSnapshot(doc)) : null;
   }
 

@@ -22,7 +22,13 @@ export class Reward {
   static rehydrate(s: RewardSnapshot): Reward {
     return new Reward({ ...s });
   }
-  static create(input: { id: Id; itemId: Id; amount: number; currency: string; pointsBonus?: number }): Reward {
+  static create(input: {
+    id: Id;
+    itemId: Id;
+    amount: number;
+    currency: string;
+    pointsBonus?: number;
+  }): Reward {
     const now = new Date();
     return new Reward({
       ...input,
@@ -40,7 +46,8 @@ export class Reward {
     this.state.updatedAt = new Date();
   }
   release(finderId: Id, commissionRate = 0): void {
-    if (this.state.status !== 'held') throw new ConflictError(`Reward not held (status=${this.state.status})`);
+    if (this.state.status !== 'held')
+      throw new ConflictError(`Reward not held (status=${this.state.status})`);
     this.state.status = 'released';
     this.state.finderId = finderId;
     this.state.releasedAt = new Date();
@@ -51,5 +58,15 @@ export class Reward {
   /** Net payout to the finder after the platform commission. */
   get netPayout(): number {
     return Math.max(0, this.state.amount - (this.state.commissionAmount ?? 0));
+  }
+
+  /**
+   * What the finder would receive at the given commission rate, without
+   * transitioning. Lets the payout be attempted before the reward is marked
+   * released, so a failed transfer leaves the reward re-releasable.
+   */
+  previewNetPayout(commissionRate: number): number {
+    const commission = Math.max(0, Math.round(this.state.amount * commissionRate));
+    return Math.max(0, this.state.amount - commission);
   }
 }

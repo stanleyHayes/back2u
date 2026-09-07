@@ -27,6 +27,7 @@ import type {
 import { TOKENS } from '../../ports/tokens.js';
 import { toItemDTO } from '../mappers/item.mapper.js';
 import { GenerateMatchesUseCase } from '../match/generate-matches.js';
+import { OpenRecoveryCaseUseCase } from '../custody/recovery-case.use-cases.js';
 
 const DUPLICATE_HAMMING_THRESHOLD = 10;
 
@@ -50,6 +51,7 @@ export class CreateItemUseCase {
     @inject(TOKENS.Queue) private readonly queue: IQueue,
     @inject(TOKENS.Logger) private readonly logger: ILogger,
     @inject(GenerateMatchesUseCase) private readonly generateMatches: GenerateMatchesUseCase,
+    @inject(OpenRecoveryCaseUseCase) private readonly openRecoveryCase: OpenRecoveryCaseUseCase,
   ) {}
 
   // Routes call this either as execute(userId, input) or execute({ ...input, postedById }).
@@ -161,6 +163,31 @@ export class CreateItemUseCase {
     }
 
     await this.items.save(item);
+
+    // §9: every found item receives a case ID and an immutable event history,
+    // whether or not a partner ever takes custody of it. Failing to open the
+    // case must not block the report itself — a lost item is time-critical —
+    // so this is best-effort and the case is opened lazily on custody intake.
+    if (item.snapshot.kind === 'found') {
+      try {
+        await this.openRecoveryCase.execute({
+          foundItemId: item.id,
+          finderId: userId,
+          institutionId: item.snapshot.institutionId,
+          evidence: {
+            place: item.snapshot.place.name,
+            city: item.snapshot.place.city,
+            photos: item.snapshot.images.map((i) => i.url),
+            occurredAt: item.snapshot.occurredAt.toISOString(),
+          },
+        });
+      } catch (err) {
+        this.logger.warn('recovery case creation failed', {
+          itemId: item.id,
+          error: (err as Error).message,
+        });
+      }
+    }
 
     // Zone fan-out alerts subscribers whose zones contain the item's location.
     void this.fanoutToZones(item).catch((err: unknown) =>

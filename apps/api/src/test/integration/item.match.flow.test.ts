@@ -200,16 +200,41 @@ describe('Item + Match flow (integration)', () => {
     const gotFoundAfterBoth = await request(app).get(`/v1/items/${foundItemId}`);
     expect(gotFoundAfterBoth.body.data.status).toBe('returned');
 
-    const meA = await request(app)
-      .get('/v1/auth/me')
-      .set('Authorization', `Bearer ${tokenA}`);
+    // Spec §7: a mutual "returned" click is the weakest possible evidence, so it
+    // credits nothing spendable. The recovery is recorded and the BakPoints are
+    // booked to the ledger as pending until the holding period of §4 elapses.
+    const meA = await request(app).get('/v1/auth/me').set('Authorization', `Bearer ${tokenA}`);
     expect(meA.body.data.successfulReturns).toBe(1);
-    expect(meA.body.data.pointsBalance).toBe(50);
+    expect(meA.body.data.pointsBalance).toBe(0);
 
-    const meB = await request(app)
-      .get('/v1/auth/me')
-      .set('Authorization', `Bearer ${tokenB}`);
+    const meB = await request(app).get('/v1/auth/me').set('Authorization', `Bearer ${tokenB}`);
     expect(meB.body.data.successfulReturns).toBe(1);
-    expect(meB.body.data.pointsBalance).toBe(50);
+    expect(meB.body.data.pointsBalance).toBe(0);
+
+    // The finder is credited for the recovery, the owner only for confirming it.
+    const summaryB = await request(app)
+      .get('/v1/points/summary')
+      .set('Authorization', `Bearer ${tokenB}`);
+    expect(summaryB.status).toBe(200);
+    expect(summaryB.body.data.balance).toBe(0);
+    expect(summaryB.body.data.pending).toBeGreaterThan(0);
+
+    const summaryA = await request(app)
+      .get('/v1/points/summary')
+      .set('Authorization', `Bearer ${tokenA}`);
+    expect(summaryA.body.data.pending).toBeGreaterThan(0);
+    expect(summaryA.body.data.pending).toBeLessThan(summaryB.body.data.pending);
+
+    const ledgerB = await request(app)
+      .get('/v1/points/ledger')
+      .set('Authorization', `Bearer ${tokenB}`);
+    expect(ledgerB.status).toBe(200);
+    const recovery = ledgerB.body.data.entries[0];
+    expect(recovery.status).toBe('pending');
+    expect(recovery.caseRef).toBe(match.id);
+    // An unwitnessed peer handover is weighted down to half rate (§5 level A).
+    expect(recovery.verificationLevel).toBe('peer');
+    expect(recovery.multiplier).toBe(0.5);
+    expect(recovery.pendingUntil).toBeTruthy();
   });
 });
