@@ -46,15 +46,21 @@ import { webPushRouter } from './routes/web-push.routes.js';
 import { trustedFinderRouter } from './routes/trusted-finder.routes.js';
 import { featureFlagRouter } from './routes/feature-flag.routes.js';
 import { reviewRouter } from './routes/review.routes.js';
+import { pointsRouter } from './routes/points.routes.js';
+import { custodyRouter, recoveryRouter } from './routes/custody.routes.js';
+import { rewardsCatalogRouter } from './routes/rewards-catalog.routes.js';
+import { trustSafetyRouter } from './routes/trust-safety.routes.js';
 import { swaggerUiAssets, swaggerUiHandler, swaggerJsonHandler } from './swagger.js';
 import { errorHandler, notFoundHandler } from './middleware/error.js';
 import { idempotency } from './middleware/idempotency.js';
 import {
   authLimiter,
+  credentialLimiter,
   publicLimiter,
   strictLimiter,
   partnerApiLimiter,
   smsInboundLimiter,
+  custodyLimiter,
 } from './middleware/rate-limit.js';
 import { tracingMiddleware } from './middleware/tracing.js';
 import { performanceMiddleware, getMetrics } from './middleware/performance.js';
@@ -119,6 +125,12 @@ export function buildApp(c: Container): Express {
     if (!req.ip || !LOOPBACK_IPS.has(req.ip)) return next();
     res.json({ metrics: getMetrics(), generatedAt: new Date().toISOString() });
   });
+  // Per-account brute-force guard, mounted ahead of the auth router so it only
+  // counts attempts against the endpoints that actually take a credential.
+  // `authLimiter` below is the per-IP ceiling for the whole surface.
+  app.use('/v1/auth/login', credentialLimiter(redis));
+  app.use('/v1/auth/register', credentialLimiter(redis));
+  app.use('/v1/auth/password/request-reset', credentialLimiter(redis));
   app.use('/v1/auth', authLimiter(redis), authRouter(c));
   app.use(
     '/v1/auth',
@@ -147,6 +159,9 @@ export function buildApp(c: Container): Express {
   app.use('/v1/share', strictLimiter(redis), shareRouter(c, env.API_PUBLIC_URL));
   app.use('/v1/sms', smsInboundLimiter(redis), smsRouter(c));
   app.use('/v1/users', strictLimiter(redis), usersRouter(c));
+  // Mounted before `/v1/admin` so the prefix match there does not apply
+  // strictLimiter a second time and halve this surface's real budget.
+  app.use('/v1/admin/trust', trustSafetyRouter(c));
   app.use('/v1/admin', strictLimiter(redis), adminRouter(c));
   app.use('/v1/partner', strictLimiter(redis), partnerRouter(c));
   app.use('/partner/v1', partnerApiLimiter(redis), partnerApiRouter(c, redis));
@@ -160,6 +175,10 @@ export function buildApp(c: Container): Express {
   app.use('/v1/trusted-finder', strictLimiter(redis), trustedFinderRouter(c));
   app.use('/v1/reviews', strictLimiter(redis), reviewRouter(c));
   app.use('/v1/features', strictLimiter(redis), featureFlagRouter(c));
+  app.use('/v1/points', strictLimiter(redis), pointsRouter(c));
+  app.use('/v1/custody', custodyLimiter(redis), custodyRouter(c));
+  app.use('/v1/recoveries', strictLimiter(redis), recoveryRouter(c));
+  app.use('/v1/reward-catalog', publicLimiter(redis), rewardsCatalogRouter(c));
   app.use('/v1', openApiRouter());
 
   app.get('/docs.json', swaggerJsonHandler);

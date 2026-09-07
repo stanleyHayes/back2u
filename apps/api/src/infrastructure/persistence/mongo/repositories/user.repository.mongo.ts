@@ -14,9 +14,29 @@ const toSnapshot = (d: UserDoc): UserSnapshot => {
 
 @injectable()
 export class MongoUserRepository implements IUserRepository {
+  /**
+   * Persists the user, deliberately EXCLUDING `pointsBalance`.
+   *
+   * This is a whole-document write, so including the balance would silently
+   * revert any concurrent `$inc` — the clearing job, a reversal, or a
+   * redemption running between this caller's read and its write. Keeping the
+   * field out makes {@link incrementPoints} the only way the balance can move,
+   * which is the invariant the ledger depends on. A brand-new user still gets
+   * their opening balance through `$setOnInsert`.
+   */
   async save(user: User): Promise<void> {
-    const { id, ...rest } = user.snapshot;
-    await UserModel.replaceOne({ _id: id }, { _id: id, ...rest }, { upsert: true });
+    const { id, pointsBalance, ...rest } = user.snapshot;
+    await UserModel.updateOne(
+      { _id: id },
+      { $set: rest, $setOnInsert: { _id: id, pointsBalance } },
+      { upsert: true },
+    );
+  }
+
+  async incrementPoints(userId: Id, points: number, reputationDelta = 0): Promise<void> {
+    const inc: Record<string, number> = { pointsBalance: points };
+    if (reputationDelta !== 0) inc.reputationScore = reputationDelta;
+    await UserModel.updateOne({ _id: userId }, { $inc: inc, $set: { updatedAt: new Date() } });
   }
 
   async findById(id: Id): Promise<User | null> {

@@ -94,3 +94,45 @@ export const Locale = {
   Ewe: 'ee',
 } as const;
 export type Locale = (typeof Locale)[keyof typeof Locale];
+
+/**
+ * Strength of evidence behind a recovery. Drives the BakPoints multiplier —
+ * a peer-only handover is the weakest signal, institutional custody the strongest.
+ * (Spec §5: Verification Levels & Reward Multipliers.)
+ */
+export const VerificationLevel = {
+  /** A — owner and finder meet directly; no independent evidence. */
+  Peer: 'peer',
+  /** B — finder deposits at a Bak2Me Recovery Point; partner accepts and releases. */
+  RecoveryPoint: 'recovery_point',
+  /** C — tracked partner/courier collection and delivery. */
+  VerifiedDelivery: 'verified_delivery',
+  /** D — police, university, mall, hospital, transport operator. */
+  Institutional: 'institutional',
+} as const;
+export type VerificationLevel = (typeof VerificationLevel)[keyof typeof VerificationLevel];
+
+/**
+ * Lifecycle of a single BakPoints ledger entry. Entries are append-oriented:
+ * clearing/reversal records a state change, never a rewrite of `points`.
+ */
+export const PointEntryStatus = {
+  /** Earned but inside the fraud/dispute holding period. Not spendable. */
+  Pending: 'pending',
+  /** Holding period elapsed and risk checks passed; added to the balance. */
+  Cleared: 'cleared',
+  /** Clawed back after confirmed fraud or a successful dispute. */
+  Reversed: 'reversed',
+  /** Voided before clearing (duplicate, withdrawn recovery). */
+  Cancelled: 'cancelled',
+} as const;
+export type PointEntryStatus = (typeof PointEntryStatus)[keyof typeof PointEntryStatus];
+
+/** Risk band a Recovery Risk Score falls into. (Spec §6.) */
+export const RiskBand = {
+  Low: 'low',
+  Medium: 'medium',
+  High: 'high',
+  Critical: 'critical',
+} as const;
+export type RiskBand = (typeof RiskBand)[keyof typeof RiskBand];

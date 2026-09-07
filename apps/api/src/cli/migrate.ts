@@ -32,6 +32,9 @@ async function main() {
   await import('../infrastructure/persistence/mongo/models/auth.model.js');
   await import('../infrastructure/persistence/mongo/models/safety.model.js');
   await import('../infrastructure/persistence/mongo/models/web-push.model.js');
+  await import('../infrastructure/persistence/mongo/models/points.model.js');
+  await import('../infrastructure/persistence/mongo/models/custody.model.js');
+  await import('../infrastructure/persistence/mongo/models/reward-offer.model.js');
 
   await ensureIndexes(logger);
   await runMigrations(logger);

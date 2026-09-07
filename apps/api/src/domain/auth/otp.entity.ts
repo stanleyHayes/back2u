@@ -57,7 +57,9 @@ export class Otp {
 // OTP codes live in a 6-digit space, so an unsalted hash is trivially
 // enumerable. Key the hash with a server-side pepper so a leaked codeHash
 // column cannot be brute-forced offline.
-const hashOtpCode = (code: string): string =>
-  createHmac('sha256', process.env.JWT_ACCESS_SECRET ?? '').update(code).digest('hex');
+export const hashOtpCode = (code: string): string =>
+  createHmac('sha256', process.env.JWT_ACCESS_SECRET ?? '')
+    .update(code)
+    .digest('hex');
 
 export const generate6DigitCode = (): string => randomInt(100000, 1000000).toString();

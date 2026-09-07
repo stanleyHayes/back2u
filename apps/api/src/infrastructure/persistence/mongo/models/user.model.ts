@@ -1,38 +1,15 @@
 import mongoose from 'mongoose';
 
-import type { EmailPreferences, Locale, MomoProvider, UserRole } from '@back2u/shared-types';
+import type { EmailPreferences } from '@back2u/shared-types';
 
-export interface UserDoc {
-  _id: string;
-  email: string;
-  name: string;
-  passwordHash: string;
-  phone?: string;
-  avatarUrl?: string;
-  momoProvider?: MomoProvider;
-  momoNumber?: string;
-  roles: UserRole[];
-  status: 'active' | 'banned' | 'suspended';
-  reputationScore: number;
-  pointsBalance: number;
-  emailVerified: boolean;
-  phoneVerified: boolean;
-  mfaEnabled: boolean;
-  mfaSecret?: string;
-  mfaPendingSecret?: string;
-  mfaLastUsedStep?: number;
-  trustedFinder: boolean;
-  successfulReturns: number;
-  averageRating?: number;
-  reviewCount: number;
-  badges: string[];
-  pushTokens: string[];
-  emailPreferences: EmailPreferences;
-  institutionId?: string;
-  locale?: Locale;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import type { UserSnapshot } from '../../../../domain/user/user.entity.js';
+
+/**
+ * Derived from the entity snapshot rather than hand-listed. A duplicated
+ * interface silently loses any field added to the entity but forgotten here,
+ * which is exactly how a partner `tier` once stopped persisting.
+ */
+export type UserDoc = Omit<UserSnapshot, 'id'> & { _id: string };
 
 const emailPreferencesSchema = new mongoose.Schema<EmailPreferences>(
   {
@@ -70,6 +47,13 @@ const userSchema = new mongoose.Schema<UserDoc>(
     },
     status: { type: String, enum: ['active', 'banned', 'suspended'], default: 'active' },
     reputationScore: { type: Number, default: 0 },
+    trustScore: { type: Number, default: 0, index: true },
+    trustLevel: {
+      type: String,
+      enum: ['new_finder', 'helper', 'trusted_finder', 'community_hero', 'guardian', 'legend'],
+      default: 'new_finder',
+    },
+    trustUpdatedAt: { type: Date },
     pointsBalance: { type: Number, default: 0 },
     emailVerified: { type: Boolean, default: false },
     phoneVerified: { type: Boolean, default: false },

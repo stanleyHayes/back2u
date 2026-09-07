@@ -6,10 +6,16 @@ export type JobName =
   | 'audit.write'
   | 'marketplace.auto-close'
   | 'items.auto-archive'
-  | 'marketplace.ending-soon';
+  | 'marketplace.ending-soon'
+  | 'points.clear-pending'
+  | 'rewards.expire-reservations';
 
 export interface IQueue {
-  enqueue<T = unknown>(name: JobName, data: T, opts?: { delayMs?: number; jobId?: string }): Promise<void>;
+  enqueue<T = unknown>(
+    name: JobName,
+    data: T,
+    opts?: { delayMs?: number; jobId?: string },
+  ): Promise<void>;
   scheduleJob<T = unknown>(name: JobName, data: T, repeat: { every: number }): Promise<void>;
   close(): Promise<void>;
 }

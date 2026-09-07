@@ -197,6 +197,90 @@ import {
   UpdateRolloutUseCase,
   SeedFeatureFlagsUseCase,
 } from '../application/use-cases/feature-flag/feature-flag.use-cases.js';
+import {
+  GetBusinessRulesUseCase,
+  UpdateBusinessRulesUseCase,
+} from '../application/use-cases/admin/business-rules.use-cases.js';
+import {
+  AcceptCustodyUseCase,
+  IssueReleaseCodeUseCase,
+  ListCustodyAtLocationUseCase,
+  ReleaseCustodyUseCase,
+  ResolveCustodyActorUseCase,
+} from '../application/use-cases/custody/custody.use-cases.js';
+import {
+  AddPartnerStaffUseCase,
+  CreatePartnerLocationUseCase,
+  DeactivatePartnerLocationUseCase,
+  GetPartnerTrustSummaryUseCase,
+  ListPartnerLocationsUseCase,
+  ListPartnerStaffUseCase,
+  RemovePartnerStaffUseCase,
+  SetPartnerStandingUseCase,
+} from '../application/use-cases/custody/partner-network.use-cases.js';
+import {
+  GetRecoveryCaseUseCase,
+  ListInstitutionRecoveryCasesUseCase,
+  ListMyRecoveryCasesUseCase,
+  OpenRecoveryCaseUseCase,
+} from '../application/use-cases/custody/recovery-case.use-cases.js';
+import { RecordRecoveryEventUseCase } from '../application/use-cases/custody/record-recovery-event.use-case.js';
+import {
+  CreateRewardOfferUseCase,
+  ExpireReservationsUseCase,
+  GetPartnerRewardAnalyticsUseCase,
+  ListPartnerRewardOffersUseCase,
+  ListRewardCatalogUseCase,
+  ReserveRewardUseCase,
+  UpdateRewardOfferUseCase,
+} from '../application/use-cases/reward_catalog/reward-catalog.use-cases.js';
+import type { IRewardOfferRepository } from '../application/ports/reward-catalog-repos.js';
+import { MongoRewardOfferRepository } from '../infrastructure/persistence/mongo/repositories/reward-offer.repository.mongo.js';
+import {
+  GetMyTrustScoreUseCase,
+  GetPublicTrustUseCase,
+  RecomputeTrustScoreUseCase,
+} from '../application/use-cases/trust/trust-score.use-cases.js';
+import type {
+  ICustodyRecordRepository,
+  IPartnerLocationRepository,
+  IPartnerStaffRepository,
+  IRecoveryCaseRepository,
+  IRecoveryEventRepository,
+} from '../application/ports/custody-repos.js';
+import {
+  MongoCustodyRecordRepository,
+  MongoPartnerLocationRepository,
+  MongoPartnerStaffRepository,
+  MongoRecoveryCaseRepository,
+  MongoRecoveryEventRepository,
+} from '../infrastructure/persistence/mongo/repositories/custody.repository.mongo.js';
+import { AwardPointsUseCase } from '../application/use-cases/points/award-points.use-case.js';
+import {
+  AdjustPointsUseCase,
+  ApplyFraudPenaltyUseCase,
+  ClearPendingPointsUseCase,
+  GetPointsSummaryUseCase,
+  ListMyPointLedgerUseCase,
+  ReverseCasePointsUseCase,
+  ReversePointsUseCase,
+} from '../application/use-cases/points/points.use-cases.js';
+import { AssessRecoveryRiskUseCase } from '../application/use-cases/risk/assess-recovery-risk.use-case.js';
+import {
+  GetRiskAssessmentUseCase,
+  ListOpenRiskAssessmentsUseCase,
+  ReviewRiskAssessmentUseCase,
+} from '../application/use-cases/risk/risk.use-cases.js';
+import type {
+  IBusinessRulesRepository,
+  IPointLedgerRepository,
+  IRiskAssessmentRepository,
+} from '../application/ports/points-repos.js';
+import {
+  MongoBusinessRulesRepository,
+  MongoPointLedgerRepository,
+  MongoRiskAssessmentRepository,
+} from '../infrastructure/persistence/mongo/repositories/points.repository.mongo.js';
 import { TOKENS } from '../application/ports/tokens.js';
 import {
   ApplyTrustedFinderUseCase,
@@ -402,6 +486,19 @@ export function buildContainer(envOverride?: Env): Container {
   c.bind<IPartnerApiKeyRepository>(TOKENS.PartnerApiKeyRepository).to(MongoPartnerApiKeyRepository);
   c.bind<IReviewRepository>(TOKENS.ReviewRepository).to(MongoReviewRepository);
   c.bind<IFeatureFlagRepository>(TOKENS.FeatureFlagRepository).to(MongoFeatureFlagRepository);
+  c.bind<IPointLedgerRepository>(TOKENS.PointLedgerRepository).to(MongoPointLedgerRepository);
+  c.bind<IRiskAssessmentRepository>(TOKENS.RiskAssessmentRepository).to(
+    MongoRiskAssessmentRepository,
+  );
+  c.bind<IBusinessRulesRepository>(TOKENS.BusinessRulesRepository).to(MongoBusinessRulesRepository);
+  c.bind<IPartnerLocationRepository>(TOKENS.PartnerLocationRepository).to(
+    MongoPartnerLocationRepository,
+  );
+  c.bind<IPartnerStaffRepository>(TOKENS.PartnerStaffRepository).to(MongoPartnerStaffRepository);
+  c.bind<ICustodyRecordRepository>(TOKENS.CustodyRecordRepository).to(MongoCustodyRecordRepository);
+  c.bind<IRecoveryCaseRepository>(TOKENS.RecoveryCaseRepository).to(MongoRecoveryCaseRepository);
+  c.bind<IRecoveryEventRepository>(TOKENS.RecoveryEventRepository).to(MongoRecoveryEventRepository);
+  c.bind<IRewardOfferRepository>(TOKENS.RewardOfferRepository).to(MongoRewardOfferRepository);
   c.bind<ICache>(TOKENS.Cache).to(RedisCache);
   c.bind(PaystackService).toSelf();
 
@@ -607,6 +704,56 @@ export function buildContainer(envOverride?: Env): Container {
   c.bind(ToggleFeatureFlagUseCase).toSelf();
   c.bind(UpdateRolloutUseCase).toSelf();
   c.bind(SeedFeatureFlagsUseCase).toSelf();
+
+  // BakPoints economy, business rules and the anti-collusion engine.
+  c.bind(AwardPointsUseCase).toSelf();
+  c.bind(GetPointsSummaryUseCase).toSelf();
+  c.bind(ListMyPointLedgerUseCase).toSelf();
+  c.bind(ClearPendingPointsUseCase).toSelf();
+  c.bind(ReversePointsUseCase).toSelf();
+  c.bind(ReverseCasePointsUseCase).toSelf();
+  c.bind(AdjustPointsUseCase).toSelf();
+  c.bind(ApplyFraudPenaltyUseCase).toSelf();
+  c.bind(AssessRecoveryRiskUseCase).toSelf();
+  c.bind(ListOpenRiskAssessmentsUseCase).toSelf();
+  c.bind(GetRiskAssessmentUseCase).toSelf();
+  c.bind(ReviewRiskAssessmentUseCase).toSelf();
+  c.bind(GetBusinessRulesUseCase).toSelf();
+  c.bind(UpdateBusinessRulesUseCase).toSelf();
+
+  // Recovery Points, chain of custody and partner trust controls.
+  c.bind(RecordRecoveryEventUseCase).toSelf();
+  c.bind(OpenRecoveryCaseUseCase).toSelf();
+  c.bind(GetRecoveryCaseUseCase).toSelf();
+  c.bind(ListMyRecoveryCasesUseCase).toSelf();
+  c.bind(ListInstitutionRecoveryCasesUseCase).toSelf();
+  c.bind(ResolveCustodyActorUseCase).toSelf();
+  c.bind(AcceptCustodyUseCase).toSelf();
+  c.bind(IssueReleaseCodeUseCase).toSelf();
+  c.bind(ReleaseCustodyUseCase).toSelf();
+  c.bind(ListCustodyAtLocationUseCase).toSelf();
+  c.bind(CreatePartnerLocationUseCase).toSelf();
+  c.bind(ListPartnerLocationsUseCase).toSelf();
+  c.bind(DeactivatePartnerLocationUseCase).toSelf();
+  c.bind(AddPartnerStaffUseCase).toSelf();
+  c.bind(ListPartnerStaffUseCase).toSelf();
+  c.bind(RemovePartnerStaffUseCase).toSelf();
+  c.bind(GetPartnerTrustSummaryUseCase).toSelf();
+  c.bind(SetPartnerStandingUseCase).toSelf();
+
+  // Trust Score — derived reliability, kept separate from BakPoints (§16).
+  c.bind(RecomputeTrustScoreUseCase).toSelf();
+  c.bind(GetMyTrustScoreUseCase).toSelf();
+  c.bind(GetPublicTrustUseCase).toSelf();
+
+  // Rewards marketplace — partner-funded benefits (§13).
+  c.bind(ListRewardCatalogUseCase).toSelf();
+  c.bind(ReserveRewardUseCase).toSelf();
+  c.bind(ExpireReservationsUseCase).toSelf();
+  c.bind(CreateRewardOfferUseCase).toSelf();
+  c.bind(UpdateRewardOfferUseCase).toSelf();
+  c.bind(ListPartnerRewardOffersUseCase).toSelf();
+  c.bind(GetPartnerRewardAnalyticsUseCase).toSelf();
 
   return c;
 }

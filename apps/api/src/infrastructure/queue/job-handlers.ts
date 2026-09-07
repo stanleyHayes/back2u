@@ -4,11 +4,22 @@ import mongoose from 'mongoose';
 import { CrowdsourcedHeartbeatUseCase } from '../../application/use-cases/ble/heartbeat.use-case.js';
 import { GenerateMatchesUseCase } from '../../application/use-cases/match/generate-matches.js';
 import { SettleMarketplaceAuctionUseCase } from '../../application/use-cases/marketplace/marketplace.use-cases.js';
+import { ClearPendingPointsUseCase } from '../../application/use-cases/points/points.use-cases.js';
+import { ExpireReservationsUseCase } from '../../application/use-cases/reward_catalog/reward-catalog.use-cases.js';
 import type { IQueueWorker } from '../../application/ports/queue.js';
 import type { IAppUrls, IWebPushService } from '../../application/ports/extra-services.js';
-import type { IMarketplaceListingRepository, IUserRepository } from '../../application/ports/repositories.js';
-import type { IEmailService, ILogger, IPushService, IRealtimeBus } from '../../application/ports/services.js';
+import type {
+  IMarketplaceListingRepository,
+  IUserRepository,
+} from '../../application/ports/repositories.js';
+import type {
+  IEmailService,
+  ILogger,
+  IPushService,
+  IRealtimeBus,
+} from '../../application/ports/services.js';
 import { TOKENS } from '../../application/ports/tokens.js';
+import { CustodyRecordModel } from '../persistence/mongo/models/custody.model.js';
 import { ItemModel } from '../persistence/mongo/models/item.model.js';
 import { MarketplaceListingModel } from '../persistence/mongo/models/marketplace.model.js';
 import type { IWebPushSubscriptionRepository } from '../persistence/mongo/repositories/web-push.repo.mongo.js';
@@ -23,33 +34,48 @@ export function registerWorkerHandlers(c: Container): void {
     await c.get(GenerateMatchesUseCase).execute(itemId);
   });
 
-  worker.on<{ userIds: string[]; title: string; body: string; data?: Record<string, unknown> }>('push.broadcast', async (data) => {
-    const push = c.get<IPushService>(TOKENS.PushService);
-    const users = c.get<IUserRepository>(TOKENS.UserRepository);
-    for (const userId of data.userIds) {
-      const user = await users.findById(userId);
-      if (user && user.snapshot.pushTokens.length > 0) {
-        await push
-          .send(user.snapshot.pushTokens, data.title, data.body, data.data)
-          .catch((err) => logger.warn('push.broadcast send failed', { userId, err: String(err) }));
+  worker.on<{ userIds: string[]; title: string; body: string; data?: Record<string, unknown> }>(
+    'push.broadcast',
+    async (data) => {
+      const push = c.get<IPushService>(TOKENS.PushService);
+      const users = c.get<IUserRepository>(TOKENS.UserRepository);
+      for (const userId of data.userIds) {
+        const user = await users.findById(userId);
+        if (user && user.snapshot.pushTokens.length > 0) {
+          await push
+            .send(user.snapshot.pushTokens, data.title, data.body, data.data)
+            .catch((err) =>
+              logger.warn('push.broadcast send failed', { userId, err: String(err) }),
+            );
+        }
       }
-    }
-  });
+    },
+  );
 
-  worker.on<{ userId: string; title: string; body: string; data?: Record<string, unknown> }>('webpush.send', async (data) => {
-    const webPush = c.get<IWebPushService>(TOKENS.WebPushService);
-    const subs = c.get<IWebPushSubscriptionRepository>(TOKENS.WebPushSubscriptionRepository);
-    const list = await subs.listForUser(data.userId);
-    for (const sub of list) {
-      // WebPushService.send handles/logs delivery failures internally.
-      await webPush.send({ endpoint: sub.snapshot.endpoint, keys: sub.snapshot.keys }, data.title, data.body, data.data);
-    }
-  });
+  worker.on<{ userId: string; title: string; body: string; data?: Record<string, unknown> }>(
+    'webpush.send',
+    async (data) => {
+      const webPush = c.get<IWebPushService>(TOKENS.WebPushService);
+      const subs = c.get<IWebPushSubscriptionRepository>(TOKENS.WebPushSubscriptionRepository);
+      const list = await subs.listForUser(data.userId);
+      for (const sub of list) {
+        // WebPushService.send handles/logs delivery failures internally.
+        await webPush.send(
+          { endpoint: sub.snapshot.endpoint, keys: sub.snapshot.keys },
+          data.title,
+          data.body,
+          data.data,
+        );
+      }
+    },
+  );
 
   worker.on<{ tagCode: string; lng: number; lat: number }>('zone.fanout', async (data) => {
     // Reuse heartbeat use-case for tag-driven alerts; zone-alert fan-out
     // happens directly in CreateItem for now, but lives here for queue-mode.
-    await c.get(CrowdsourcedHeartbeatUseCase).execute({ tagCode: data.tagCode, point: { lng: data.lng, lat: data.lat } });
+    await c
+      .get(CrowdsourcedHeartbeatUseCase)
+      .execute({ tagCode: data.tagCode, point: { lng: data.lng, lat: data.lat } });
   });
 
   worker.on('audit.write', async () => {
@@ -58,16 +84,36 @@ export function registerWorkerHandlers(c: Container): void {
 
   // ── Scheduler jobs (idempotent) ───────────────────────────────────────────
 
+  worker.on('points.clear-pending', async () => {
+    if (mongoose.connection.readyState !== 1) return;
+    await c.get(ClearPendingPointsUseCase).execute();
+  });
+
+  worker.on('rewards.expire-reservations', async () => {
+    if (mongoose.connection.readyState !== 1) return;
+    await c.get(ExpireReservationsUseCase).execute();
+  });
+
   worker.on('marketplace.auto-close', async () => {
     if (mongoose.connection.readyState !== 1) return;
     const now = new Date();
-    const expired = await MarketplaceListingModel.find({ status: 'live', closesAt: { $lte: now } }).lean<{ _id: string }[]>();
+    const expired = await MarketplaceListingModel.find({
+      status: 'live',
+      closesAt: { $lte: now },
+    }).lean<{ _id: string }[]>();
     for (const doc of expired) {
       try {
         const result = await c.get(SettleMarketplaceAuctionUseCase).execute(doc._id);
-        logger.info('marketplace.auto-close', { listingId: doc._id, winnerId: result.winnerId, winningAmount: result.winningAmount });
+        logger.info('marketplace.auto-close', {
+          listingId: doc._id,
+          winnerId: result.winnerId,
+          winningAmount: result.winningAmount,
+        });
       } catch (err) {
-        logger.error('marketplace.auto-close', { listingId: doc._id, error: (err as Error).message });
+        logger.error('marketplace.auto-close', {
+          listingId: doc._id,
+          error: (err as Error).message,
+        });
       }
     }
   });
@@ -98,10 +144,21 @@ export function registerWorkerHandlers(c: Container): void {
             hoursLeft: 24,
           });
         }
-        await MarketplaceListingModel.updateOne({ _id: doc._id }, { $set: { reminder24hSent: true } });
-        logger.info('marketplace.ending-soon', { listingId: doc._id, hoursLeft: 24, biddersNotified: bidderIds.length });
+        await MarketplaceListingModel.updateOne(
+          { _id: doc._id },
+          { $set: { reminder24hSent: true } },
+        );
+        logger.info('marketplace.ending-soon', {
+          listingId: doc._id,
+          hoursLeft: 24,
+          biddersNotified: bidderIds.length,
+        });
       } catch (err) {
-        logger.error('marketplace.ending-soon', { listingId: doc._id, hoursLeft: 24, error: (err as Error).message });
+        logger.error('marketplace.ending-soon', {
+          listingId: doc._id,
+          hoursLeft: 24,
+          error: (err as Error).message,
+        });
       }
     }
 
@@ -125,10 +182,21 @@ export function registerWorkerHandlers(c: Container): void {
             hoursLeft: 1,
           });
         }
-        await MarketplaceListingModel.updateOne({ _id: doc._id }, { $set: { reminder1hSent: true } });
-        logger.info('marketplace.ending-soon', { listingId: doc._id, hoursLeft: 1, biddersNotified: bidderIds.length });
+        await MarketplaceListingModel.updateOne(
+          { _id: doc._id },
+          { $set: { reminder1hSent: true } },
+        );
+        logger.info('marketplace.ending-soon', {
+          listingId: doc._id,
+          hoursLeft: 1,
+          biddersNotified: bidderIds.length,
+        });
       } catch (err) {
-        logger.error('marketplace.ending-soon', { listingId: doc._id, hoursLeft: 1, error: (err as Error).message });
+        logger.error('marketplace.ending-soon', {
+          listingId: doc._id,
+          hoursLeft: 1,
+          error: (err as Error).message,
+        });
       }
     }
   });
@@ -137,19 +205,45 @@ export function registerWorkerHandlers(c: Container): void {
     if (mongoose.connection.readyState !== 1) return;
     const now = new Date();
 
-    // Archive expired items (or items without expiresAt older than 30 days)
+    // An item sitting in a Recovery Point bin is not abandoned — archiving it
+    // would desynchronise the item from its open custody record, leaving staff
+    // holding property the platform thinks is gone.
+    //
+    // Narrow to the items actually about to be archived before asking which are
+    // in custody: a `$nin` built from every held record in the network would
+    // grow without bound as the Recovery Point network scales.
     const fallbackExpiry = new Date(now.getTime() - 30 * MS_PER_DAY);
-    const archived = await ItemModel.updateMany(
-      {
-        status: 'open',
-        $or: [
-          { expiresAt: { $lte: now } },
-          { expiresAt: { $exists: false }, createdAt: { $lte: fallbackExpiry } },
-        ],
-      },
-      { $set: { status: 'archived', updatedAt: now } },
-    );
-    if (archived.modifiedCount) logger.info('items.auto-archive', { count: archived.modifiedCount });
+    const expiredFilter: Record<string, unknown> = {
+      status: 'open',
+      $or: [
+        { expiresAt: { $lte: now } },
+        { expiresAt: { $exists: false }, createdAt: { $lte: fallbackExpiry } },
+      ],
+    };
+    const candidates = await ItemModel.find(expiredFilter)
+      .select({ _id: 1 })
+      .lean<{ _id: string }[]>();
+    const candidateIds = candidates.map((d) => d._id);
+
+    let archived = { modifiedCount: 0 };
+    if (candidateIds.length > 0) {
+      const held = await CustodyRecordModel.find({
+        status: 'held',
+        itemId: { $in: candidateIds },
+      })
+        .select({ itemId: 1 })
+        .lean<{ itemId: string }[]>();
+      const heldIds = new Set(held.map((r) => r.itemId));
+      const archivable = candidateIds.filter((id) => !heldIds.has(id));
+      if (archivable.length > 0) {
+        archived = await ItemModel.updateMany(
+          { _id: { $in: archivable }, status: 'open' },
+          { $set: { status: 'archived', updatedAt: now } },
+        );
+      }
+    }
+    if (archived.modifiedCount)
+      logger.info('items.auto-archive', { count: archived.modifiedCount });
 
     // Send reminders only once per day at 09:00 UTC to avoid duplicates
     if (now.getUTCHours() !== 9) return;

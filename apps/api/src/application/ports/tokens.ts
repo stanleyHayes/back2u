@@ -38,6 +38,15 @@ export const TOKENS = {
   TrustedFinderApplicationRepository: Symbol.for('TrustedFinderApplicationRepository'),
   PartnerApiKeyRepository: Symbol.for('PartnerApiKeyRepository'),
   ReviewRepository: Symbol.for('ReviewRepository'),
+  PointLedgerRepository: Symbol.for('PointLedgerRepository'),
+  RiskAssessmentRepository: Symbol.for('RiskAssessmentRepository'),
+  BusinessRulesRepository: Symbol.for('BusinessRulesRepository'),
+  PartnerLocationRepository: Symbol.for('PartnerLocationRepository'),
+  PartnerStaffRepository: Symbol.for('PartnerStaffRepository'),
+  CustodyRecordRepository: Symbol.for('CustodyRecordRepository'),
+  RecoveryCaseRepository: Symbol.for('RecoveryCaseRepository'),
+  RecoveryEventRepository: Symbol.for('RecoveryEventRepository'),
+  RewardOfferRepository: Symbol.for('RewardOfferRepository'),
 
   // services (driven ports)
   PasswordHasher: Symbol.for('PasswordHasher'),

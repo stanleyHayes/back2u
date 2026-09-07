@@ -32,6 +32,17 @@ export class ConflictError extends DomainError {
   }
 }
 
+/**
+ * A uniqueness constraint rejected the write. Distinct from a plain
+ * `ConflictError` so a caller can treat "someone else already did this" as a
+ * benign outcome without swallowing unrelated conflicts.
+ */
+export class DuplicateError extends DomainError {
+  constructor(what: string) {
+    super('duplicate', `${what} already exists`, 409);
+  }
+}
+
 export class ValidationError extends DomainError {
   constructor(reason: string, details?: unknown) {
     super('validation', reason, 422);

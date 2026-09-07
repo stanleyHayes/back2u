@@ -6,7 +6,10 @@ import type { Institution } from '../../domain/institution/institution.entity.js
 import type { InstitutionLead } from '../../domain/institution/institution-lead.entity.js';
 import type { Item } from '../../domain/item/item.entity.js';
 import type { Notification } from '../../domain/notification/notification.entity.js';
-import type { Bid, MarketplaceListing } from '../../domain/marketplace_listing/marketplace-listing.entity.js';
+import type {
+  Bid,
+  MarketplaceListing,
+} from '../../domain/marketplace_listing/marketplace-listing.entity.js';
 import type { Match } from '../../domain/match/match.entity.js';
 import type { Message } from '../../domain/chat/message.entity.js';
 import type { OwnershipVerification } from '../../domain/verification/verification.entity.js';
@@ -50,7 +53,10 @@ export interface IItemRepository {
   findById(id: Id): Promise<Item | null>;
   findByIds(ids: Id[]): Promise<Item[]>;
   list(filter: ItemListFilter): Promise<{ items: Item[]; total: number }>;
-  findCandidatesFor(item: Item, opts: { radiusMeters: number; daysWindow: number; limit: number }): Promise<Item[]>;
+  findCandidatesFor(
+    item: Item,
+    opts: { radiusMeters: number; daysWindow: number; limit: number },
+  ): Promise<Item[]>;
   findByPerceptualHash(hash: string, threshold: number): Promise<Item[]>;
   findOlderThanReturned(beforeDate: Date): Promise<Item[]>;
   findByQrTagCode(code: string): Promise<Item | null>;
@@ -61,13 +67,28 @@ export interface IItemRepository {
   countPerDay(since: Date): Promise<{ date: string; count: number }[]>;
   autocomplete(prefix: string): Promise<{ cities: string[]; categories: string[] }>;
   findFlaggedForReview(limit: number): Promise<Item[]>;
-  findRecentByKindAndCategory(kind: ItemKind, category: string, since: Date, limit: number): Promise<Item[]>;
-  countByInstitution(institutionId: Id): Promise<{ total: number; byStatus: Record<string, number> }>;
+  findRecentByKindAndCategory(
+    kind: ItemKind,
+    category: string,
+    since: Date,
+    limit: number,
+  ): Promise<Item[]>;
+  countByInstitution(
+    institutionId: Id,
+  ): Promise<{ total: number; byStatus: Record<string, number> }>;
   listRecentByInstitution(institutionId: Id, limit: number): Promise<Item[]>;
 }
 
 export interface IUserRepository {
   save(user: User): Promise<void>;
+  /**
+   * Applies a signed points/reputation delta with a field-level `$inc`.
+   *
+   * `save()` writes the whole document, so a read-modify-write of the balance
+   * loses any concurrent update to the same user. Every balance movement must
+   * go through this instead.
+   */
+  incrementPoints(userId: Id, points: number, reputationDelta?: number): Promise<void>;
   findById(id: Id): Promise<User | null>;
   findByEmail(email: string): Promise<User | null>;
   findByPhone(phone: string): Promise<User | null>;
@@ -136,6 +157,8 @@ export interface ICourierJobRepository {
   save(j: CourierJob): Promise<void>;
   findById(id: Id): Promise<CourierJob | null>;
   listForUser(userId: Id): Promise<CourierJob[]>;
+  /** A completed tracked delivery for an item — evidence for §5 level C. */
+  findDeliveredForItem(itemId: Id): Promise<CourierJob | null>;
   listOpen(near?: { lng: number; lat: number; radiusMeters: number }): Promise<CourierJob[]>;
   count(): Promise<number>;
   countByItemIds(itemIds: Id[]): Promise<{ total: number; active: number }>;
@@ -150,7 +173,12 @@ export interface IVaultRepository {
 
 export interface IAuditLogRepository {
   save(log: AuditLog): Promise<void>;
-  list(filter: { entity?: string; entityId?: Id; actorId?: Id; limit: number }): Promise<AuditLog[]>;
+  list(filter: {
+    entity?: string;
+    entityId?: Id;
+    actorId?: Id;
+    limit: number;
+  }): Promise<AuditLog[]>;
 }
 
 export interface IZoneSubscriptionRepository {
@@ -225,7 +253,10 @@ export interface ITrustedFinderApplicationRepository {
   save(app: TrustedFinderApplication): Promise<void>;
   findById(id: Id): Promise<TrustedFinderApplication | null>;
   findPendingByUserId(userId: Id): Promise<TrustedFinderApplication | null>;
-  list(status?: 'pending' | 'approved' | 'rejected', limit?: number): Promise<TrustedFinderApplication[]>;
+  list(
+    status?: 'pending' | 'approved' | 'rejected',
+    limit?: number,
+  ): Promise<TrustedFinderApplication[]>;
 }
 
 export interface IFeatureFlagRepository {

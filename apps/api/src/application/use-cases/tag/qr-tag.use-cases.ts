@@ -1,5 +1,3 @@
-import { randomBytes } from 'node:crypto';
-
 import {
   DEFAULT_CURRENCY,
   type QrTagDTO,
@@ -9,7 +7,13 @@ import {
 } from '@back2u/shared-types';
 import { inject, injectable } from 'inversify';
 
-import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from '../../../domain/shared/errors.js';
+import {
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
+  ValidationError,
+} from '../../../domain/shared/errors.js';
 import { newId, type Id } from '../../../domain/shared/id.js';
 import { geoPoint } from '../../../domain/shared/value-objects.js';
 import { QrTag } from '../../../domain/tag/qr-tag.entity.js';
@@ -24,19 +28,9 @@ import type {
 } from '../../ports/repositories.js';
 import type { IEmailService, ILogger, IRealtimeBus } from '../../ports/services.js';
 import type { IAppUrls } from '../../ports/extra-services.js';
+import { generateCode as generateTagCode } from '../../../domain/shared/codes.js';
 import { TOKENS } from '../../ports/tokens.js';
 import { PaystackService } from '../../../infrastructure/payments/paystack/paystack.service.js';
-
-const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-
-function generateTagCode(length = 8): string {
-  const bytes = randomBytes(length);
-  let code = '';
-  for (let i = 0; i < length; i++) {
-    code += CODE_ALPHABET[bytes[i]! % CODE_ALPHABET.length];
-  }
-  return code;
-}
 
 function toQrTagDTO(tag: QrTag): QrTagDTO {
   const s = tag.snapshot;
@@ -95,8 +89,7 @@ async function fulfilOrder(order: QrTagOrder, tags: IQrTagRepository): Promise<Q
 }
 
 export type PayForQrTagOrderResult =
-  | { order: QrTagOrderDTO; tags: QrTagDTO[] }
-  | { authorizationUrl: string; reference: string };
+  { order: QrTagOrderDTO; tags: QrTagDTO[] } | { authorizationUrl: string; reference: string };
 
 @injectable()
 export class MintQrTagsUseCase {
@@ -158,7 +151,11 @@ export class ScanQrTagUseCase {
     @inject(TOKENS.AppUrls) private readonly urls: IAppUrls,
     @inject(TOKENS.Logger) private readonly logger: ILogger,
   ) {}
-  async execute(input: { code: string; finderMessage: string; finderEmail?: string }): Promise<{ ownerName?: string; status: TagStatus }> {
+  async execute(input: {
+    code: string;
+    finderMessage: string;
+    finderEmail?: string;
+  }): Promise<{ ownerName?: string; status: TagStatus }> {
     const tag = await this.tags.findByCode(input.code);
     if (!tag) throw new NotFoundError('Tag');
     const s = tag.snapshot;
@@ -171,7 +168,12 @@ export class ScanQrTagUseCase {
       ? `${input.finderMessage}\n\nReply to: ${input.finderEmail}`
       : input.finderMessage;
     try {
-      await this.email.sendTagScanContact(owner.email, owner.snapshot.name, message, this.urls.tag(input.code));
+      await this.email.sendTagScanContact(
+        owner.email,
+        owner.snapshot.name,
+        message,
+        this.urls.tag(input.code),
+      );
     } catch (err) {
       this.logger.warn('tag scan email failed', { err: String(err), code: input.code });
     }
@@ -220,7 +222,9 @@ export class ListMyTagsUseCase {
 
 @injectable()
 export class ListQrTagProductsUseCase {
-  constructor(@inject(TOKENS.QrTagProductRepository) private readonly products: IQrTagProductRepository) {}
+  constructor(
+    @inject(TOKENS.QrTagProductRepository) private readonly products: IQrTagProductRepository,
+  ) {}
   async execute(): Promise<QrTagProductDTO[]> {
     const list = await this.products.list();
     return list.map(toQrTagProductDTO);
@@ -233,7 +237,10 @@ export class CreateQrTagOrderUseCase {
     @inject(TOKENS.QrTagOrderRepository) private readonly orders: IQrTagOrderRepository,
     @inject(TOKENS.QrTagProductRepository) private readonly products: IQrTagProductRepository,
   ) {}
-  async execute(input: { userId: Id; items: { productId: Id; quantity: number }[] }): Promise<QrTagOrderDTO> {
+  async execute(input: {
+    userId: Id;
+    items: { productId: Id; quantity: number }[];
+  }): Promise<QrTagOrderDTO> {
     if (input.items.length === 0) throw new ValidationError('Order must contain at least one item');
     const lines: QrTagOrderItem[] = [];
     let currency = DEFAULT_CURRENCY;
@@ -253,7 +260,12 @@ export class CreateQrTagOrderUseCase {
         tagsPerPack: p.quantity,
       });
     }
-    const order = QrTagOrder.create({ id: newId(), userId: input.userId, products: lines, currency });
+    const order = QrTagOrder.create({
+      id: newId(),
+      userId: input.userId,
+      products: lines,
+      currency,
+    });
     await this.orders.save(order);
     return toQrTagOrderDTO(order);
   }
@@ -348,7 +360,9 @@ export class HandlePaystackWebhookUseCase {
 
 @injectable()
 export class ListMyQrTagOrdersUseCase {
-  constructor(@inject(TOKENS.QrTagOrderRepository) private readonly orders: IQrTagOrderRepository) {}
+  constructor(
+    @inject(TOKENS.QrTagOrderRepository) private readonly orders: IQrTagOrderRepository,
+  ) {}
   async execute(userId: Id): Promise<QrTagOrderDTO[]> {
     const list = await this.orders.listForUser(userId);
     return list.map(toQrTagOrderDTO);
