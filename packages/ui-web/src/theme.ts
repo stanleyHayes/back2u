@@ -10,13 +10,23 @@ import {
 // --- Neumorphic (soft-UI) shadow tokens, mode-aware ---
 // Raised = extruded from the surface; inset = pressed in. Derived from the
 // neutral-white (light) / forest (dark) grounds so elements read as one soft material.
+// Three things were washing the effect out, all fixed here:
+//
+//  1. Blur was 2.4x the offset (10/24), which spreads the gradient so far it
+//     reads as haze. Soft UI wants roughly 2:1, so the eye can find an edge.
+//  2. The light shadow was a COOL grey (#BEC6C1) cast on a WARM ground
+//     (#F2EFEA). A shadow in a different hue from its surface reads as grime
+//     rather than depth; it is now a darker tone of the ground itself.
+//  3. Both shadows were too weak to survive a real screen — the dark side at
+//     0.48 alpha of a colour only ~30/255 from the ground, and the dark
+//     theme's highlight at 0.42.
 const NEU_RAISED_LIGHT =
-  '10px 10px 24px rgba(190,198,193,0.48), -10px -10px 24px rgba(255,255,255,1)';
-const NEU_RAISED_DARK = '10px 10px 24px rgba(10,15,9,0.78), -10px -10px 24px rgba(58,74,48,0.42)';
+  '9px 9px 18px rgba(198,191,180,0.75), -9px -9px 18px rgba(255,255,255,0.95)';
+const NEU_RAISED_DARK = '9px 9px 18px rgba(5,9,5,0.92), -9px -9px 18px rgba(74,93,62,0.55)';
 const NEU_INSET_LIGHT =
-  'inset 5px 5px 12px rgba(190,198,193,0.48), inset -5px -5px 12px rgba(255,255,255,1)';
+  'inset 5px 5px 11px rgba(198,191,180,0.80), inset -5px -5px 11px rgba(255,255,255,0.95)';
 const NEU_INSET_DARK =
-  'inset 5px 5px 12px rgba(10,15,9,0.78), inset -5px -5px 12px rgba(58,74,48,0.42)';
+  'inset 5px 5px 11px rgba(5,9,5,0.92), inset -5px -5px 11px rgba(74,93,62,0.55)';
 
 export const neuShadow = (mode: 'light' | 'dark', variant: 'raised' | 'inset' = 'raised') =>
   variant === 'inset'
@@ -187,6 +197,42 @@ const baseTokens: ThemeOptions = {
             boxShadow: neuShadow(theme.palette.mode === 'dark' ? 'dark' : 'light', 'inset'),
           },
           '&.Mui-disabled': { boxShadow: 'none' },
+        }),
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          // MUI's default outline is rgba(0,0,0,0.23) — a hard grey line that
+          // fights the soft surfaces around it. Rest state now uses the
+          // theme's own divider so the field reads as a recess rather than a
+          // boxed-in control.
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.divider,
+            transition: 'border-color .18s ease',
+          },
+          '&:hover:not(.Mui-focused) .MuiOutlinedInput-notchedOutline': {
+            borderColor: alpha(theme.palette.text.primary, 0.28),
+          },
+          // Focus stays deliberately strong. A subtle rest state is a look;
+          // an invisible focus ring is a keyboard-navigation failure.
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.primary.main,
+            borderWidth: 2,
+          },
+          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.error.main,
+          },
+        }),
+        // Adornments sit quieter than the value they decorate.
+        input: { '&::placeholder': { opacity: 0.7 } },
+      },
+    },
+    MuiInputAdornment: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: alpha(theme.palette.text.primary, 0.55),
+          '& svg': { fontSize: 20 },
         }),
       },
     },

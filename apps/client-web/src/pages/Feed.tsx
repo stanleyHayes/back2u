@@ -6,6 +6,7 @@ import {
   Chip,
   FormControl,
   MenuItem,
+  InputAdornment,
   Select,
   Stack,
   TextField,
@@ -24,6 +25,9 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import LaptopMacOutlinedIcon from '@mui/icons-material/LaptopMacOutlined';
 import DiamondOutlinedIcon from '@mui/icons-material/DiamondOutlined';
+import { alpha } from '@mui/material/styles';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import type { ItemDTO, ItemKind } from '@back2u/shared-types';
@@ -36,8 +40,11 @@ import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { ItemCard } from '../components/ItemCard.js';
 
-const CAT_TEAL = '#40614A';
-const CAT_INK = '#2E3D2F';
+// Was hardcoded to '#40614A' / '#2E3D2F' — a near-black forest green that
+// vanished against the dark-mode menu surface while the lighter description
+// beneath it stayed readable. Both now resolve from the theme.
+const CAT_ICON_COLOR = 'primary.main';
+const CAT_LABEL_COLOR = 'text.primary';
 
 type CategoryOption = { value: string; label: string; icon: ReactNode; desc: string };
 const CATEGORY_OPTIONS: CategoryOption[] = [
@@ -117,15 +124,17 @@ function categoryContent(icon: ReactNode, label: string, desc: string) {
           flexShrink: 0,
           display: 'grid',
           placeItems: 'center',
-          bgcolor: 'rgba(64,97,74,0.10)',
-          color: CAT_TEAL,
+          bgcolor: (t) => alpha(t.palette.primary.main, t.palette.mode === 'dark' ? 0.18 : 0.1),
+          color: CAT_ICON_COLOR,
           '& svg': { fontSize: 19 },
         }}
       >
         {icon}
       </Box>
       <Box sx={{ minWidth: 0 }}>
-        <Typography sx={{ fontSize: 14, fontWeight: 700, lineHeight: 1.25, color: CAT_INK }}>
+        <Typography
+          sx={{ fontSize: 14, fontWeight: 700, lineHeight: 1.25, color: CAT_LABEL_COLOR }}
+        >
           {label}
         </Typography>
         <Typography sx={{ fontSize: 12, color: 'text.secondary', lineHeight: 1.3 }}>
@@ -417,7 +426,28 @@ export function FeedPage() {
               </li>
             );
           }}
-          renderInput={(params) => <TextField {...params} placeholder="Search keywords…" />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Search keywords…"
+              slotProps={{
+                ...params.slotProps,
+                input: {
+                  ...params.slotProps.input,
+                  // Prepend, never replace: the Autocomplete puts its own
+                  // clear and popup indicators in these slots.
+                  startAdornment: (
+                    <>
+                      <InputAdornment position="start">
+                        <SearchOutlinedIcon />
+                      </InputAdornment>
+                      {params.slotProps.input.startAdornment}
+                    </>
+                  ),
+                },
+              }}
+            />
+          )}
         />
 
         <FormControl size="small" sx={{ minWidth: 200 }}>
@@ -434,7 +464,7 @@ export function FeedPage() {
               const opt = CATEGORY_BY_VALUE[(selected as string) ?? ''] ?? CATEGORY_OPTIONS[0]!;
               return (
                 <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                  <Box sx={{ display: 'flex', color: CAT_TEAL, '& svg': { fontSize: 18 } }}>
+                  <Box sx={{ display: 'flex', color: CAT_ICON_COLOR, '& svg': { fontSize: 18 } }}>
                     {opt.icon}
                   </Box>
                   <span>{opt.label}</span>
@@ -481,7 +511,28 @@ export function FeedPage() {
               </li>
             );
           }}
-          renderInput={(params) => <TextField {...params} placeholder="City" />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="City"
+              slotProps={{
+                ...params.slotProps,
+                input: {
+                  ...params.slotProps.input,
+                  // Prepend, never replace: the Autocomplete puts its own
+                  // clear and popup indicators in these slots.
+                  startAdornment: (
+                    <>
+                      <InputAdornment position="start">
+                        <PlaceOutlinedIcon />
+                      </InputAdornment>
+                      {params.slotProps.input.startAdornment}
+                    </>
+                  ),
+                },
+              }}
+            />
+          )}
         />
 
         <ButtonGroup size="small" variant="outlined">
