@@ -1,0 +1,29 @@
+# bak2me app. Public discovery pages are crawlable; anything behind a sign-in
+# is not, and the QR scan landing is per-item and short-lived.
+User-agent: *
+Allow: /$
+Allow: /map
+Allow: /leaderboard
+Allow: /marketplace
+Allow: /rewards
+Allow: /items/
+Disallow: /login
+Disallow: /register
+Disallow: /reset-password
+Disallow: /forgot-password
+Disallow: /settings
+Disallow: /profile
+Disallow: /chat
+Disallow: /matches
+Disallow: /vault
+Disallow: /safety
+Disallow: /redeem
+Disallow: /reward-shop
+Disallow: /bookmarks
+Disallow: /courier
+Disallow: /zones
+Disallow: /tags
+Disallow: /near
+Disallow: /shop/
+
+Sitemap: https://app.bak2me.com/sitemap.xml

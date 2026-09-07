@@ -1,0 +1,3 @@
+# bak2me internal console — not for public search.
+User-agent: *
+Disallow: /

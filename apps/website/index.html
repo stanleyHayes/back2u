@@ -32,6 +32,48 @@
       href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Outfit:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <!-- Structured data: lets search engines show the brand properly and
+         understand that the product is a lost-and-found service in Ghana. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://bak2me.com/#organization",
+            "name": "bak2me",
+            "url": "https://bak2me.com",
+            "logo": "https://bak2me.com/og-image.png",
+            "description": "Ghana's trusted property recovery network.",
+            "areaServed": { "@type": "Country", "name": "Ghana" },
+            "sameAs": []
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://bak2me.com/#website",
+            "url": "https://bak2me.com",
+            "name": "bak2me",
+            "publisher": { "@id": "https://bak2me.com/#organization" },
+            "inLanguage": "en-GH",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://app.bak2me.com/?q={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "Service",
+            "name": "Lost and found recovery",
+            "provider": { "@id": "https://bak2me.com/#organization" },
+            "areaServed": { "@type": "Country", "name": "Ghana" },
+            "description": "Report lost or found property, prove ownership privately, and collect it from a trusted Recovery Point."
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root">
