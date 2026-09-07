@@ -8,8 +8,9 @@ import {
   ListInstitutionRedemptionsUseCase,
   ListMyRedemptionsUseCase,
 } from '../../../application/use-cases/redemption/redemption.use-cases.js';
+import { ForbiddenError } from '../../../domain/shared/errors.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
-import { ok } from './_helpers.js';
+import { ok, param } from './_helpers.js';
 
 const CreateRedemptionSchema = z.object({
   institutionId: z.string().min(1),
@@ -49,6 +50,13 @@ export const redemptionsRouter = (c: Container): Router => {
     async (req, res, next) => {
       try {
         const { code } = ConfirmRedemptionSchema.parse(req.body);
+        const isStaff = req.auth!.roles.some((role) => role === 'admin' || role === 'super_admin');
+        // The use case treats a missing institutionId as "no scope to check", so
+        // a partner_admin whose token carries no organisation would be able to
+        // confirm any partner's voucher.
+        if (!isStaff && !req.auth!.institutionId) {
+          throw new ForbiddenError('Your account is not linked to a partner organisation');
+        }
         const data = await c
           .get(ConfirmRedemptionUseCase)
           .execute({ code, institutionId: req.auth!.institutionId });
@@ -65,9 +73,14 @@ export const redemptionsRouter = (c: Container): Router => {
     requireRole('partner_admin', 'admin', 'super_admin'),
     async (req, res, next) => {
       try {
-        const data = await c
-          .get(ListInstitutionRedemptionsUseCase)
-          .execute(req.params.id as string);
+        const institutionId = param(req, 'id');
+        // A partner_admin is scoped to their own organisation; without this a
+        // partner could read any other institution's redemption history.
+        const isStaff = req.auth!.roles.some((role) => role === 'admin' || role === 'super_admin');
+        if (!isStaff && institutionId !== req.auth!.institutionId) {
+          throw new ForbiddenError('Redemptions belong to another institution');
+        }
+        const data = await c.get(ListInstitutionRedemptionsUseCase).execute(institutionId);
         ok(res, data);
       } catch (e) {
         next(e);

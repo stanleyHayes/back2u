@@ -13,6 +13,7 @@ import { ListFlaggedItemsUseCase } from '../../../application/use-cases/item/lis
 import { ListItemsUseCase } from '../../../application/use-cases/item/list-items.js';
 import { UpdateItemUseCase } from '../../../application/use-cases/item/update-item.js';
 import { ListMatchesForItemUseCase } from '../../../application/use-cases/match/list-matches-for-item.js';
+import { ForbiddenError } from '../../../domain/shared/errors.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 import { ok } from './_helpers.js';
 
@@ -142,6 +143,14 @@ export const itemsRouter = (c: Container): Router => {
   r.post('/', requireAuth(c), async (req, res, next) => {
     try {
       const input = CreateItemSchema.parse(req.body);
+      // `institutionId` marks an item as being in partner custody, which earns
+      // the strongest verification multiplier at settlement. Accepting it from
+      // the request body unchecked would let any caller self-assert partner
+      // custody and farm the top reward tier, so only a member of that
+      // organisation may set it.
+      if (input.institutionId && input.institutionId !== req.auth!.institutionId) {
+        throw new ForbiddenError('You cannot post an item on behalf of another organisation');
+      }
       const data = await c.get(CreateItemUseCase).execute({ ...input, postedById: req.auth!.sub });
       ok(res, data, 201);
     } catch (e) {
