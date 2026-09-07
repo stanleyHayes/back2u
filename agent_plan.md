@@ -819,3 +819,107 @@ _End of plan._
 ---
 
 _End of plan._
+
+## Console login redesign — 2026-09-07
+
+- **Status: Complete.** Admin and partner login presentation redesigned with a shared `ConsoleLoginLayout`, role-specific copy, sage/stone panels, a recovery-tag illustration, clearer forms, and a compact mobile layout.
+- **Scope:** `apps/admin/src/pages/Login.tsx`, `apps/partner/src/pages/Login.tsx`, `packages/ui-web/src/ConsoleLoginLayout.tsx`, and its shared export. Existing authentication, MFA, and role checks retained; password visibility labels now reflect their state.
+- **Verification:** Admin and partner production builds passed (Vite reports large bundle warnings). Browser review covered both desktop pages, both password visibility controls, and partner mobile at 390px and 320px; no horizontal overflow at 320px. `git diff --check` passed. Live account sign-in and MFA were not exercised.
+- **Existing work preserved:** Client feed and shared theme edits were already present and were not modified by this task.
+
+## Success story card redesign — 2026-09-07
+
+- **Status: Implemented.** Reworked the reusable item in `apps/website/src/components/SuccessStories.tsx`: item icon/header, prominent recovery time, readable quote, and author footer. Existing story copy and section grid retained.
+- **User refinement:** Added neumorphic raised cards, softly raised item icons and avatars, and inset recovery details using theme-aware shadows.
+- **Verification:** Website production build passed with bundle-size warnings; `git diff --check` passed. Initial desktop design reviewed in browser. Final neumorphic/mobile/dark visual checks could not be completed because browser connection calls timed out.
+
+## Testimonial card polish — 2026-09-07
+
+- **Status: Complete.** Applied the approved story-card direction to the three homepage testimonials in `apps/website/src/App.tsx`: raised rounded cards, raised quote icons and author avatars, inset highlights grounded in existing quotes, and separated author footers. Featured forest-green card retained; neutral cards follow the active theme.
+- **Verification:** Website production build passed with bundle-size warnings. Desktop screenshot reviewed and mobile layout inspected at 390px. `git diff --check` passed.
+
+## Recent item card redesign — 2026-09-07
+
+- **Status: Implemented.** Applied the approved neumorphic direction to the homepage recent-item cards in `apps/website/src/App.tsx`: raised rounded surfaces, recessed photo frames, raised category labels, timestamps below photos, wrapping titles, and inset location icons. Existing API data and lost/found labels retained.
+- **Verification:** Website production build and `git diff --check` passed; Vite reports bundle-size warnings. The local browser did not render the API-fed recent-items section, so final visual verification with item data remains outstanding.
+
+## Restore console login neumorphism — 2026-09-07
+
+- **Status: Complete.** Restored soft depth in the shared `ConsoleLoginLayout`: warm neutral ground, raised form and brand panels, recessed inputs, raised icons/labels, and a raised green submit button with a pressed state. Admin sage and partner stone palettes and authentication/MFA logic retained.
+- **Verification:** Both production builds passed with bundle-size warnings. Browser review covered admin mobile and partner mobile/desktop, plus admin input focus. Adjusted input selector specificity so page-level field styles cannot flatten the shared treatment. `git diff --check` passed.
+
+## Customer login dark-mode contrast — 2026-09-07
+
+- **Status: Complete.** Located the supplied screenshot at client-web `/login` (`apps/client-web/src/pages/Login.tsx`). Replaced fixed dark-green form heading/account-link colors with `text.primary`, and sign-in label/recovery-link colors with `primary.main`. Added an h1 and visible keyboard focus outlines to account links. Authentication behavior unchanged.
+- **Verification:** Client-web production build passed with bundle-size warnings. Browser review at 390px confirmed dark-mode heading `#EAF3ED` and recovery link `#A8B5A0`; light-mode heading remains `#2E3D2F`. Scoped diff whitespace check passed.
+
+## Customer login input icons and neumorphism — 2026-09-07
+
+- **Status: Complete.** Added leading email, lock, and authentication-code icons; email/code clear controls appear when populated, and password visibility remains an accessible end action. Labels stay visible. Applied theme-aware raised card/button surfaces, recessed inputs, raised end controls, and visible focus/error outlines to customer `/login`.
+- **Verification:** Client-web production build passed with bundle-size warnings. Reviewed 390px light/dark screenshots; browser checks confirmed email clearing and password visibility. MFA presentation compiled but was not exercised through a live account. Scoped diff check passed.
+
+## Customer login placeholders and color refinement — 2026-09-07
+
+- **Status: Complete.** Added email, password, and MFA code placeholders; strengthened theme-aware placeholder/label/icon colors and darkened the bronze submit button for white-text contrast. Restored the desktop brand panel's fixed forest background so its cream text remains readable. Existing neumorphic styling retained.
+- **Verification:** Client-web build passed with bundle-size warnings; light/dark mobile screenshots reviewed at 390px. Scoped diff check passed. MFA placeholder is implemented but not live-account tested.
+
+## Mobile client header title and icon shadows — 2026-09-07
+
+- **Status: Complete.** Restored the bak2me wordmark at mobile widths in `packages/ui-web/src/AppShell.tsx`; only the tagline remains hidden on small screens. Unified client header theme, menu, and notification controls around a fixed forest surface, restrained paired shadows, inset pressed states, and visible focus rings in `apps/client-web/src/App.tsx`.
+- **Verification:** Client-web production build passed with bundle-size warnings. Dark mobile header reviewed at 390px; header width checked at 320px without overflow; menu open/close and theme switching verified. Scoped diff check passed.
+
+## Client mobile menu contrast and shadows — 2026-09-07
+
+- **Status: Complete.** Replaced fixed dark labels/icons in shared menu rows with theme-aware text, primary, and error colors. Tuned drawer action/close-button shadows to its surface, removed the green drawer glow, differentiated the primary registration action, and constrained width to the viewport. Added keyboard focus outlines.
+- **Verification:** Client-web build passed with bundle-size warnings. Light/dark drawer screenshots reviewed, menu open/close verified, and drawer measured at 320px without horizontal overflow. Scoped diff check passed.
+
+## Notification preview redesign — 2026-09-07
+
+- **Status: Complete.** Redesigned `apps/website/src/components/PushNotifyDemo.tsx` with a raised branded notification header, possible-match headline, recessed item/location panel, and explicit demo label. Existing demo notification behavior retained.
+- **Verification:** Website production build passed with bundle-size warnings; desktop and 390px mobile screenshots reviewed. Scoped diff check passed. Browser notification permissions were not requested during visual checks.
+
+## Pricing specification reconciliation and redesign — 2026-09-07
+
+- **Status: Complete.** Rebuilt `/pricing` with pronounced neumorphic personal/free and institution sections, raised plan cards, inset prices, featured forest Pro plan, separate optional-cost explanations, and accessible FAQs. Shared website navigation/footer restored.
+- **Source:** Read `Bak2Me_Points_Rewards_Partners_Anti_Fraud_Specification.docx` (September 2026 v1.0), especially sections 3–4, 11, 13–15, 18, and 24. It defines loyalty/reward/partner economics but does not prescribe subscription prices. Current monthly institution amounts come from `packages/shared-types/src/billing.ts`: Starter free, Pro GHS500, Enterprise GHS2,000.
+- **Drift prevention:** Website now imports `SUBSCRIPTION_PLANS`, the same catalogue exposed by `/v1/institutions/plans` and used by partner billing. Added the workspace dependency and a three-line lockfile entry only; discarded unrelated dependency-resolution churn.
+- **Corrections:** Removed unsupported GHS19 Premium offer, coming-soon/popularity claims, 14-day trial, seven-day refund promises, and individual premium entitlements. Excluded the catalogue's `Custom point→cash rates` marketing bullet because the specification says BakPoints are not freely convertible to cash. No private fraud rules are published.
+- **Commercial boundary:** Existing subscription use case updates institution tier/renewal metadata but does not collect payment. Public paid-plan CTAs therefore lead to the partner enquiry form, with scope/billing confirmation language. Backend billing enforcement and catalogue's cash-rate terminology remain outside this page change.
+- **Verification:** Website production build passed with bundle-size warnings. Desktop/light and 390px/dark screenshots reviewed, correct amounts confirmed in DOM, no horizontal overflow at 390px, FAQ expand state checked, and Pro enquiry navigated to `/partner`. No enquiry submitted. Scoped diff check passed.
+
+## Partner page, customer feed, and FAQ spacing — 2026-09-07
+
+- **Status: Complete.** Redesigned website `/partner` with the shared public shell, stronger introduction, inset benefits, raised three-step enquiry form, themed inputs/placeholders, clearer step copy, and mobile enquiry shortcut. Removed unverified automatic-reunion/48-hour onboarding claims. Existing request payload and validation retained.
+- **Customer feed:** Redesigned `/` with a clear report/map entry point, structured search/location/category/date controls, pressed report-type filters, reset action, and responsive spacing. Shared `ItemCard` now matches the approved lost-item style: raised rounded card, recessed photo frame, wrapping title/location, quieter metadata, and spaced actions. Photo previews are keyboard-accessible buttons; bookmark controls have accessible labels.
+- **Pricing FAQ:** Added explicit 20px mobile / 24px desktop horizontal padding to questions and answers, 72px summary height, and spacing before the expand icon.
+- **Verification:** Website and client production builds passed with bundle-size warnings. Partner wizard tested through all three steps using preview values without submitting; mobile light/dark partner screenshots reviewed at 390px with no overflow, and enquiry shortcut checked. Feed loaded real API items; Lost filter returned 15 lost reports, photo preview opened/closed, and 390px layout had no horizontal overflow. FAQ measured 24px desktop left/right padding and expand state verified. Scoped diff check passed.
+
+### Item detail redesign — 2026-09-07
+
+- Status: DONE.
+- Redesigned customer item detail with raised photo and information panels, recessed fact tiles, readable heading, and theme-aware surfaces matching the feed.
+- Added keyboard-accessible photo buttons and a signed-out sign-in action; retained existing verification, bookmark, review, bump, and reporting behavior.
+- Validation: client production build passed (existing chunk-size warnings); photo viewer opened and closed; image loaded; mobile dark mode checked at 390px with no horizontal overflow. Authentication-dependent mutations were not submitted.
+
+### Customer header refinement — 2026-09-07
+
+- DONE: sentence-case navigation, recessed active tab, separated account actions, raised sage registration button, quieter header texture and surface shadow.
+- Verified desktop rendering and mobile menu availability; client production build passed with existing chunk-size warnings.
+
+### Registration redesign — 2026-09-07
+
+- DONE: responsive two-column community introduction and raised registration form, Outfit headings, recessed inputs, persistent labels, placeholders, autofill hints, clear controls and password visibility toggle. Surface-matched icon shadows avoid the previous green glow.
+- Preserved registration API and auth behavior; native required/email/minimum-password validation replaces the disabled-until-password entry point.
+- Validation: production build passed; dark desktop and light mobile reviewed, no horizontal overflow at 390px; clear-name and password-toggle controls verified. No account created during verification.
+
+### Landing page hero and motion — 2026-09-07
+
+- DONE: new editorial hero with staggered masked headline, sequenced lost/returned story cards, sculpted key medallion and animated SVG connection path. Replaced radar and illustrative confidence percentage.
+- Added short sibling stagger to existing page scroll reveals and refined their entry transform. New animations are finite and disabled under reduced-motion preference; existing reduced-motion fallback retained.
+- Retained lost/found CTA routes and download links. Website build passed with existing bundle warnings; desktop light and mobile dark visual review completed; 390px layout has no horizontal overflow and headline animation styles and CTA destinations verified.
+
+### Landing page final sections — 2026-09-07
+
+- DONE: restored mobile navbar wordmark; redesigned institution tiles, referral panel, FAQ, closing CTA, and footer using consistent readable headings and neumorphic surfaces.
+- Replaced disconnected referral form with copyable site invitation and removed unsupported 50-point promise. Replaced local-only newsletter success with direct contact link.
+- Website build passed with existing chunk warnings. Browser verified mobile 390px width without horizontal overflow and FAQ expansion; checked contact and navigation targets. No email or invitations sent.

@@ -205,13 +205,13 @@ export function Navbar() {
           }}
         >
           <BrandMark size={34} onDark />
-          <Box sx={{ display: { xs: 'none', sm: 'block' }, minWidth: 0 }}>
+          <Box sx={{ display: 'block', minWidth: 0 }}>
             <Typography
               className="b2u-display"
               sx={{
                 color: CREAM,
                 fontWeight: 600,
-                fontSize: 20,
+                fontSize: { xs: 18, sm: 20 },
                 lineHeight: 1.05,
                 letterSpacing: '-0.02em',
               }}
@@ -221,6 +221,7 @@ export function Navbar() {
             <Typography
               sx={{
                 color: 'rgba(242,239,234,0.6)',
+                display: { xs: 'none', sm: 'block' },
                 fontSize: 10.5,
                 fontWeight: 600,
                 letterSpacing: '0.08em',

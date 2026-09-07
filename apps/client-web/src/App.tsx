@@ -17,6 +17,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { AppShell, circularThemeTransition } from '@back2u/ui-web';
 import { NotificationsNoneOutlined } from '@mui/icons-material';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
@@ -33,6 +34,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
@@ -50,6 +52,22 @@ const INK = '#2E3D2F';
 const MARIGOLD = '#8B6F4E';
 const NAV_NEU_SHADOW = '7px 7px 15px #0C1510, -7px -7px 15px #263A2D';
 const NAV_NEU_INSET = 'inset 4px 4px 9px #0C1510, inset -4px -4px 9px #263A2D';
+
+const headerIconSx = {
+  color: '#F2EFEA',
+  width: 38,
+  height: 38,
+  flexShrink: 0,
+  border: 'none',
+  bgcolor: '#1D2B22',
+  boxShadow: '4px 4px 8px #0E1812, -4px -4px 8px #30403588',
+  '&:hover': { bgcolor: '#26372B', transform: 'none' },
+  '&:active': {
+    boxShadow: 'inset 3px 3px 6px #101C15, inset -3px -3px 6px #354B3B88',
+    transform: 'none',
+  },
+  '&:focus-visible': { outline: '2px solid #A8B5A0', outlineOffset: 3 },
+} as const;
 
 const moreItemSx = {
   alignItems: 'flex-start',
@@ -74,8 +92,8 @@ function moreContent(icon: ReactNode, title: string, desc: string, danger = fals
           flexShrink: 0,
           display: 'grid',
           placeItems: 'center',
-          bgcolor: danger ? 'rgba(220,38,38,0.10)' : 'rgba(64,97,74,0.10)',
-          color: danger ? '#DC2626' : '#40614A',
+          bgcolor: (t) => alpha(danger ? t.palette.error.main : t.palette.primary.main, 0.1),
+          color: danger ? 'error.main' : 'primary.main',
           '& svg': { fontSize: 20 },
         }}
       >
@@ -83,7 +101,12 @@ function moreContent(icon: ReactNode, title: string, desc: string, danger = fals
       </Box>
       <Box sx={{ minWidth: 0 }}>
         <Typography
-          sx={{ fontSize: 14, fontWeight: 700, lineHeight: 1.25, color: danger ? '#DC2626' : INK }}
+          sx={{
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: 1.25,
+            color: danger ? 'error.main' : 'text.primary',
+          }}
         >
           {title}
         </Typography>
@@ -102,33 +125,25 @@ function NavBtn({ to, end, children }: { to: string; end?: boolean; children: Re
       to={to}
       end={end}
       sx={{
-        position: 'relative',
-        color: 'rgba(242,239,234,0.76)',
-        fontWeight: 700,
-        fontSize: 11.5,
-        letterSpacing: '0.055em',
-        textTransform: 'uppercase',
-        borderRadius: 0,
+        color: '#C9D2CA',
+        fontWeight: 600,
+        fontSize: 14,
+        letterSpacing: 0,
+        textTransform: 'none',
+        borderRadius: '12px',
         bgcolor: 'transparent',
         boxShadow: 'none',
-        px: { lg: 1, xl: 1.35 },
-        py: 1.25,
+        px: { lg: 1.25, xl: 1.75 },
+        py: 1.15,
         minWidth: 0,
-        '&:hover': { color: '#F2EFEA', bgcolor: 'transparent' },
+        whiteSpace: 'nowrap',
+        '&:hover': { color: '#F2EFEA', bgcolor: '#26372B' },
         '&.active': {
-          color: '#A8B5A0',
-          bgcolor: 'transparent',
-          '&::after': {
-            content: '\"\"',
-            position: 'absolute',
-            left: 10,
-            right: 10,
-            bottom: 2,
-            height: 2,
-            borderRadius: 2,
-            bgcolor: '#A8B5A0',
-          },
+          color: '#F2EFEA',
+          bgcolor: '#203027',
+          boxShadow: 'inset 3px 3px 6px #101B14, inset -3px -3px 6px #31443888',
         },
+        '&:focus-visible': { outline: '2px solid #A8B5A0', outlineOffset: 2 },
       }}
     >
       {children}
@@ -143,16 +158,7 @@ function ThemeToggle() {
     <Tooltip title={dark ? 'Switch to light theme' : 'Switch to dark theme'}>
       <IconButton
         onClick={(e) => circularThemeTransition(e, () => setThemeMode(dark ? 'light' : 'dark'))}
-        sx={{
-          color: '#F2EFEA',
-          width: 38,
-          height: 38,
-          border: 'none',
-          bgcolor: 'rgba(242,239,234,0.04)',
-          boxShadow: NAV_NEU_SHADOW,
-          '&:hover': { bgcolor: 'rgba(168,181,160,0.12)' },
-          '&:active': { boxShadow: NAV_NEU_INSET },
-        }}
+        sx={headerIconSx}
         aria-label="Toggle theme"
       >
         {dark ? <LightModeOutlinedIcon /> : <DarkModeOutlinedIcon />}
@@ -233,20 +239,7 @@ function NotificationBell() {
 
   return (
     <>
-      <IconButton
-        size="small"
-        onClick={(e) => setAnchor(e.currentTarget)}
-        sx={{
-          color: '#F2EFEA',
-          width: 38,
-          height: 38,
-          border: 'none',
-          bgcolor: 'rgba(242,239,234,0.04)',
-          boxShadow: NAV_NEU_SHADOW,
-          '&:hover': { bgcolor: 'rgba(168,181,160,0.12)' },
-          '&:active': { boxShadow: NAV_NEU_INSET },
-        }}
-      >
+      <IconButton size="small" onClick={(e) => setAnchor(e.currentTarget)} sx={headerIconSx}>
         <Badge badgeContent={count} color="error">
           <NotificationsNoneOutlined />
         </Badge>
@@ -462,6 +455,7 @@ function MobileNav({
     textDecoration: 'none',
     cursor: 'pointer',
     '&:hover': { bgcolor: 'action.hover' },
+    '&:focus-visible': { outline: '2px solid', outlineColor: 'primary.main', outlineOffset: -2 },
   } as const;
   const linkRow = (item: MobileLink) => (
     <Box key={item.to} component={Link} to={item.to} onClick={close} sx={rowSx}>
@@ -472,18 +466,41 @@ function MobileNav({
   return (
     <Box sx={sx}>
       {loggedIn && <NotificationBell />}
-      <IconButton
-        onClick={() => setOpen(true)}
-        aria-label="Open menu"
-        sx={{ color: 'text.primary' }}
-      >
+      <IconButton onClick={() => setOpen(true)} aria-label="Open menu" sx={headerIconSx}>
         <MenuIcon />
       </IconButton>
       <Drawer
         anchor="right"
         open={open}
         onClose={close}
-        slotProps={{ paper: { sx: { width: 322, p: 1 } } }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: 322,
+              maxWidth: '100vw',
+              boxSizing: 'border-box',
+              p: 1.5,
+              boxShadow: '-12px 0 32px rgba(0,0,0,.24)',
+              '& .MuiIconButton-root, & .MuiButton-root': {
+                boxShadow: (t) =>
+                  t.palette.mode === 'dark'
+                    ? '4px 4px 9px #141D16, -4px -4px 9px #39463B99'
+                    : '4px 4px 9px #D6DCD5, -4px -4px 9px #FFFFFF',
+                '&:active': {
+                  boxShadow: (t) =>
+                    t.palette.mode === 'dark'
+                      ? 'inset 3px 3px 6px #141D16, inset -3px -3px 6px #39463B99'
+                      : 'inset 3px 3px 6px #D6DCD5, inset -3px -3px 6px #FFFFFF',
+                },
+                '&:focus-visible': {
+                  outline: '2px solid',
+                  outlineColor: 'primary.main',
+                  outlineOffset: 3,
+                },
+              },
+            },
+          },
+        }}
       >
         <Stack
           direction="row"
@@ -499,7 +516,11 @@ function MobileNav({
           >
             Menu
           </Typography>
-          <IconButton onClick={close} aria-label="Close menu">
+          <IconButton
+            onClick={close}
+            aria-label="Close menu"
+            sx={{ bgcolor: 'background.paper', color: 'text.primary' }}
+          >
             <CloseIcon />
           </IconButton>
         </Stack>
@@ -551,7 +572,12 @@ function MobileNav({
               to="/login"
               onClick={close}
               fullWidth
-              sx={{ fontWeight: 600, color: 'text.primary' }}
+              sx={{
+                fontWeight: 600,
+                color: 'text.primary',
+                bgcolor: 'background.paper',
+                minHeight: 44,
+              }}
             >
               Sign in
             </Button>
@@ -561,7 +587,15 @@ function MobileNav({
               onClick={close}
               variant="contained"
               fullWidth
-              sx={{ bgcolor: INK, color: '#F2EFEA', borderRadius: 999, fontWeight: 700, mt: 1 }}
+              sx={{
+                bgcolor: 'primary.main',
+                color: (t) => t.palette.getContrastText(t.palette.primary.main),
+                borderRadius: 999,
+                fontWeight: 700,
+                mt: 1.5,
+                minHeight: 44,
+                '&:hover': { bgcolor: 'primary.dark' },
+              }}
             >
               Get started
             </Button>
@@ -809,17 +843,27 @@ export function App() {
               </>
             ) : (
               <>
+                <Box
+                  sx={{
+                    height: 24,
+                    borderLeft: '1px solid rgba(242,239,234,.16)',
+                    mx: '12px !important',
+                  }}
+                />
                 <Button
                   component={Link}
                   to="/login"
                   sx={{
-                    color: 'rgba(242,239,234,0.78)',
-                    fontWeight: 700,
-                    fontSize: 12,
-                    letterSpacing: '0.04em',
-                    textTransform: 'uppercase',
+                    color: '#F2EFEA',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    textTransform: 'none',
+                    px: 1.75,
+                    py: 1.15,
                     bgcolor: 'transparent',
                     boxShadow: 'none',
+                    '&:hover': { bgcolor: '#26372B' },
+                    '&:focus-visible': { outline: '2px solid #A8B5A0', outlineOffset: 2 },
                   }}
                 >
                   Sign in
@@ -827,19 +871,25 @@ export function App() {
                 <Button
                   component={Link}
                   to="/register"
+                  endIcon={<ArrowForwardRoundedIcon />}
                   sx={{
-                    bgcolor: 'transparent',
-                    color: '#A8B5A0',
-                    border: 'none',
-                    boxShadow: NAV_NEU_SHADOW,
-                    borderRadius: 999,
+                    bgcolor: '#D7DEC9',
+                    color: '#17221D',
+                    border: '1px solid #E6EBDDAA',
+                    boxShadow: '5px 5px 12px #0C1711, -3px -3px 9px #3B4E3B88',
+                    borderRadius: '14px',
                     fontWeight: 700,
-                    px: 2.5,
-                    fontSize: 12,
-                    letterSpacing: '0.04em',
-                    textTransform: 'uppercase',
-                    '&:hover': { bgcolor: '#A8B5A0', color: '#17221D' },
-                    '&:active': { boxShadow: NAV_NEU_INSET },
+                    px: 2.25,
+                    py: 1.15,
+                    fontSize: 14,
+                    textTransform: 'none',
+                    ml: '8px !important',
+                    mr: '12px !important',
+                    '&:hover': { bgcolor: '#E6EBD9', boxShadow: NAV_NEU_SHADOW },
+                    '&:active': {
+                      boxShadow: 'inset 3px 3px 6px #A7B19D, inset -3px -3px 6px #F6FFED',
+                    },
+                    '&:focus-visible': { outline: '2px solid #F2EFEA', outlineOffset: 3 },
                   }}
                 >
                   Get started

@@ -45,7 +45,7 @@ export function AppShell({
             bgcolor: INK,
             backgroundImage:
               'radial-gradient(circle at 86% 10%, rgba(126,154,130,0.14), transparent 24%), linear-gradient(120deg, transparent 62%, rgba(64,97,74,0.11) 100%)',
-            boxShadow: '0 18px 42px -24px rgba(23,34,29,0.85)',
+            boxShadow: '0 12px 28px -16px rgba(10,20,13,.85), inset 0 1px 0 rgba(222,235,213,.08)',
             position: 'relative',
             isolation: 'isolate',
             '&::after': {
@@ -53,7 +53,7 @@ export function AppShell({
               position: 'absolute',
               inset: 0,
               pointerEvents: 'none',
-              opacity: 0.18,
+              opacity: 0.07,
               backgroundImage:
                 'repeating-linear-gradient(135deg, transparent 0 7px, rgba(168,181,160,0.08) 7px 8px)',
               clipPath: 'polygon(70% 0, 100% 0, 100% 100%, 56% 100%)',
@@ -66,7 +66,7 @@ export function AppShell({
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: 1.4,
+              gap: { xs: 0.75, sm: 1.4 },
               flexShrink: 0,
               pl: { xs: 1.75, md: 3 },
               pr: { xs: 1.75, md: 3.5 },
@@ -75,13 +75,13 @@ export function AppShell({
             }}
           >
             <BrandMark size={32} onDark />
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Box>
               <Typography
                 sx={{
                   fontFamily: '"Black Ops One", Georgia, serif',
                   color: CREAM,
                   fontWeight: 600,
-                  fontSize: 19,
+                  fontSize: { xs: 17, sm: 19 },
                   lineHeight: 1.05,
                   letterSpacing: '-0.02em',
                 }}
@@ -90,6 +90,7 @@ export function AppShell({
               </Typography>
               <Typography
                 sx={{
+                  display: { xs: 'none', sm: 'block' },
                   color: 'rgba(242,239,234,0.58)',
                   fontSize: 9.5,
                   fontWeight: 600,
@@ -116,7 +117,7 @@ export function AppShell({
           >
             <Stack
               direction="row"
-              spacing={{ xs: 0.25, md: 0.65 }}
+              spacing={{ xs: 1, md: 0.65 }}
               sx={{ alignItems: 'center', color: CREAM }}
             >
               {navRight}

@@ -1,5 +1,4 @@
-import { useState, type FormEvent } from 'react';
-import { Box, Button, Container, IconButton, InputBase, Stack, Typography } from '@mui/material';
+import { Box, Button, Container, IconButton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
@@ -29,9 +28,9 @@ const CONTACT_EMAIL =
   (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? 'hello@bak2me.com';
 const PAPER = '#F2EFEA';
 const MARIGOLD = '#8B6F4E';
-const FOOTER_NEU_SHADOW = '7px 7px 15px #031B18, -7px -7px 15px #0B403A';
-const FOOTER_NEU_INSET = 'inset 4px 4px 9px #031B18, inset -4px -4px 9px #0B403A';
-const MUTED = 'rgba(250,248,243,0.62)';
+const FOOTER_NEU_SHADOW = '7px 7px 15px #111B15, -7px -7px 15px #35483B';
+const FOOTER_NEU_INSET = 'inset 4px 4px 9px #111B15, inset -4px -4px 9px #35483B';
+const MUTED = '#BAC8BD';
 
 type FLink = { label: string; icon: React.ReactNode; to?: string; href?: string };
 
@@ -127,21 +126,11 @@ function FooterLink({ link }: { link: FLink }) {
 }
 
 export function Footer() {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const onSubscribe = (e: FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setSubscribed(true);
-    setEmail('');
-  };
-
   return (
     <Box
       component="footer"
       sx={{
-        bgcolor: '#072c28',
+        bgcolor: '#202E25',
         color: PAPER,
         borderTop: '1px solid rgba(139,111,78,0.3)',
         pt: { xs: 7, md: 10 },
@@ -164,11 +153,11 @@ export function Footer() {
               sx={{
                 mt: 2.5,
                 maxWidth: 420,
-                p: 2.5,
+                p: 0,
                 borderRadius: 3,
                 border: 'none',
-                bgcolor: 'rgba(250,248,243,0.03)',
-                boxShadow: FOOTER_NEU_SHADOW,
+                bgcolor: 'transparent',
+                boxShadow: 'none',
               }}
             >
               <Typography sx={{ color: 'rgba(250,248,243,0.72)', fontSize: 16, lineHeight: 1.7 }}>
@@ -178,78 +167,53 @@ export function Footer() {
             </Box>
           </Box>
 
-          <Box sx={{ justifySelf: { md: 'end' }, width: '100%', maxWidth: 460 }}>
+          <Box
+            sx={{
+              width: '100%',
+              p: { xs: 3, md: 4 },
+              borderRadius: '24px',
+              bgcolor: '#26372C',
+              boxShadow: FOOTER_NEU_SHADOW,
+              boxSizing: 'border-box',
+            }}
+          >
             <Typography
-              className="b2u-display"
-              sx={{ fontSize: 24, fontWeight: 600, color: PAPER }}
+              sx={{
+                fontSize: 11,
+                letterSpacing: '.14em',
+                color: '#B8C8B9',
+                mb: 1.5,
+                fontWeight: 700,
+              }}
             >
-              Stay in the loop
+              LET’S KEEP IN TOUCH
             </Typography>
-            <Typography sx={{ mt: 1, color: MUTED, fontSize: 14 }}>
-              Reunion stories and product news. No spam, unsubscribe anytime.
+            <Typography
+              component="h2"
+              sx={{ fontSize: 30, fontWeight: 700, letterSpacing: '-.03em', color: PAPER }}
+            >
+              Good conversations start here.
             </Typography>
-            {subscribed ? (
-              <Box
-                sx={{
-                  mt: 2,
-                  p: 2,
-                  borderRadius: 2.5,
-                  border: '1px solid rgba(139,111,78,0.4)',
-                  bgcolor: 'rgba(139,111,78,0.08)',
-                  color: PAPER,
-                  fontSize: 15,
-                }}
-              >
-                Thanks — you&apos;re on the list. 💚
-              </Box>
-            ) : (
-              <Box
-                component="form"
-                onSubmit={onSubscribe}
-                sx={{
-                  mt: 2,
-                  display: 'flex',
-                  gap: 1,
-                  p: 0.75,
-                  borderRadius: 3,
-                  border: 'none',
-                  bgcolor: 'rgba(250,248,243,0.03)',
-                  boxShadow: FOOTER_NEU_INSET,
-                  alignItems: 'center',
-                }}
-              >
-                <InputBase
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  required
-                  placeholder="your@email.com"
-                  sx={{
-                    flex: 1,
-                    px: 1.5,
-                    color: PAPER,
-                    fontSize: 15,
-                    '& input::placeholder': { color: 'rgba(250,248,243,0.4)' },
-                  }}
-                />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{
-                    bgcolor: MARIGOLD,
-                    color: '#F2EFEA',
-                    fontWeight: 700,
-                    borderRadius: 2,
-                    px: 2.5,
-                    boxShadow: FOOTER_NEU_SHADOW,
-                    '&:hover': { bgcolor: '#6F5940', boxShadow: FOOTER_NEU_SHADOW },
-                    '&:active': { boxShadow: FOOTER_NEU_INSET },
-                  }}
-                >
-                  Subscribe
-                </Button>
-              </Box>
-            )}
+            <Typography sx={{ mt: 1.5, color: MUTED, fontSize: 15, lineHeight: 1.7 }}>
+              Have a question, a reunion story, or an idea for your community? We’d love to hear it.
+            </Typography>
+            <Button
+              href={`mailto:${CONTACT_EMAIL}`}
+              startIcon={<MailOutlinedIcon />}
+              sx={{
+                mt: 3,
+                px: 2.5,
+                py: 1.5,
+                bgcolor: '#D5DEC8',
+                color: '#202E25',
+                borderRadius: '14px',
+                boxShadow: FOOTER_NEU_SHADOW,
+                '&:hover': { bgcolor: '#E4ECD9' },
+                overflowWrap: 'anywhere',
+              }}
+            >
+              {CONTACT_EMAIL}
+            </Button>
           </Box>
         </Box>
 
@@ -320,10 +284,10 @@ export function Footer() {
                   borderRadius: '50%',
                   width: 38,
                   height: 38,
-                  bgcolor: '#072c28',
+                  bgcolor: '#202E25',
                   boxShadow: FOOTER_NEU_SHADOW,
                   transition: 'all .18s',
-                  '&:hover': { color: PAPER, bgcolor: '#0A3732', transform: 'translateY(-2px)' },
+                  '&:hover': { color: PAPER, bgcolor: '#2B3F31', transform: 'translateY(-2px)' },
                   '&:active': { boxShadow: FOOTER_NEU_INSET },
                 }}
               >

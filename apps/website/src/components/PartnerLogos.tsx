@@ -1,5 +1,6 @@
-import { Box, Container, Divider, Typography } from '@mui/material';
-
+import { Box, Button, Container, Typography } from '@mui/material';
+import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
+import { neuShadow } from '@back2u/ui-web';
 const PARTNERS = [
   'University of Ghana',
   'Accra Mall',
@@ -10,105 +11,71 @@ const PARTNERS = [
   'British Council',
   'Ghana Police',
 ];
-
 export function PartnerLogos() {
   return (
-    <Box sx={{ py: { xs: 6, md: 8 }, bgcolor: 'background.paper' }}>
-      <Container>
-        <Typography
-          variant="h6"
-          color="text.secondary"
-          sx={{
-            fontWeight: 600,
-            textAlign: 'center',
-            mb: { xs: 4, md: 5 },
-            textTransform: 'uppercase',
-            letterSpacing: 1.5,
-            fontSize: 14,
-          }}
-        >
-          Trusted by leading institutions
-        </Typography>
-
-        {/* Mobile: horizontal scroll */}
-        <Box
-          sx={{
-            display: { xs: 'flex', md: 'none' },
-            overflowX: 'auto',
-            gap: 0,
-            pb: 1,
-            '&::-webkit-scrollbar': { display: 'none' },
-            scrollbarWidth: 'none',
-          }}
-        >
-          {PARTNERS.map((name, index) => (
-            <Box key={name} sx={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-              {index > 0 && (
-                <Divider
-                  orientation="vertical"
-                  flexItem
-                  sx={{ mx: 2, borderColor: 'divider', opacity: 0.5 }}
-                />
-              )}
-              <Typography
-                variant="body2"
-                sx={{
-                  color: 'text.disabled',
-                  fontWeight: 600,
-                  fontSize: 14,
-                  whiteSpace: 'nowrap',
-                  py: 1,
-                  px: 0.5,
-                }}
-              >
-                {name}
-              </Typography>
+    <Container sx={{ py: { xs: 6, md: 9 } }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: '.8fr 1.5fr' },
+          gap: 5,
+          alignItems: 'center',
+        }}
+      >
+        <Box>
+          <Typography
+            sx={{
+              fontSize: 11,
+              letterSpacing: '.14em',
+              color: 'text.secondary',
+              fontWeight: 700,
+              mb: 2,
+            }}
+          >
+            A MORE CONNECTED COMMUNITY
+          </Typography>
+          <Typography
+            component="h2"
+            sx={{
+              fontSize: { xs: 32, md: 40 },
+              fontWeight: 700,
+              letterSpacing: '-.04em',
+              lineHeight: 1.15,
+            }}
+          >
+            Better together.
+            <br />
+            Across Ghana.
+          </Typography>
+          <Typography color="text.secondary" sx={{ mt: 2, lineHeight: 1.7 }}>
+            Connecting the places we visit with the things we leave behind.
+          </Typography>
+          <Button href="/partner" sx={{ mt: 3 }}>
+            Explore partnerships →
+          </Button>
+        </Box>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2,minmax(0,1fr))', gap: 2 }}>
+          {PARTNERS.map((name) => (
+            <Box
+              key={name}
+              sx={{
+                p: { xs: 2, sm: 2.5 },
+                display: 'flex',
+                gap: 1.5,
+                alignItems: 'center',
+                borderRadius: '16px',
+                bgcolor: 'background.default',
+                boxShadow: (t) => neuShadow(t.palette.mode, 'raised'),
+              }}
+            >
+              <ApartmentOutlinedIcon
+                sx={{ color: 'text.secondary', fontSize: 20, display: { xs: 'none', sm: 'block' } }}
+              />
+              <Typography sx={{ fontSize: 14, fontWeight: 600 }}>{name}</Typography>
             </Box>
           ))}
         </Box>
-
-        {/* Desktop: grid */}
-        <Box
-          sx={{
-            display: { xs: 'none', md: 'grid' },
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 0,
-          }}
-        >
-          {PARTNERS.map((name, index) => {
-            const isFirstInRow = index % 4 === 0;
-            const isFirstRow = index < 4;
-            return (
-              <Box
-                key={name}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  py: 3,
-                  px: 2,
-                  borderRight: (index + 1) % 4 !== 0 ? '1px solid' : 'none',
-                  borderBottom: !isFirstRow ? 'none' : '1px solid',
-                  borderColor: 'divider',
-                  opacity: 0.6,
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  sx={{
-                    color: 'text.secondary',
-                    fontWeight: 600,
-                    fontSize: 15,
-                    textAlign: 'center',
-                  }}
-                >
-                  {name}
-                </Typography>
-              </Box>
-            );
-          })}
-        </Box>
-      </Container>
-    </Box>
+      </Box>
+    </Container>
   );
 }

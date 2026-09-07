@@ -3,11 +3,11 @@ import {
   Box,
   Button,
   Chip,
-  IconButton,
   Paper,
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
@@ -21,7 +21,7 @@ import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useState, type ReactNode } from 'react';
-import { EmptyState, DetailSkeleton } from '@back2u/ui-web';
+import { EmptyState, DetailSkeleton, neuShadow } from '@back2u/ui-web';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 
 import { api } from '../lib/api.js';
@@ -118,6 +118,14 @@ function ReviewPrompt({ matchId, itemId }: { matchId: string; itemId: string }) 
   );
 }
 
+const surfaceSx = (mode: 'light' | 'dark') => ({
+  bgcolor: mode === 'dark' ? '#263026' : '#F2EFEA',
+  border: '1px solid',
+  borderColor: mode === 'dark' ? 'rgba(234,243,237,.08)' : 'rgba(255,255,255,.7)',
+  boxShadow: neuShadow(mode, 'raised'),
+  borderRadius: '24px',
+});
+
 function Fact({
   icon,
   label,
@@ -134,11 +142,9 @@ function Fact({
     <Box
       sx={{
         gridColumn: span ? '1 / -1' : undefined,
-        p: 1.5,
-        borderRadius: 2,
-        border: 1,
-        borderColor: 'divider',
-        bgcolor: 'action.hover',
+        p: 2,
+        borderRadius: '16px',
+        boxShadow: (theme) => neuShadow(theme.palette.mode, 'inset'),
         minWidth: 0,
       }}
     >
@@ -150,7 +156,7 @@ function Fact({
         <Box sx={{ display: 'inline-flex', '& svg': { fontSize: 16 } }}>{icon}</Box>
         <Typography
           sx={{
-            fontSize: 10.5,
+            fontSize: 11,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'text.secondary',
@@ -160,12 +166,16 @@ function Fact({
           {label}
         </Typography>
       </Stack>
-      <Typography sx={{ fontSize: 14, fontWeight: 700, lineHeight: 1.3 }}>{value}</Typography>
+      <Typography sx={{ fontSize: 15, fontWeight: 600, lineHeight: 1.5, overflowWrap: 'anywhere' }}>
+        {value}
+      </Typography>
     </Box>
   );
 }
 
 export function ItemDetailPage() {
+  const theme = useTheme();
+  const mode = theme.palette.mode;
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const user = useAuth((s) => s.user);
@@ -258,7 +268,7 @@ export function ItemDetailPage() {
   const expiringSoon = isExpiringWithin7Days(item);
 
   return (
-    <Stack spacing={2.5}>
+    <Stack spacing={{ xs: 3, md: 4 }} sx={{ pb: 4 }}>
       <Button
         component={Link}
         to="/"
@@ -271,87 +281,124 @@ export function ItemDetailPage() {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1.5fr) minmax(0, 1fr)' },
-          gap: { xs: 2.5, md: 3 },
+          gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1.15fr) minmax(0, 1fr)' },
+          gap: { xs: 3, md: 4 },
           alignItems: 'start',
         }}
       >
         {/* Gallery + description */}
         <Stack spacing={2.5} sx={{ minWidth: 0 }}>
-          {hasImages ? (
-            <Box>
+          <Paper elevation={0} sx={{ ...surfaceSx(mode), p: { xs: 1.25, sm: 1.5 } }}>
+            {hasImages ? (
               <Box
-                component="img"
-                src={item.images[0]!.url}
-                alt={item.title}
+                component="button"
+                type="button"
                 onClick={() => openLightbox(0)}
+                aria-label={`View photos of ${item.title}`}
                 sx={{
-                  width: '100%',
-                  aspectRatio: '4/3',
-                  objectFit: 'cover',
-                  borderRadius: 3,
-                  cursor: 'zoom-in',
-                  border: 1,
-                  borderColor: 'divider',
                   display: 'block',
+                  width: '100%',
+                  p: 0.75,
+                  border: 0,
+                  borderRadius: '18px',
+                  bgcolor: 'transparent',
+                  boxShadow: neuShadow(mode, 'inset'),
+                  cursor: 'zoom-in',
+                  '&:focus-visible': {
+                    outline: '3px solid',
+                    outlineColor: 'primary.main',
+                    outlineOffset: 4,
+                  },
                 }}
-              />
-              {item.images.length > 1 && (
-                <Stack
-                  direction="row"
-                  spacing={1.25}
-                  sx={{ mt: 1.25, flexWrap: 'wrap' }}
-                  useFlexGap
-                >
-                  {item.images.map((img, i) => (
+              >
+                <Box
+                  component="img"
+                  src={item.images[0]!.url}
+                  alt={item.title}
+                  sx={{
+                    display: 'block',
+                    width: '100%',
+                    aspectRatio: '1/1',
+                    maxHeight: 560,
+                    objectFit: 'contain',
+                    bgcolor: mode === 'dark' ? '#1C231B' : '#E7E3DC',
+                    borderRadius: '14px',
+                  }}
+                />
+              </Box>
+            ) : (
+              <Stack
+                spacing={1}
+                sx={{
+                  aspectRatio: '1/1',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '18px',
+                  boxShadow: neuShadow(mode, 'inset'),
+                  color: 'text.secondary',
+                }}
+              >
+                <ImageOutlinedIcon sx={{ fontSize: 48 }} />
+                <Typography>No photos on this listing</Typography>
+              </Stack>
+            )}
+            {item.images.length > 1 && (
+              <Stack direction="row" useFlexGap spacing={1.5} sx={{ flexWrap: 'wrap', p: 1.5 }}>
+                {item.images.map((img, i) => (
+                  <Box
+                    key={img.publicId}
+                    component="button"
+                    type="button"
+                    onClick={() => openLightbox(i)}
+                    aria-label={`View photo ${i + 1}`}
+                    sx={{
+                      width: 64,
+                      height: 64,
+                      p: 0.5,
+                      border: 0,
+                      bgcolor: 'transparent',
+                      borderRadius: '12px',
+                      boxShadow: neuShadow(mode, 'raised'),
+                      cursor: 'pointer',
+                      '&:focus-visible': { outline: '3px solid', outlineColor: 'primary.main' },
+                    }}
+                  >
                     <Box
-                      key={img.publicId}
                       component="img"
                       src={img.url}
-                      alt={`${item.title} ${i + 1}`}
-                      onClick={() => openLightbox(i)}
+                      alt=""
                       sx={{
-                        width: 76,
-                        height: 76,
+                        width: '100%',
+                        height: '100%',
                         objectFit: 'cover',
-                        borderRadius: 2,
-                        cursor: 'pointer',
-                        border: 2,
-                        borderColor: i === 0 ? 'primary.main' : 'divider',
-                        transition: 'border-color .15s, transform .15s',
-                        '&:hover': { transform: 'translateY(-2px)' },
+                        borderRadius: '8px',
                       }}
                     />
-                  ))}
-                </Stack>
-              )}
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                width: '100%',
-                aspectRatio: '4/3',
-                borderRadius: 3,
-                border: 1,
-                borderColor: 'divider',
-                bgcolor: 'action.hover',
-                display: 'grid',
-                placeItems: 'center',
-                color: 'text.disabled',
-              }}
-            >
-              <Stack sx={{ alignItems: 'center' }} spacing={1}>
-                <ImageOutlinedIcon sx={{ fontSize: 44 }} />
-                <Typography variant="body2">No photos on this listing</Typography>
+                  </Box>
+                ))}
               </Stack>
-            </Box>
-          )}
+            )}
+            {hasImages && (
+              <Stack
+                direction="row"
+                sx={{
+                  px: 1.5,
+                  pt: 2,
+                  pb: 1,
+                  justifyContent: 'space-between',
+                  color: 'text.secondary',
+                }}
+              >
+                <Typography variant="body2">
+                  {item.images.length} {item.images.length === 1 ? 'photo' : 'photos'}
+                </Typography>
+                <Typography variant="body2">Tap photo to enlarge</Typography>
+              </Stack>
+            )}
+          </Paper>
 
-          <Paper
-            variant="outlined"
-            sx={{ p: { xs: 2.5, md: 3 }, borderRadius: 3, borderColor: 'divider' }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+          <Paper variant="outlined" sx={{ ...surfaceSx(mode), p: { xs: 2.5, md: 3.5 } }}>
+            <Typography component="h2" sx={{ fontSize: 21, fontWeight: 700, mb: 1.5 }}>
               About this item
             </Typography>
             <Typography
@@ -371,17 +418,16 @@ export function ItemDetailPage() {
         <Paper
           variant="outlined"
           sx={{
-            p: { xs: 2.5, md: 3 },
-            borderRadius: 3,
-            borderColor: 'divider',
+            ...surfaceSx(mode),
+            p: { xs: 2.5, md: 3.5 },
             position: { md: 'sticky' },
-            top: { md: 16 },
+            top: { md: 100 },
           }}
         >
           <Stack direction="row" spacing={0.75} sx={{ flexWrap: 'wrap', mb: 1.5 }} useFlexGap>
             <Chip
               size="small"
-              label={item.kind}
+              label={item.kind === 'lost' ? 'Lost item' : 'Found item'}
               color={item.kind === 'lost' ? 'error' : 'success'}
               sx={{ textTransform: 'capitalize', fontWeight: 700 }}
             />
@@ -396,7 +442,17 @@ export function ItemDetailPage() {
             )}
           </Stack>
 
-          <Typography variant="h5" sx={{ fontWeight: 700, lineHeight: 1.2, mb: 2 }}>
+          <Typography
+            component="h1"
+            sx={{
+              fontSize: { xs: 29, sm: 36 },
+              fontWeight: 700,
+              letterSpacing: '-.035em',
+              lineHeight: 1.15,
+              mb: 3,
+              overflowWrap: 'anywhere',
+            }}
+          >
             {item.title}
           </Typography>
 
@@ -404,7 +460,7 @@ export function ItemDetailPage() {
             sx={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-              gap: 1,
+              gap: 1.5,
             }}
           >
             <Fact span icon={<LocationOnOutlinedIcon />} label="Location" value={item.place.name} />
@@ -470,8 +526,32 @@ export function ItemDetailPage() {
             </Alert>
           )}
 
+          {!isOwner && item.status !== 'returned' && (
+            <Box sx={{ mt: 3, pt: 2.5, borderTop: 1, borderColor: 'divider' }}>
+              <Typography component="h2" sx={{ fontSize: 19, fontWeight: 700, mb: 0.75 }}>
+                {item.kind === 'found' ? 'Does this look familiar?' : 'Have you seen this item?'}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+                {item.kind === 'found'
+                  ? 'Check the photos and details. Be ready to provide proof of ownership before arranging a return.'
+                  : 'Compare the details with what you found. Keep identifying details private to help confirm the owner.'}
+              </Typography>
+            </Box>
+          )}
           {/* Primary actions */}
-          <Stack spacing={1.25} sx={{ mt: 2.5 }}>
+          <Stack spacing={1.75} sx={{ mt: 2.5 }}>
+            {!user && item.status !== 'returned' && (
+              <Button
+                component={Link}
+                to="/login"
+                variant="contained"
+                fullWidth
+                startIcon={<VerifiedUserOutlinedIcon />}
+                sx={{ py: 1.5, boxShadow: neuShadow(mode, 'raised') }}
+              >
+                Sign in to help reunite this item
+              </Button>
+            )}
             {!isOwner && user && item.status !== 'returned' && (
               <Button
                 component={Link}
@@ -517,10 +597,13 @@ export function ItemDetailPage() {
                   onClick={() =>
                     isBookmarked ? unbookmarkMutation.mutate() : bookmarkMutation.mutate()
                   }
+                  aria-pressed={!!isBookmarked}
+                  disabled={bookmarkMutation.isPending || unbookmarkMutation.isPending}
                   startIcon={isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
                   sx={{
                     flex: 1,
                     borderRadius: 999,
+                    boxShadow: neuShadow(mode, isBookmarked ? 'inset' : 'raised'),
                     fontWeight: 600,
                     borderColor: 'divider',
                     color: isBookmarked ? 'warning.main' : 'text.primary',

@@ -11,7 +11,11 @@ import {
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { BrandMark } from '@back2u/ui-web';
+import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PinOutlinedIcon from '@mui/icons-material/PinOutlined';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { BrandMark, neuShadow } from '@back2u/ui-web';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -22,7 +26,6 @@ const DISPLAY = '"Black Ops One", Georgia, serif';
 const INK = '#2E3D2F';
 const PAPER = '#F2EFEA';
 const TEAL = '#40614A';
-const MARIGOLD = '#8B6F4E';
 
 function BrandPanel() {
   return (
@@ -188,16 +191,62 @@ export function LoginPage() {
           maxWidth: 940,
           borderRadius: 5,
           overflow: 'hidden',
-          border: '1px solid',
-          borderColor: 'divider',
-          boxShadow: '0 40px 80px -50px rgba(46,61,47,.5)',
+          border: 'none',
+          bgcolor: (t) => (t.palette.mode === 'dark' ? '#263026' : PAPER),
+          boxShadow: (t) => neuShadow(t.palette.mode, 'raised'),
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
         }}
       >
         <BrandPanel />
 
-        <Box sx={{ p: { xs: 3.5, md: 6 } }}>
+        <Box
+          sx={{
+            p: { xs: 3, md: 5 },
+            '& .MuiOutlinedInput-root': {
+              bgcolor: (t) => (t.palette.mode === 'dark' ? '#263026' : PAPER),
+              borderRadius: '14px',
+              boxShadow: (t) => neuShadow(t.palette.mode, 'inset'),
+              '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
+              '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'divider' },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'primary.main',
+                borderWidth: 2,
+              },
+              '&.Mui-error .MuiOutlinedInput-notchedOutline': { borderColor: 'error.main' },
+            },
+            '& .MuiInputBase-input': {
+              color: 'text.primary',
+              '&::placeholder': {
+                color: (t) => (t.palette.mode === 'dark' ? '#B5C3B7' : '#596653'),
+                opacity: 1,
+              },
+            },
+            '& .MuiInputLabel-root': {
+              color: (t) => (t.palette.mode === 'dark' ? '#B5C3B7' : '#596653'),
+              '&.Mui-focused': { color: 'primary.main' },
+              '&.Mui-error': { color: 'error.main' },
+            },
+            '& .MuiInputAdornment-root': {
+              color: (t) => (t.palette.mode === 'dark' ? '#B5C3B7' : '#596653'),
+            },
+            '& .MuiInputAdornment-root .MuiSvgIcon-root': { fontSize: 20 },
+            '& .MuiIconButton-root': {
+              width: 34,
+              height: 34,
+              bgcolor: (t) => (t.palette.mode === 'dark' ? '#263026' : PAPER),
+              boxShadow: (t) =>
+                t.palette.mode === 'dark'
+                  ? '3px 3px 6px #101910, -3px -3px 6px #43513D99'
+                  : '3px 3px 6px #C6BFB499, -3px -3px 6px #FFFFFFCC',
+              '&:focus-visible': {
+                outline: '2px solid',
+                outlineColor: 'primary.main',
+                outlineOffset: 3,
+              },
+            },
+          }}
+        >
           <Typography
             component="span"
             sx={{
@@ -205,19 +254,20 @@ export function LoginPage() {
               fontWeight: 700,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
-              color: TEAL,
+              color: 'primary.main',
             }}
           >
             Sign in
           </Typography>
           <Typography
+            component="h1"
             sx={{
               fontFamily: DISPLAY,
               fontWeight: 600,
               fontSize: { xs: 34, md: 40 },
               letterSpacing: '-0.02em',
               mt: 1,
-              color: INK,
+              color: 'text.primary',
             }}
           >
             Welcome back
@@ -241,11 +291,32 @@ export function LoginPage() {
                   </Alert>
                   <TextField
                     label="Authentication code"
+                    placeholder="6-digit code"
                     value={code}
                     onChange={(e) => setCode(e.target.value.replace(/[^\d]/g, '').slice(0, 6))}
                     autoFocus
                     fullWidth
                     slotProps={{
+                      inputLabel: { shrink: true },
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <PinOutlinedIcon aria-hidden="true" />
+                          </InputAdornment>
+                        ),
+                        endAdornment: code ? (
+                          <InputAdornment position="end">
+                            <IconButton
+                              type="button"
+                              aria-label="Clear authentication code"
+                              onClick={() => setCode('')}
+                              edge="end"
+                            >
+                              <CloseRoundedIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ) : undefined,
+                      },
                       htmlInput: {
                         inputMode: 'numeric',
                         autoComplete: 'one-time-code',
@@ -268,16 +339,40 @@ export function LoginPage() {
               )}
               <TextField
                 label="Email"
+                placeholder="you@example.com"
                 type="email"
                 required
                 fullWidth
                 value={email}
                 autoComplete="email"
+                slotProps={{
+                  inputLabel: { shrink: true },
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MailOutlineRoundedIcon aria-hidden="true" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: email ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          type="button"
+                          aria-label="Clear email"
+                          onClick={() => setEmail('')}
+                          edge="end"
+                        >
+                          <CloseRoundedIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ) : undefined,
+                  },
+                }}
                 onChange={(e) => setEmail(e.target.value)}
                 sx={{ display: mfaToken ? 'none' : undefined }}
               />
               <TextField
                 label="Password"
+                placeholder="Enter your password"
                 type={showPw ? 'text' : 'password'}
                 required
                 fullWidth
@@ -286,10 +381,18 @@ export function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 sx={{ display: mfaToken ? 'none' : undefined }}
                 slotProps={{
+                  inputLabel: { shrink: true },
                   input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockOutlinedIcon aria-hidden="true" />
+                      </InputAdornment>
+                    ),
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
+                          type="button"
+                          aria-pressed={showPw}
                           onClick={() => setShowPw((v) => !v)}
                           edge="end"
                           aria-label={showPw ? 'Hide password' : 'Show password'}
@@ -307,10 +410,16 @@ export function LoginPage() {
                   to="/forgot-password"
                   sx={{
                     fontSize: 14,
-                    color: TEAL,
+                    color: 'primary.main',
                     textDecoration: 'none',
                     fontWeight: 600,
                     '&:hover': { textDecoration: 'underline' },
+                    '&:focus-visible': {
+                      outline: '2px solid',
+                      outlineColor: 'primary.main',
+                      outlineOffset: 4,
+                      borderRadius: 1,
+                    },
                   }}
                 >
                   Forgot password?
@@ -321,12 +430,21 @@ export function LoginPage() {
                 size="large"
                 disabled={loading || (mfaToken !== null && code.length !== 6)}
                 sx={{
-                  bgcolor: MARIGOLD,
-                  color: '#F2EFEA',
+                  bgcolor: '#756044',
+                  color: '#FFFFFF',
                   borderRadius: 999,
                   fontWeight: 700,
                   py: 1.4,
-                  boxShadow: '0 14px 28px -16px rgba(139,111,78,.9)',
+                  boxShadow: (t) => neuShadow(t.palette.mode, 'raised'),
+                  '&:active': {
+                    boxShadow: 'inset 4px 4px 8px #5B4730, inset -4px -4px 8px #B5946D',
+                  },
+                  '&:focus-visible': {
+                    outline: '2px solid',
+                    outlineColor: 'primary.main',
+                    outlineOffset: 4,
+                  },
+                  '&.Mui-disabled': { boxShadow: 'none' },
                   '&:hover': { bgcolor: '#6F5940' },
                 }}
               >
@@ -341,10 +459,16 @@ export function LoginPage() {
               component={Link}
               to="/register"
               sx={{
-                color: INK,
+                color: 'text.primary',
                 fontWeight: 700,
                 textDecoration: 'none',
                 '&:hover': { textDecoration: 'underline' },
+                '&:focus-visible': {
+                  outline: '2px solid',
+                  outlineColor: 'primary.main',
+                  outlineOffset: 4,
+                  borderRadius: 1,
+                },
               }}
             >
               Create one

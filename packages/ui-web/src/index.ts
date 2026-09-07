@@ -34,3 +34,5 @@ export {
   DetailSkeleton,
   ChatSkeleton,
 } from './Skeletons.js';
+
+export { ConsoleLoginLayout } from './ConsoleLoginLayout.js';

@@ -1,6 +1,9 @@
 import { useState, useCallback } from 'react';
 import { Box, Button, Container, Paper, Snackbar, Stack, Typography } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import PhoneIphoneRoundedIcon from '@mui/icons-material/PhoneIphoneRounded';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import { alpha } from '@mui/material/styles';
 import { neuShadow } from '@back2u/ui-web';
 
 export function PushNotifyDemo() {
@@ -79,51 +82,167 @@ export function PushNotifyDemo() {
             </Box>
           </Box>
 
-          {/* Mock notification card */}
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          {/* Notification preview */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', minWidth: 0 }}>
             <Paper
+              component="article"
+              aria-label="Example match notification"
               elevation={0}
               sx={{
                 width: '100%',
-                maxWidth: 360,
-                borderRadius: 2.5,
-                p: 2,
-                bgcolor: 'background.paper',
+                maxWidth: 410,
+                borderRadius: '22px',
+                p: { xs: 2.5, sm: 3 },
+                bgcolor: 'background.default',
                 border: 'none',
-                boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
+                boxShadow: (t) => neuShadow(t.palette.mode, 'raised'),
               }}
             >
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
+              <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', mb: 3 }}>
                 <Box
                   sx={{
                     width: 36,
                     height: 36,
-                    borderRadius: 1.5,
-                    bgcolor: 'primary.main',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
                     flexShrink: 0,
+                    borderRadius: '11px',
+                    display: 'grid',
+                    placeItems: 'center',
+                    bgcolor: 'background.default',
+                    color: 'primary.main',
+                    boxShadow: (t) =>
+                      t.palette.mode === 'dark'
+                        ? '4px 4px 8px #101910, -4px -4px 8px #43513D88'
+                        : '4px 4px 8px #C6BFB499, -4px -4px 8px #FFFFFFCC',
                   }}
                 >
-                  <NotificationsIcon sx={{ color: 'primary.contrastText', fontSize: 18 }} />
+                  <NotificationsIcon aria-hidden="true" sx={{ fontSize: 19 }} />
                 </Box>
-                <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                    bak2me Alert
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
-                    iPhone 14 found near Accra Mall — possible match for your lost item
+                <Typography
+                  sx={{
+                    fontFamily: '"Black Ops One", serif',
+                    fontSize: 16,
+                    color: 'text.primary',
+                    flex: 1,
+                  }}
+                >
+                  bak2me
+                </Typography>
+                <Typography sx={{ fontSize: 11, color: 'text.secondary' }}>Just now</Typography>
+              </Stack>
+              <Typography
+                sx={{
+                  color: 'primary.main',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: '.12em',
+                  textTransform: 'uppercase',
+                  mb: 1,
+                }}
+              >
+                Nearby item alert
+              </Typography>
+              <Typography
+                component="h3"
+                sx={{
+                  fontFamily: 'inherit',
+                  fontSize: { xs: 26, sm: 30 },
+                  fontWeight: 600,
+                  letterSpacing: '-.04em',
+                  lineHeight: 1.2,
+                }}
+              >
+                A possible match.
+              </Typography>
+              <Typography
+                sx={{ mt: 1, mb: 2.5, fontSize: 14, lineHeight: 1.65, color: 'text.secondary' }}
+              >
+                Someone found an item near where you lost yours.
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: 1.75,
+                  alignItems: 'center',
+                  p: 2,
+                  borderRadius: '14px',
+                  boxShadow: (t) => neuShadow(t.palette.mode, 'inset'),
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 44,
+                    height: 56,
+                    flexShrink: 0,
+                    borderRadius: '10px',
+                    display: 'grid',
+                    placeItems: 'center',
+                    bgcolor: (t) => alpha(t.palette.primary.main, 0.1),
+                    color: 'primary.main',
+                  }}
+                >
+                  <PhoneIphoneRoundedIcon aria-hidden="true" sx={{ fontSize: 30 }} />
+                </Box>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography
+                    sx={{
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: '.1em',
+                      color: 'primary.main',
+                      mb: 0.5,
+                    }}
+                  >
+                    FOUND
                   </Typography>
                   <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ opacity: 0.7, mt: 0.5, display: 'block' }}
+                    sx={{ fontSize: 18, fontWeight: 600, lineHeight: 1.3, color: 'text.primary' }}
                   >
-                    now
+                    iPhone 14
                   </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 0.5,
+                      mt: 0.75,
+                      color: 'text.secondary',
+                    }}
+                  >
+                    <PlaceOutlinedIcon aria-hidden="true" sx={{ fontSize: 15 }} />
+                    <Typography sx={{ fontSize: 12 }}>Near Accra Mall</Typography>
+                  </Box>
                 </Box>
-              </Stack>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: 1,
+                  mt: 2.5,
+                  pt: 2,
+                  borderTop: '1px solid',
+                  borderColor: (t) => alpha(t.palette.text.primary, 0.09),
+                }}
+              >
+                <Typography sx={{ fontSize: 11, color: 'text.secondary' }}>
+                  Zone alerts · Close to what matters
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: 10,
+                    fontWeight: 500,
+                    color: 'text.secondary',
+                    bgcolor: (t) => alpha(t.palette.text.primary, 0.05),
+                    px: 1,
+                    py: 0.4,
+                    borderRadius: '6px',
+                  }}
+                >
+                  Demo preview
+                </Typography>
+              </Box>
             </Paper>
           </Box>
         </Box>

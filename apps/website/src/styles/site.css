@@ -105,11 +105,10 @@ body::before {
 /* ---- Scroll reveal (IntersectionObserver toggles .is-in) ---- */
 .b2u-reveal {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(32px) scale(0.985);
   transition:
     opacity 0.7s var(--b2u-ease),
     transform 0.7s var(--b2u-ease);
-  will-change: opacity, transform;
 }
 .b2u-reveal.is-in {
   opacity: 1;

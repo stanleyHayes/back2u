@@ -465,6 +465,9 @@ importers:
 
   apps/website:
     dependencies:
+      '@back2u/shared-types':
+        specifier: workspace:*
+        version: link:../../packages/shared-types
       '@back2u/ui-web':
         specifier: workspace:*
         version: link:../../packages/ui-web

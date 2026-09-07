@@ -1,6 +1,9 @@
 import { Box, Button, Chip, IconButton, Stack, Typography } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import { alpha } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import type { ItemDTO } from '@back2u/shared-types';
@@ -40,33 +43,48 @@ export function ItemCard({
 
   return (
     <Box
+      component="article"
+      aria-label={item.title}
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        p: 1.25,
-        // custom brand "tag" shape — one sharp corner like the pin logo
-        borderRadius: '24px 24px 24px 6px',
-        bgcolor: 'background.paper',
+        p: 1.5,
+        minWidth: 0,
+        borderRadius: '22px',
+        bgcolor: (t) => (t.palette.mode === 'dark' ? '#263026' : '#F2EFEA'),
         border: 'none',
         boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
-        transition: 'transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease',
-        '&:hover': {
-          transform: 'translateY(-4px)',
-          boxShadow: (t) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
+        '& a:focus-visible, & button:focus-visible': {
+          outline: '2px solid',
+          outlineColor: 'primary.main',
+          outlineOffset: 3,
         },
       }}
     >
       {/* Image: padded inside the card with its own rounded frame */}
       <Box
-        component={Link}
-        to={`/items/${item.id}`}
-        sx={{ display: 'block', textDecoration: 'none', position: 'relative' }}
+        component="button"
+        type="button"
+        aria-label={`Preview photo of ${item.title}`}
+        onClick={() => setLightboxOpen(true)}
+        disabled={!item.images.length}
+        sx={{
+          width: '100%',
+          border: 'none',
+          bgcolor: 'transparent',
+          cursor: item.images.length ? 'pointer' : 'default',
+          textDecoration: 'none',
+          position: 'relative',
+          p: 0.75,
+          borderRadius: '16px',
+          boxShadow: (t) => neuShadow(t.palette.mode, 'inset'),
+        }}
       >
         <Box
           sx={{
             position: 'relative',
-            height: 180,
-            borderRadius: '18px 18px 18px 4px',
+            aspectRatio: '16 / 10',
+            borderRadius: '12px',
             overflow: 'hidden',
             bgcolor: isFound ? 'rgba(64,97,74,0.08)' : 'rgba(194,65,12,0.08)',
           }}
@@ -76,11 +94,7 @@ export function ItemCard({
               component="img"
               src={item.images[0].url}
               alt={item.title}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setLightboxOpen(true);
-              }}
+              loading="lazy"
               sx={{
                 width: '100%',
                 height: '100%',
@@ -146,9 +160,17 @@ export function ItemCard({
       </Box>
 
       {/* Content */}
-      <Box sx={{ px: 0.75, pt: 1.5, pb: 0.5, flex: 1 }}>
+      <Box sx={{ px: 1, pt: 2.5, pb: 2, flex: 1 }}>
         <Stack direction="row" spacing={0.75} sx={{ mb: 1, flexWrap: 'wrap' }} useFlexGap>
-          <Chip size="small" label={item.category} variant="outlined" />
+          <Chip
+            size="small"
+            label={item.category}
+            sx={{
+              borderRadius: '8px',
+              bgcolor: 'transparent',
+              boxShadow: (t) => neuShadow(t.palette.mode, 'raised'),
+            }}
+          />
           {item.classification === 'stolen' && <Chip size="small" label="stolen" color="warning" />}
           {item.status === 'returned' && <Chip size="small" label="Returned" color="success" />}
           {exp && <Chip size="small" label={exp.label} color={exp.color} variant="outlined" />}
@@ -156,11 +178,14 @@ export function ItemCard({
         <Typography
           component={Link}
           to={`/items/${item.id}`}
-          noWrap
           sx={{
             display: 'block',
             fontWeight: 700,
-            fontSize: 18,
+            fontSize: 19,
+            lineHeight: 1.4,
+            overflowWrap: 'anywhere',
+            mt: 1.75,
+            mb: 1.5,
             color: 'text.primary',
             textDecoration: 'none',
             '&:hover': { color: 'primary.main' },
@@ -168,40 +193,52 @@ export function ItemCard({
         >
           {item.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary" noWrap>
-          {item.place?.name}
-        </Typography>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <PlaceOutlinedIcon sx={{ fontSize: 17, color: 'text.secondary', flexShrink: 0 }} />
+          <Typography sx={{ fontSize: 13, color: 'text.secondary', overflowWrap: 'anywhere' }}>
+            {item.place?.name || 'Location not provided'}
+          </Typography>
+        </Stack>
       </Box>
 
       {/* Actions */}
-      <Stack direction="row" spacing={1} sx={{ alignItems: 'center', px: 0.5, pt: 1 }}>
+      <Stack
+        direction="row"
+        spacing={1}
+        useFlexGap
+        sx={{
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          mx: 1,
+          pt: 2,
+          pb: 1,
+          borderTop: '1px solid',
+          borderColor: (t) => alpha(t.palette.text.primary, 0.1),
+        }}
+      >
         <Button
           component={Link}
           to={`/items/${item.id}`}
           size="small"
           variant="contained"
+          endIcon={<ArrowForwardRoundedIcon />}
           sx={{
-            bgcolor: INK,
-            color: '#F2EFEA',
-            borderRadius: 999,
+            bgcolor: 'primary.main',
+            color: (t) => t.palette.getContrastText(t.palette.primary.main),
+            borderRadius: '10px',
+            minHeight: 40,
             fontWeight: 700,
-            '&:hover': { bgcolor: '#243024' },
+            '&:hover': { bgcolor: 'primary.dark' },
           }}
         >
           {isFound ? 'Could be mine' : 'I found this'}
-        </Button>
-        <Button
-          component={Link}
-          to={`/items/${item.id}`}
-          size="small"
-          sx={{ color: 'text.secondary', fontWeight: 600 }}
-        >
-          Details
         </Button>
         <Box sx={{ flex: 1 }} />
         {onToggleBookmark && (
           <IconButton
             size="small"
+            aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark item'}
+            aria-pressed={Boolean(isBookmarked)}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();

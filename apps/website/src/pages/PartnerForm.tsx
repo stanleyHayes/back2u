@@ -30,22 +30,22 @@ import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { BrandLogo } from '@back2u/ui-web';
+import { Navbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
+import { BrandLogo, neuShadow } from '@back2u/ui-web';
 
 const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:4000';
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
 
-const INK = '#2E3D2F';
-const TEAL = '#40614A';
 const MARIGOLD = '#8B6F4E';
 
-const STEPS = ['Institution', 'Contact', 'Volume & message'];
+const STEPS = ['Your venue', 'Contact', 'Your needs'];
 
 const BENEFITS: { icon: ReactNode; title: string; body: string }[] = [
   {
     icon: <AutoAwesomeOutlinedIcon />,
-    title: 'AI reunites items automatically',
-    body: 'Visual, text, geo and time matching flags the owner the moment something is found.',
+    title: 'Turn reports into possible matches',
+    body: 'Bring lost and found reports together, then verify ownership before a handover.',
   },
   {
     icon: <QrCode2Icon />,
@@ -65,7 +65,7 @@ const BENEFITS: { icon: ReactNode; title: string; body: string }[] = [
 ];
 
 const TRUST: { icon: ReactNode; label: string }[] = [
-  { icon: <BoltRoundedIcon />, label: '48-hour onboarding' },
+  { icon: <BoltRoundedIcon />, label: 'Guided onboarding' },
   { icon: <PaymentsOutlinedIcon />, label: 'Free to start' },
 ];
 
@@ -337,7 +337,8 @@ export function PartnerForm() {
                 Thank you!
               </Typography>
               <Typography color="text.secondary" sx={{ fontSize: 16 }}>
-                Our team will reach out within 48 hours.
+                Your enquiry is with our team. We’ll contact you to discuss your venue and next
+                steps.
               </Typography>
               <Button component={Link} to="/" variant="contained" color="primary" sx={{ mt: 4 }}>
                 Back to home
@@ -368,34 +369,15 @@ export function PartnerForm() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Header */}
-      <Box
-        component="header"
-        sx={{
-          borderBottom: 1,
-          borderColor: 'divider',
-          position: 'sticky',
-          top: 0,
-          bgcolor: 'background.paper',
-          zIndex: 10,
-        }}
-      >
-        <Container sx={{ py: 2, display: 'flex', alignItems: 'center' }}>
-          <BrandLogo />
-          <Box sx={{ flex: 1 }} />
-          <Button
-            component={Link}
-            to="/"
-            color="inherit"
-            startIcon={<ArrowBackIcon />}
-            size="small"
-          >
-            Back to home
-          </Button>
-        </Container>
-      </Box>
-
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        bgcolor: 'background.default',
+      }}
+    >
+      <Navbar />
       {/* Form */}
       <Box component="main" sx={{ flex: 1, py: { xs: 5, md: 9 } }}>
         <Container maxWidth="lg">
@@ -407,154 +389,193 @@ export function PartnerForm() {
               alignItems: 'start',
             }}
           >
-            {/* Value panel */}
             <Box
-              sx={{
-                position: { xs: 'relative', md: 'sticky' },
-                top: { md: 24 },
-                p: { xs: 3, md: 4 },
-                borderRadius: '14px 14px 4px 14px',
-                color: '#EAF3ED',
-                background: 'linear-gradient(155deg, #2E3D2F 0%, #40614A 100%)',
-                overflow: 'hidden',
-                animation: 'b2uFadeUp .55s cubic-bezier(.2,.7,.2,1) both',
-                boxShadow: '0 30px 60px -40px rgba(46,61,47,0.7)',
-              }}
+              sx={{ position: { xs: 'relative', md: 'sticky' }, top: { md: 116 }, pr: { md: 3 } }}
             >
-              {/* decorative glow */}
-              <Box
-                aria-hidden
+              <Typography
                 sx={{
-                  position: 'absolute',
-                  right: -80,
-                  top: -80,
-                  width: 260,
-                  height: 260,
-                  borderRadius: '50%',
-                  background: 'radial-gradient(circle, rgba(139,111,78,0.28), transparent 62%)',
-                  pointerEvents: 'none',
+                  color: 'primary.main',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '.12em',
+                  mb: 2,
                 }}
-              />
-              <Box sx={{ position: 'relative' }}>
-                <Typography
-                  sx={{
-                    color: '#8FE3D5',
-                    fontWeight: 700,
-                    letterSpacing: '0.16em',
-                    textTransform: 'uppercase',
-                    fontSize: 12,
-                    mb: 0.75,
-                  }}
-                >
-                  For institutions
-                </Typography>
-                <Typography
-                  sx={{
-                    fontFamily: '"Black Ops One", Georgia, serif',
-                    fontWeight: 600,
-                    fontSize: { xs: 30, md: 36 },
-                    lineHeight: 1.05,
-                    mb: 1.25,
-                  }}
-                >
-                  Partner with bak2me
-                </Typography>
-                <Typography
-                  sx={{ fontSize: 15.5, color: 'rgba(234,243,237,0.82)', mb: 3, maxWidth: 380 }}
-                >
-                  Join universities, malls, airports and transit hubs running smart lost &amp;
-                  found.
-                </Typography>
-
-                <Stack spacing={2.25}>
-                  {BENEFITS.map((b) => (
-                    <Stack
-                      key={b.title}
-                      direction="row"
-                      spacing={1.75}
-                      sx={{ alignItems: 'flex-start' }}
-                    >
+              >
+                BECOME A PARTNER
+              </Typography>
+              <Typography
+                component="h1"
+                sx={{
+                  fontSize: { xs: 40, md: 56 },
+                  fontWeight: 600,
+                  letterSpacing: '-.055em',
+                  lineHeight: 1.08,
+                  mb: 2.5,
+                }}
+              >
+                Your place.
+                <br />
+                Their way back.
+              </Typography>
+              <Typography
+                sx={{
+                  color: 'text.secondary',
+                  fontSize: 17,
+                  lineHeight: 1.75,
+                  maxWidth: 420,
+                  mb: 4,
+                }}
+              >
+                Give your community a trusted place to turn when something goes missing. Tell us
+                about your venue and we’ll help you find the right setup.
+              </Typography>
+              <Button
+                href="#partner-enquiry"
+                variant="contained"
+                endIcon={<ArrowForwardRoundedIcon />}
+                sx={{
+                  display: { xs: 'inline-flex', md: 'none' },
+                  mb: 4,
+                  minHeight: 46,
+                  borderRadius: '12px',
+                }}
+              >
+                Start your enquiry
+              </Button>
+              <Box
+                sx={{
+                  p: { xs: 2.5, md: 3 },
+                  borderRadius: '24px',
+                  bgcolor: 'background.default',
+                  boxShadow: (t) => neuShadow(t.palette.mode, 'inset'),
+                }}
+              >
+                <Stack spacing={3}>
+                  {BENEFITS.map((benefit) => (
+                    <Stack key={benefit.title} direction="row" spacing={2}>
                       <Box
                         sx={{
-                          width: 40,
-                          height: 40,
+                          width: 42,
+                          height: 42,
                           flexShrink: 0,
-                          borderRadius: 2,
+                          borderRadius: '12px',
                           display: 'grid',
                           placeItems: 'center',
-                          bgcolor: 'rgba(250,248,243,0.12)',
-                          color: '#FAF8F3',
+                          color: 'primary.main',
+                          bgcolor: 'background.default',
+                          boxShadow: (t) => neuShadow(t.palette.mode, 'raised'),
                           '& svg': { fontSize: 21 },
                         }}
                       >
-                        {b.icon}
+                        {benefit.icon}
                       </Box>
                       <Box>
-                        <Typography sx={{ fontWeight: 700, fontSize: 15 }}>{b.title}</Typography>
+                        <Typography sx={{ fontSize: 15, fontWeight: 600, mb: 0.5 }}>
+                          {benefit.title}
+                        </Typography>
                         <Typography
-                          sx={{ fontSize: 13.5, color: 'rgba(234,243,237,0.72)', lineHeight: 1.5 }}
+                          sx={{ fontSize: 13, color: 'text.secondary', lineHeight: 1.65 }}
                         >
-                          {b.body}
+                          {benefit.body}
                         </Typography>
                       </Box>
                     </Stack>
                   ))}
                 </Stack>
-
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  sx={{
-                    mt: 3.5,
-                    pt: 2.5,
-                    borderTop: '1px solid rgba(250,248,243,0.16)',
-                    flexWrap: 'wrap',
-                    gap: 1,
-                  }}
-                >
-                  {TRUST.map((t) => (
-                    <Stack
-                      key={t.label}
-                      direction="row"
-                      spacing={0.75}
-                      sx={{
-                        alignItems: 'center',
-                        px: 1.5,
-                        py: 0.75,
-                        borderRadius: 999,
-                        bgcolor: 'rgba(250,248,243,0.10)',
-                        '& svg': { fontSize: 17, color: '#F3C969' },
-                      }}
-                    >
-                      {t.icon}
-                      <Typography sx={{ fontSize: 12.5, fontWeight: 600 }}>{t.label}</Typography>
-                    </Stack>
-                  ))}
-                </Stack>
               </Box>
+              <Stack direction="row" sx={{ mt: 3, gap: 2, flexWrap: 'wrap' }}>
+                {TRUST.map((item) => (
+                  <Stack
+                    key={item.label}
+                    direction="row"
+                    spacing={0.75}
+                    sx={{
+                      alignItems: 'center',
+                      color: 'text.secondary',
+                      '& svg': { fontSize: 16 },
+                    }}
+                  >
+                    {item.icon}
+                    <Typography sx={{ fontSize: 12 }}>{item.label}</Typography>
+                  </Stack>
+                ))}
+              </Stack>
+              <Button
+                component={Link}
+                to="/pricing"
+                endIcon={<ArrowForwardRoundedIcon />}
+                sx={{ mt: 3, color: 'primary.main' }}
+              >
+                Explore institution plans
+              </Button>
             </Box>
 
             {/* Wizard */}
             <Box
+              id="partner-enquiry"
               sx={{
-                p: { xs: 2.5, md: 4 },
-                borderRadius: '4px 14px 14px 14px',
-                animation: 'b2uFadeUp .55s cubic-bezier(.2,.7,.2,1) both',
-                animationDelay: '90ms',
-                border: '1px solid',
-                borderColor: 'divider',
-                bgcolor: 'background.paper',
-                boxShadow: '0 30px 60px -48px rgba(46,61,47,0.5)',
+                scrollMarginTop: 110,
+                p: { xs: 2.5, sm: 4 },
+                borderRadius: '26px',
+                bgcolor: 'background.default',
+                boxShadow: (t) => neuShadow(t.palette.mode, 'raised'),
+                minWidth: 0,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  bgcolor: 'background.default',
+                  boxShadow: (t) => neuShadow(t.palette.mode, 'inset'),
+                },
+                '& .MuiOutlinedInput-notchedOutline': { borderColor: 'divider' },
+                '& .MuiButton-root': { borderRadius: '12px', minHeight: 44 },
               }}
             >
-              <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
+              <Typography
+                sx={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  color: 'primary.main',
+                  letterSpacing: '.1em',
+                  mb: 1,
+                }}
+              >
+                PARTNER ENQUIRY
+              </Typography>
+              <Typography
+                component="h2"
+                sx={{ fontSize: 28, fontWeight: 600, letterSpacing: '-.035em', mb: 1 }}
+              >
+                {
+                  [
+                    'Tell us about your place.',
+                    'Who should we contact?',
+                    'Make it work for your team.',
+                  ][activeStep]
+                }
+              </Typography>
+              <Typography sx={{ color: 'text.secondary', fontSize: 14, lineHeight: 1.6, mb: 3 }}>
+                {
+                  [
+                    'Start with your institution and location.',
+                    'Share the details of the person coordinating your partnership.',
+                    'Help us understand your volume and any specific needs.',
+                  ][activeStep]
+                }
+              </Typography>
+              <Stepper
+                activeStep={activeStep}
+                alternativeLabel
+                sx={{
+                  mb: 4,
+                  '& .MuiStepLabel-label': { fontSize: 11 },
+                  '& .MuiStep-root': { px: 0.5 },
+                }}
+              >
                 {STEPS.map((label) => (
                   <Step key={label}>
                     <StepLabel>{label}</StepLabel>
                   </Step>
                 ))}
               </Stepper>
-
               <Stack spacing={2.5}>
                 {error && (
                   <Alert severity="error" sx={{ borderRadius: 2 }}>
@@ -566,6 +587,7 @@ export function PartnerForm() {
                   <Stack spacing={2.5}>
                     <TextField
                       label="Institution name"
+                      placeholder="e.g. Osu Community Centre"
                       required
                       fullWidth
                       value={formData.institutionName}
@@ -641,6 +663,7 @@ export function PartnerForm() {
                         <TextField
                           {...params}
                           label="Venue location"
+                          placeholder="Search for a venue or enter a city"
                           required
                           error={!!errors.city}
                           helperText={
@@ -677,6 +700,7 @@ export function PartnerForm() {
                   <Stack spacing={2.5}>
                     <TextField
                       label="Contact name"
+                      placeholder="Your full name"
                       required
                       fullWidth
                       value={formData.contactName}
@@ -688,6 +712,7 @@ export function PartnerForm() {
 
                     <TextField
                       label="Contact email"
+                      placeholder="you@organisation.com"
                       type="email"
                       required
                       fullWidth
@@ -700,6 +725,7 @@ export function PartnerForm() {
 
                     <TextField
                       label="Contact phone"
+                      placeholder="e.g. +233 24 000 0000"
                       type="tel"
                       fullWidth
                       value={formData.contactPhone}
@@ -712,7 +738,7 @@ export function PartnerForm() {
                 {activeStep === 2 && (
                   <Stack spacing={2.5}>
                     <TextField
-                      label="Roughly how many items are lost at your venue each month?"
+                      label="Monthly item volume"
                       select
                       fullWidth
                       value={formData.estimatedVolume}
@@ -731,7 +757,7 @@ export function PartnerForm() {
                     </TextField>
 
                     <TextField
-                      label="Message / Additional info"
+                      label="Anything else we should know?"
                       multiline
                       rows={4}
                       fullWidth
@@ -748,7 +774,9 @@ export function PartnerForm() {
                   sx={{
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    pt: 1.5,
+                    flexWrap: 'wrap',
+                    gap: 1.5,
+                    pt: 2.5,
                     borderTop: '1px solid',
                     borderColor: 'divider',
                   }}
@@ -795,8 +823,8 @@ export function PartnerForm() {
                       disabled={!stepValid(activeStep)}
                       endIcon={<ArrowForwardRoundedIcon />}
                       sx={{
-                        bgcolor: INK,
-                        color: '#F2EFEA',
+                        bgcolor: 'primary.main',
+                        color: (t) => t.palette.getContrastText(t.palette.primary.main),
                         borderRadius: 999,
                         px: 3,
                         fontWeight: 700,
@@ -813,23 +841,7 @@ export function PartnerForm() {
         </Container>
       </Box>
 
-      {/* Footer */}
-      <Box
-        component="footer"
-        sx={{
-          borderTop: 1,
-          borderColor: 'divider',
-          py: 4,
-          bgcolor: 'background.paper',
-          textAlign: 'center',
-        }}
-      >
-        <Container>
-          <Typography color="text.secondary" sx={{ fontSize: 14 }}>
-            © {new Date().getFullYear()} bak2me. All rights reserved.
-          </Typography>
-        </Container>
-      </Box>
+      <Footer />
     </Box>
   );
 }

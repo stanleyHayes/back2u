@@ -31,7 +31,7 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import type { ItemDTO, ItemKind } from '@back2u/shared-types';
-import { EmptyState, CardGridSkeleton } from '@back2u/ui-web';
+import { EmptyState, CardGridSkeleton, neuShadow } from '@back2u/ui-web';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -352,36 +352,136 @@ export function FeedPage() {
   };
 
   return (
-    <Stack spacing={3}>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ alignItems: 'center' }}>
-        <Typography variant="h3" sx={{ flex: 1, fontWeight: 700 }}>
-          Lost &amp; found
-        </Typography>
-      </Stack>
-
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
-        sx={{ flexWrap: 'wrap' }}
-        useFlexGap
+    <Stack spacing={4}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 3,
+        }}
       >
-        <ButtonGroup size="small" variant="outlined">
-          <Button variant={kind === '' ? 'contained' : 'outlined'} onClick={() => setKind('')}>
-            All
+        <Box>
+          <Typography
+            sx={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '.12em',
+              color: 'primary.main',
+              mb: 1,
+            }}
+          >
+            THE COMMUNITY BOARD
+          </Typography>
+          <Typography
+            component="h1"
+            sx={{
+              fontSize: { xs: 36, md: 52 },
+              fontWeight: 600,
+              lineHeight: 1.1,
+              letterSpacing: '-.045em',
+            }}
+          >
+            Lost something?
+            <br />
+            Start looking here.
+          </Typography>
+          <Typography sx={{ mt: 2, color: 'text.secondary', fontSize: 15, lineHeight: 1.7 }}>
+            Browse reports, narrow your search, and help an item find its way home.
+          </Typography>
+        </Box>
+        <Stack direction="row" spacing={1.5} sx={{ flexWrap: 'wrap', gap: 1 }}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => navigate('/post')}
+            sx={{ borderRadius: '12px', px: 2.5, py: 1.25 }}
+          >
+            Report an item
           </Button>
           <Button
-            variant={kind === 'lost' ? 'contained' : 'outlined'}
-            onClick={() => setKind('lost')}
+            onClick={() => navigate('/map')}
+            startIcon={<PlaceOutlinedIcon />}
+            sx={{ color: 'text.primary', borderRadius: '12px', px: 2 }}
           >
-            Lost
+            Explore map
           </Button>
-          <Button
-            variant={kind === 'found' ? 'contained' : 'outlined'}
-            onClick={() => setKind('found')}
+        </Stack>
+      </Box>
+
+      <Box
+        sx={{
+          p: { xs: 2.5, md: 3 },
+          borderRadius: '24px',
+          bgcolor: (t) => (t.palette.mode === 'dark' ? '#263026' : '#F2EFEA'),
+          boxShadow: (t) => neuShadow(t.palette.mode, 'raised'),
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: 'minmax(0,1fr)',
+            sm: 'repeat(2,minmax(0,1fr))',
+            lg: '2fr 1fr 1fr',
+          },
+          gap: 2.5,
+          '& .MuiOutlinedInput-root': {
+            bgcolor: 'transparent',
+            borderRadius: '12px',
+            boxShadow: (t) => neuShadow(t.palette.mode, 'inset'),
+            minHeight: 46,
+          },
+          '& .MuiOutlinedInput-notchedOutline': { borderColor: 'divider' },
+        }}
+      >
+        <Box
+          sx={{
+            gridColumn: '1 / -1',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 2,
+          }}
+        >
+          <ButtonGroup
+            aria-label="Report type"
+            variant="text"
+            sx={{
+              p: 0.5,
+              borderRadius: '14px',
+              boxShadow: (t) => neuShadow(t.palette.mode, 'inset'),
+              '& .MuiButtonGroup-grouped': {
+                border: 'none',
+                borderRadius: '10px !important',
+                px: { xs: 2, sm: 3 },
+                minHeight: 40,
+              },
+            }}
           >
-            Found
-          </Button>
-        </ButtonGroup>
+            {(['', 'lost', 'found'] as const).map((value) => (
+              <Button
+                key={value || 'all'}
+                aria-pressed={kind === value}
+                onClick={() => setKind(value)}
+                sx={{
+                  bgcolor: kind === value ? 'primary.main' : 'transparent',
+                  color: (t) =>
+                    kind === value
+                      ? t.palette.getContrastText(t.palette.primary.main)
+                      : t.palette.text.secondary,
+                  boxShadow: 'none',
+                  '&:hover': { bgcolor: kind === value ? 'primary.dark' : 'action.hover' },
+                }}
+              >
+                {value === '' ? 'All items' : value === 'lost' ? 'Lost' : 'Found'}
+              </Button>
+            ))}
+          </ButtonGroup>
+          {activeChips.length > 0 && (
+            <Button onClick={clearAll} size="small" sx={{ color: 'primary.main' }}>
+              Reset filters
+            </Button>
+          )}
+        </Box>
 
         <Autocomplete
           size="small"
@@ -408,7 +508,7 @@ export function FeedPage() {
             }
           }}
           filterOptions={(x) => x}
-          sx={{ minWidth: 220 }}
+          sx={{ minWidth: 0, gridColumn: { xs: 'auto', sm: '1 / -1', lg: 'auto' } }}
           renderOption={(props, option) => {
             const { key, ...rest } = props as { key: string } & React.HTMLAttributes<HTMLLIElement>;
             return (
@@ -429,7 +529,8 @@ export function FeedPage() {
           renderInput={(params) => (
             <TextField
               {...params}
-              placeholder="Search keywords…"
+              label="Search items"
+              placeholder="Phone, keys, blue backpack…"
               slotProps={{
                 ...params.slotProps,
                 input: {
@@ -450,10 +551,11 @@ export function FeedPage() {
           )}
         />
 
-        <FormControl size="small" sx={{ minWidth: 200 }}>
+        <FormControl size="small" sx={{ minWidth: 0 }}>
           <Select
             value={category}
             displayEmpty
+            inputProps={{ 'aria-label': 'Item category' }}
             onChange={(e) => setCategory(e.target.value)}
             MenuProps={{
               slotProps: {
@@ -502,7 +604,7 @@ export function FeedPage() {
             }
           }}
           filterOptions={(x) => x}
-          sx={{ minWidth: 160 }}
+          sx={{ minWidth: 0 }}
           renderOption={(props, option) => {
             const { key, ...rest } = props as { key: string } & React.HTMLAttributes<HTMLLIElement>;
             return (
@@ -514,7 +616,8 @@ export function FeedPage() {
           renderInput={(params) => (
             <TextField
               {...params}
-              placeholder="City"
+              label="Location"
+              placeholder="City or area"
               slotProps={{
                 ...params.slotProps,
                 input: {
@@ -535,7 +638,22 @@ export function FeedPage() {
           )}
         />
 
-        <ButtonGroup size="small" variant="outlined">
+        <ButtonGroup
+          aria-label="Date posted"
+          size="small"
+          variant="text"
+          sx={{
+            gridColumn: '1 / -1',
+            flexWrap: 'wrap',
+            gap: 0.75,
+            '& .MuiButtonGroup-grouped': {
+              border: 'none',
+              borderRadius: '8px !important',
+              minHeight: 36,
+              px: 1.5,
+            },
+          }}
+        >
           {(['today', 'week', 'month', 'all'] as DateRange[]).map((r) => (
             <Button
               key={r}
@@ -548,11 +666,11 @@ export function FeedPage() {
                   ? 'This week'
                   : r === 'month'
                     ? 'This month'
-                    : 'All'}
+                    : 'Any time'}
             </Button>
           ))}
         </ButtonGroup>
-      </Stack>
+      </Box>
 
       {activeChips.length > 0 && (
         <Stack
@@ -614,7 +732,7 @@ export function FeedPage() {
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-            gap: 2,
+            gap: 3,
           }}
         >
           {data?.items.map((it) => (
