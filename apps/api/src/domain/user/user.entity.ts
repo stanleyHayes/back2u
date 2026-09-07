@@ -1,4 +1,10 @@
-import type { EmailPreferences, Locale, MomoProvider, UserRole } from '@back2u/shared-types';
+import type {
+  EmailPreferences,
+  Locale,
+  MomoProvider,
+  TrustLevel,
+  UserRole,
+} from '@back2u/shared-types';
 
 import { ConflictError, ValidationError } from '../shared/errors.js';
 import type { Id } from '../shared/id.js';
@@ -16,7 +22,19 @@ export interface UserSnapshot {
   momoNumber?: string;
   roles: UserRole[];
   status: 'active' | 'banned' | 'suspended';
+  /**
+   * @deprecated Kept as a compatibility alias that mirrors `trustScore`.
+   *
+   * This used to be a running tally incremented on every recovery, which is
+   * exactly the "buy trust through activity volume" that spec §16 forbids.
+   * `RecomputeTrustScoreUseCase` now writes the derived Trust Score into both
+   * fields so existing consumers keep working and show something meaningful.
+   */
   reputationScore: number;
+  /** Derived reliability, 0–100. Never incremented — always recomputed. (§16) */
+  trustScore: number;
+  trustLevel: TrustLevel;
+  trustUpdatedAt?: Date;
   pointsBalance: number;
   emailVerified: boolean;
   phoneVerified: boolean;
@@ -55,6 +73,8 @@ export class User {
       | 'roles'
       | 'status'
       | 'reputationScore'
+      | 'trustScore'
+      | 'trustLevel'
       | 'pointsBalance'
       | 'emailVerified'
       | 'phoneVerified'
@@ -73,6 +93,8 @@ export class User {
       roles: ['user'],
       status: 'active',
       reputationScore: 0,
+      trustScore: 0,
+      trustLevel: 'new_finder',
       pointsBalance: 0,
       emailVerified: false,
       phoneVerified: false,
@@ -120,6 +142,20 @@ export class User {
     if (points > this.state.pointsBalance) throw new ConflictError('Insufficient points');
     this.state.pointsBalance -= points;
     this.state.updatedAt = new Date();
+  }
+  /**
+   * Replaces the derived Trust Score. The only writer is
+   * `RecomputeTrustScoreUseCase` — there is deliberately no "add trust" method,
+   * because a score you can increment is a score you can farm (§16).
+   */
+  setTrust(score: number, level: TrustLevel): void {
+    this.state.trustScore = score;
+    this.state.trustLevel = level;
+    this.state.trustUpdatedAt = new Date();
+    // Mirrored so the leaderboard, profile and admin console show reliability
+    // rather than the old volume tally.
+    this.state.reputationScore = score;
+    this.state.updatedAt = this.state.trustUpdatedAt;
   }
   recordSuccessfulReturn(): void {
     this.state.successfulReturns += 1;

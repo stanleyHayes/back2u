@@ -20,6 +20,8 @@ function toDTO(user: User): UserDTO {
     roles: s.roles,
     status: s.status,
     reputationScore: s.reputationScore,
+    trustScore: s.trustScore,
+    trustLevel: s.trustLevel,
     pointsBalance: s.pointsBalance,
     successfulReturns: s.successfulReturns,
     averageRating: s.averageRating,
@@ -40,7 +42,11 @@ function toDTO(user: User): UserDTO {
 export class ListUsersUseCase {
   constructor(@inject(TOKENS.UserRepository) private readonly users: IUserRepository) {}
   async execute(filter: { limit?: number; offset?: number; search?: string }): Promise<UserDTO[]> {
-    const list = await this.users.list({ limit: filter.limit ?? DEFAULT_LIMIT, offset: filter.offset, search: filter.search });
+    const list = await this.users.list({
+      limit: filter.limit ?? DEFAULT_LIMIT,
+      offset: filter.offset,
+      search: filter.search,
+    });
     return list.map(toDTO);
   }
 }

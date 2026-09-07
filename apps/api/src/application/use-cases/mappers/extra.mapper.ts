@@ -492,6 +492,8 @@ export function toUserDTO(user: User): UserDTO {
     roles: s.roles,
     status: s.status,
     reputationScore: s.reputationScore,
+    trustScore: s.trustScore,
+    trustLevel: s.trustLevel,
     pointsBalance: s.pointsBalance,
     successfulReturns: s.successfulReturns,
     averageRating: s.averageRating,

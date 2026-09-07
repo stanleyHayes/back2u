@@ -18,6 +18,8 @@ export class GetLeaderboardUseCase {
         avatarUrl: s.avatarUrl,
         pointsBalance: s.pointsBalance,
         reputationScore: s.reputationScore,
+        trustScore: s.trustScore,
+        trustLevel: s.trustLevel,
         successfulReturns: s.successfulReturns,
         rank: i + 1,
         badges: s.badges,

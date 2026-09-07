@@ -1,4 +1,5 @@
 import type { Locale, UserRole } from './enums.js';
+import type { TrustLevel } from './trust.js';
 
 /** Paystack Ghana mobile-money provider codes (bank_code for a mobile_money recipient). */
 export type MomoProvider = 'MTN' | 'VOD' | 'ATL';
@@ -23,7 +24,11 @@ export interface UserDTO {
   momoNumber?: string;
   roles: UserRole[];
   status?: 'active' | 'banned' | 'suspended';
+  /** @deprecated Mirrors `trustScore`; kept for existing consumers. */
   reputationScore: number;
+  /** Derived reliability, 0–100. Separate from BakPoints by design (§16). */
+  trustScore?: number;
+  trustLevel?: TrustLevel;
   pointsBalance: number;
   successfulReturns?: number;
   averageRating?: number;

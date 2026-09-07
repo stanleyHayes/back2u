@@ -10,7 +10,10 @@ import { ConflictError, NotFoundError } from '../../../domain/shared/errors.js';
 import { newId, type Id } from '../../../domain/shared/id.js';
 import { TrustedFinderApplication } from '../../../domain/trusted-finder/trusted-finder-application.entity.js';
 import type { User } from '../../../domain/user/user.entity.js';
-import type { ITrustedFinderApplicationRepository, IUserRepository } from '../../ports/repositories.js';
+import type {
+  ITrustedFinderApplicationRepository,
+  IUserRepository,
+} from '../../ports/repositories.js';
 import { TOKENS } from '../../ports/tokens.js';
 
 function toDTO(a: TrustedFinderApplication): TrustedFinderApplicationDTO {
@@ -38,6 +41,8 @@ function toUserDTO(u: User): UserDTO {
     roles: s.roles,
     status: s.status,
     reputationScore: s.reputationScore,
+    trustScore: s.trustScore,
+    trustLevel: s.trustLevel,
     pointsBalance: s.pointsBalance,
     successfulReturns: s.successfulReturns,
     averageRating: s.averageRating,
@@ -57,7 +62,8 @@ function toUserDTO(u: User): UserDTO {
 @injectable()
 export class ApplyTrustedFinderUseCase {
   constructor(
-    @inject(TOKENS.TrustedFinderApplicationRepository) private readonly apps: ITrustedFinderApplicationRepository,
+    @inject(TOKENS.TrustedFinderApplicationRepository)
+    private readonly apps: ITrustedFinderApplicationRepository,
     @inject(TOKENS.UserRepository) private readonly users: IUserRepository,
   ) {}
   async execute(userId: Id, input: ApplyTrustedFinderInput): Promise<TrustedFinderApplicationDTO> {
@@ -80,9 +86,13 @@ export class ApplyTrustedFinderUseCase {
 @injectable()
 export class ListTrustedFinderApplicationsUseCase {
   constructor(
-    @inject(TOKENS.TrustedFinderApplicationRepository) private readonly apps: ITrustedFinderApplicationRepository,
+    @inject(TOKENS.TrustedFinderApplicationRepository)
+    private readonly apps: ITrustedFinderApplicationRepository,
   ) {}
-  async execute(status?: TrustedFinderApplicationStatus, limit = 100): Promise<TrustedFinderApplicationDTO[]> {
+  async execute(
+    status?: TrustedFinderApplicationStatus,
+    limit = 100,
+  ): Promise<TrustedFinderApplicationDTO[]> {
     const list = await this.apps.list(status, limit);
     return list.map(toDTO);
   }
@@ -91,7 +101,8 @@ export class ListTrustedFinderApplicationsUseCase {
 @injectable()
 export class DecideTrustedFinderApplicationUseCase {
   constructor(
-    @inject(TOKENS.TrustedFinderApplicationRepository) private readonly apps: ITrustedFinderApplicationRepository,
+    @inject(TOKENS.TrustedFinderApplicationRepository)
+    private readonly apps: ITrustedFinderApplicationRepository,
     @inject(TOKENS.UserRepository) private readonly users: IUserRepository,
   ) {}
   async execute(
