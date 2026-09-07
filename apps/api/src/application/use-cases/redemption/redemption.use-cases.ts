@@ -1,11 +1,22 @@
-import { DEFAULT_CURRENCY, type CreateRedemptionInput, type RedemptionDTO } from '@back2u/shared-types';
+import {
+  DEFAULT_CURRENCY,
+  type CreateRedemptionInput,
+  type RedemptionDTO,
+} from '@back2u/shared-types';
 import { inject, injectable } from 'inversify';
 
 import { generate6DigitCode } from '../../../domain/auth/otp.entity.js';
+import { PointLedgerEntry } from '../../../domain/points/point-ledger-entry.entity.js';
 import { PointsRedemption } from '../../../domain/redemption/redemption.entity.js';
-import { ConflictError, ForbiddenError, NotFoundError, ValidationError } from '../../../domain/shared/errors.js';
+import {
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+  ValidationError,
+} from '../../../domain/shared/errors.js';
 import { newId, type Id } from '../../../domain/shared/id.js';
 import type { IInstitutionRepository, IUserRepository } from '../../ports/repositories.js';
+import type { IPointLedgerRepository } from '../../ports/points-repos.js';
 import type { IRedemptionRepository } from '../../ports/redemption-repo.js';
 import { TOKENS } from '../../ports/tokens.js';
 
@@ -33,6 +44,7 @@ export class CreateRedemptionUseCase {
     @inject(TOKENS.RedemptionRepository) private readonly redemptions: IRedemptionRepository,
     @inject(TOKENS.InstitutionRepository) private readonly institutions: IInstitutionRepository,
     @inject(TOKENS.UserRepository) private readonly users: IUserRepository,
+    @inject(TOKENS.PointLedgerRepository) private readonly ledger: IPointLedgerRepository,
   ) {}
   async execute(userId: Id, input: CreateRedemptionInput): Promise<RedemptionDTO> {
     const institution = await this.institutions.findById(input.institutionId);
@@ -43,7 +55,10 @@ export class CreateRedemptionUseCase {
     if (input.points <= 0) throw new ValidationError('Points must be positive');
     const user = await this.users.findById(userId);
     if (!user) throw new NotFoundError('User');
-    if (user.snapshot.pointsBalance < input.points) throw new ValidationError('Insufficient points');
+    if (user.snapshot.pointsBalance < input.points)
+      throw new ValidationError('Insufficient points');
+    // Checks affordability and throws on an overdraw; the durable decrement is
+    // the atomic `$inc` below, so a concurrent award cannot be lost.
     user.spendPoints(input.points);
     const rate = institution.snapshot.pointToCurrencyRate ?? 1;
     const redemption = PointsRedemption.create({
@@ -55,8 +70,21 @@ export class CreateRedemptionUseCase {
       currency: DEFAULT_CURRENCY,
       code: generate6DigitCode(),
     });
-    await this.users.save(user);
+    await this.users.incrementPoints(userId, -input.points);
     await this.redemptions.save(redemption);
+    // Every movement of the balance belongs on the ledger, or the append-only
+    // record and the balance can never be reconciled.
+    await this.ledger.save(
+      PointLedgerEntry.settled({
+        id: newId(),
+        userId,
+        action: 'redemption_spend',
+        points: -input.points,
+        caseRef: redemption.id,
+        resolutionNote: `Redeemed at ${institution.snapshot.name}`,
+        reasons: [{ code: 'base', detail: `Redemption ${redemption.snapshot.code}` }],
+      }),
+    );
     return toDTO(redemption, institution.snapshot.name);
   }
 }
@@ -107,7 +135,8 @@ export class ConfirmRedemptionUseCase {
     if (input.institutionId && redemption.snapshot.institutionId !== input.institutionId) {
       throw new ForbiddenError('Redemption belongs to another institution');
     }
-    if (redemption.snapshot.status !== 'pending') throw new ConflictError('Redemption is not pending');
+    if (redemption.snapshot.status !== 'pending')
+      throw new ConflictError('Redemption is not pending');
     redemption.fulfil();
     await this.redemptions.save(redemption);
     const institution = await this.institutions.findById(redemption.snapshot.institutionId);

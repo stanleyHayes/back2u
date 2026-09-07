@@ -55,6 +55,32 @@ export class MongoRedemptionRepository implements IRedemptionRepository {
     return rows[0] ?? { count: 0, totalPoints: 0 };
   }
 
+  async countForUserAndOffer(userId: Id, offerId: Id): Promise<number> {
+    // Expired, cancelled and reversed claims are released back to the member,
+    // so only live and collected ones count against their limit.
+    return RedemptionModel.countDocuments({
+      userId,
+      offerId,
+      status: { $in: ['pending', 'fulfilled'] },
+    });
+  }
+
+  async findDueReservations(now: Date, limit: number): Promise<PointsRedemption[]> {
+    const docs = await RedemptionModel.find({ status: 'pending', expiresAt: { $lte: now } })
+      .sort({ expiresAt: 1 })
+      .limit(limit)
+      .lean<RedemptionDoc[]>();
+    return docs.map((d) => PointsRedemption.rehydrate(toSnapshot(d)));
+  }
+
+  async statsForOffer(offerId: Id): Promise<Record<string, { count: number; points: number }>> {
+    const rows = await RedemptionModel.aggregate<{ _id: string; count: number; points: number }>([
+      { $match: { offerId } },
+      { $group: { _id: '$status', count: { $sum: 1 }, points: { $sum: '$points' } } },
+    ]);
+    return Object.fromEntries(rows.map((r) => [r._id, { count: r.count, points: r.points }]));
+  }
+
   async listRecentByInstitution(institutionId: Id, limit: number): Promise<PointsRedemption[]> {
     const docs = await RedemptionModel.find({ institutionId })
       .sort({ createdAt: -1 })

@@ -1,6 +1,12 @@
 import type { SupportedCurrency } from './currency.js';
 
-export type RedemptionStatus = 'pending' | 'fulfilled' | 'cancelled';
+/**
+ * Redemption lifecycle (spec §13). `pending` is the spec's RESERVED and
+ * `fulfilled` its REDEEMED — the existing names are kept because live data and
+ * the partner console already use them. `expired` returns an uncollected
+ * reservation to the pool; `reversed` claws one back after a dispute or fraud.
+ */
+export type RedemptionStatus = 'pending' | 'fulfilled' | 'cancelled' | 'expired' | 'reversed';
 
 export interface CreateRedemptionInput {
   institutionId: string;
@@ -24,6 +30,16 @@ export interface RedemptionDTO {
   code: string;
   status: RedemptionStatus;
   note?: string;
+  /** The catalogue offer this came from, when it was not a plain points spend. */
+  offerId?: string;
+  offerTitle?: string;
+  /** When an uncollected reservation returns to the pool. */
+  expiresAt?: string;
   createdAt: string;
   fulfilledAt?: string;
+  resolvedAt?: string;
+}
+
+export interface ReserveRewardInput {
+  offerId: string;
 }

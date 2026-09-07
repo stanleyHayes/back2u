@@ -13,7 +13,15 @@ const redemptionSchema = new Schema(
     value: { type: Number, required: true },
     currency: { type: String, enum: ['GHS', 'NGN', 'USD', 'EUR', 'GBP'], required: true },
     code: { type: String, required: true, unique: true },
-    status: { type: String, enum: ['pending', 'fulfilled', 'cancelled'], required: true },
+    status: {
+      type: String,
+      enum: ['pending', 'fulfilled', 'cancelled', 'expired', 'reversed'],
+      required: true,
+    },
+    offerId: { type: String, index: true },
+    offerTitle: { type: String },
+    expiresAt: { type: Date },
+    resolvedAt: { type: Date },
     note: { type: String },
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: true },
@@ -21,5 +29,8 @@ const redemptionSchema = new Schema(
   },
   { versionKey: false },
 );
+
+// The expiry sweep scans reservations that have lapsed.
+redemptionSchema.index({ status: 1, expiresAt: 1 });
 
 export const RedemptionModel = model<RedemptionDoc>('PointsRedemption', redemptionSchema);
