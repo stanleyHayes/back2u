@@ -1031,6 +1031,7 @@ function LandingPage() {
             <Typography
               component="h2"
               sx={{
+                fontFamily: '"Black Ops One", Georgia, serif',
                 mt: 2,
                 fontSize: { xs: 34, md: 44 },
                 letterSpacing: '-.04em',
@@ -1122,6 +1123,7 @@ function LandingPage() {
                 <Typography
                   component="h2"
                   sx={{
+                    fontFamily: '"Black Ops One", Georgia, serif',
                     fontSize: { xs: 36, md: 60 },
                     lineHeight: 1.1,
                     letterSpacing: '-.045em',

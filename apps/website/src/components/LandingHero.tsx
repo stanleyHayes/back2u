@@ -53,6 +53,7 @@ export function LandingHero({ appUrl }: { appUrl: string }) {
             component="h1"
             className="hero-title"
             sx={{
+              fontFamily: '"Black Ops One", Georgia, serif',
               fontSize: { xs: 52, sm: 70, md: 82 },
               fontWeight: 700,
               letterSpacing: '-.065em',

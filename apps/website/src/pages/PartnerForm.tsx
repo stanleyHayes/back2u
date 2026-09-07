@@ -406,6 +406,7 @@ export function PartnerForm() {
               <Typography
                 component="h1"
                 sx={{
+                  fontFamily: '"Black Ops One", Georgia, serif',
                   fontSize: { xs: 40, md: 56 },
                   fontWeight: 600,
                   letterSpacing: '-.055em',
@@ -542,7 +543,13 @@ export function PartnerForm() {
               </Typography>
               <Typography
                 component="h2"
-                sx={{ fontSize: 28, fontWeight: 600, letterSpacing: '-.035em', mb: 1 }}
+                sx={{
+                  fontFamily: '"Black Ops One", Georgia, serif',
+                  fontSize: 28,
+                  fontWeight: 600,
+                  letterSpacing: '-.035em',
+                  mb: 1,
+                }}
               >
                 {
                   [

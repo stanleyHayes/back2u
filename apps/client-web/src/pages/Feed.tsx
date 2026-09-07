@@ -377,6 +377,9 @@ export function FeedPage() {
           <Typography
             component="h1"
             sx={{
+              // `component` sets the element only; MUI takes typography from
+              // `variant`, so the display face has to be stated here.
+              fontFamily: '"Black Ops One", Georgia, serif',
               fontSize: { xs: 36, md: 52 },
               fontWeight: 600,
               lineHeight: 1.1,
@@ -638,38 +641,72 @@ export function FeedPage() {
           )}
         />
 
-        <ButtonGroup
-          aria-label="Date posted"
-          size="small"
-          variant="text"
-          sx={{
-            gridColumn: '1 / -1',
-            flexWrap: 'wrap',
-            gap: 0.75,
-            '& .MuiButtonGroup-grouped': {
-              border: 'none',
-              borderRadius: '8px !important',
-              minHeight: 36,
-              px: 1.5,
-            },
-          }}
-        >
-          {(['today', 'week', 'month', 'all'] as DateRange[]).map((r) => (
-            <Button
-              key={r}
-              variant={dateRange === r ? 'contained' : 'outlined'}
-              onClick={() => setDateRange(r)}
-            >
-              {r === 'today'
-                ? 'Today'
-                : r === 'week'
-                  ? 'This week'
-                  : r === 'month'
-                    ? 'This month'
-                    : 'Any time'}
-            </Button>
-          ))}
-        </ButtonGroup>
+        <Stack spacing={1.25} sx={{ gridColumn: '1 / -1', alignItems: 'flex-start', pt: 1 }}>
+          <Stack
+            direction="row"
+            spacing={0.75}
+            sx={{ alignItems: 'center', color: 'text.secondary', px: 0.5 }}
+          >
+            <HistoryIcon sx={{ fontSize: 17 }} />
+            <Typography sx={{ fontSize: 12, fontWeight: 600 }}>Date posted</Typography>
+          </Stack>
+          <Box
+            role="group"
+            aria-label="Date posted"
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+              width: { xs: '100%', sm: 'auto' },
+              maxWidth: '100%',
+              gap: 0.5,
+              p: 0.75,
+              borderRadius: '16px',
+              bgcolor: (t) => (t.palette.mode === 'dark' ? '#263026' : '#F2EFEA'),
+              boxShadow: (t) => neuShadow(t.palette.mode, 'inset'),
+            }}
+          >
+            {(['today', 'week', 'month', 'all'] as DateRange[]).map((r) => (
+              <Button
+                key={r}
+                aria-pressed={dateRange === r}
+                onClick={() => setDateRange(r)}
+                sx={{
+                  minWidth: 0,
+                  minHeight: 42,
+                  px: { xs: 0.75, sm: 2.5 },
+                  borderRadius: '11px',
+                  fontSize: { xs: 12, sm: 14 },
+                  fontWeight: dateRange === r ? 700 : 500,
+                  whiteSpace: 'nowrap',
+                  border: 'none',
+                  bgcolor: dateRange === r ? 'primary.main' : 'transparent',
+                  color: dateRange === r ? 'primary.contrastText' : 'text.secondary',
+                  boxShadow:
+                    dateRange === r
+                      ? '0 3px 7px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.12)'
+                      : 'none',
+                  '&:hover': {
+                    bgcolor: dateRange === r ? 'primary.dark' : 'action.hover',
+                    boxShadow: 'none',
+                  },
+                  '&:focus-visible': {
+                    outline: '2px solid',
+                    outlineColor: 'primary.main',
+                    outlineOffset: 2,
+                  },
+                }}
+              >
+                {r === 'today'
+                  ? 'Today'
+                  : r === 'week'
+                    ? 'This week'
+                    : r === 'month'
+                      ? 'This month'
+                      : 'Any time'}
+              </Button>
+            ))}
+          </Box>
+        </Stack>
       </Box>
 
       {activeChips.length > 0 && (

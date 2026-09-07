@@ -190,7 +190,13 @@ export function Footer() {
             </Typography>
             <Typography
               component="h2"
-              sx={{ fontSize: 30, fontWeight: 700, letterSpacing: '-.03em', color: PAPER }}
+              sx={{
+                fontFamily: '"Black Ops One", Georgia, serif',
+                fontSize: 30,
+                fontWeight: 700,
+                letterSpacing: '-.03em',
+                color: PAPER,
+              }}
             >
               Good conversations start here.
             </Typography>

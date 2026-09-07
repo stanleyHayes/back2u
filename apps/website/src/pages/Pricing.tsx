@@ -96,6 +96,7 @@ export function Pricing() {
           <Typography
             component="h1"
             sx={{
+              fontFamily: '"Black Ops One", Georgia, serif',
               fontSize: { xs: 40, md: 68 },
               fontWeight: 600,
               lineHeight: 1.03,
@@ -156,7 +157,12 @@ export function Pricing() {
               </Stack>
               <Typography
                 component="h2"
-                sx={{ fontSize: 30, fontWeight: 600, letterSpacing: '-.035em' }}
+                sx={{
+                  fontFamily: '"Black Ops One", Georgia, serif',
+                  fontSize: 30,
+                  fontWeight: 600,
+                  letterSpacing: '-.035em',
+                }}
               >
                 Your everyday essentials. Free.
               </Typography>
@@ -207,7 +213,12 @@ export function Pricing() {
               </Typography>
               <Typography
                 component="h2"
-                sx={{ fontSize: { xs: 30, md: 40 }, fontWeight: 600, letterSpacing: '-.04em' }}
+                sx={{
+                  fontFamily: '"Black Ops One", Georgia, serif',
+                  fontSize: { xs: 30, md: 40 },
+                  fontWeight: 600,
+                  letterSpacing: '-.04em',
+                }}
               >
                 A home for your lost-property desk.
               </Typography>
@@ -278,7 +289,14 @@ export function Pricing() {
                     {plan.name}
                   </Typography>
                   <Typography
-                    sx={{ fontSize: 14, lineHeight: 1.6, opacity: 0.75, minHeight: 45, mt: 1 }}
+                    sx={{
+                      fontFamily: '"Black Ops One", Georgia, serif',
+                      fontSize: 14,
+                      lineHeight: 1.6,
+                      opacity: 0.75,
+                      minHeight: 45,
+                      mt: 1,
+                    }}
                   >
                     {plan.tagline}
                   </Typography>
@@ -368,7 +386,13 @@ export function Pricing() {
         <Container sx={{ pb: { xs: 8, md: 11 } }}>
           <Typography
             component="h2"
-            sx={{ fontSize: { xs: 30, md: 40 }, fontWeight: 600, letterSpacing: '-.04em', mb: 1 }}
+            sx={{
+              fontFamily: '"Black Ops One", Georgia, serif',
+              fontSize: { xs: 30, md: 40 },
+              fontWeight: 600,
+              letterSpacing: '-.04em',
+              mb: 1,
+            }}
           >
             Know what’s included. Choose what’s extra.
           </Typography>
@@ -432,7 +456,13 @@ export function Pricing() {
         <Container maxWidth="md" sx={{ pb: { xs: 8, md: 12 } }}>
           <Typography
             component="h2"
-            sx={{ fontSize: { xs: 30, md: 40 }, fontWeight: 600, letterSpacing: '-.04em', mb: 4 }}
+            sx={{
+              fontFamily: '"Black Ops One", Georgia, serif',
+              fontSize: { xs: 30, md: 40 },
+              fontWeight: 600,
+              letterSpacing: '-.04em',
+              mb: 4,
+            }}
           >
             Before you get started.
           </Typography>

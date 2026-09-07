@@ -105,6 +105,7 @@ export function RegisterPage() {
         <Typography
           component="h2"
           sx={{
+            fontFamily: '"Black Ops One", Georgia, serif',
             fontSize: { xs: 34, md: 52 },
             lineHeight: 1.08,
             letterSpacing: '-.045em',
@@ -188,6 +189,7 @@ export function RegisterPage() {
         <Typography
           component="h1"
           sx={{
+            fontFamily: '"Black Ops One", Georgia, serif',
             fontSize: { xs: 28, sm: 34 },
             letterSpacing: '-.035em',
             lineHeight: 1.2,

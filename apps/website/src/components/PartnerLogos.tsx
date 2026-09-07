@@ -37,6 +37,7 @@ export function PartnerLogos() {
           <Typography
             component="h2"
             sx={{
+              fontFamily: '"Black Ops One", Georgia, serif',
               fontSize: { xs: 32, md: 40 },
               fontWeight: 700,
               letterSpacing: '-.04em',

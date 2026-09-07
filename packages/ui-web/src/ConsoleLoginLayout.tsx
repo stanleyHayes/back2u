@@ -114,6 +114,9 @@ export function ConsoleLoginLayout({
               <Typography
                 component="h2"
                 sx={{
+                  // `component` sets the element; the display face has to be
+                  // stated because MUI styles from `variant`, not `component`.
+                  fontFamily: '"Black Ops One", Georgia, serif',
                   fontSize: { xs: 30, md: 48, lg: 62 },
                   fontWeight: 500,
                   letterSpacing: '-.055em',
@@ -359,6 +362,7 @@ export function ConsoleLoginLayout({
               <Typography
                 component="h1"
                 sx={{
+                  fontFamily: '"Black Ops One", Georgia, serif',
                   fontSize: { xs: 32, lg: 38 },
                   fontWeight: 500,
                   lineHeight: 1.15,

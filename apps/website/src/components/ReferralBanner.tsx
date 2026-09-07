@@ -56,7 +56,12 @@ export function ReferralBanner() {
           </Typography>
           <Typography
             component="h2"
-            sx={{ fontSize: { xs: 28, md: 34 }, fontWeight: 700, letterSpacing: '-.035em' }}
+            sx={{
+              fontFamily: '"Black Ops One", Georgia, serif',
+              fontSize: { xs: 28, md: 34 },
+              fontWeight: 700,
+              letterSpacing: '-.035em',
+            }}
           >
             More people. More ways home.
           </Typography>

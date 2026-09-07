@@ -403,7 +403,12 @@ export function ItemDetailPage() {
             </Typography>
             <Typography
               variant="body1"
-              sx={{ whiteSpace: 'pre-wrap', color: 'text.secondary', lineHeight: 1.7 }}
+              sx={{
+                fontFamily: '"Black Ops One", Georgia, serif',
+                whiteSpace: 'pre-wrap',
+                color: 'text.secondary',
+                lineHeight: 1.7,
+              }}
             >
               {item.description || 'No description provided.'}
             </Typography>
@@ -445,6 +450,7 @@ export function ItemDetailPage() {
           <Typography
             component="h1"
             sx={{
+              fontFamily: '"Black Ops One", Georgia, serif',
               fontSize: { xs: 29, sm: 36 },
               fontWeight: 700,
               letterSpacing: '-.035em',
