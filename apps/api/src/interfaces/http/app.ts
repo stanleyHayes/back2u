@@ -101,10 +101,21 @@ export function buildApp(c: Container): Express {
   const previewRegex = env.CORS_PREVIEW_REGEX
     ? new RegExp(`^(?:${env.CORS_PREVIEW_REGEX})$`)
     : null;
+  // Vite bumps to the next free port whenever its configured one is taken, and a
+  // shifted port silently drops off the allow-list. The browser reports that as an
+  // opaque "Failed to fetch" with no CORS wording, which is near-impossible to
+  // diagnose from the app. Locally, trust any loopback origin; production is
+  // unchanged and still uses the explicit list.
+  const devLoopback =
+    env.NODE_ENV === 'production' ? null : /^http:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?$/;
   const corsDelegate: CorsOptionsDelegate = (req, cb) => {
     const origin = req.headers.origin;
     if (!origin) return cb(null, { origin: false });
-    if (allowList.includes(origin) || (previewRegex && previewRegex.test(origin))) {
+    if (
+      allowList.includes(origin) ||
+      (previewRegex && previewRegex.test(origin)) ||
+      (devLoopback && devLoopback.test(origin))
+    ) {
       return cb(null, { origin: true, credentials: true });
     }
     cb(null, { origin: false });
