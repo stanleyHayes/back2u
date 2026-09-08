@@ -3,8 +3,6 @@ import { Box, Container, Stack, Typography } from '@mui/material';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
-const INK = '#2E3D2F';
-
 /** Header/footer wrapper for sub-pages (legal, download, 404). */
 export function PageShell({
   children,
@@ -46,7 +44,7 @@ export function LegalProse({
       <Typography
         className="b2u-display"
         component="h1"
-        sx={{ mt: 2, fontSize: { xs: 36, md: 52 }, fontWeight: 600, color: INK }}
+        sx={{ mt: 2, fontSize: { xs: 36, md: 52 }, fontWeight: 600, color: 'text.primary' }}
       >
         {title}
       </Typography>
@@ -62,7 +60,7 @@ export function LegalProse({
             <Typography
               className="b2u-display"
               component="h2"
-              sx={{ fontSize: 24, fontWeight: 600, color: INK }}
+              sx={{ fontSize: 24, fontWeight: 600, color: 'text.primary' }}
             >
               {i + 1}. {s.heading}
             </Typography>

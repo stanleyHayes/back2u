@@ -81,7 +81,7 @@ export function RewardPartnersSection() {
             id="rewards-heading"
             className="b2u-display"
             component="h2"
-            sx={{ mt: 2, fontSize: { xs: 32, md: 50 }, fontWeight: 600, color: INK }}
+            sx={{ mt: 2, fontSize: { xs: 32, md: 50 }, fontWeight: 600, color: 'text.primary' }}
           >
             Spend your points where it counts
           </Typography>
@@ -158,7 +158,7 @@ export function RewardPartnersSection() {
                 />
                 <Typography
                   className="b2u-display"
-                  sx={{ fontSize: 20, fontWeight: 600, color: INK }}
+                  sx={{ fontSize: 20, fontWeight: 600, color: 'text.primary' }}
                   noWrap
                 >
                   {p.name}

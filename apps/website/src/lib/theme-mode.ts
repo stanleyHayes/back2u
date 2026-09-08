@@ -15,10 +15,21 @@ function read(): WebsiteMode {
   }
 }
 
+/** Mirrors the mode onto <html> so site.css can key its custom properties off it. */
+function stamp(next: WebsiteMode) {
+  try {
+    document.documentElement.dataset.b2uTheme = next;
+  } catch {
+    /* SSR / non-DOM */
+  }
+}
+
 let mode: WebsiteMode = read();
+stamp(mode);
 
 export function setThemeMode(next: WebsiteMode) {
   mode = next;
+  stamp(next);
   try {
     localStorage.setItem(KEY, next);
   } catch {

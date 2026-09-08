@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { PageShell } from '../components/PageShell';
 
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
-const INK = '#2E3D2F';
 
 export function NotFound() {
   return (
@@ -16,7 +15,7 @@ export function NotFound() {
             fontSize: { xs: 96, md: 140 },
             fontWeight: 600,
             lineHeight: 1,
-            color: INK,
+            color: 'text.primary',
             letterSpacing: '-0.04em',
           }}
         >
@@ -32,7 +31,7 @@ export function NotFound() {
         <Typography
           className="b2u-display"
           component="h1"
-          sx={{ mt: 2.5, fontSize: { xs: 28, md: 36 }, fontWeight: 600, color: INK }}
+          sx={{ mt: 2.5, fontSize: { xs: 28, md: 36 }, fontWeight: 600, color: 'text.primary' }}
         >
           This page wandered off.
         </Typography>

@@ -14,6 +14,21 @@
   --b2u-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+/* Dark mode. `theme-mode.ts` stamps data-b2u-theme on <html>; the attribute
+   selector outranks the bare :root above regardless of stylesheet order, which
+   a second plain `:root` block would not. */
+:root[data-b2u-theme='dark'] {
+  --paper: #1c231b;
+  --paper-raised: #263026;
+  --ink: #eaf3ed;
+  --ink-soft: rgba(210, 232, 222, 0.66);
+  --teal: #8fa893;
+  --teal-bright: #a8c4ab;
+  --marigold: #c9a46a;
+  --clay: #f08a4b;
+  --line: rgba(210, 232, 222, 0.12);
+}
+
 /* Fine film grain over everything for tactile, printed feel. */
 body::before {
   content: '';

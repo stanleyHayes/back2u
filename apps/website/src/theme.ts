@@ -12,7 +12,15 @@ export type WebsiteMode = 'light' | 'dark';
 // Shared brand accents
 const TEAL = '#40614A';
 const TEAL_BRIGHT = '#7E9A82';
+// Dark-mode primary: TEAL_BRIGHT is only 4.46:1 as text on the raised dark
+// surface. A half-step lighter clears AA everywhere it is used as text.
+const PRIMARY_DARK = '#8FA893';
 const MARIGOLD = '#8B6F4E';
+// Filled marigold surfaces carry cream text, and #8B6F4E only reaches 4.09:1
+// against it. This deeper tone clears AA at 5.11:1 without losing the gold.
+const MARIGOLD_DEEP = '#7A6044';
+// Marigold as TEXT on the always-dark footer needs to go the other way.
+const MARIGOLD_ON_DARK = '#C9A46A';
 const CLAY = '#C2410C';
 
 // Light ("paper") tokens
@@ -37,7 +45,7 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
   const textPrimary = dark ? CREAM : INK;
   const textSecondary = dark ? CREAM_SOFT : INK_SOFT;
   const divider = dark ? 'rgba(210,232,222,0.12)' : 'rgba(11, 61, 56, 0.12)';
-  const primaryMain = dark ? TEAL_BRIGHT : TEAL;
+  const primaryMain = dark ? PRIMARY_DARK : TEAL;
   const focusInk = dark ? CREAM : INK;
   const neuRaised = dark
     ? '10px 10px 24px rgba(10,15,9,0.78), -10px -10px 24px rgba(58,74,48,0.42)'
@@ -61,8 +69,19 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
   return createTheme({
     palette: {
       mode,
-      primary: { main: primaryMain, light: TEAL_BRIGHT, dark: '#0B5C55', contrastText: '#FAF8F3' },
-      secondary: { main: MARIGOLD, light: '#F3C969', dark: '#6F5940', contrastText: '#F2EFEA' },
+      primary: {
+        main: primaryMain,
+        light: TEAL_BRIGHT,
+        dark: '#0B5C55',
+        // Cream on the bright dark-mode green is only 2.9:1; ink on it is 6.6:1.
+        contrastText: dark ? '#16200F' : '#FAF8F3',
+      },
+      secondary: {
+        main: MARIGOLD_DEEP,
+        light: '#F3C969',
+        dark: '#6F5940',
+        contrastText: '#F2EFEA',
+      },
       error: { main: CLAY },
       success: { main: primaryMain },
       text: { primary: textPrimary, secondary: textSecondary },
@@ -90,6 +109,9 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
           // so a `Box component="button"` or a bare input silently drops off the
           // body face. Pull them back onto it.
           'button, input, select, textarea, optgroup': { fontFamily: 'inherit' },
+          // site.css utilities read these vars. They are re-declared here so the
+          // atmospheric layer tracks the mode; `:root[data-b2u-theme]` in site.css
+          // is what actually wins, this keeps the two definitions in one place.
           ':root': { colorScheme: mode },
           body: {
             backgroundColor: ground,

@@ -27,7 +27,8 @@ const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://
 const CONTACT_EMAIL =
   (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? 'hello@bak2me.com';
 const PAPER = '#F2EFEA';
-const MARIGOLD = '#8B6F4E';
+// The footer is dark in both modes, and #8B6F4E only reaches 3.03:1 on it.
+const MARIGOLD = '#C9A46A';
 const FOOTER_NEU_SHADOW = '7px 7px 15px #111B15, -7px -7px 15px #35483B';
 const FOOTER_NEU_INSET = 'inset 4px 4px 9px #111B15, inset -4px -4px 9px #35483B';
 const MUTED = '#BAC8BD';

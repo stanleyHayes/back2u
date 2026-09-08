@@ -304,7 +304,10 @@ function Ticker({ items }: { items: ItemPreview[] }) {
         borderBlock: '1px solid',
         borderColor: 'divider',
         py: 1.5,
-        bgcolor: 'rgba(250,248,243,0.5)',
+        // A translucent paper wash. Hardcoded, it stayed a light slab in dark
+        // mode while its text switched to cream — 2.95:1.
+        bgcolor: (t) =>
+          t.palette.mode === 'dark' ? 'rgba(38,48,38,0.55)' : 'rgba(250,248,243,0.5)',
       }}
     >
       <Box className="b2u-marquee">
@@ -335,15 +338,25 @@ function Ticker({ items }: { items: ItemPreview[] }) {
                   fontWeight: 700,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: it.kind === 'found' ? '#40614A' : '#C2410C',
+                  color: (t) =>
+                    t.palette.mode === 'dark'
+                      ? it.kind === 'found'
+                        ? '#93B097'
+                        : '#F08A4B'
+                      : it.kind === 'found'
+                        ? '#40614A'
+                        : '#C2410C',
                 }}
               >
                 {it.kind}
               </Typography>
-              <Typography component="span" sx={{ fontSize: 14, fontWeight: 600, color: INK }}>
+              <Typography
+                component="span"
+                sx={{ fontSize: 14, fontWeight: 600, color: 'text.primary' }}
+              >
                 {it.title}
               </Typography>
-              <Typography component="span" sx={{ fontSize: 14, color: '#3C544F' }}>
+              <Typography component="span" sx={{ fontSize: 14, color: 'text.secondary' }}>
                 · {it.place}
               </Typography>
               <Box
@@ -768,7 +781,14 @@ function LandingPage() {
                       placeItems: 'center',
                       fontSize: 30,
                       fontWeight: 600,
-                      color: i === 1 ? '#C2410C' : '#40614A',
+                      color: (t) =>
+                        t.palette.mode === 'dark'
+                          ? i === 1
+                            ? '#F08A4B'
+                            : '#93B097'
+                          : i === 1
+                            ? '#C2410C'
+                            : '#40614A',
                       position: 'relative',
                       zIndex: 1,
                     }}
@@ -777,7 +797,7 @@ function LandingPage() {
                   </Box>
                   <Typography
                     className="b2u-display"
-                    sx={{ mt: 2.5, fontSize: 24, fontWeight: 600, color: INK }}
+                    sx={{ mt: 2.5, fontSize: 24, fontWeight: 600, color: 'text.primary' }}
                   >
                     {s.title}
                   </Typography>
@@ -842,7 +862,7 @@ function LandingPage() {
                 </Typography>
                 <Typography
                   className="b2u-display"
-                  sx={{ mt: 1.5, fontSize: 22, fontWeight: 600, color: INK }}
+                  sx={{ mt: 1.5, fontSize: 22, fontWeight: 600, color: 'text.primary' }}
                 >
                   {f.title}
                 </Typography>
