@@ -7,6 +7,7 @@ import {
   FormControl,
   MenuItem,
   InputAdornment,
+  Pagination,
   Select,
   Stack,
   TextField,
@@ -32,7 +33,7 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import type { ItemDTO, ItemKind } from '@back2u/shared-types';
 import { EmptyState, CardGridSkeleton, neuShadow } from '@back2u/ui-web';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,6 +44,8 @@ import { ItemCard } from '../components/ItemCard.js';
 // Was hardcoded to '#40614A' / '#2E3D2F' — a near-black forest green that
 // vanished against the dark-mode menu surface while the lighter description
 // beneath it stayed readable. Both now resolve from the theme.
+const PAGE_SIZE = 24;
+
 const CAT_ICON_COLOR = 'primary.main';
 const CAT_LABEL_COLOR = 'text.primary';
 
@@ -215,6 +218,7 @@ export function FeedPage() {
   const [city, setCity] = useState('');
   const [dateRange, setDateRange] = useState<DateRange>('all');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const id = setTimeout(() => setDebouncedSearch(search), 300);
@@ -249,14 +253,27 @@ export function FeedPage() {
     return f;
   }, [kind, debouncedSearch, category, city, dateRange]);
 
+  // `filters` is a fresh object whenever any filter changes, so this also
+  // covers the case where the current page no longer exists in the new results.
+  useEffect(() => {
+    setPage(1);
+  }, [filters]);
+
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ['items', filters],
+    queryKey: ['items', filters, page],
     queryFn: () =>
       api.listItems({
         ...filters,
-        pageSize: 24,
+        page,
+        pageSize: PAGE_SIZE,
       }),
+    // Without this the grid unmounts to a skeleton on every page change and the
+    // scroll position jumps; keeping the previous page makes paging feel instant.
+    placeholderData: keepPreviousData,
   });
+
+  const totalPages = data ? Math.max(1, Math.ceil(data.total / data.pageSize)) : 1;
+  const resultsRef = useRef<HTMLDivElement | null>(null);
 
   const { data: bookmarks } = useQuery({
     queryKey: ['bookmarks'],
@@ -765,29 +782,56 @@ export function FeedPage() {
           }
         />
       ) : (
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-            gap: 3,
-          }}
-        >
-          {data?.items.map((it) => (
-            <ItemCard
-              key={it.id}
-              item={it}
-              isBookmarked={bookmarkedIds.has(it.id)}
-              onToggleBookmark={
-                user
-                  ? () =>
-                      toggleBookmark.mutate({
-                        itemId: it.id,
-                        action: bookmarkedIds.has(it.id) ? 'remove' : 'add',
-                      })
-                  : undefined
-              }
-            />
-          ))}
+        <Box ref={resultsRef} sx={{ scrollMarginTop: 96 }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+              gap: 3,
+            }}
+          >
+            {data?.items.map((it) => (
+              <ItemCard
+                key={it.id}
+                item={it}
+                isBookmarked={bookmarkedIds.has(it.id)}
+                onToggleBookmark={
+                  user
+                    ? () =>
+                        toggleBookmark.mutate({
+                          itemId: it.id,
+                          action: bookmarkedIds.has(it.id) ? 'remove' : 'add',
+                        })
+                    : undefined
+                }
+              />
+            ))}
+          </Box>
+
+          {totalPages > 1 && (
+            <Stack
+              spacing={1}
+              sx={{ mt: 4, alignItems: 'center' }}
+              aria-label="Search results pages"
+            >
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={(_, next) => {
+                  setPage(next);
+                  resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                color="primary"
+                shape="rounded"
+                siblingCount={1}
+                boundaryCount={1}
+              />
+              <Typography variant="caption" color="text.secondary">
+                Page {page} of {totalPages} · {data?.total ?? 0} item
+                {data?.total === 1 ? '' : 's'}
+              </Typography>
+            </Stack>
+          )}
         </Box>
       )}
     </Stack>
