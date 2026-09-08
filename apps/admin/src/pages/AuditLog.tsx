@@ -1,3 +1,9 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  workspacePanel,
+  queueTable,
+} from '../components/AdminWorkspace.js';
 import { useMemo, useState } from 'react';
 import {
   Box,
@@ -26,7 +32,7 @@ import { TableChart, Timeline, Download, FilterAlt, FilterAltOff } from '@mui/ic
 import { useQuery } from '@tanstack/react-query';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import type { AuditLogDTO, UserDTO } from '@back2u/shared-types';
-import { EmptyState, PageHeader, TableSkeleton } from '@back2u/ui-web';
+import { EmptyState, TableSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -114,7 +120,7 @@ function escapeCsvCell(val: string): string {
   return val;
 }
 
-export function AuditLogPage() {
+function AuditLogPageContent() {
   const [view, setView] = useState<ViewMode>('timeline');
   const [actionFilter, setActionFilter] = useState<string>('All');
   const [entityFilter, setEntityFilter] = useState<string>('All');
@@ -125,7 +131,9 @@ export function AuditLogPage() {
 
   const { data: users } = useQuery({
     queryKey: ['admin-users'],
-    queryFn: () => api.listUsers({ limit: 1000 }),
+    // 200 is the maximum the endpoint accepts; asking for more is a 422,
+    // which left this lookup map empty and the table showing raw ids.
+    queryFn: () => api.listUsers({ limit: 200 }),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -262,7 +270,12 @@ export function AuditLogPage() {
         title="Audit log"
         description="Every admin action across the platform — filter by action, entity, date or actor."
         actions={
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            sx={{ alignItems: 'center', flexWrap: 'wrap' }}
+          >
             <ToggleButtonGroup
               value={view}
               exclusive
@@ -321,11 +334,8 @@ export function AuditLogPage() {
           flexWrap: 'wrap',
           alignItems: 'center',
           gap: 1.5,
-          p: 1.75,
-          borderRadius: 2.5,
-          border: 1,
-          borderColor: 'divider',
-          bgcolor: 'background.paper',
+          ...workspacePanel,
+          boxShadow: 'var(--workspace-inset)',
         }}
       >
         <Stack
@@ -346,10 +356,11 @@ export function AuditLogPage() {
           </Typography>
         </Stack>
         <FormControl size="small" sx={{ minWidth: 140 }}>
-          <InputLabel>Action</InputLabel>
+          <InputLabel id="audit-action-label">Action</InputLabel>
           <Select
             value={actionFilter}
             label="Action"
+            labelId="audit-action-label"
             onChange={(e) => setActionFilter(e.target.value)}
           >
             <MenuItem value="All">All</MenuItem>
@@ -361,10 +372,11 @@ export function AuditLogPage() {
         </FormControl>
 
         <FormControl size="small" sx={{ minWidth: 180 }}>
-          <InputLabel>Entity type</InputLabel>
+          <InputLabel id="audit-entity-label">Entity type</InputLabel>
           <Select
             value={entityFilter}
             label="Entity type"
+            labelId="audit-entity-label"
             onChange={(e) => setEntityFilter(e.target.value)}
           >
             {entityOptions.map((e) => (
@@ -376,10 +388,11 @@ export function AuditLogPage() {
         </FormControl>
 
         <FormControl size="small" sx={{ minWidth: 150 }}>
-          <InputLabel>Date range</InputLabel>
+          <InputLabel id="audit-date-label">Date range</InputLabel>
           <Select
             value={dateRange}
             label="Date range"
+            labelId="audit-date-label"
             onChange={(e) => setDateRange(e.target.value)}
           >
             <MenuItem value="All">All time</MenuItem>
@@ -506,12 +519,12 @@ function TimelineRow({
   const color = getActionDotColor(entry.action);
 
   return (
-    <Stack direction="row" spacing={2} sx={{ alignItems: 'flex-start' }}>
+    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ alignItems: 'flex-start' }}>
       {/* Timestamp */}
       <Box
         sx={{
-          width: { xs: 80, md: 120 },
-          textAlign: 'right',
+          width: { xs: 'auto', sm: 80, md: 120 },
+          textAlign: { xs: 'left', sm: 'right' },
           pt: 1.5,
           flexShrink: 0,
         }}
@@ -529,7 +542,7 @@ function TimelineRow({
           position: 'relative',
           width: 24,
           flexShrink: 0,
-          display: 'flex',
+          display: { xs: 'none', sm: 'flex' },
           justifyContent: 'center',
         }}
       >
@@ -559,7 +572,16 @@ function TimelineRow({
       </Box>
 
       {/* Content */}
-      <Box sx={{ flex: 1, pb: 2 }}>
+      <Box
+        sx={{
+          flex: 1,
+          minWidth: 0,
+          width: { xs: '100%', sm: 'auto' },
+          pb: 2,
+          '& .MuiChip-root': { maxWidth: '100%', height: 'auto', minHeight: 24 },
+          '& .MuiChip-label': { whiteSpace: 'normal', overflowWrap: 'anywhere', py: 0.5 },
+        }}
+      >
         <Card variant="outlined">
           <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
             <Stack
@@ -663,7 +685,7 @@ function TableView({
   }
 
   return (
-    <Box sx={{ overflowX: 'auto' }}>
+    <Box sx={queueTable}>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -741,5 +763,13 @@ function TableView({
         </TableBody>
       </Table>
     </Box>
+  );
+}
+
+export function AuditLogPage() {
+  return (
+    <AdminWorkspace>
+      <AuditLogPageContent />
+    </AdminWorkspace>
   );
 }

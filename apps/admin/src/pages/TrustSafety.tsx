@@ -1,3 +1,9 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+  queueTable,
+} from '../components/AdminWorkspace.js';
 import { useMemo, useState } from 'react';
 import {
   Alert,
@@ -25,7 +31,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { RiskAssessmentDTO, RiskReviewStatus, UserDTO } from '@back2u/shared-types';
 import PolicyOutlinedIcon from '@mui/icons-material/PolicyOutlined';
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
-import { EmptyState, PageHeader, TableSkeleton } from '@back2u/ui-web';
+import { EmptyState, TableSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -86,7 +92,7 @@ const DECISIONS: {
   },
 ];
 
-export function TrustSafetyPage() {
+function TrustSafetyPageContent() {
   const qc = useQueryClient();
   const [selected, setSelected] = useState<RiskAssessmentDTO | null>(null);
   const [decision, setDecision] = useState<Decision | null>(null);
@@ -106,7 +112,9 @@ export function TrustSafetyPage() {
   // needs to see who these people actually are. Same join the audit log uses.
   const { data: users } = useQuery({
     queryKey: ['admin-users'],
-    queryFn: () => api.listUsers({ limit: 1000 }),
+    // 200 is the maximum the endpoint accepts; asking for more is a 422,
+    // which left this lookup map empty and the table showing raw ids.
+    queryFn: () => api.listUsers({ limit: 200 }),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -151,8 +159,14 @@ export function TrustSafetyPage() {
     <Stack spacing={3}>
       <PageHeader
         icon={<PolicyOutlinedIcon />}
-        title="Trust & Safety"
-        description="Recoveries the anti-collusion engine held for a human decision. Scores and rule weights are never shown outside this console."
+        title="Trust & safety"
+        description="Review flagged recoveries, understand the risk signals and make a decision on held rewards."
+      />
+
+      <QueueSummary
+        count={isLoading || isError ? undefined : data?.items.length}
+        label="Recoveries awaiting review"
+        description="Latest 50 cases. Review the signals and participants before releasing or reversing rewards."
       />
 
       {isLoading ? (
@@ -172,7 +186,7 @@ export function TrustSafetyPage() {
           description="No recovery is currently held for review. Low and medium-risk recoveries clear on their own."
         />
       ) : (
-        <Box sx={{ overflowX: 'auto' }}>
+        <Box sx={queueTable}>
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -242,7 +256,23 @@ export function TrustSafetyPage() {
         </Box>
       )}
 
-      <Dialog open={selected !== null} onClose={closeDialog} maxWidth="sm" fullWidth>
+      <Dialog
+        slotProps={{
+          paper: {
+            sx: {
+              bgcolor: 'background.default',
+              borderRadius: '24px',
+              backgroundImage: 'none',
+              '& .MuiDialogTitle-root': { fontFamily: 'Outfit, sans-serif', fontSize: 24 },
+              '& .MuiDialogActions-root': { p: 2.5, flexWrap: 'wrap', gap: 1 },
+            },
+          },
+        }}
+        open={selected !== null}
+        onClose={closeDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Review recovery</DialogTitle>
         {review.isPending ? <LinearProgress /> : null}
         <DialogContent dividers>
@@ -284,16 +314,29 @@ export function TrustSafetyPage() {
 
               <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
                 {DECISIONS.map((d) => (
-                  <Tooltip key={d.value} title={d.help}>
+                  <Box key={d.value} sx={{ width: '100%' }}>
                     <Button
                       size="small"
                       variant={decision === d.value ? 'contained' : 'outlined'}
                       color={d.color === 'inherit' ? 'inherit' : d.color}
+                      aria-pressed={decision === d.value}
+                      disabled={review.isPending}
+                      fullWidth
+                      sx={{
+                        justifyContent: 'flex-start',
+                        textAlign: 'left',
+                        p: 2,
+                        borderRadius: '14px',
+                        textTransform: 'none',
+                      }}
                       onClick={() => setDecision(d.value)}
                     >
-                      {d.label}
+                      <Box>
+                        <Typography sx={{ fontWeight: 600, fontSize: 14 }}>{d.label}</Typography>
+                        <Typography sx={{ fontSize: 12, mt: 0.5 }}>{d.help}</Typography>
+                      </Box>
                     </Button>
-                  </Tooltip>
+                  </Box>
                 ))}
               </Stack>
 
@@ -341,5 +384,13 @@ export function TrustSafetyPage() {
         <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
       </Snackbar>
     </Stack>
+  );
+}
+
+export function TrustSafetyPage() {
+  return (
+    <AdminWorkspace>
+      <TrustSafetyPageContent />
+    </AdminWorkspace>
   );
 }
