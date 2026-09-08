@@ -290,7 +290,6 @@ export function Pricing() {
                   </Typography>
                   <Typography
                     sx={{
-                      fontFamily: '"Black Ops One", Georgia, serif',
                       fontSize: 14,
                       lineHeight: 1.6,
                       opacity: 0.75,

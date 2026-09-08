@@ -88,6 +88,10 @@ const baseTokens: ThemeOptions = {
     // Global keyframes + a subtle motion baseline, shared by every app.
     MuiCssBaseline: {
       styleOverrides: {
+        // The UA stylesheet gives form controls their own font (Arial in Chrome),
+        // so a `Box component="button"` or a bare input silently drops off the
+        // body face. Pull them back onto it.
+        'button, input, select, textarea, optgroup': { fontFamily: 'inherit' },
         '@keyframes b2uFadeUp': {
           from: { opacity: 0, transform: 'translateY(10px)' },
           to: { opacity: 1, transform: 'none' },

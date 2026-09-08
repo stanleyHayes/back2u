@@ -32,7 +32,7 @@ export function Download() {
         </Typography>
 
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-          <AppStoreBadges tone="dark" />
+          <AppStoreBadges />
         </Box>
 
         {/* Phone mock */}

@@ -86,6 +86,10 @@ export function makeWebsiteTheme(mode: WebsiteMode) {
     components: {
       MuiCssBaseline: {
         styleOverrides: {
+          // The UA stylesheet gives form controls their own font (Arial in Chrome),
+          // so a `Box component="button"` or a bare input silently drops off the
+          // body face. Pull them back onto it.
+          'button, input, select, textarea, optgroup': { fontFamily: 'inherit' },
           ':root': { colorScheme: mode },
           body: {
             backgroundColor: ground,

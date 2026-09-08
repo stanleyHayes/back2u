@@ -302,7 +302,6 @@ export function Footer() {
             ))}
           </Stack>
           <Typography
-            className="b2u-display"
             sx={{
               fontStyle: 'italic',
               fontSize: 14,

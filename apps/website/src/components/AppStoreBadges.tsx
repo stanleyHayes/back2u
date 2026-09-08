@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 
 // Until real store listings exist, badges point at the website's own /download page.
 const APP_STORE_URL = (import.meta.env.VITE_APP_STORE_URL as string | undefined) ?? '/download';
@@ -89,27 +89,40 @@ const PlayMark = (
   </svg>
 );
 
-export function AppStoreBadges({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
+/**
+ * `tone` describes the SURFACE the badges sit on, not the badges themselves —
+ * they are always dark green, so the neumorphic highlight has to match the
+ * ground behind them or it reads as a glow rather than a light source.
+ *
+ * It now defaults to the active theme instead of always `'light'`. The old
+ * default painted a near-opaque white highlight, which was correct on the
+ * cream page but became a bright halo the moment the site was switched to
+ * dark mode. Pass `tone` explicitly only for a section that is inverted
+ * relative to the theme.
+ */
+export function AppStoreBadges({ tone }: { tone?: 'light' | 'dark' } = {}) {
+  const { palette } = useTheme();
+  const resolved = tone ?? (palette.mode === 'dark' ? 'dark' : 'light');
   return (
     <Stack
       direction="row"
       spacing={1.5}
       useFlexGap
-      sx={{ flexWrap: 'wrap', opacity: tone === 'dark' ? 1 : 0.98 }}
+      sx={{ flexWrap: 'wrap', opacity: resolved === 'dark' ? 1 : 0.98 }}
     >
       <Badge
         href={APP_STORE_URL}
         eyebrow="Download on the"
         label="App Store"
         icon={AppleMark}
-        tone={tone}
+        tone={resolved}
       />
       <Badge
         href={PLAY_STORE_URL}
         eyebrow="Get it on"
         label="Google Play"
         icon={PlayMark}
-        tone={tone}
+        tone={resolved}
       />
     </Stack>
   );
