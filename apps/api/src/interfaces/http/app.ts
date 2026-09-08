@@ -116,10 +116,24 @@ export function buildApp(c: Container): Express {
       (previewRegex && previewRegex.test(origin)) ||
       (devLoopback && devLoopback.test(origin))
     ) {
-      return cb(null, { origin: true, credentials: true });
+      // A preflight answer names one specific origin. Locally the console ports
+      // move around and several apps share a browser profile, so a preflight
+      // cached against one of them resurfaces against another as
+      // "ACAO 'http://localhost:5175' is not equal to the supplied origin".
+      // Opting out of the preflight cache in development costs one OPTIONS per
+      // request and removes the whole class.
+      return cb(null, { origin: true, credentials: true, maxAge: devLoopback ? 0 : 600 });
     }
     cb(null, { origin: false });
   };
+  // `cors` answers the preflight itself, so this has to run ahead of it. The
+  // reply varies by origin and must never be held by a shared cache.
+  app.use((req, res, next) => {
+    if (req.method === 'OPTIONS' && req.headers['access-control-request-method']) {
+      res.setHeader('Cache-Control', 'no-store');
+    }
+    next();
+  });
   app.use(cors(corsDelegate));
 
   app.use(tracingMiddleware);
