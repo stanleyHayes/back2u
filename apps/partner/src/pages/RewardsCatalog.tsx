@@ -1,3 +1,9 @@
+import {
+  PartnerWorkspace,
+  WorkspaceHeader as PageHeader,
+  workspacePanel,
+  workspaceHeading,
+} from '../components/PartnerWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -14,11 +20,6 @@ import {
   Paper,
   Snackbar,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   TextField,
   Tooltip,
   Typography,
@@ -38,7 +39,7 @@ import {
   TRUST_LEVEL_LABELS,
 } from '@back2u/shared-types';
 import LoyaltyOutlinedIcon from '@mui/icons-material/LoyaltyOutlined';
-import { EmptyState, ListSkeleton, PageHeader } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
@@ -58,7 +59,7 @@ const STATUS_HELP: Record<RewardOfferStatus, string> = {
   ended: 'Finished. An ended campaign cannot be reopened.',
 };
 
-export function RewardsCatalogPage() {
+function RewardsCatalogContent() {
   const qc = useQueryClient();
   const institutionId = useAuth((s) => s.user)?.institutionId;
   const [editing, setEditing] = useState<RewardOfferDTO | null>(null);
@@ -128,23 +129,44 @@ export function RewardsCatalogPage() {
       />
 
       {stats ? (
-        <Paper variant="outlined" sx={{ p: 2 }}>
-          <Stack direction="row" spacing={3} useFlexGap sx={{ flexWrap: 'wrap' }}>
+        <Paper sx={{ ...workspacePanel }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: 'repeat(2, minmax(0, 1fr))',
+                lg: 'repeat(4, minmax(0, 1fr))',
+              },
+              gap: 2,
+            }}
+          >
             <Stat label="Live rewards" value={stats.liveOffers} />
             <Stat label="Waiting to collect" value={stats.totalReserved} />
             <Stat label="Collected" value={stats.totalRedeemed} />
             <Stat label="Points spent with you" value={stats.totalPointsSpent.toLocaleString()} />
-          </Stack>
+          </Box>
         </Paper>
       ) : null}
 
+      {offers.isError && (
+        <Alert severity="error" action={<Button onClick={() => offers.refetch()}>Retry</Button>}>
+          Rewards could not be loaded.
+        </Alert>
+      )}
+      {analytics.isError && (
+        <Alert severity="error" action={<Button onClick={() => analytics.refetch()}>Retry</Button>}>
+          Reward activity could not be loaded.
+        </Alert>
+      )}
       <Card variant="outlined">
         <CardContent>
           <Stack
             direction="row"
             sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}
           >
-            <Typography variant="subtitle1">Your rewards</Typography>
+            <Typography component="h2" sx={{ ...workspaceHeading, fontSize: 23 }}>
+              Your rewards
+            </Typography>
             <Button size="small" variant="contained" onClick={() => setCreating(true)}>
               New reward
             </Button>
@@ -160,89 +182,131 @@ export function RewardsCatalogPage() {
               actions={[{ label: 'Create your first reward', onClick: () => setCreating(true) }]}
             />
           ) : (
-            <Box sx={{ overflowX: 'auto' }}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Reward</TableCell>
-                    <TableCell>Cost</TableCell>
-                    <TableCell>Stock</TableCell>
-                    <TableCell>Claimed</TableCell>
-                    <TableCell>Collected</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell align="right">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {list.map((offer) => {
-                    const s = stats?.offers.find((o) => o.offerId === offer.id);
-                    return (
-                      <TableRow key={offer.id} hover>
-                        <TableCell>
-                          <Typography variant="body2">{offer.title}</Typography>
-                          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                            {REWARD_CATEGORY_LABELS[offer.category]}
-                            {offer.minTrustLevel
-                              ? ` · ${TRUST_LEVEL_LABELS[offer.minTrustLevel]}+`
-                              : ''}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>{offer.pointsCost.toLocaleString()} pts</TableCell>
-                        <TableCell>
-                          {offer.remainingInventory === null
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, minmax(0, 1fr))' },
+                gap: 2.5,
+              }}
+            >
+              {list.map((offer) => {
+                const activity = stats?.offers.find((entry) => entry.offerId === offer.id);
+                return (
+                  <Box
+                    key={offer.id}
+                    sx={{
+                      p: 2.5,
+                      borderRadius: '20px',
+                      boxShadow: 'var(--workspace-inset)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      minWidth: 0,
+                    }}
+                  >
+                    <Stack
+                      direction="row"
+                      sx={{ justifyContent: 'space-between', alignItems: 'center', gap: 1, mb: 2 }}
+                    >
+                      <Typography
+                        sx={{ color: 'var(--workspace-green)', fontSize: 11, fontWeight: 600 }}
+                      >
+                        {REWARD_CATEGORY_LABELS[offer.category]}
+                      </Typography>
+                      <Tooltip title={STATUS_HELP[offer.status]}>
+                        <Chip
+                          label={offer.status}
+                          size="small"
+                          color={STATUS_COLOR[offer.status]}
+                        />
+                      </Tooltip>
+                    </Stack>
+                    <Typography
+                      component="h3"
+                      sx={{ ...workspaceHeading, fontSize: 22, overflowWrap: 'anywhere' }}
+                    >
+                      {offer.title}
+                    </Typography>
+                    <Typography
+                      sx={{ color: 'text.secondary', fontSize: 13, lineHeight: 1.7, mt: 1 }}
+                    >
+                      {offer.description}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        ...workspaceHeading,
+                        fontSize: 28,
+                        color: 'var(--workspace-amber)',
+                        mt: 2,
+                      }}
+                    >
+                      {offer.pointsCost.toLocaleString()}{' '}
+                      <Box component="span" sx={{ fontSize: 12 }}>
+                        pts
+                      </Box>
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary', fontSize: 12, mt: 0.5 }}>
+                      {offer.minTrustLevel
+                        ? `${TRUST_LEVEL_LABELS[offer.minTrustLevel]} and above`
+                        : 'Open to everyone'}
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                        gap: 1,
+                        mt: 2.5,
+                        py: 2,
+                        borderTop: '1px solid',
+                        borderBottom: '1px solid',
+                        borderColor: 'divider',
+                      }}
+                    >
+                      <Stat
+                        label="Stock left"
+                        value={
+                          offer.remainingInventory === null
                             ? 'Unlimited'
-                            : `${offer.remainingInventory} / ${offer.totalInventory}`}
-                        </TableCell>
-                        <TableCell>{s?.reserved ?? 0}</TableCell>
-                        <TableCell>
-                          {s?.redeemed ?? 0}
-                          {s?.collectionRate !== null && s?.collectionRate !== undefined ? (
-                            <Typography variant="caption" sx={{ color: 'text.secondary', ml: 0.5 }}>
-                              ({Math.round(s.collectionRate * 100)}%)
-                            </Typography>
-                          ) : null}
-                        </TableCell>
-                        <TableCell>
-                          <Tooltip title={STATUS_HELP[offer.status]}>
-                            <Chip
-                              size="small"
-                              label={offer.status}
-                              color={STATUS_COLOR[offer.status]}
-                            />
-                          </Tooltip>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Stack direction="row" spacing={0.5} sx={{ justifyContent: 'flex-end' }}>
-                            {offer.status === 'draft' || offer.status === 'paused' ? (
-                              <Button
-                                size="small"
-                                onClick={() => setStatus.mutate({ id: offer.id, status: 'live' })}
-                                disabled={setStatus.isPending}
-                              >
-                                Publish
-                              </Button>
-                            ) : null}
-                            {offer.status === 'live' ? (
-                              <Button
-                                size="small"
-                                onClick={() => setStatus.mutate({ id: offer.id, status: 'paused' })}
-                                disabled={setStatus.isPending}
-                              >
-                                Pause
-                              </Button>
-                            ) : null}
-                            {offer.status !== 'ended' ? (
-                              <Button size="small" onClick={() => setEditing(offer)}>
-                                Edit
-                              </Button>
-                            ) : null}
-                          </Stack>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
+                            : `${offer.remainingInventory} / ${offer.totalInventory}`
+                        }
+                      />
+                      <Stat label="Claimed" value={activity?.reserved ?? '—'} />
+                      <Stat label="Collected" value={activity?.redeemed ?? '—'} />
+                    </Box>
+                    <Typography sx={{ color: 'text.secondary', fontSize: 11, mt: 1.5 }}>
+                      {STATUS_HELP[offer.status]}
+                      {activity?.collectionRate != null
+                        ? ` Collection rate: ${Math.round(activity.collectionRate * 100)}%.`
+                        : ''}
+                    </Typography>
+                    <Stack direction="row" spacing={1} sx={{ mt: 'auto', pt: 2, flexWrap: 'wrap' }}>
+                      {(offer.status === 'draft' || offer.status === 'paused') && (
+                        <Button
+                          size="small"
+                          variant="contained"
+                          disabled={setStatus.isPending}
+                          onClick={() => setStatus.mutate({ id: offer.id, status: 'live' })}
+                        >
+                          Publish
+                        </Button>
+                      )}
+                      {offer.status === 'live' && (
+                        <Button
+                          size="small"
+                          disabled={setStatus.isPending}
+                          onClick={() => setStatus.mutate({ id: offer.id, status: 'paused' })}
+                        >
+                          Pause
+                        </Button>
+                      )}
+                      {offer.status !== 'ended' && (
+                        <Button size="small" onClick={() => setEditing(offer)}>
+                          Edit reward
+                        </Button>
+                      )}
+                    </Stack>
+                  </Box>
+                );
+              })}
             </Box>
           )}
         </CardContent>
@@ -266,7 +330,7 @@ export function RewardsCatalogPage() {
 
       <Snackbar
         open={snackbar.open}
-        autoHideDuration={6000}
+        autoHideDuration={snackbar.severity === 'error' ? null : 6000}
         onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
       >
         <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
@@ -281,7 +345,9 @@ function Stat(props: { label: string; value: number | string }) {
       <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
         {props.label}
       </Typography>
-      <Typography variant="h6">{props.value}</Typography>
+      <Typography sx={{ ...workspaceHeading, fontSize: 24, mt: 0.5, overflowWrap: 'anywhere' }}>
+        {props.value}
+      </Typography>
     </Box>
   );
 }
@@ -321,7 +387,23 @@ function OfferDialog(props: {
     form.title.trim().length >= 2 && form.description.trim().length >= 2 && form.pointsCost > 0;
 
   return (
-    <Dialog open={props.open} onClose={props.onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: '24px',
+            bgcolor: 'background.default',
+            '& .MuiDialogTitle-root': { ...workspaceHeading, fontSize: 24 },
+            '& .MuiOutlinedInput-root': { borderRadius: '13px' },
+            '& .MuiDialogActions-root': { p: 2.5 },
+          },
+        },
+      }}
+      open={props.open}
+      onClose={props.onClose}
+      maxWidth="sm"
+      fullWidth
+    >
       <DialogTitle>{offer ? 'Edit reward' : 'New reward'}</DialogTitle>
       <DialogContent dividers>
         <Stack spacing={2} sx={{ mt: 0.5 }}>
@@ -500,4 +582,12 @@ function fromOffer(o: RewardOfferDTO): CreateRewardOfferInput {
     reservationHours: o.reservationHours,
     termsUrl: o.termsUrl,
   };
+}
+
+export function RewardsCatalogPage() {
+  return (
+    <PartnerWorkspace>
+      <RewardsCatalogContent />
+    </PartnerWorkspace>
+  );
 }

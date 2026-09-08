@@ -1,3 +1,9 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+  queueTable,
+} from '../components/AdminWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -32,7 +38,7 @@ import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutlined';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import { IconButton, Tooltip } from '@mui/material';
-import { EmptyState, PageHeader } from '@back2u/ui-web';
+import { EmptyState } from '@back2u/ui-web';
 
 import { TRUST_LEVEL_LABELS } from '@back2u/shared-types';
 
@@ -57,7 +63,7 @@ const ROLE_COLORS: Record<
   super_admin: 'error',
 };
 
-export function UsersPage() {
+function UsersPageContent() {
   const qc = useQueryClient();
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
@@ -75,7 +81,7 @@ export function UsersPage() {
     severity: 'success',
   });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin-users', page, rowsPerPage, search],
     queryFn: () =>
       api.listUsers({
@@ -185,26 +191,44 @@ export function UsersPage() {
     <Stack spacing={3}>
       <PageHeader
         icon={<GroupOutlinedIcon />}
-        title="User Management"
+        title="People & accounts"
         description="Search accounts, manage roles, and ban, suspend or reactivate users."
       />
 
+      <QueueSummary
+        count={isLoading || isError ? undefined : data?.length}
+        label="Accounts on this page"
+        description="Search the directory to review account access, roles, points and trust."
+      />
       <TextField
         label="Search by name or email"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
           setPage(0);
+          setSelectedIds(new Set());
         }}
         size="small"
-        sx={{ maxWidth: 400 }}
+        sx={{ maxWidth: 560, width: '100%' }}
       />
 
       {updateStatus.isError && <Alert severity="error">Failed to update user status.</Alert>}
       {updateRoles.isError && <Alert severity="error">Failed to update user roles.</Alert>}
 
+      {isError && (
+        <Alert
+          severity="error"
+          action={
+            <Button color="inherit" onClick={() => void refetch()}>
+              Retry
+            </Button>
+          }
+        >
+          Could not load this directory. Please try again.
+        </Alert>
+      )}
       {selectedIds.size > 0 && (
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
           <Button
             variant="contained"
             color="error"
@@ -233,7 +257,7 @@ export function UsersPage() {
         </Stack>
       )}
 
-      {!isLoading && items.length === 0 ? (
+      {!isLoading && !isError && items.length === 0 ? (
         <EmptyState
           tone="teal"
           icon={<GroupOutlinedIcon />}
@@ -241,12 +265,13 @@ export function UsersPage() {
           description="No accounts match this search. Try a different name or email."
         />
       ) : (
-        <Box sx={{ overflowX: 'auto' }}>
+        <Box sx={queueTable}>
           <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
+                    slotProps={{ input: { 'aria-label': 'Select all visible records' } }}
                     checked={allSelected}
                     indeterminate={someSelected}
                     onChange={toggleSelectAll}
@@ -278,6 +303,7 @@ export function UsersPage() {
                 <TableRow key={user.id} hover>
                   <TableCell padding="checkbox">
                     <Checkbox
+                      slotProps={{ input: { 'aria-label': `Select ${user.name}` } }}
                       checked={selectedIds.has(user.id)}
                       onChange={() => toggleSelect(user.id)}
                       disabled={processing}
@@ -382,6 +408,7 @@ export function UsersPage() {
           onRowsPerPageChange={(e) => {
             setRowsPerPage(Number(e.target.value));
             setPage(0);
+            setSelectedIds(new Set());
           }}
           rowsPerPageOptions={[5, 10, 25]}
         />
@@ -432,5 +459,13 @@ export function UsersPage() {
         </Alert>
       </Snackbar>
     </Stack>
+  );
+}
+
+export function UsersPage() {
+  return (
+    <AdminWorkspace>
+      <UsersPageContent />
+    </AdminWorkspace>
   );
 }

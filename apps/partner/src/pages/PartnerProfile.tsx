@@ -18,22 +18,19 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import { useQuery } from '@tanstack/react-query';
-import { PageHeader } from '@back2u/ui-web';
+import {
+  PartnerWorkspace,
+  WorkspaceHeader as PageHeader,
+  workspacePanel,
+} from '../components/PartnerWorkspace.js';
 
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { uploadImageUrl } from '../lib/cloudinary-upload.js';
 
 const TEAL = '#A8B5A0';
-const MARIGOLD = '#8B6F4E';
-const DISPLAY = '"Black Ops One", Georgia, serif';
-const PANEL = {
-  p: { xs: 2.5, md: 3 },
-  borderRadius: 2,
-  border: 1,
-  borderColor: 'divider',
-  bgcolor: 'background.paper',
-};
+const DISPLAY = 'Outfit, sans-serif';
+const PANEL = workspacePanel;
 
 function MetaRow({
   label,
@@ -75,7 +72,7 @@ function MetaRow({
   );
 }
 
-export function PartnerProfilePage() {
+function PartnerProfileContent() {
   const user = useAuth((s) => s.user);
   const { data: inst } = useQuery({
     queryKey: ['my-institution', user?.institutionId],
@@ -151,10 +148,13 @@ export function PartnerProfilePage() {
   };
 
   const copyId = () => {
-    navigator.clipboard?.writeText(user.id).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    });
+    navigator.clipboard
+      .writeText(user.id)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      })
+      .catch(() => setFeedback({ ok: false, msg: 'Could not copy your ID. Please try again.' }));
   };
 
   return (
@@ -170,20 +170,19 @@ export function PartnerProfilePage() {
       {/* Identity banner */}
       <Box
         sx={{
-          borderRadius: 2,
+          borderRadius: '24px',
           overflow: 'hidden',
-          border: 1,
-          borderColor: 'divider',
+          boxShadow: 'var(--workspace-raised)',
           mb: 3,
         }}
       >
         <Box
           sx={{
-            height: 96,
+            height: 72,
             background: `linear-gradient(120deg, ${TEAL} 0%, #40614A 55%, #2E3D2F 100%)`,
           }}
         />
-        <Box sx={{ px: { xs: 2.5, md: 3 }, pb: 3, bgcolor: 'background.paper' }}>
+        <Box sx={{ px: { xs: 2.5, md: 3 }, pb: 3, bgcolor: 'background.default' }}>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={2.5}
@@ -199,7 +198,7 @@ export function PartnerProfilePage() {
                 border: '4px solid',
                 borderColor: 'background.paper',
                 bgcolor: '#40614A',
-                color: '#1C231B',
+                color: '#F2F5ED',
               }}
             >
               {initial}
@@ -210,7 +209,9 @@ export function PartnerProfilePage() {
               >
                 {name || 'Partner'}
               </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>{user.email}</Typography>
+              <Typography sx={{ color: 'text.secondary', overflowWrap: 'anywhere' }}>
+                {user.email}
+              </Typography>
               <Stack direction="row" spacing={1} useFlexGap sx={{ mt: 1.25, flexWrap: 'wrap' }}>
                 {user.roles.map((r) => (
                   <Chip
@@ -284,14 +285,19 @@ export function PartnerProfilePage() {
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
                 Profile photo
               </Typography>
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+              <Stack
+                direction="row"
+                spacing={1.5}
+                useFlexGap
+                sx={{ alignItems: 'center', flexWrap: 'wrap' }}
+              >
                 <Avatar
                   src={avatarUrl || undefined}
                   sx={{
                     width: 56,
                     height: 56,
                     bgcolor: '#40614A',
-                    color: '#1C231B',
+                    color: '#F2F5ED',
                     fontWeight: 800,
                   }}
                 >
@@ -320,16 +326,18 @@ export function PartnerProfilePage() {
                 )}
               </Stack>
             </Box>
-            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+            <Stack
+              direction="row"
+              spacing={1.5}
+              useFlexGap
+              sx={{ alignItems: 'center', flexWrap: 'wrap' }}
+            >
               <Button
                 variant="contained"
                 onClick={save}
-                disabled={saving || !dirty}
+                disabled={saving || uploadingAvatar || !dirty}
                 sx={{
-                  bgcolor: TEAL,
-                  color: '#1C231B',
                   fontWeight: 700,
-                  '&:hover': { bgcolor: '#5fe6d4' },
                 }}
               >
                 {saving ? 'Saving…' : 'Save changes'}
@@ -376,7 +384,7 @@ export function PartnerProfilePage() {
                     mt: 0.5,
                     textTransform: 'capitalize',
                     bgcolor: 'rgba(139,111,78,0.16)',
-                    color: MARIGOLD,
+                    color: 'var(--workspace-amber)',
                     fontWeight: 700,
                   }}
                 />
@@ -394,6 +402,7 @@ export function PartnerProfilePage() {
                 <Tooltip title={copied ? 'Copied!' : 'Copy ID'}>
                   <IconButton
                     size="small"
+                    aria-label="Copy user ID"
                     onClick={copyId}
                     sx={{ color: copied ? '#4ade80' : 'text.secondary' }}
                   >
@@ -410,5 +419,13 @@ export function PartnerProfilePage() {
         </Box>
       </Box>
     </Box>
+  );
+}
+
+export function PartnerProfilePage() {
+  return (
+    <PartnerWorkspace>
+      <PartnerProfileContent />
+    </PartnerWorkspace>
   );
 }

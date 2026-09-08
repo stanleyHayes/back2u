@@ -1,3 +1,9 @@
+import {
+  PartnerWorkspace,
+  WorkspaceHeader as PageHeader,
+  workspacePanel,
+  workspaceHeading,
+} from '../components/PartnerWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -11,13 +17,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
-import { EmptyState, PageHeader, ListSkeleton } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
-export function RedeemPointsPage() {
+function RedeemPointsContent() {
+  const qc = useQueryClient();
   const user = useAuth((s) => s.user);
   const institutionId = user?.institutionId;
 
@@ -58,6 +65,7 @@ export function RedeemPointsPage() {
         },
       });
       setCode('');
+      void qc.invalidateQueries({ queryKey: ['institution-redemptions', institutionId] });
     } catch (e: unknown) {
       setResult({
         success: false,
@@ -76,34 +84,63 @@ export function RedeemPointsPage() {
         description="Enter a customer's voucher code to confirm their point exchange at your institution."
       />
 
-      <Card variant="outlined">
-        <CardContent>
-          <Stack spacing={2}>
-            <TextField
-              label="Voucher code"
-              placeholder="e.g. RDM-ABC123"
-              value={code}
-              onChange={(e) => setCode(e.target.value.toUpperCase())}
-              fullWidth
-              disabled={confirming}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleConfirm}
-              disabled={confirming || !code.trim()}
-              startIcon={confirming ? <CircularProgress size={16} /> : null}
-            >
-              {confirming ? 'Confirming…' : 'Confirm voucher'}
-            </Button>
-            {result && (
-              <Alert severity={result.success ? 'success' : 'error'}>{result.message}</Alert>
-            )}
-          </Stack>
-        </CardContent>
-      </Card>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1.25fr 1fr' }, gap: 3 }}>
+        <Card variant="outlined">
+          <CardContent>
+            <Stack spacing={2.5}>
+              <Typography component="h2" sx={{ ...workspaceHeading, fontSize: 23 }}>
+                Confirm a voucher
+              </Typography>
+              <Typography sx={{ fontSize: 13, color: 'text.secondary', lineHeight: 1.7 }}>
+                Ask the customer for the code shown in their app. Confirmation completes their point
+                exchange.
+              </Typography>
+              <TextField
+                label="Voucher code"
+                placeholder="e.g. RDM-ABC123"
+                value={code}
+                onChange={(e) => setCode(e.target.value.toUpperCase())}
+                fullWidth
+                disabled={confirming}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleConfirm}
+                disabled={confirming || !code.trim() || !institutionId}
+                startIcon={confirming ? <CircularProgress size={16} /> : null}
+              >
+                {confirming ? 'Confirming…' : 'Confirm voucher'}
+              </Button>
+              {result && (
+                <Alert severity={result.success ? 'success' : 'error'}>{result.message}</Alert>
+              )}
+            </Stack>
+          </CardContent>
+        </Card>
+        <Box sx={{ ...workspacePanel, boxShadow: 'var(--workspace-inset)' }}>
+          <ConfirmationNumberOutlinedIcon
+            sx={{ fontSize: 38, color: 'var(--workspace-amber)', mb: 2 }}
+          />
+          <Typography component="h2" sx={{ ...workspaceHeading, fontSize: 22 }}>
+            A reward worth returning for.
+          </Typography>
+          <Typography sx={{ fontSize: 13, color: 'text.secondary', lineHeight: 1.8, mt: 1.5 }}>
+            Finder points become real benefits at your counter. Check the voucher with the customer
+            before confirming, then provide the agreed reward.
+          </Typography>
+          <Box sx={{ mt: 3, p: 2, borderRadius: '15px', boxShadow: 'var(--workspace-raised)' }}>
+            <Typography sx={{ fontSize: 12, fontWeight: 600 }}>
+              Your exchange history stays below
+            </Typography>
+            <Typography sx={{ fontSize: 12, color: 'text.secondary', mt: 0.5 }}>
+              Review codes, points, value and status after confirmation.
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
 
-      <Typography variant="h6" sx={{ fontWeight: 700 }}>
+      <Typography component="h2" sx={{ ...workspaceHeading, fontSize: 23 }}>
         Recent exchanges
       </Typography>
 
@@ -164,5 +201,13 @@ export function RedeemPointsPage() {
         </Box>
       )}
     </Stack>
+  );
+}
+
+export function RedeemPointsPage() {
+  return (
+    <PartnerWorkspace>
+      <RedeemPointsContent />
+    </PartnerWorkspace>
   );
 }

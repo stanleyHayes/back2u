@@ -5,12 +5,17 @@ import {
   Alert,
   Box,
   Button,
-  ButtonGroup,
+  ButtonBase,
   Chip,
   CircularProgress,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Map as ReactMap, Marker, Popup, NavigationControl } from 'react-map-gl/mapbox';
 import type { MapEvent, MapRef, ViewStateChangeEvent } from 'react-map-gl/mapbox';
@@ -24,7 +29,6 @@ const API_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
-const INK = '#2E3D2F';
 const TEAL = '#40614A';
 const MARIGOLD = '#8B6F4E';
 const CLAY = '#C2410C';
@@ -109,6 +113,18 @@ function ItemPin({ kind }: { kind: ItemKind }) {
 }
 
 export function MapEmbed() {
+  const dark = useTheme().palette.mode === 'dark';
+  const surface = dark ? '#263026' : '#F2EFEA';
+  const ink = dark ? '#EAF3ED' : '#263D2D';
+  const muted = dark ? '#B1C0B2' : '#59685D';
+  const lostColor = dark ? '#F0B28F' : '#A8421D';
+  const foundColor = dark ? '#A7CFAC' : '#365E41';
+  const inset = dark
+    ? 'inset 3px 3px 7px #192119, inset -3px -3px 7px #344034'
+    : 'inset 3px 3px 7px #d9d6d1, inset -3px -3px 7px #ffffff';
+  const raised = dark
+    ? '4px 4px 10px #192119, -3px -3px 8px #344034'
+    : '4px 4px 10px #d9d6d1, -3px -3px 8px #ffffff';
   const mapRef = useRef<MapRef>(null);
   const [items, setItems] = useState<ItemPreview[]>([]);
   const [loading, setLoading] = useState(true);
@@ -240,47 +256,162 @@ export function MapEmbed() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
-      <Box component="main" sx={{ flex: 1, position: 'relative' }}>
-        {/* Filter bar overlay */}
+      <Box
+        component="main"
+        sx={{
+          flex: 1,
+          position: 'relative',
+          '& .mapboxgl-popup-content': {
+            bgcolor: surface,
+            color: ink,
+            p: 0,
+            borderRadius: '20px',
+            border: '1px solid',
+            borderColor: dark ? '#3A483A' : '#FFFFFF',
+            boxShadow: '0 12px 32px rgba(0,0,0,.22)',
+            overflow: 'hidden',
+          },
+          '& .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip': { borderTopColor: surface },
+          '& .mapboxgl-popup-close-button': {
+            color: muted,
+            fontSize: 22,
+            width: 36,
+            height: 36,
+            right: 5,
+            top: 5,
+            borderRadius: '50%',
+            zIndex: 1,
+            '&:hover': { bgcolor: dark ? '#344034' : '#E3E1DA' },
+          },
+          '& .mapboxgl-ctrl-group': {
+            bgcolor: surface,
+            borderRadius: '12px',
+            overflow: 'hidden',
+            boxShadow: '0 4px 16px rgba(0,0,0,.18)',
+          },
+          '& .mapboxgl-ctrl-icon': { filter: dark ? 'invert(1)' : 'none' },
+          '@media (max-width: 599px)': {
+            '& .mapboxgl-popup': {
+              top: 'auto',
+              bottom: 38,
+              left: 12,
+              transform: 'none !important',
+              width: 'calc(100% - 24px)',
+              maxWidth: 'none !important',
+            },
+            '& .mapboxgl-popup-content': { width: '100%' },
+            '& .mapboxgl-popup-tip': { display: 'none' },
+          },
+        }}
+      >
         <Box
           sx={{
             position: 'absolute',
-            top: { xs: 8, md: 16 },
-            left: { xs: 8, md: 16 },
+            top: 16,
+            left: 16,
             zIndex: 10,
-            bgcolor: 'rgba(242,239,234,0.92)',
-            backdropFilter: 'blur(8px)',
-            borderRadius: 3,
-            p: 1.5,
+            width: { xs: 'calc(100% - 76px)', sm: 320 },
+            bgcolor: surface,
+            color: ink,
+            borderRadius: '22px',
+            p: 2,
             border: '1px solid',
-            borderColor: 'divider',
+            borderColor: dark ? '#3A483A' : '#FFFFFF',
+            boxShadow: '0 8px 28px rgba(0,0,0,.18)',
           }}
         >
-          <Stack spacing={1}>
-            <Typography
-              className="b2u-display"
-              sx={{ fontSize: { xs: 16, md: 20 }, fontWeight: 600, color: INK, px: 0.5 }}
+          <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', mb: 2 }}>
+            <Box
+              sx={{
+                width: 42,
+                height: 42,
+                borderRadius: '13px',
+                display: 'grid',
+                placeItems: 'center',
+                boxShadow: inset,
+                color: foundColor,
+              }}
             >
-              Live map
-            </Typography>
-            <ButtonGroup size="small" variant="outlined">
-              <Button variant={kind === '' ? 'contained' : 'outlined'} onClick={() => setKind('')}>
-                All
-              </Button>
-              <Button
-                variant={kind === 'lost' ? 'contained' : 'outlined'}
-                onClick={() => setKind('lost')}
+              <MapOutlinedIcon />
+            </Box>
+            <Box>
+              <Typography
+                component="h1"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontSize: 20,
+                  fontWeight: 600,
+                  color: ink,
+                  lineHeight: 1.3,
+                }}
               >
-                Lost
-              </Button>
-              <Button
-                variant={kind === 'found' ? 'contained' : 'outlined'}
-                onClick={() => setKind('found')}
-              >
-                Found
-              </Button>
-            </ButtonGroup>
+                Explore the map
+              </Typography>
+              <Typography sx={{ fontSize: 12, color: muted, mt: 0.25 }}>
+                Lost &amp; found, close to you
+              </Typography>
+            </Box>
           </Stack>
+          <Box
+            role="group"
+            aria-label="Filter map items"
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: 0.75,
+              p: 0.75,
+              borderRadius: '14px',
+              boxShadow: inset,
+            }}
+          >
+            {(
+              [
+                { value: '', label: 'All', color: ink },
+                { value: 'lost', label: 'Lost', color: lostColor },
+                { value: 'found', label: 'Found', color: foundColor },
+              ] as const
+            ).map((filter) => (
+              <ButtonBase
+                key={filter.label}
+                aria-pressed={kind === filter.value}
+                onClick={() => {
+                  setKind(filter.value);
+                  setSelectedItem(null);
+                }}
+                sx={{
+                  minHeight: 40,
+                  borderRadius: '10px',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  gap: 0.75,
+                  color: kind === filter.value ? filter.color : muted,
+                  bgcolor: surface,
+                  boxShadow: kind === filter.value ? raised : 'none',
+                  '&:hover': { color: filter.color },
+                  '&.Mui-focusVisible': {
+                    outline: '2px solid',
+                    outlineColor: foundColor,
+                    outlineOffset: 2,
+                  },
+                }}
+              >
+                {filter.value && (
+                  <Box
+                    component="span"
+                    sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: filter.color }}
+                  />
+                )}
+                {filter.label}
+              </ButtonBase>
+            ))}
+          </Box>
+          <Typography role="status" sx={{ color: muted, fontSize: 11, mt: 1.5 }}>
+            {loading
+              ? 'Loading reports…'
+              : error
+                ? 'Reports are unavailable'
+                : `${items.length} ${kind || 'lost & found'} reports loaded`}
+          </Typography>
         </Box>
 
         {/* Loading overlay */}
@@ -293,7 +424,7 @@ export function MapEmbed() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              bgcolor: 'rgba(242,239,234,0.7)',
+              bgcolor: dark ? 'rgba(28,35,27,.5)' : 'rgba(242,239,234,.5)',
             }}
           >
             <CircularProgress color="primary" />
@@ -305,7 +436,7 @@ export function MapEmbed() {
           <Box
             sx={{
               position: 'absolute',
-              top: { xs: 80, md: 100 },
+              top: 220,
               left: '50%',
               transform: 'translateX(-50%)',
               zIndex: 5,
@@ -319,7 +450,7 @@ export function MapEmbed() {
         )}
 
         {/* Map */}
-        <Box sx={{ width: '100%', height: { xs: '60vh', md: '100vh' } }}>
+        <Box sx={{ width: '100%', height: { xs: '75svh', md: '85vh' }, minHeight: 520 }}>
           {!TOKEN ? (
             <Box
               sx={{
@@ -341,7 +472,9 @@ export function MapEmbed() {
               mapboxAccessToken={TOKEN}
               initialViewState={{ longitude: -0.187, latitude: 5.603, zoom: 11 }}
               style={{ width: '100%', height: '100%' }}
-              mapStyle="mapbox://styles/mapbox/streets-v12"
+              mapStyle={
+                dark ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11'
+              }
               onLoad={handleLoad}
               onMoveEnd={handleMoveEnd}
             >
@@ -402,36 +535,81 @@ export function MapEmbed() {
                   anchor="bottom"
                   onClose={() => setSelectedItem(null)}
                   closeButton
+                  maxWidth="290px"
+                  offset={28}
                 >
-                  <Stack spacing={1} sx={{ p: 1, minWidth: 180 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700 }} noWrap>
-                      {selectedItem.title}
-                    </Typography>
+                  <Stack
+                    spacing={1.5}
+                    sx={{ p: 2.5, width: { xs: '100%', sm: 280 }, maxWidth: '100%' }}
+                  >
                     <Chip
+                      icon={
+                        selectedItem.kind === 'lost' ? (
+                          <SearchRoundedIcon />
+                        ) : (
+                          <CheckCircleOutlineRoundedIcon />
+                        )
+                      }
+                      label={selectedItem.kind === 'lost' ? 'Lost item' : 'Found item'}
                       size="small"
-                      label={selectedItem.kind}
                       sx={{
                         alignSelf: 'flex-start',
-                        fontWeight: 700,
-                        letterSpacing: '0.08em',
-                        textTransform: 'uppercase',
+                        color: selectedItem.kind === 'lost' ? lostColor : foundColor,
+                        bgcolor: dark ? '#1D261E' : '#E7E6DF',
+                        boxShadow: 'none',
                         fontSize: 11,
-                        color: selectedItem.kind === 'lost' ? CLAY : '#FAF8F3',
-                        bgcolor: selectedItem.kind === 'lost' ? 'rgba(194,65,12,.1)' : TEAL,
-                        borderRadius: 999,
+                        fontWeight: 700,
+                        '& .MuiChip-icon': { color: 'inherit', fontSize: 16 },
                       }}
                     />
-                    <Typography variant="body2" color="text.secondary">
-                      {selectedItem.place.name}
-                    </Typography>
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      href={`${APP_URL}/items/${selectedItem.id}`}
-                      onClick={() => setSelectedItem(null)}
-                      sx={{ mt: 0.5 }}
+                    <Typography
+                      component="h2"
+                      sx={{
+                        fontFamily: 'Outfit, sans-serif',
+                        fontSize: 18,
+                        lineHeight: 1.4,
+                        fontWeight: 600,
+                        color: ink,
+                        overflowWrap: 'anywhere',
+                      }}
                     >
-                      View in app
+                      {selectedItem.title}
+                    </Typography>
+                    <Stack
+                      direction="row"
+                      spacing={0.75}
+                      sx={{ alignItems: 'flex-start', color: muted }}
+                    >
+                      <LocationOnIcon sx={{ fontSize: 17, mt: 0.25 }} />
+                      <Typography sx={{ fontSize: 12, lineHeight: 1.6, overflowWrap: 'anywhere' }}>
+                        {selectedItem.place.name}
+                      </Typography>
+                    </Stack>
+                    <Button
+                      href={`${APP_URL}/items/${selectedItem.id}`}
+                      endIcon={<ArrowForwardRoundedIcon />}
+                      onClick={() => setSelectedItem(null)}
+                      sx={{
+                        minHeight: 44,
+                        mt: 0.5,
+                        px: 2,
+                        borderRadius: '12px',
+                        textTransform: 'none',
+                        justifyContent: 'space-between',
+                        fontSize: 13,
+                        fontWeight: 600,
+                        bgcolor: dark ? '#A7C5AC' : '#365E41',
+                        color: dark ? '#1B2B1E' : '#FFFFFF',
+                        boxShadow: 'none',
+                        '&:hover': { bgcolor: dark ? '#BDD7C1' : '#294C33', boxShadow: 'none' },
+                        '&:focus-visible': {
+                          outline: '2px solid',
+                          outlineColor: foundColor,
+                          outlineOffset: 3,
+                        },
+                      }}
+                    >
+                      View item in app
                     </Button>
                   </Stack>
                 </Popup>

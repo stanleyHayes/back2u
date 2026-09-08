@@ -798,20 +798,27 @@ export function PartnerLayout({ children }: { children: ReactNode }) {
             position: 'sticky',
             top: 0,
             zIndex: 10,
-            display: 'flex',
+            display: { xs: 'grid', md: 'flex' },
+            gridTemplateColumns: '40px minmax(0, 1fr) auto',
             alignItems: 'center',
             gap: 1,
-            px: { xs: 2, md: 4 },
+            px: { xs: 1.5, md: 4 },
             py: 1.5,
             bgcolor: isDark ? CONSOLE_INK.topbarDark : CONSOLE_INK.topbarLight,
             backdropFilter: isDark ? 'saturate(150%) blur(10px)' : 'none',
             borderBottom: '1px solid rgba(255,255,255,0.07)',
             borderTop: '2px solid',
             borderImage: 'linear-gradient(90deg, #40614A, #8B6F4E, #40614A) 1',
-            '& .MuiIconButton-root': DARK_HEADER_ACTION,
+            '& .MuiIconButton-root': {
+              ...DARK_HEADER_ACTION,
+              width: { xs: 36, md: 40 },
+              height: { xs: 36, md: 40 },
+            },
           }}
         >
           <IconButton
+            aria-label="Open navigation"
+            aria-expanded={mobileOpen}
             onClick={() => setMobileOpen(true)}
             sx={{ ...DARK_HEADER_ACTION, display: { xs: 'inline-flex', md: 'none' } }}
           >
@@ -819,29 +826,46 @@ export function PartnerLayout({ children }: { children: ReactNode }) {
           </IconButton>
           {/* Logo shows on mobile (the sidebar is a drawer); hidden on desktop
               where the sidebar already carries it. */}
-          <Box sx={{ display: { xs: 'inline-flex', md: 'none' }, mr: 0.5 }}>
-            <BrandLogo size={22} onDark />
+          <Box sx={{ display: { xs: 'inline-flex', md: 'none' }, minWidth: 0 }}>
+            <BrandLogo size={26} onDark />
           </Box>
-          <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Box
+            sx={{
+              flex: 1,
+              minWidth: 0,
+              gridColumn: '1 / -1',
+              gridRow: 2,
+              borderTop: { xs: '1px solid rgba(255,255,255,.08)', md: 'none' },
+              pt: { xs: 1, md: 0 },
+              mt: { xs: 0.5, md: 0 },
+            }}
+          >
             <Typography
               noWrap
               sx={{
-                fontFamily: '"Black Ops One", Georgia, serif',
+                fontFamily: { xs: 'Outfit, sans-serif', md: '"Black Ops One", Georgia, serif' },
                 fontWeight: 600,
-                fontSize: 22,
+                fontSize: { xs: 17, md: 22 },
                 color: '#F3F6FB',
                 lineHeight: 1.15,
               }}
             >
               {current?.label ?? 'Partner'}
             </Typography>
-            <Typography noWrap sx={{ fontSize: 12.5, color: MUTED }}>
+            <Typography
+              noWrap
+              sx={{ fontSize: 12.5, color: MUTED, display: { xs: 'none', md: 'block' } }}
+            >
               bak2me partner portal
             </Typography>
           </Box>
 
           {/* Quick actions */}
-          <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{ alignItems: 'center', gridColumn: 3, gridRow: 1 }}
+          >
             <NotificationsBell />
             <Tooltip title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}>
               <IconButton
@@ -855,14 +879,22 @@ export function PartnerLayout({ children }: { children: ReactNode }) {
               </IconButton>
             </Tooltip>
             <Tooltip title="Replay the tour">
-              <IconButton onClick={() => setTourOpen(true)} sx={DARK_HEADER_ACTION}>
+              <IconButton
+                onClick={() => setTourOpen(true)}
+                sx={{ ...DARK_HEADER_ACTION, display: { xs: 'none', md: 'inline-flex' } }}
+              >
                 <HelpOutlineOutlinedIcon />
               </IconButton>
             </Tooltip>
             <Divider
               orientation="vertical"
               flexItem
-              sx={{ mx: 0.75, my: 0.75, borderColor: 'rgba(255,255,255,0.14)' }}
+              sx={{
+                display: { xs: 'none', md: 'block' },
+                mx: 0.75,
+                my: 0.75,
+                borderColor: 'rgba(255,255,255,0.14)',
+              }}
             />
             <AccountMenu />
           </Stack>

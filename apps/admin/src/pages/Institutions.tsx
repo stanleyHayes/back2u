@@ -1,4 +1,10 @@
 import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+  workspacePanel,
+} from '../components/AdminWorkspace.js';
+import {
   Alert,
   Box,
   Button,
@@ -22,7 +28,7 @@ import LocalPharmacyOutlinedIcon from '@mui/icons-material/LocalPharmacyOutlined
 import FlightTakeoffOutlinedIcon from '@mui/icons-material/FlightTakeoffOutlined';
 import DirectionsBusOutlinedIcon from '@mui/icons-material/DirectionsBusOutlined';
 import type { ReactNode } from 'react';
-import { EmptyState, PageHeader } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -48,9 +54,9 @@ const TIER_LABEL: Record<SubscriptionTier, string> = {
   enterprise: 'Enterprise',
 };
 
-export function InstitutionsPage() {
+function InstitutionsPageContent() {
   const qc = useQueryClient();
-  const { data } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin-institutions'],
     queryFn: () => api.listInstitutions(),
   });
@@ -62,6 +68,11 @@ export function InstitutionsPage() {
     lng: '0',
     lat: '0',
   });
+  const [search, setSearch] = useState('');
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const visibleInstitutions = (data ?? []).filter((i) =>
+    `${i.name} ${i.place.name}`.toLowerCase().includes(search.toLowerCase()),
+  );
   const [apiKey, setApiKey] = useState<string | null>(null);
 
   const create = useMutation({
@@ -91,48 +102,84 @@ export function InstitutionsPage() {
         title="Institutions"
         description="Onboard schools, malls and venues, and manage their subscription plans."
       />
+      <QueueSummary
+        count={isLoading || isError ? undefined : data?.length}
+        label="Institutions in your network"
+        description="Manage partner venues and their subscription plans from one place."
+      />
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <TextField
+          label="Search institutions or places"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          sx={{ flex: 1 }}
+        />
+        <Button
+          variant="contained"
+          onClick={() => setShowOnboarding(!showOnboarding)}
+          aria-expanded={showOnboarding}
+        >
+          {showOnboarding ? 'Close form' : 'Add institution'}
+        </Button>
+      </Stack>
+      {create.isError && (
+        <Alert severity="error">
+          Could not onboard the institution. Please check the details and try again.
+        </Alert>
+      )}
+      {setPlan.isError && (
+        <Alert severity="error">Could not update the plan. Please try again.</Alert>
+      )}
+      {isError && (
+        <Alert severity="error" action={<Button onClick={() => void refetch()}>Retry</Button>}>
+          Could not load institutions.
+        </Alert>
+      )}
+      {isLoading && <ListSkeleton rows={3} />}
       {apiKey && <Alert severity="success">API key (copy now, won't show again): {apiKey}</Alert>}
-      <Card variant="outlined">
-        <CardContent>
-          <Typography variant="h6">Onboard institution</Typography>
-          <Stack spacing={2} sx={{ mt: 2 }}>
-            <TextField
-              label="Name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
-            <TextField
-              label="Contact email"
-              value={form.contactEmail}
-              onChange={(e) => setForm({ ...form, contactEmail: e.target.value })}
-            />
-            <TextField
-              label="Place name"
-              value={form.placeName}
-              onChange={(e) => setForm({ ...form, placeName: e.target.value })}
-            />
-            <Stack direction="row" spacing={1}>
+      {showOnboarding && (
+        <Card variant="outlined">
+          <CardContent>
+            <Typography variant="h6">Onboard institution</Typography>
+            <Stack spacing={2} sx={{ mt: 2 }}>
               <TextField
-                label="Lng"
-                value={form.lng}
-                onChange={(e) => setForm({ ...form, lng: e.target.value })}
+                label="Name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
               <TextField
-                label="Lat"
-                value={form.lat}
-                onChange={(e) => setForm({ ...form, lat: e.target.value })}
+                label="Contact email"
+                value={form.contactEmail}
+                onChange={(e) => setForm({ ...form, contactEmail: e.target.value })}
               />
+              <TextField
+                label="Place name"
+                value={form.placeName}
+                onChange={(e) => setForm({ ...form, placeName: e.target.value })}
+              />
+              <Stack direction="row" spacing={1}>
+                <TextField
+                  label="Longitude"
+                  value={form.lng}
+                  onChange={(e) => setForm({ ...form, lng: e.target.value })}
+                />
+                <TextField
+                  label="Latitude"
+                  value={form.lat}
+                  onChange={(e) => setForm({ ...form, lat: e.target.value })}
+                />
+              </Stack>
+              <Button
+                variant="contained"
+                onClick={() => create.mutate()}
+                disabled={!form.name || create.isPending}
+              >
+                Onboard
+              </Button>
             </Stack>
-            <Button
-              variant="contained"
-              onClick={() => create.mutate()}
-              disabled={!form.name || create.isPending}
-            >
-              Onboard
-            </Button>
-          </Stack>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
       {data && data.length === 0 && (
         <EmptyState
           tone="teal"
@@ -141,20 +188,19 @@ export function InstitutionsPage() {
           description="Onboard the first institution with the form above and it will show up here."
         />
       )}
+      {!isLoading && !isError && !!data?.length && !visibleInstitutions.length && (
+        <Alert severity="info">No institutions match this search.</Alert>
+      )}
       <Box
         sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2,1fr)' }, gap: 2 }}
       >
-        {data?.map((i) => {
+        {visibleInstitutions.map((i) => {
           const tier = i.subscriptionTier ?? 'free';
           return (
             <Box
               key={i.id}
               sx={{
-                p: 2.5,
-                borderRadius: 2.5,
-                border: 1,
-                borderColor: 'divider',
-                bgcolor: 'background.paper',
+                ...workspacePanel,
                 transition: 'border-color .15s',
                 '&:hover': { borderColor: 'rgba(168,181,160,0.5)' },
               }}
@@ -169,7 +215,7 @@ export function InstitutionsPage() {
                     display: 'grid',
                     placeItems: 'center',
                     bgcolor: 'rgba(168,181,160,0.12)',
-                    color: '#A8B5A0',
+                    color: 'var(--workspace-green)',
                     '& svg': { fontSize: 24 },
                   }}
                 >
@@ -225,5 +271,13 @@ export function InstitutionsPage() {
         })}
       </Box>
     </Stack>
+  );
+}
+
+export function InstitutionsPage() {
+  return (
+    <AdminWorkspace>
+      <InstitutionsPageContent />
+    </AdminWorkspace>
   );
 }

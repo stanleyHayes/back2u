@@ -1,3 +1,9 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+  queueTable,
+} from '../components/AdminWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -20,7 +26,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { SafetyReportDTO } from '@back2u/shared-types';
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
-import { EmptyState, PageHeader } from '@back2u/ui-web';
+import { EmptyState } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -39,7 +45,7 @@ const STATUS_COLOR: Record<string, 'default' | 'success' | 'error' | 'info'> = {
   resolved: 'success',
 };
 
-export function SafetyReportsPage() {
+function SafetyReportsPageContent() {
   const qc = useQueryClient();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [processing, setProcessing] = useState(false);
@@ -54,7 +60,7 @@ export function SafetyReportsPage() {
     severity: 'success',
   });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin-safety-reports'],
     queryFn: () => api.listOpenReports() as Promise<SafetyReportDTO[]>,
   });
@@ -62,6 +68,20 @@ export function SafetyReportsPage() {
   const decide = useMutation({
     mutationFn: (input: { id: string; decision: 'resolved'; note?: string }) =>
       api.decideReport(input.id, input.decision, input.note),
+    onSuccess: () => {
+      if (!processing) {
+        void qc.invalidateQueries({ queryKey: ['admin-safety-reports'] });
+        setSelectedIds(new Set());
+      }
+    },
+    onError: () => {
+      if (!processing)
+        setSnackbar({
+          open: true,
+          message: 'Could not save the decision. Please try again.',
+          severity: 'error',
+        });
+    },
   });
 
   const items = data ?? [];
@@ -117,13 +137,24 @@ export function SafetyReportsPage() {
     <Stack spacing={3}>
       <PageHeader
         icon={<ShieldOutlinedIcon />}
-        title="Safety Reports"
+        title="Safety reports"
         description="Triage scam, harassment and spam reports from users, and resolve them in bulk."
+      />
+
+      <QueueSummary
+        count={isLoading || isError ? undefined : data?.length}
+        label="Open safety reports"
+        description="Review the report reason and note, then resolve the cases you have handled."
       />
 
       {selectedIds.size > 0 && (
         <Stack direction="row" spacing={1}>
-          <Button variant="contained" color="success" disabled={processing} onClick={runBulk}>
+          <Button
+            variant="contained"
+            color="success"
+            disabled={processing || decide.isPending}
+            onClick={runBulk}
+          >
             Resolve selected ({selectedIds.size})
           </Button>
         </Stack>
@@ -138,6 +169,18 @@ export function SafetyReportsPage() {
         </Stack>
       )}
 
+      {isError && (
+        <Alert
+          severity="error"
+          action={
+            <Button color="inherit" onClick={() => void refetch()}>
+              Retry
+            </Button>
+          }
+        >
+          Could not load this queue. Please try again.
+        </Alert>
+      )}
       {isLoading && (
         <Stack spacing={1}>
           {Array.from({ length: 5 }).map((_, i) => (
@@ -146,7 +189,7 @@ export function SafetyReportsPage() {
         </Stack>
       )}
 
-      {!isLoading && items.length === 0 ? (
+      {!isLoading && !isError && items.length === 0 ? (
         <EmptyState
           tone="teal"
           icon={<TaskAltOutlinedIcon />}
@@ -154,12 +197,13 @@ export function SafetyReportsPage() {
           description="Nothing needs attention right now. New safety reports from users will land here."
         />
       ) : (
-        <Box sx={{ overflowX: 'auto' }}>
+        <Box sx={queueTable}>
           <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
+                    slotProps={{ input: { 'aria-label': 'Select all' } }}
                     checked={allSelected}
                     indeterminate={someSelected}
                     onChange={toggleSelectAll}
@@ -180,9 +224,10 @@ export function SafetyReportsPage() {
                 <TableRow key={report.id} hover>
                   <TableCell padding="checkbox">
                     <Checkbox
+                      slotProps={{ input: { 'aria-label': `Select ${report.id}` } }}
                       checked={selectedIds.has(report.id)}
                       onChange={() => toggleSelect(report.id)}
-                      disabled={processing}
+                      disabled={processing || decide.isPending}
                     />
                   </TableCell>
                   <TableCell>{report.target}</TableCell>
@@ -208,7 +253,7 @@ export function SafetyReportsPage() {
                       size="small"
                       variant="contained"
                       color="success"
-                      disabled={processing || report.status !== 'open'}
+                      disabled={processing || decide.isPending || report.status !== 'open'}
                       onClick={() => decide.mutate({ id: report.id, decision: 'resolved' })}
                     >
                       Resolve
@@ -235,5 +280,13 @@ export function SafetyReportsPage() {
         </Alert>
       </Snackbar>
     </Stack>
+  );
+}
+
+export function SafetyReportsPage() {
+  return (
+    <AdminWorkspace>
+      <SafetyReportsPageContent />
+    </AdminWorkspace>
   );
 }

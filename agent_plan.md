@@ -923,3 +923,97 @@ _End of plan._
 - DONE: restored mobile navbar wordmark; redesigned institution tiles, referral panel, FAQ, closing CTA, and footer using consistent readable headings and neumorphic surfaces.
 - Replaced disconnected referral form with copyable site invitation and removed unsupported 50-point promise. Replaced local-only newsletter success with direct contact link.
 - Website build passed with existing chunk warnings. Browser verified mobile 390px width without horizontal overflow and FAQ expansion; checked contact and navigation targets. No email or invitations sent.
+
+### Institution type selector — 2026-09-08
+
+- DONE: redesigned partner enquiry options with venue icons, titles, descriptions, rounded rows, focus outlines and a selected checkmark. The closed selector also shows the selected icon and description; original values and form handling retained.
+- Validation: website production build passed with existing chunk-size warnings; browser reviewed expanded and collapsed dark-theme layouts. Automated selection verification timed out; mobile layout was not browser-tested.
+
+### Website navigation neumorphism — 2026-09-08
+
+- DONE: recessed desktop navigation tray with sentence-case links, pressed active state and focus rings; responsive sidebar with raised link cards, inset venue/navigation icons, descriptions and current-route indicators. Added matching sign-in card and scrollable drawer layout.
+- Validation: website production build passed (existing chunk-size warnings); dark desktop and light mobile (390px) visually reviewed; mobile page has no horizontal overflow. Sidebar Pricing link navigated and closed the drawer successfully.
+
+### Download feature cards — 2026-09-08
+
+- DONE: replaced the three plain feature columns with raised neumorphic cards, inset camera/notification/chat icons, concise utility labels, Outfit headings and revised descriptions. Expanded the desktop row beyond the hero text width and stacked cards on mobile.
+- Validation: website production build passed with existing chunk-size warnings; light desktop and dark mobile reviewed in browser; 390px viewport has no horizontal overflow. Existing download links and phone illustration retained.
+
+### Public map redesign — 2026-09-08
+
+- DONE: theme-aware light/dark basemaps; opaque readable control surfaces; inset filters with status colors and report count; redesigned popup with status icon, wrapping title, location and high-contrast app link. Mobile reports use a bottom sheet within the map. Filter changes clear stale selected reports.
+- Validation: website production build passed (existing chunk-size warnings); live API loaded 30 reports, Lost filter returned 15 and showed pressed state, cluster expansion and item popup verified. Light/dark desktop and 390px mobile reviewed; mobile has no horizontal overflow.
+
+### Partner Overview redesign — 2026-09-08
+
+- DONE: extracted the Overview into a dedicated page with raised summary cards, inset icons and chart tracks, readable Outfit typography, lost/found ring, recovery status and category breakdowns, recent-report links and three operational shortcuts.
+- Added loading skeletons, retryable errors and an empty state. Renamed the matched count accurately and disclosed the loaded-report scope for breakdowns. Existing report query, authentication and other partner pages retained.
+- Validation: partner production build passed with existing chunk-size warning; authenticated browser showed 30 reports / 15 lost / 15 found, dark desktop and light mobile reviewed, 390px had no horizontal overflow, Manage items navigated to /items.
+- Scope: Overview complete; other partner pages remain for subsequent page-by-page redesigns.
+
+### Partner Items and mobile header — 2026-09-08
+
+- DONE: rebuilt Items with neumorphic search/type/status controls, responsive image cards, readable status/category/location/date details, image fallbacks and clear report links. Added retryable errors, loading cards, empty-state filter reset and search pagination reset; status selector includes all defined item statuses.
+- DONE: mobile header now has a dedicated page-title row and a compact brand/control row. Retains notifications, theme and account controls; tutorial remains in the account menu. Added accessible mobile-navigation label and expanded state.
+- Validation: partner production build passed with existing chunk warning; Lost filter returned 15 matches, unmatched search rendered the empty state, mobile drawer navigated to Overview, and account menu retained tutorial access. Dark desktop/light mobile reviewed; header fits at 320px with no horizontal overflow.
+
+### Partner Analytics redesign — 2026-09-08
+
+- DONE: raised summary cards, inset icons, sage/amber status breakdown, defined return-rate ring, rewards/courier panels and recent activity with item links. Added explicit institution scope, last-updated time, refresh state, loading skeletons and recoverable errors that preserve existing data.
+- Return rate is returned / total reported items; displays a dash when no reports exist. Removed the unsupported turnaround-time description. No invented trends or date filters added.
+- Validation: partner production build passed with existing chunk-size warning; authenticated institution currently has zero activity, so empty states were verified in dark desktop and light mobile at 390px with no horizontal overflow. Refresh completed and re-enabled the control. Populated analytics were not available for live visual verification.
+
+### Partner Recovery Point redesign — 2026-09-08
+
+- DONE: neumorphic standing summary, section navigation, side-by-side counter/team management, inset staff/counter rows, icon-led headings, responsive intake form and mobile-friendly held-property cards. Restyled setup/receipt/release dialogs and added accessible remove-control labels.
+- Added query failure alerts with retry, active-counter guidance and persistent mutation-error snackbars. Retained all counter/staff, custody intake, receipt and verified-owner release API flows.
+- Validation: partner production build passed with existing chunk-size warning; authenticated dark desktop/light mobile at 390px reviewed with no horizontal overflow. Counter and staff dialogs opened/cancelled; intake jump link worked and incomplete intake remained disabled. Current shelf is empty; no deposits, codes, releases or account changes submitted.
+
+### Partner Courier Jobs redesign — 2026-09-08
+
+- DONE: raised dispatch cards, inset pickup/drop-off route panels, readable fee/status details, responsive accept actions, optional distance/duration estimates, open-job summary and route/reference search. Added refresh, loading cards, distinct empty/error states and acceptance feedback; existing fee values and acceptance API preserved.
+- Validation: partner production build passed with existing chunk warning; five live jobs rendered, KNUST search matched one, unmatched search showed clear/reset state, and clearing restored all five. Dark desktop/light mobile reviewed; 390px had no horizontal overflow. No jobs accepted during verification.
+
+### Partner tags, redemption, rewards and billing redesign — 2026-09-08
+
+- DONE: shared PartnerWorkspace surfaces and headings applied to five pages; tag batch builder with presets and export guidance; voucher confirmation desk; responsive reward offer cards and editor; storefront settings with sticky live preview; neumorphic plan comparison with explicit loading/error/current-plan states.
+- Fixed tag mutation to receive the validated integer quantity directly; added clipboard failure feedback. Voucher confirmation now refreshes exchange history. Storefront save is disabled during loading errors/uploads; billing waits for institution data before enabling changes and retains the existing free-tier fallback after load.
+- Validation: partner production build passed with existing chunk-size warning. Reviewed all five authenticated pages; 100-tag preset updated quantity, empty voucher remained disabled, live reward cards rendered, draft dialog opened/cancelled, unsaved description updated preview, Starter plan showed current/disabled. All five pages measured 390px with no horizontal overflow.
+- No tags minted, vouchers confirmed, rewards published, storefront settings saved, images uploaded or plans changed during verification. Generated-tag/export and successful mutation states were not live-tested.
+
+### Partner notifications, profile and settings redesign — 2026-09-08
+
+- DONE: Notifications workspace with inset All/Unread filter, readable wrapping activity rows, explicit accessible mark-read buttons, pending/error/retry states and latest-50 context.
+- DONE: Profile uses shared raised panels, softer identity banner, readable avatar contrast, responsive photo controls, upload-aware save state and clipboard failure feedback.
+- DONE: Settings uses responsive icon/title/description navigation, raised content panels and inset controls; existing account, security, preference and data actions retained. Navigation orientation matches desktop/mobile keyboard behavior; notification switches have accessible labels.
+- DONE: Rewards storefront Category selector shows an icon, title and description in both selected value and all eight menu options, with a selected checkmark and theme-aware menu.
+- VERIFIED: Partner TypeScript/production build and git diff whitespace checks pass. Existing large bundle warning remains.
+- LIMITATION: Browser reached the sign-in screen with a Failed to fetch alert, so authenticated visual and interaction verification remains pending. No account records were changed during verification.
+
+### Admin overview and trust operations redesign — 2026-09-08
+
+- DONE: Shared AdminWorkspace presentation adds sage/cream light and dark surfaces, Outfit headings, soft raised panels, inset controls and responsive queue tables across all six requested routes.
+- DONE: Overview adds platform context, direct review-queue links, icon-led metrics, tabular numbers and a statistics error state; existing charts retained.
+- DONE: Verifications, trusted finder, moderation, safety and trust queues add contextual counts and review guidance. Finder status filters expose selected state; moderation filters have accessible names and visible All values. Trust decision choices show their consequences inline; review dialogs receive consistent surfaces.
+- DONE: Added missing queue fetch errors and retry actions. Individual verification/safety decisions refresh their queue and report failures; buttons disable while requests are pending.
+- VERIFIED: Admin TypeScript and Vite production build pass; git diff whitespace check passes. Existing large bundle warning remains.
+- VERIFIED: Authenticated browser inspection of all six routes, live overview metrics, finder status filter and moderation status menu. All six pages reported scrollWidth equal to innerWidth at 390px; dark overview and light moderation visually inspected.
+- LIMITATION: Available review queues were empty; populated records and decision dialogs were not exercised. No review decisions were submitted. Temporary viewport and theme changes restored.
+
+### Admin commerce and network redesign — 2026-09-08
+
+- DONE: Marketplace, Redemptions, Users, Institutions and Leads now use the shared admin workspace, descriptive summaries, raised cards and inset inputs.
+- DONE: Marketplace listing cards have clearer pricing and timing hierarchy; creation fields stack on mobile. Redemptions adds explicit institution selection, loading, error and empty states with wrapping ledger rows.
+- DONE: Users directory adds current-page context, readable table styling and accessible selection labels. Search and page-size changes clear selections.
+- DONE: Institutions adds name/place search, no-match feedback and an expandable onboarding form, with fetch/create/plan error feedback. Lead cards separate contact information and enquiry text; individual decisions refresh the queue and report failures.
+- VERIFIED: Admin production build, Prettier check and git diff whitespace checks pass. Existing bundle-size warning remains. Authenticated browser inspected all five routes; live listings and populated users render. Institution search/no-match and onboarding disclosure verified; redemption institution selector exercised. All five routes and expanded onboarding fit 390px without page overflow.
+- LIMITATION: Lead queue was empty; record-changing actions were not submitted during design verification.
+
+### Admin system/account pages and mobile header — 2026-09-08
+
+- DONE: Business rules, Feature flags, Audit log, Profile and Settings adopt shared admin surfaces and typography. Rules have a persistent save bar; flags have enabled counts, accessible controls and mutation-error feedback. Audit filters have accessible labels; timeline entries stack on mobile with wrapping identifiers.
+- DONE: Profile has improved avatar contrast, responsive upload controls and upload-aware saving. Settings has icon/title/description navigation with responsive tab orientation and linked tab panels.
+- DONE: Admin mobile header separates the full page title from branding and compact action controls; navigation trigger has an accessible label.
+- VERIFIED: Admin TypeScript/Vite build and diff whitespace checks pass. Browser inspected all five routes at 390px with no page overflow, settings/preferences at 320px, navigation drawer and audit table toggle. No rules, flag or account mutations submitted.
+- CATEGORY: Existing RewardsProfile category implementation contains icons, titles and descriptions in all eight options and selected values. Live reinspection was blocked by partner sign-in; no authentication bypass attempted.
+- Existing large-bundle build warning remains. Temporary viewport restored.

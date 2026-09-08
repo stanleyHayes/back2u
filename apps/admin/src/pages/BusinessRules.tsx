@@ -1,3 +1,8 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  workspacePanel,
+} from '../components/AdminWorkspace.js';
 import { useEffect, useState } from 'react';
 import {
   Alert,
@@ -16,7 +21,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { BusinessRulesDTO, UpdateBusinessRulesInput } from '@back2u/shared-types';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
-import { EmptyState, PageHeader } from '@back2u/ui-web';
+import { EmptyState } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -208,7 +213,7 @@ function NumberField(props: {
   );
 }
 
-export function BusinessRulesPage() {
+function BusinessRulesPageContent() {
   const qc = useQueryClient();
   const [draft, setDraft] = useState<BusinessRulesDTO | null>(null);
   const [snackbar, setSnackbar] = useState<{
@@ -250,7 +255,7 @@ export function BusinessRulesPage() {
         />
         {/* Shaped like the panels that replace it, so the page does not jump. */}
         {Array.from({ length: 4 }).map((_, i) => (
-          <Paper key={i} variant="outlined" sx={{ p: 2 }}>
+          <Paper key={i} variant="outlined" sx={{ ...workspacePanel, border: 0 }}>
             <Skeleton variant="text" width={180} height={28} />
             <Skeleton variant="text" width="70%" />
             <Stack direction="row" spacing={2} useFlexGap sx={{ flexWrap: 'wrap', mt: 2 }}>
@@ -313,8 +318,13 @@ export function BusinessRulesPage() {
         {draft.updatedBy ? ` by ${draft.updatedBy.slice(-6)}` : ''}.
       </Alert>
 
-      <Paper variant="outlined" sx={{ p: 2 }}>
-        <Typography variant="subtitle1">Points per action</Typography>
+      <Paper variant="outlined" sx={{ ...workspacePanel, border: 0 }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ fontFamily: 'Outfit, sans-serif', fontSize: 21, fontWeight: 600, mb: 0.5 }}
+        >
+          Points per action
+        </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
           Base award for each verified action, before any multiplier or cap.
         </Typography>
@@ -335,8 +345,13 @@ export function BusinessRulesPage() {
         </Stack>
       </Paper>
 
-      <Paper variant="outlined" sx={{ p: 2 }}>
-        <Typography variant="subtitle1">Verification multipliers</Typography>
+      <Paper variant="outlined" sx={{ ...workspacePanel, border: 0 }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ fontFamily: 'Outfit, sans-serif', fontSize: 21, fontWeight: 600, mb: 0.5 }}
+        >
+          Verification multipliers
+        </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
           How much each evidence path is worth. A recovery nobody witnessed should never be worth as
           much as one a partner recorded.
@@ -366,8 +381,13 @@ export function BusinessRulesPage() {
         </Stack>
       </Paper>
 
-      <Paper variant="outlined" sx={{ p: 2 }}>
-        <Typography variant="subtitle1">Risk thresholds</Typography>
+      <Paper variant="outlined" sx={{ ...workspacePanel, border: 0 }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ fontFamily: 'Outfit, sans-serif', fontSize: 21, fontWeight: 600, mb: 0.5 }}
+        >
+          Risk thresholds
+        </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
           Where each risk band begins. Must increase left to right — medium, then high, then
           critical.
@@ -396,8 +416,13 @@ export function BusinessRulesPage() {
       </Paper>
 
       {SECTIONS.map((section) => (
-        <Paper key={section.heading} variant="outlined" sx={{ p: 2 }}>
-          <Typography variant="subtitle1">{section.heading}</Typography>
+        <Paper key={section.heading} variant="outlined" sx={{ ...workspacePanel, border: 0 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontFamily: 'Outfit, sans-serif', fontSize: 21, fontWeight: 600, mb: 0.5 }}
+          >
+            {section.heading}
+          </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
             {section.blurb}
           </Typography>
@@ -418,7 +443,21 @@ export function BusinessRulesPage() {
       ))}
 
       <Divider />
-      <Box>
+      <Box
+        sx={{
+          ...workspacePanel,
+          position: 'sticky',
+          bottom: 16,
+          zIndex: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 2,
+        }}
+      >
+        <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>
+          Review your changes before applying them.
+        </Typography>
         <Button variant="contained" onClick={submit} disabled={save.isPending}>
           Save rules
         </Button>
@@ -432,5 +471,13 @@ export function BusinessRulesPage() {
         <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
       </Snackbar>
     </Stack>
+  );
+}
+
+export function BusinessRulesPage() {
+  return (
+    <AdminWorkspace>
+      <BusinessRulesPageContent />
+    </AdminWorkspace>
   );
 }

@@ -1,3 +1,8 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+} from '../components/AdminWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -13,11 +18,11 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
-import { EmptyState, ListSkeleton, PageHeader } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
-export function VerificationsPage() {
+function VerificationsPageContent() {
   const qc = useQueryClient();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [processing, setProcessing] = useState(false);
@@ -32,7 +37,7 @@ export function VerificationsPage() {
     severity: 'success',
   });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin-verifications'],
     queryFn: () => api.listPendingVerifications(),
   });
@@ -40,6 +45,20 @@ export function VerificationsPage() {
   const decide = useMutation({
     mutationFn: (input: { id: string; decision: 'approve' | 'reject'; note?: string }) =>
       api.decideVerification(input.id, input.decision, input.note),
+    onSuccess: () => {
+      if (!processing) {
+        void qc.invalidateQueries({ queryKey: ['admin-verifications'] });
+        setSelectedIds(new Set());
+      }
+    },
+    onError: () => {
+      if (!processing)
+        setSnackbar({
+          open: true,
+          message: 'Could not save the decision. Please try again.',
+          severity: 'error',
+        });
+    },
   });
 
   const items = data ?? [];
@@ -99,16 +118,18 @@ export function VerificationsPage() {
     <Stack spacing={3}>
       <PageHeader
         icon={<TaskAltOutlinedIcon />}
-        title="Pending ownership verifications"
+        title="Ownership verifications"
         description="Review claimant answers and approve or reject ownership — one by one or in bulk."
         actions={
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
             <Checkbox
+              slotProps={{ input: { 'aria-label': 'Select all' } }}
               checked={allSelected}
               indeterminate={someSelected}
               onChange={toggleSelectAll}
               disabled={items.length === 0 || processing}
             />
+
             <Typography variant="body2" color="text.secondary">
               Select all
             </Typography>
@@ -116,12 +137,18 @@ export function VerificationsPage() {
         }
       />
 
+      <QueueSummary
+        count={isLoading || isError ? undefined : data?.length}
+        label="Claims awaiting review"
+        description="Compare each claimant’s answers with the ownership evidence before deciding."
+      />
+
       {selectedIds.size > 0 && (
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
           <Button
             variant="contained"
             color="success"
-            disabled={processing}
+            disabled={processing || decide.isPending}
             onClick={() => runBulk('approve')}
           >
             Approve selected ({selectedIds.size})
@@ -129,7 +156,7 @@ export function VerificationsPage() {
           <Button
             variant="outlined"
             color="error"
-            disabled={processing}
+            disabled={processing || decide.isPending}
             onClick={() => runBulk('reject')}
           >
             Reject selected ({selectedIds.size})
@@ -146,6 +173,18 @@ export function VerificationsPage() {
         </Stack>
       )}
 
+      {isError && (
+        <Alert
+          severity="error"
+          action={
+            <Button color="inherit" onClick={() => void refetch()}>
+              Retry
+            </Button>
+          }
+        >
+          Could not load this queue. Please try again.
+        </Alert>
+      )}
       {isLoading && <ListSkeleton rows={4} avatar={false} />}
       {data && data.length === 0 && (
         <EmptyState
@@ -162,11 +201,14 @@ export function VerificationsPage() {
             <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
               <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                 <Checkbox
+                  slotProps={{ input: { 'aria-label': `Select ${v.id}` } }}
                   checked={selectedIds.has(v.id)}
                   onChange={() => toggleSelect(v.id)}
-                  disabled={processing}
+                  disabled={processing || decide.isPending}
                 />
-                <Typography variant="h6">Item {v.itemId.slice(-6)}</Typography>
+                <Typography variant="h6" sx={{ fontSize: 18 }}>
+                  Item {v.itemId.slice(-6)}
+                </Typography>
               </Stack>
               <Chip
                 label={`AI ${(v.aiConsistencyScore * 100).toFixed(0)}%`}
@@ -177,7 +219,17 @@ export function VerificationsPage() {
               by {v.claimantId.slice(-6)} · {new Date(v.createdAt).toLocaleString()}
             </Typography>
             {v.answers.map((a, i) => (
-              <Typography key={i} variant="body2" sx={{ mt: 1, pl: 4 }}>
+              <Typography
+                key={i}
+                variant="body2"
+                sx={{
+                  mt: 1.5,
+                  p: 2,
+                  borderRadius: '12px',
+                  boxShadow: 'var(--workspace-inset)',
+                  overflowWrap: 'anywhere',
+                }}
+              >
                 <b>Q{i + 1}:</b> {a.answer}
               </Typography>
             ))}
@@ -187,7 +239,7 @@ export function VerificationsPage() {
                 color="success"
                 size="small"
                 onClick={() => decide.mutate({ id: v.id, decision: 'approve' })}
-                disabled={processing}
+                disabled={processing || decide.isPending}
               >
                 Approve
               </Button>
@@ -197,7 +249,7 @@ export function VerificationsPage() {
                 onClick={() =>
                   decide.mutate({ id: v.id, decision: 'reject', note: 'Insufficient evidence' })
                 }
-                disabled={processing}
+                disabled={processing || decide.isPending}
               >
                 Reject
               </Button>
@@ -220,5 +272,13 @@ export function VerificationsPage() {
         </Alert>
       </Snackbar>
     </Stack>
+  );
+}
+
+export function VerificationsPage() {
+  return (
+    <AdminWorkspace>
+      <VerificationsPageContent />
+    </AdminWorkspace>
   );
 }

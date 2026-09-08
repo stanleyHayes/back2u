@@ -1,3 +1,8 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  workspacePanel,
+} from '../components/AdminWorkspace.js';
 import { useRef, useState, type ReactNode } from 'react';
 import {
   Alert,
@@ -23,6 +28,8 @@ import {
   ToggleButtonGroup,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import QRCode from 'react-qr-code';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -44,7 +51,7 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import SettingsBrightnessOutlinedIcon from '@mui/icons-material/SettingsBrightnessOutlined';
 import { useMutation } from '@tanstack/react-query';
-import { PageHeader, type ConsoleThemeMode } from '@back2u/ui-web';
+import { type ConsoleThemeMode } from '@back2u/ui-web';
 import type { EmailPreferences, Locale } from '@back2u/shared-types';
 
 import { api } from '../lib/api.js';
@@ -97,11 +104,7 @@ function SettingCard({
   return (
     <Box
       sx={{
-        p: { xs: 2.5, md: 3 },
-        borderRadius: 2,
-        border: 1,
-        borderColor: 'divider',
-        bgcolor: 'background.paper',
+        ...workspacePanel,
       }}
     >
       <Stack
@@ -110,7 +113,9 @@ function SettingCard({
         sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
       >
         <Box>
-          <Typography sx={{ fontWeight: 700, fontSize: 16 }}>{title}</Typography>
+          <Typography sx={{ fontFamily: 'Outfit, sans-serif', fontWeight: 600, fontSize: 20 }}>
+            {title}
+          </Typography>
           {desc && (
             <Typography sx={{ color: 'text.secondary', fontSize: 14, mt: 0.5 }}>{desc}</Typography>
           )}
@@ -656,7 +661,7 @@ function PreferencesSection() {
               setLocale(l);
               saveLocale.mutate(l);
             }}
-            sx={{ minWidth: 220 }}
+            sx={{ minWidth: 0, flex: 1 }}
           >
             {LANGUAGES.map((l) => (
               <MenuItem key={l.value} value={l.value}>
@@ -813,58 +818,136 @@ function DataSection() {
 /* ----------------------------------- Page ----------------------------------- */
 
 const TABS = [
-  { key: 'profile', label: 'Profile', icon: <PersonOutlineIcon /> },
-  { key: 'security', label: 'Security', icon: <SecurityOutlinedIcon /> },
-  { key: 'preferences', label: 'Preferences', icon: <TuneOutlinedIcon /> },
-  { key: 'notifications', label: 'Notifications', icon: <NotificationsNoneOutlinedIcon /> },
-  { key: 'data', label: 'Data & session', icon: <StorageOutlinedIcon /> },
+  {
+    key: 'profile',
+    description: 'Your identity and contact details',
+    label: 'Profile',
+    icon: <PersonOutlineIcon />,
+  },
+  {
+    key: 'security',
+    description: 'Password and account protection',
+    label: 'Security',
+    icon: <SecurityOutlinedIcon />,
+  },
+  {
+    key: 'preferences',
+    description: 'Theme and language',
+    label: 'Preferences',
+    icon: <TuneOutlinedIcon />,
+  },
+  {
+    key: 'notifications',
+    description: 'Choose what reaches your inbox',
+    label: 'Notifications',
+    icon: <NotificationsNoneOutlinedIcon />,
+  },
+  {
+    key: 'data',
+    description: 'Exports, walkthrough and sign out',
+    label: 'Data & session',
+    icon: <StorageOutlinedIcon />,
+  },
 ] as const;
 
 type TabKey = (typeof TABS)[number]['key'];
 
-export function AdminSettingsPage() {
+function AdminSettingsContent() {
+  const verticalNavigation = useMediaQuery(useTheme().breakpoints.up('md'));
   const user = useAuth((s) => s.user);
   const [tab, setTab] = useState<TabKey>('profile');
 
   if (!user) return null;
 
   return (
-    <Stack spacing={2.5} sx={{ maxWidth: 760, mx: 'auto', width: '100%' }}>
+    <Stack spacing={2.5} sx={{ maxWidth: 1100, mx: 'auto', width: '100%' }}>
       <PageHeader
         icon={<SettingsOutlinedIcon />}
         title="Settings"
         description="Profile, security, appearance, language and notification controls for your admin account."
       />
-      <Tabs
-        value={tab}
-        onChange={(_e, v: TabKey) => setTab(v)}
-        variant="scrollable"
-        allowScrollButtonsMobile
-        sx={{ borderBottom: 1, borderColor: 'divider' }}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: '260px minmax(0, 1fr)' },
+          gap: 3,
+          alignItems: 'start',
+        }}
       >
-        {TABS.map((t) => (
-          <Tab
-            key={t.key}
-            value={t.key}
-            label={t.label}
-            icon={t.icon}
-            iconPosition="start"
-            sx={{ minHeight: 56, textTransform: 'none', fontWeight: 600 }}
-          />
-        ))}
-      </Tabs>
-      <Box>
-        {tab === 'profile' && <ProfileSection />}
-        {tab === 'security' && (
-          <Stack spacing={2.5}>
-            <ChangePasswordCard />
-            <MfaCard />
-          </Stack>
-        )}
-        {tab === 'preferences' && <PreferencesSection />}
-        {tab === 'notifications' && <NotificationsSection />}
-        {tab === 'data' && <DataSection />}
+        <Tabs
+          orientation={verticalNavigation ? 'vertical' : 'horizontal'}
+          value={tab}
+          onChange={(_e, v: TabKey) => setTab(v)}
+          variant="scrollable"
+          allowScrollButtonsMobile
+          aria-label="Settings sections"
+          sx={{
+            p: 1,
+            borderRadius: '20px',
+            boxShadow: 'var(--workspace-inset)',
+            '& .MuiTabs-list': { flexDirection: { xs: 'row', md: 'column' }, gap: 0.75 },
+            '& .MuiTabs-indicator': { display: 'none' },
+          }}
+        >
+          {TABS.map((t) => (
+            <Tab
+              key={t.key}
+              value={t.key}
+              id={`settings-tab-${t.key}`}
+              aria-controls={`settings-panel-${t.key}`}
+              label={
+                <Box sx={{ textAlign: 'left' }}>
+                  <Typography sx={{ fontSize: 14, fontWeight: 600 }}>{t.label}</Typography>
+                  <Typography
+                    sx={{ fontSize: 11, color: 'text.secondary', mt: 0.4, maxWidth: 170 }}
+                  >
+                    {t.description}
+                  </Typography>
+                </Box>
+              }
+              icon={t.icon}
+              iconPosition="start"
+              sx={{
+                minHeight: 76,
+                textTransform: 'none',
+                gap: 1.5,
+                borderRadius: '14px',
+                justifyContent: 'flex-start',
+                '&.Mui-selected': {
+                  color: 'text.primary',
+                  bgcolor: 'background.default',
+                  boxShadow: 'var(--workspace-raised)',
+                },
+              }}
+            />
+          ))}
+        </Tabs>
+        <Box
+          role="tabpanel"
+          id={`settings-panel-${tab}`}
+          aria-labelledby={`settings-tab-${tab}`}
+          sx={{ minWidth: 0 }}
+        >
+          {tab === 'profile' && <ProfileSection />}
+          {tab === 'security' && (
+            <Stack spacing={2.5}>
+              <ChangePasswordCard />
+              <MfaCard />
+            </Stack>
+          )}
+          {tab === 'preferences' && <PreferencesSection />}
+          {tab === 'notifications' && <NotificationsSection />}
+          {tab === 'data' && <DataSection />}
+        </Box>
       </Box>
     </Stack>
+  );
+}
+
+export function AdminSettingsPage() {
+  return (
+    <AdminWorkspace>
+      <AdminSettingsContent />
+    </AdminWorkspace>
   );
 }

@@ -1,3 +1,8 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  workspacePanel,
+} from '../components/AdminWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -17,21 +22,14 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import { PageHeader } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 import { uploadImageUrl } from '../lib/cloudinary-upload.js';
 
 const TEAL = '#A8B5A0';
-const DISPLAY = '"Black Ops One", Georgia, serif';
-const PANEL = {
-  p: { xs: 2.5, md: 3 },
-  borderRadius: 2,
-  border: 1,
-  borderColor: 'divider',
-  bgcolor: 'background.paper',
-};
+const DISPLAY = 'Outfit, sans-serif';
+const PANEL = workspacePanel;
 
 function MetaRow({
   label,
@@ -73,7 +71,7 @@ function MetaRow({
   );
 }
 
-export function AdminProfilePage() {
+function AdminProfilePageContent() {
   const user = useAuth((s) => s.user);
 
   const [name, setName] = useState(user?.name ?? '');
@@ -163,20 +161,19 @@ export function AdminProfilePage() {
       {/* Identity banner */}
       <Box
         sx={{
-          borderRadius: 2,
+          borderRadius: '24px',
           overflow: 'hidden',
-          border: 1,
-          borderColor: 'divider',
+          boxShadow: 'var(--workspace-raised)',
           mb: 3,
         }}
       >
         <Box
           sx={{
-            height: 96,
+            height: 72,
             background: `linear-gradient(120deg, ${TEAL} 0%, #40614A 55%, #2E3D2F 100%)`,
           }}
         />
-        <Box sx={{ px: { xs: 2.5, md: 3 }, pb: 3, bgcolor: 'background.paper' }}>
+        <Box sx={{ px: { xs: 2.5, md: 3 }, pb: 3, bgcolor: 'background.default' }}>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={2.5}
@@ -192,7 +189,7 @@ export function AdminProfilePage() {
                 border: '4px solid',
                 borderColor: 'background.paper',
                 bgcolor: '#40614A',
-                color: '#1C231B',
+                color: '#F2F5ED',
               }}
             >
               {initial}
@@ -203,7 +200,9 @@ export function AdminProfilePage() {
               >
                 {name || 'Admin'}
               </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>{user.email}</Typography>
+              <Typography sx={{ color: 'text.secondary', overflowWrap: 'anywhere' }}>
+                {user.email}
+              </Typography>
               <Stack direction="row" spacing={1} useFlexGap sx={{ mt: 1.25, flexWrap: 'wrap' }}>
                 {user.roles.map((r) => (
                   <Chip
@@ -277,14 +276,19 @@ export function AdminProfilePage() {
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
                 Profile photo
               </Typography>
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+              <Stack
+                direction="row"
+                spacing={1.5}
+                useFlexGap
+                sx={{ alignItems: 'center', flexWrap: 'wrap' }}
+              >
                 <Avatar
                   src={avatarUrl || undefined}
                   sx={{
                     width: 56,
                     height: 56,
                     bgcolor: '#40614A',
-                    color: '#1C231B',
+                    color: '#F2F5ED',
                     fontWeight: 800,
                   }}
                 >
@@ -313,16 +317,21 @@ export function AdminProfilePage() {
                 )}
               </Stack>
             </Box>
-            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+            <Stack
+              direction="row"
+              spacing={1.5}
+              useFlexGap
+              sx={{ alignItems: 'center', flexWrap: 'wrap' }}
+            >
               <Button
                 variant="contained"
                 onClick={save}
-                disabled={saving || !dirty}
+                disabled={saving || uploadingAvatar || !dirty}
                 sx={{
                   bgcolor: TEAL,
                   color: '#1C231B',
                   fontWeight: 700,
-                  '&:hover': { bgcolor: '#5fe6d4' },
+                  '&:hover': { bgcolor: '#8EA185' },
                 }}
               >
                 {saving ? 'Saving…' : 'Save changes'}
@@ -375,5 +384,13 @@ export function AdminProfilePage() {
         </Box>
       </Box>
     </Box>
+  );
+}
+
+export function AdminProfilePage() {
+  return (
+    <AdminWorkspace>
+      <AdminProfilePageContent />
+    </AdminWorkspace>
   );
 }

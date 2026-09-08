@@ -1,18 +1,23 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Alert, Box, Button, Chip, Stack, Tab, Tabs, Typography } from '@mui/material';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import { EmptyState, PageHeader, ListSkeleton } from '@back2u/ui-web';
+import DoneAllRoundedIcon from '@mui/icons-material/DoneAllRounded';
+import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { NotificationDTO } from '@back2u/shared-types';
-
+import {
+  PartnerWorkspace,
+  WorkspaceHeader,
+  workspacePanel,
+} from '../components/PartnerWorkspace.js';
 import { api } from '../lib/api.js';
 
 export function PartnerNotificationsPage() {
   const qc = useQueryClient();
-  const { data, isLoading } = useQuery({
+  const [filter, setFilter] = useState('all');
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['notifications'],
     queryFn: () => api.listNotifications(50),
   });
-
   const markAll = useMutation({
     mutationFn: () => api.markAllNotificationsRead(),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['notifications'] }),
@@ -21,84 +26,180 @@ export function PartnerNotificationsPage() {
     mutationFn: (id: string) => api.markNotificationRead(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['notifications'] }),
   });
-
   const notifications = data ?? [];
-  const hasUnread = notifications.some((n) => !n.read);
-
+  const unread = notifications.filter((n) => !n.read).length;
+  const visible = filter === 'unread' ? notifications.filter((n) => !n.read) : notifications;
   return (
-    <Box sx={{ maxWidth: 720, mx: 'auto' }}>
-      <Box sx={{ mb: 2.5 }}>
-        <PageHeader
-          icon={<NotificationsNoneOutlinedIcon />}
-          title="Notifications"
-          description="Match alerts, courier updates, and bids for your institution, as they happen."
-          actions={
-            hasUnread ? (
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => markAll.mutate()}
-                disabled={markAll.isPending}
-                sx={{ borderRadius: 999, fontWeight: 600 }}
-              >
-                Mark all read
+    <PartnerWorkspace>
+      <WorkspaceHeader
+        icon={<NotificationsNoneOutlinedIcon />}
+        title="Notifications"
+        description="Your recovery activity, all in one place. Keep up with matches, deliveries and updates."
+        actions={
+          <Button
+            variant="outlined"
+            startIcon={<DoneAllRoundedIcon />}
+            disabled={!unread || markAll.isPending || markOne.isPending}
+            onClick={() => markAll.mutate()}
+          >
+            {markAll.isPending ? 'Updating…' : 'Mark all read'}
+          </Button>
+        }
+      />
+      <Box sx={{ ...workspacePanel, mt: 3 }}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={2}
+          sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' }, mb: 3 }}
+        >
+          <Tabs
+            value={filter}
+            onChange={(_, value: string) => setFilter(value)}
+            aria-label="Notification filter"
+            sx={{
+              minHeight: 44,
+              p: 0.5,
+              borderRadius: '14px',
+              boxShadow: 'var(--workspace-inset)',
+              '& .MuiTabs-indicator': { display: 'none' },
+              '& .MuiTab-root': { minHeight: 40, borderRadius: '10px', textTransform: 'none' },
+              '& .Mui-selected': {
+                bgcolor: 'background.default',
+                color: 'text.primary',
+                boxShadow: 'var(--workspace-raised)',
+              },
+            }}
+          >
+            <Tab value="all" label="All activity" />
+            <Tab value="unread" label={`Unread${!isLoading && !isError ? ` (${unread})` : ''}`} />
+          </Tabs>
+          <Typography sx={{ color: 'text.secondary', fontSize: 12 }}>
+            Your latest 50 notifications
+          </Typography>
+        </Stack>
+        {(markAll.isError || markOne.isError) && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            Could not update notifications. Please try again.
+          </Alert>
+        )}
+        {isLoading ? (
+          <ListSkeleton rows={5} avatar />
+        ) : isError ? (
+          <Alert
+            severity="error"
+            action={
+              <Button color="inherit" onClick={() => void refetch()}>
+                Retry
               </Button>
-            ) : undefined
-          }
-        />
-      </Box>
-
-      {isLoading ? (
-        <ListSkeleton rows={5} avatar={false} />
-      ) : notifications.length === 0 ? (
-        <EmptyState
-          tone="teal"
-          icon={<NotificationsNoneOutlinedIcon />}
-          title="You're all caught up"
-          description="Match alerts, courier updates, and bids will show up here as they happen."
-        />
-      ) : (
-        <Stack spacing={1.25}>
-          {notifications.map((n: NotificationDTO) => (
-            <Box
-              key={n.id}
-              onClick={() => !n.read && markOne.mutate(n.id)}
-              sx={{
-                p: 2,
-                borderRadius: 2,
-                border: '1px solid',
-                borderColor: n.read ? 'divider' : 'rgba(168,181,160,0.35)',
-                bgcolor: n.read ? 'background.paper' : 'rgba(168,181,160,0.08)',
-                cursor: n.read ? 'default' : 'pointer',
-                transition: 'background-color .15s',
-              }}
-            >
+            }
+          >
+            Could not load notifications.
+          </Alert>
+        ) : visible.length === 0 ? (
+          <EmptyState
+            tone="teal"
+            icon={<NotificationsNoneOutlinedIcon />}
+            title={filter === 'unread' ? "You're all caught up" : 'A little quiet here'}
+            description={
+              filter === 'unread'
+                ? 'You have read all your recent updates.'
+                : 'New matches, courier updates and bids will appear here.'
+            }
+          />
+        ) : (
+          <Stack spacing={1.5}>
+            {visible.map((n) => (
               <Stack
+                key={n.id}
                 direction="row"
-                spacing={1}
-                sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
+                spacing={{ xs: 1.5, sm: 2 }}
+                sx={{
+                  p: { xs: 2, sm: 2.5 },
+                  borderRadius: '18px',
+                  boxShadow: 'var(--workspace-inset)',
+                  borderLeft: '3px solid',
+                  borderColor: n.read ? 'transparent' : 'var(--workspace-green)',
+                }}
               >
-                <Box sx={{ minWidth: 0 }}>
-                  <Typography sx={{ fontWeight: n.read ? 500 : 700 }} noWrap>
-                    {n.title}
-                  </Typography>
-                  <Typography sx={{ fontSize: 13.5, color: 'text.secondary' }}>{n.body}</Typography>
-                </Box>
-                <Typography
+                <Box
                   sx={{
-                    fontSize: 11.5,
-                    color: 'text.secondary',
+                    width: 40,
+                    height: 40,
+                    borderRadius: '12px',
+                    display: 'grid',
+                    placeItems: 'center',
                     flexShrink: 0,
-                    whiteSpace: 'nowrap',
+                    bgcolor: 'action.selected',
+                    color: 'var(--workspace-green)',
                   }}
                 >
-                  {new Date(n.createdAt).toLocaleDateString()}
-                </Typography>
+                  <NotificationsNoneOutlinedIcon sx={{ fontSize: 21 }} />
+                </Box>
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    useFlexGap
+                    sx={{ flexWrap: 'wrap', alignItems: 'center' }}
+                  >
+                    <Typography sx={{ fontWeight: 600, fontSize: 15, overflowWrap: 'anywhere' }}>
+                      {n.title}
+                    </Typography>
+                    {!n.read && (
+                      <Chip size="small" label="New" color="success" variant="outlined" />
+                    )}
+                  </Stack>
+                  <Typography
+                    sx={{
+                      color: 'text.secondary',
+                      fontSize: 13,
+                      mt: 0.5,
+                      lineHeight: 1.7,
+                      overflowWrap: 'anywhere',
+                    }}
+                  >
+                    {n.body}
+                  </Typography>
+                  <Stack
+                    direction="row"
+                    useFlexGap
+                    spacing={1.5}
+                    sx={{
+                      flexWrap: 'wrap',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      mt: 1,
+                    }}
+                  >
+                    <Typography
+                      component="time"
+                      dateTime={n.createdAt}
+                      sx={{ color: 'text.secondary', fontSize: 11 }}
+                    >
+                      {new Date(n.createdAt).toLocaleString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                      })}
+                    </Typography>
+                    {!n.read && (
+                      <Button
+                        size="small"
+                        disabled={markOne.isPending || markAll.isPending}
+                        onClick={() => markOne.mutate(n.id)}
+                        aria-label={`Mark ${n.title} as read`}
+                      >
+                        Mark as read
+                      </Button>
+                    )}
+                  </Stack>
+                </Box>
               </Stack>
-            </Box>
-          ))}
-        </Stack>
-      )}
-    </Box>
+            ))}
+          </Stack>
+        )}
+      </Box>
+    </PartnerWorkspace>
   );
 }

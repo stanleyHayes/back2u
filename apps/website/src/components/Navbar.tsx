@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   Box,
   Divider,
@@ -10,6 +10,13 @@ import {
   useTheme,
 } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
+import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
+import PhoneIphoneRoundedIcon from '@mui/icons-material/PhoneIphoneRounded';
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
@@ -24,17 +31,57 @@ import { toggleThemeWithReveal } from '../lib/theme-mode';
 const APP_URL = (import.meta.env.VITE_APP_URL as string | undefined) ?? 'http://localhost:5173';
 const INK = '#2E3D2F';
 const CREAM = '#F2EFEA';
-const MARIGOLD = '#8B6F4E';
+// Carries cream text, so it uses the deeper marigold (5.11:1, was 4.09:1).
+const MARIGOLD = '#7A6044';
 
-type NLink = { label: string; to?: string; href?: string };
+type NLink = { label: string; description: string; icon: ReactNode; to?: string; href?: string };
 const LINKS: NLink[] = [
-  { label: 'Home', to: '/' },
-  { label: 'Browse', href: `${APP_URL}/feed` },
-  { label: 'Live map', to: '/map' },
-  { label: 'Pricing', to: '/pricing' },
-  { label: 'Institutions', to: '/partner' },
-  { label: 'Get the app', to: '/download' },
+  {
+    label: 'Home',
+    description: 'Discover how bak2me brings things back.',
+    icon: <HomeOutlinedIcon />,
+    to: '/',
+  },
+  {
+    label: 'Browse',
+    description: 'Explore lost and found items near you.',
+    icon: <SearchRoundedIcon />,
+    href: `${APP_URL}/feed`,
+  },
+  {
+    label: 'Live map',
+    description: 'See where items are lost and found.',
+    icon: <MapOutlinedIcon />,
+    to: '/map',
+  },
+  {
+    label: 'Pricing',
+    description: 'Find the right plan for your needs.',
+    icon: <SellOutlinedIcon />,
+    to: '/pricing',
+  },
+  {
+    label: 'Institutions',
+    description: 'Bring lost and found to your venue.',
+    icon: <BusinessOutlinedIcon />,
+    to: '/partner',
+  },
+  {
+    label: 'Get the app',
+    description: 'Keep your next reunion within reach.',
+    icon: <PhoneIphoneRoundedIcon />,
+    to: '/download',
+  },
 ];
+
+// Shadows use the navigation surface's own tones for soft, consistent depth.
+const navigationShadow = (theme: Theme, inset = false) => {
+  const prefix = inset ? 'inset ' : '';
+  return theme.palette.mode === 'dark'
+    ? `${prefix}4px 4px 9px #171e17, ${prefix}-3px -3px 8px #354035`
+    : `${prefix}4px 4px 9px #dedbd5, ${prefix}-3px -3px 8px #ffffff`;
+};
+const focusRing = { outline: '2px solid', outlineColor: 'primary.main', outlineOffset: 3 };
 
 function ThemeToggleButton() {
   const dark = useTheme().palette.mode === 'dark';
@@ -51,52 +98,115 @@ function ThemeToggleButton() {
   );
 }
 
-/** Uppercase nav link with a marigold underline on the active route. */
 function TopLink({ link }: { link: NLink }) {
   const base = {
-    position: 'relative',
-    color: 'text.primary',
-    fontWeight: 700,
-    fontSize: 12.5,
-    letterSpacing: '0.06em',
-    textTransform: 'uppercase',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 42,
+    whiteSpace: 'nowrap',
+    color: 'text.secondary',
+    fontWeight: 600,
+    fontSize: 13,
     textDecoration: 'none',
-    px: 0.75,
-    py: 1,
-    borderRadius: 999,
-    transition: 'color .18s ease',
-    '&:hover': {
-      color: 'primary.main',
-      boxShadow: (t: Theme) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'raised'),
-    },
-  } as const;
-
-  const underline = {
+    px: 1.5,
+    borderRadius: '12px',
+    transition: 'color .18s ease, box-shadow .18s ease',
+    '&:hover': { color: 'text.primary', boxShadow: (t: Theme) => navigationShadow(t) },
+    '&:focus-visible': focusRing,
     '&.active': {
       color: 'text.primary',
-      boxShadow: (t: Theme) => neuShadow(t.palette.mode === 'dark' ? 'dark' : 'light', 'inset'),
+      boxShadow: (t: Theme) => navigationShadow(t, true),
+      '&::before': {
+        content: '\"\"',
+        width: 5,
+        height: 5,
+        borderRadius: '50%',
+        bgcolor: 'primary.main',
+        mr: 0.75,
+      },
     },
-    '&.active::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 2,
-      mx: 'auto',
-      width: 18,
-      height: 3,
-      borderRadius: 2,
-      bgcolor: MARIGOLD,
-    },
+    '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
   } as const;
-
   return link.to ? (
-    <Box component={NavLink} to={link.to} end={link.to === '/'} sx={{ ...base, ...underline }}>
+    <Box component={NavLink} to={link.to} end={link.to === '/'} sx={base}>
       {link.label}
     </Box>
   ) : (
     <Box component="a" href={link.href} sx={base}>
       {link.label}
+    </Box>
+  );
+}
+
+function SidebarLink({ link, onClose }: { link: NLink; onClose: () => void }) {
+  return (
+    <Box
+      component={link.to ? NavLink : 'a'}
+      {...(link.to ? { to: link.to, end: link.to === '/' } : { href: link.href })}
+      onClick={onClose}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1.5,
+        p: 1.5,
+        minHeight: 76,
+        borderRadius: '16px',
+        textDecoration: 'none',
+        color: 'text.primary',
+        boxShadow: (t) => navigationShadow(t),
+        transition: 'box-shadow .18s ease, color .18s ease',
+        '&:hover': { color: 'primary.main' },
+        '&:focus-visible': focusRing,
+        '&.active': {
+          boxShadow: (t) => navigationShadow(t, true),
+          '& .nav-icon': { color: 'primary.main' },
+          '& .nav-indicator': { opacity: 1 },
+        },
+        '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+      }}
+    >
+      <Box
+        className="nav-icon"
+        sx={{
+          width: 42,
+          height: 42,
+          flexShrink: 0,
+          display: 'grid',
+          placeItems: 'center',
+          borderRadius: '13px',
+          color: 'text.secondary',
+          boxShadow: (t) => navigationShadow(t, true),
+          '& svg': { fontSize: 22 },
+        }}
+      >
+        {link.icon}
+      </Box>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Typography
+          component="span"
+          sx={{ display: 'block', fontSize: 15, fontWeight: 600, lineHeight: 1.4 }}
+        >
+          {link.label}
+        </Typography>
+        <Typography
+          component="span"
+          sx={{ display: 'block', mt: 0.4, color: 'text.secondary', fontSize: 12, lineHeight: 1.5 }}
+        >
+          {link.description}
+        </Typography>
+      </Box>
+      <Box
+        className="nav-indicator"
+        sx={{
+          opacity: 0,
+          width: 6,
+          height: 6,
+          flexShrink: 0,
+          borderRadius: '50%',
+          bgcolor: 'primary.main',
+        }}
+      />
     </Box>
   );
 }
@@ -194,7 +304,7 @@ export function Navbar() {
             gap: 1.5,
             flexShrink: 0,
             pl: { xs: 2, md: 3 },
-            pr: { xs: 3, md: 6 },
+            pr: { xs: 3, md: 3 },
             textDecoration: 'none',
             bgcolor: INK,
             borderRadius: 0,
@@ -247,8 +357,16 @@ export function Navbar() {
         >
           <Stack
             direction="row"
-            spacing={{ md: 2, lg: 3.15 }}
-            sx={{ alignItems: 'center', display: { xs: 'none', md: 'flex' } }}
+            component="nav"
+            aria-label="Main navigation"
+            spacing={0.5}
+            sx={{
+              alignItems: 'center',
+              display: { xs: 'none', lg: 'flex' },
+              p: 0.5,
+              borderRadius: '16px',
+              boxShadow: (t) => navigationShadow(t, true),
+            }}
           >
             {LINKS.map((l) => (
               <TopLink key={l.label} link={l} />
@@ -283,64 +401,91 @@ export function Navbar() {
         </Box>
       </Box>
 
-      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-        <Box sx={{ width: 300, p: 2.5, height: '100%', bgcolor: 'background.default' }}>
+      <Drawer
+        anchor="right"
+        open={open}
+        onClose={() => setOpen(false)}
+        slotProps={{
+          paper: {
+            sx: {
+              width: 'min(380px, 100vw)',
+              bgcolor: (t) => (t.palette.mode === 'dark' ? '#263026' : '#FAF8F3'),
+              backgroundImage: 'none',
+              borderLeft: '1px solid',
+              borderColor: 'divider',
+              borderRadius: '24px 0 0 24px',
+            },
+          },
+        }}
+      >
+        <Box
+          sx={{
+            p: { xs: 2.5, sm: 3 },
+            minHeight: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <Stack
             direction="row"
             sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 3 }}
           >
             <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
-              <BrandMark size={30} />
-              <Typography
-                className="b2u-display"
-                sx={{ fontWeight: 600, fontSize: 19, color: 'text.primary' }}
-              >
-                bak2me
-              </Typography>
+              <BrandMark size={32} />
+              <Box>
+                <Typography
+                  className="b2u-display"
+                  sx={{ fontWeight: 600, fontSize: 21, color: 'text.primary' }}
+                >
+                  bak2me
+                </Typography>
+                <Typography sx={{ color: 'text.secondary', fontSize: 11 }}>
+                  Lost. Found. Returned.
+                </Typography>
+              </Box>
             </Stack>
-            <IconButton onClick={() => setOpen(false)} aria-label="Close menu">
+            <IconButton
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              sx={{ boxShadow: (t) => navigationShadow(t), '&:focus-visible': focusRing }}
+            >
               <CloseIcon />
             </IconButton>
           </Stack>
-          <Stack spacing={2} sx={{ alignItems: 'flex-start' }}>
-            {LINKS.map((l) => (
-              <Box
-                key={l.label}
-                component={l.to ? Link : 'a'}
-                {...(l.to ? { to: l.to } : { href: l.href })}
-                onClick={() => setOpen(false)}
-                sx={{
-                  color: 'text.primary',
-                  fontWeight: 700,
-                  fontSize: 13,
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                  textDecoration: 'none',
-                }}
-              >
-                {l.label}
-              </Box>
+          <Typography
+            sx={{
+              fontSize: 11,
+              letterSpacing: '.12em',
+              fontWeight: 700,
+              color: 'text.secondary',
+              mb: 1.75,
+            }}
+          >
+            EXPLORE BAK2ME
+          </Typography>
+          <Stack component="nav" aria-label="Sidebar navigation" spacing={1.5}>
+            {LINKS.map((link) => (
+              <SidebarLink key={link.label} link={link} onClose={() => setOpen(false)} />
             ))}
-            <Box
-              component="a"
-              href={`${APP_URL}/login`}
-              onClick={() => setOpen(false)}
-              sx={{
-                color: 'text.secondary',
-                fontWeight: 600,
-                fontSize: 14,
-                textDecoration: 'none',
+          </Stack>
+          <Box sx={{ mt: 'auto', pt: 3 }}>
+            <Divider sx={{ mb: 2.5 }} />
+            <SidebarLink
+              link={{
+                label: 'Sign in',
+                description: 'Return to your items and activity.',
+                icon: <LoginRoundedIcon />,
+                href: `${APP_URL}/login`,
               }}
-            >
-              Sign in
-            </Box>
-            <Box sx={{ width: '100%', pt: 0.5 }}>
+              onClose={() => setOpen(false)}
+            />
+            <Box sx={{ mt: 2 }}>
               <CtaPill full />
             </Box>
-            <Box sx={{ pt: 1 }}>
+            <Box sx={{ mt: 2 }}>
               <LanguageSwitcher />
             </Box>
-          </Stack>
+          </Box>
         </Box>
       </Drawer>
     </Box>

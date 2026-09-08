@@ -799,6 +799,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             top: 0,
             zIndex: 10,
             display: 'flex',
+            flexWrap: { xs: 'wrap', md: 'nowrap' },
             alignItems: 'center',
             gap: 1,
             px: { xs: 2, md: 4 },
@@ -817,6 +818,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           }}
         >
           <IconButton
+            aria-label="Open navigation"
             onClick={() => setMobileOpen(true)}
             sx={{ ...DARK_HEADER_ACTION, display: { xs: 'inline-flex', md: 'none' } }}
           >
@@ -825,13 +827,22 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           {/* Logo shows on mobile (the sidebar is a drawer); hidden on desktop
               where the sidebar already carries it. */}
           <Box sx={{ display: { xs: 'inline-flex', md: 'none' }, mr: 0.5 }}>
-            <BrandLogo size={22} onDark />
+            <BrandLogo size={18} onDark />
           </Box>
-          <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Box
+            sx={{
+              flex: { xs: '1 1 100%', md: 1 },
+              minWidth: 0,
+              order: { xs: 4, md: 0 },
+              pt: { xs: 1, md: 0 },
+              mt: { xs: 0.5, md: 0 },
+              borderTop: { xs: '1px solid rgba(255,255,255,.08)', md: 'none' },
+            }}
+          >
             <Typography
               noWrap
               sx={{
-                fontFamily: '"Black Ops One", Georgia, serif',
+                fontFamily: 'Outfit, sans-serif',
                 fontWeight: 600,
                 fontSize: 22,
                 color: '#F3F6FB',
@@ -846,7 +857,21 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           </Box>
 
           {/* Quick actions */}
-          <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{
+              alignItems: 'center',
+              ml: 'auto',
+              gap: { xs: 0, sm: 0.5 },
+              '& .MuiIconButton-root': {
+                width: { xs: 32, sm: 40 },
+                height: { xs: 32, sm: 40 },
+                '& svg': { fontSize: { xs: 20, sm: 24 } },
+              },
+              '& .MuiAvatar-root': { width: { xs: 30, sm: 36 }, height: { xs: 30, sm: 36 } },
+            }}
+          >
             <NotificationsBell />
             <Tooltip title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}>
               <IconButton

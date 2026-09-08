@@ -1,3 +1,9 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  workspacePanel,
+  QueueSummary,
+} from '../components/AdminWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -15,11 +21,11 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
 import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
-import { EmptyState, ListSkeleton, PageHeader } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
-export function FeatureFlagsPage() {
+function FeatureFlagsPageContent() {
   const qc = useQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ['feature-flags'],
@@ -45,7 +51,7 @@ export function FeatureFlagsPage() {
   });
 
   return (
-    <Box sx={{ maxWidth: 900, mx: 'auto' }}>
+    <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
       <Stack spacing={3}>
         <PageHeader
           icon={<ToggleOnOutlinedIcon />}
@@ -53,6 +59,14 @@ export function FeatureFlagsPage() {
           description="Toggle features, control rollout percentage, and manage allowed users."
         />
 
+        <QueueSummary
+          count={isLoading || error ? undefined : data?.filter((flag) => flag.enabled).length}
+          label="Features enabled"
+          description="Manage availability, rollout percentage and access exceptions."
+        />
+        {(toggle.isError || rollout.isError) && (
+          <Alert severity="error">Could not save the feature change. Please try again.</Alert>
+        )}
         {error && (
           <Alert severity="error">
             {error instanceof Error ? error.message : 'Failed to load flags'}
@@ -106,9 +120,9 @@ function FlagCard({
   const [localAllowed, setLocalAllowed] = useState(flag.allowedUserIds.join(', '));
 
   return (
-    <Paper sx={{ p: 3, borderRadius: 2 }}>
+    <Paper sx={workspacePanel}>
       <Stack
-        direction="row"
+        direction={{ xs: 'column', sm: 'row' }}
         spacing={2}
         sx={{ alignItems: 'center', justifyContent: 'space-between' }}
       >
@@ -129,7 +143,12 @@ function FlagCard({
             label={flag.enabled ? 'Enabled' : 'Disabled'}
             color={flag.enabled ? 'success' : 'default'}
           />
-          <Switch checked={flag.enabled} onChange={onToggle} disabled={togglePending} />
+          <Switch
+            slotProps={{ input: { 'aria-label': `Enable ${flag.name}` } }}
+            checked={flag.enabled}
+            onChange={onToggle}
+            disabled={togglePending}
+          />
         </Stack>
       </Stack>
 
@@ -141,6 +160,7 @@ function FlagCard({
             Rollout: {localPercentage}%
           </Typography>
           <Slider
+            aria-label={`Rollout percentage for ${flag.name}`}
             value={localPercentage}
             onChange={(_e, v) => setLocalPercentage(v as number)}
             onChangeCommitted={(_e, v) =>
@@ -184,5 +204,13 @@ function FlagCard({
         />
       </Stack>
     </Paper>
+  );
+}
+
+export function FeatureFlagsPage() {
+  return (
+    <AdminWorkspace>
+      <FeatureFlagsPageContent />
+    </AdminWorkspace>
   );
 }

@@ -1,3 +1,10 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+  queueTable,
+  queueFilters,
+} from '../components/AdminWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -22,7 +29,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { TrustedFinderApplicationDTO } from '@back2u/shared-types';
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
-import { AiAssistantBar, EmptyState, PageHeader } from '@back2u/ui-web';
+import { AiAssistantBar, EmptyState } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -32,7 +39,7 @@ const STATUS_COLOR: Record<string, 'warning' | 'success' | 'error' | 'default'> 
   rejected: 'error',
 };
 
-export function TrustedFinderApplicationsPage() {
+function TrustedFinderApplicationsPageContent() {
   const qc = useQueryClient();
   const [statusFilter, setStatusFilter] = useState<'pending' | 'approved' | 'rejected' | undefined>(
     'pending',
@@ -57,7 +64,7 @@ export function TrustedFinderApplicationsPage() {
     severity: 'success',
   });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['trusted-finder-applications', statusFilter],
     queryFn: () => api.listTrustedFinderApplications(statusFilter),
   });
@@ -104,14 +111,21 @@ export function TrustedFinderApplicationsPage() {
     <Stack spacing={3}>
       <PageHeader
         icon={<HowToRegOutlinedIcon />}
-        title="Trusted Finder Applications"
+        title="Trusted finders"
         description="Vet members applying for trusted-finder status — review their ID and bio, then approve or reject."
       />
 
-      <Stack direction="row" spacing={1}>
+      <QueueSummary
+        count={isLoading || isError ? undefined : data?.length}
+        label="Applications in this view"
+        description="Review the submitted identification and bio together."
+      />
+
+      <Stack direction="row" useFlexGap sx={queueFilters}>
         {(['pending', 'approved', 'rejected'] as const).map((s) => (
           <Button
             key={s}
+            aria-pressed={statusFilter === s}
             variant={statusFilter === s ? 'contained' : 'outlined'}
             size="small"
             onClick={() => setStatusFilter(s)}
@@ -120,6 +134,7 @@ export function TrustedFinderApplicationsPage() {
           </Button>
         ))}
         <Button
+          aria-pressed={statusFilter === undefined}
           variant={statusFilter === undefined ? 'contained' : 'outlined'}
           size="small"
           onClick={() => setStatusFilter(undefined)}
@@ -128,7 +143,19 @@ export function TrustedFinderApplicationsPage() {
         </Button>
       </Stack>
 
-      {!isLoading && (data ?? []).length === 0 ? (
+      {isError && (
+        <Alert
+          severity="error"
+          action={
+            <Button color="inherit" onClick={() => void refetch()}>
+              Retry
+            </Button>
+          }
+        >
+          Could not load this queue. Please try again.
+        </Alert>
+      )}
+      {!isLoading && !isError && (data ?? []).length === 0 ? (
         <EmptyState
           tone="teal"
           icon={<HowToRegOutlinedIcon />}
@@ -136,7 +163,7 @@ export function TrustedFinderApplicationsPage() {
           description="Applications matching this filter will appear here for review."
         />
       ) : (
-        <Box sx={{ overflowX: 'auto' }}>
+        <Box sx={queueTable}>
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -168,8 +195,8 @@ export function TrustedFinderApplicationsPage() {
                     <a href={app.idPhotoUrl} target="_blank" rel="noreferrer">
                       <img
                         src={app.idPhotoUrl}
-                        alt="ID"
-                        style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 4 }}
+                        alt={`Identification submitted by ${app.userId}`}
+                        style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 12 }}
                       />
                     </a>
                   </TableCell>
@@ -218,7 +245,23 @@ export function TrustedFinderApplicationsPage() {
         </Box>
       )}
 
-      <Dialog open={decideDialog.open} onClose={closeDecide} maxWidth="sm" fullWidth>
+      <Dialog
+        slotProps={{
+          paper: {
+            sx: {
+              bgcolor: 'background.default',
+              borderRadius: '24px',
+              backgroundImage: 'none',
+              '& .MuiDialogTitle-root': { fontFamily: 'Outfit, sans-serif', fontSize: 24 },
+              '& .MuiDialogActions-root': { p: 2.5, flexWrap: 'wrap', gap: 1 },
+            },
+          },
+        }}
+        open={decideDialog.open}
+        onClose={closeDecide}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>
           {decideDialog.decision === 'approved' ? 'Approve' : 'Reject'} application
         </DialogTitle>
@@ -287,5 +330,13 @@ export function TrustedFinderApplicationsPage() {
         </Alert>
       </Snackbar>
     </Stack>
+  );
+}
+
+export function TrustedFinderApplicationsPage() {
+  return (
+    <AdminWorkspace>
+      <TrustedFinderApplicationsPageContent />
+    </AdminWorkspace>
   );
 }

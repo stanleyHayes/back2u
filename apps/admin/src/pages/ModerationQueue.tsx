@@ -1,3 +1,10 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+  queueTable,
+  queueFilters,
+} from '../components/AdminWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -26,7 +33,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { ModerationQueueItemDTO } from '@back2u/shared-types';
 import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
-import { EmptyState, PageHeader } from '@back2u/ui-web';
+import { EmptyState } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -41,7 +48,7 @@ const STATUS_COLOR: Record<string, 'default' | 'warning' | 'success'> = {
   reviewed: 'success',
 };
 
-export function ModerationQueuePage() {
+function ModerationQueuePageContent() {
   const qc = useQueryClient();
   const [typeFilter, setTypeFilter] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('');
@@ -56,7 +63,7 @@ export function ModerationQueuePage() {
     severity: 'success',
   });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin-moderation-queue', typeFilter, statusFilter],
     queryFn: () =>
       api.listModerationQueue({ type: typeFilter || undefined, status: statusFilter || undefined }),
@@ -81,25 +88,43 @@ export function ModerationQueuePage() {
     <Stack spacing={3}>
       <PageHeader
         icon={<GavelOutlinedIcon />}
-        title="Moderation Queue"
+        title="Moderation queue"
         description="Review flagged items, messages and users, then approve or remove them."
       />
 
-      <Stack direction="row" spacing={2}>
-        <FormControl size="small" sx={{ minWidth: 120 }}>
-          <InputLabel>Type</InputLabel>
-          <Select value={typeFilter} label="Type" onChange={(e) => setTypeFilter(e.target.value)}>
+      <QueueSummary
+        count={isLoading || isError ? undefined : data?.length}
+        label="Flags in this view"
+        description="Use content type and review status to focus your queue."
+      />
+
+      <Stack direction="row" useFlexGap sx={queueFilters}>
+        <FormControl size="small" sx={{ minWidth: 160 }}>
+          <InputLabel id="moderation-type-label" shrink>
+            Content type
+          </InputLabel>
+          <Select
+            labelId="moderation-type-label"
+            displayEmpty
+            value={typeFilter}
+            label="Content type"
+            onChange={(e) => setTypeFilter(e.target.value)}
+          >
             <MenuItem value="">All</MenuItem>
             <MenuItem value="item">Item</MenuItem>
             <MenuItem value="message">Message</MenuItem>
             <MenuItem value="user">User</MenuItem>
           </Select>
         </FormControl>
-        <FormControl size="small" sx={{ minWidth: 120 }}>
-          <InputLabel>Status</InputLabel>
+        <FormControl size="small" sx={{ minWidth: 160 }}>
+          <InputLabel id="moderation-status-label" shrink>
+            Review status
+          </InputLabel>
           <Select
+            labelId="moderation-status-label"
+            displayEmpty
             value={statusFilter}
-            label="Status"
+            label="Review status"
             onChange={(e) => setStatusFilter(e.target.value)}
           >
             <MenuItem value="">All</MenuItem>
@@ -109,6 +134,18 @@ export function ModerationQueuePage() {
         </FormControl>
       </Stack>
 
+      {isError && (
+        <Alert
+          severity="error"
+          action={
+            <Button color="inherit" onClick={() => void refetch()}>
+              Retry
+            </Button>
+          }
+        >
+          Could not load this queue. Please try again.
+        </Alert>
+      )}
       {isLoading && (
         <Stack spacing={1}>
           {Array.from({ length: 5 }).map((_, i) => (
@@ -117,7 +154,7 @@ export function ModerationQueuePage() {
         </Stack>
       )}
 
-      {!isLoading && items.length === 0 ? (
+      {!isLoading && !isError && items.length === 0 ? (
         <EmptyState
           tone="teal"
           icon={<TaskAltOutlinedIcon />}
@@ -125,7 +162,7 @@ export function ModerationQueuePage() {
           description="Nothing is waiting for review. Flagged content will appear here when it needs a decision."
         />
       ) : (
-        <Box sx={{ overflowX: 'auto' }}>
+        <Box sx={queueTable}>
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -172,7 +209,23 @@ export function ModerationQueuePage() {
       )}
 
       {detailItem && (
-        <Dialog open onClose={() => setDetailItem(null)} maxWidth="sm" fullWidth>
+        <Dialog
+          slotProps={{
+            paper: {
+              sx: {
+                bgcolor: 'background.default',
+                borderRadius: '24px',
+                backgroundImage: 'none',
+                '& .MuiDialogTitle-root': { fontFamily: 'Outfit, sans-serif', fontSize: 24 },
+                '& .MuiDialogActions-root': { p: 2.5, flexWrap: 'wrap', gap: 1 },
+              },
+            },
+          }}
+          open
+          onClose={() => setDetailItem(null)}
+          maxWidth="sm"
+          fullWidth
+        >
           <DialogTitle>Review Moderation Item</DialogTitle>
           <DialogContent>
             <Stack spacing={2} sx={{ mt: 1 }}>
@@ -247,5 +300,13 @@ export function ModerationQueuePage() {
         </Alert>
       </Snackbar>
     </Stack>
+  );
+}
+
+export function ModerationQueuePage() {
+  return (
+    <AdminWorkspace>
+      <ModerationQueuePageContent />
+    </AdminWorkspace>
   );
 }

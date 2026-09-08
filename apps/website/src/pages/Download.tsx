@@ -1,4 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material';
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
+import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
+import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 
 import { PageShell } from '../components/PageShell';
 import { AppStoreBadges } from '../components/AppStoreBadges';
@@ -7,9 +10,24 @@ const INK = '#2E3D2F';
 const PAPER = '#F2EFEA';
 
 const PERKS = [
-  { title: 'Snap on the go', body: 'Report a lost or found item in 30 seconds, wherever you are.' },
-  { title: 'Instant alerts', body: 'Get a push the moment a likely match is reported near you.' },
-  { title: 'Anonymous chat', body: 'Coordinate a hand-off without sharing your number.' },
+  {
+    title: 'Snap on the go',
+    label: 'Capture',
+    icon: PhotoCameraOutlinedIcon,
+    body: 'Add a photo and report a lost or found item, wherever you are.',
+  },
+  {
+    title: 'Instant alerts',
+    label: 'Stay updated',
+    icon: NotificationsActiveOutlinedIcon,
+    body: 'Get notified when a possible match is reported near you.',
+  },
+  {
+    title: 'Anonymous chat',
+    label: 'Connect privately',
+    icon: ForumOutlinedIcon,
+    body: 'Arrange a hand-off in the app without sharing your phone number.',
+  },
 ];
 
 export function Download() {
@@ -22,7 +40,7 @@ export function Download() {
         <Typography
           className="b2u-display"
           component="h1"
-          sx={{ mt: 2, fontSize: { xs: 38, md: 56 }, fontWeight: 600, color: INK }}
+          sx={{ mt: 2, fontSize: { xs: 38, md: 56 }, fontWeight: 600, color: 'text.primary' }}
         >
           bak2me in your pocket
         </Typography>
@@ -100,26 +118,78 @@ export function Download() {
             </Typography>
           </Stack>
         </Box>
-
+      </Box>
+      <Box component="section" aria-label="App features" sx={{ mt: { xs: 6, md: 8 } }}>
         <Box
           sx={{
-            mt: 7,
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
-            gap: 3,
-            textAlign: 'left',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' },
+            gap: { xs: 2.5, md: 3 },
           }}
         >
-          {PERKS.map((p) => (
-            <Box key={p.title}>
+          {PERKS.map(({ title, label, icon: Icon, body }) => (
+            <Box
+              component="article"
+              key={title}
+              sx={{
+                p: { xs: 3, sm: 2.5, md: 3 },
+                borderRadius: '24px',
+                bgcolor: 'background.default',
+                border: '1px solid',
+                borderColor: (t) =>
+                  t.palette.mode === 'dark' ? 'rgba(210,232,222,.045)' : 'rgba(255,255,255,.6)',
+                boxShadow: (t) =>
+                  t.palette.mode === 'dark'
+                    ? '8px 8px 20px #131912, -6px -6px 18px #273026'
+                    : '8px 8px 20px #dcd9d4, -6px -6px 18px #ffffff',
+              }}
+            >
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', mb: 3 }}>
+                <Box
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    flexShrink: 0,
+                    display: 'grid',
+                    placeItems: 'center',
+                    borderRadius: '18px',
+                    color: 'primary.main',
+                    boxShadow: (t) =>
+                      t.palette.mode === 'dark'
+                        ? 'inset 4px 4px 9px #121811, inset -4px -4px 9px #2a3428'
+                        : 'inset 4px 4px 9px #dcd9d4, inset -4px -4px 9px #ffffff',
+                  }}
+                >
+                  <Icon sx={{ fontSize: 26 }} />
+                </Box>
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: '.04em',
+                  }}
+                >
+                  {label}
+                </Typography>
+              </Stack>
               <Typography
-                className="b2u-display"
-                sx={{ fontSize: 18, fontWeight: 600, color: INK }}
+                component="h2"
+                sx={{
+                  fontFamily: 'Outfit, sans-serif',
+                  fontSize: { xs: 22, sm: 20, md: 22 },
+                  fontWeight: 600,
+                  letterSpacing: '-.025em',
+                  color: 'text.primary',
+                  lineHeight: 1.3,
+                }}
               >
-                {p.title}
+                {title}
               </Typography>
-              <Typography sx={{ mt: 0.5, color: 'text.secondary', fontSize: 15 }}>
-                {p.body}
+              <Typography
+                sx={{ mt: 1.25, color: 'text.secondary', fontSize: 14, lineHeight: 1.75 }}
+              >
+                {body}
               </Typography>
             </Box>
           ))}

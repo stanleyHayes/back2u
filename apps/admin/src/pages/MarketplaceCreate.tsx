@@ -1,4 +1,10 @@
 import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+  workspacePanel,
+} from '../components/AdminWorkspace.js';
+import {
   Alert,
   Box,
   Button,
@@ -14,7 +20,7 @@ import { DEFAULT_CURRENCY } from '@back2u/shared-types';
 import { useState } from 'react';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
-import { EmptyState, PageHeader } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -31,9 +37,14 @@ function closesIn(iso: string): string {
   return `${Math.max(1, Math.floor(ms / 60_000))}m left`;
 }
 
-export function MarketplaceCreatePage() {
+function MarketplaceCreatePageContent() {
   const qc = useQueryClient();
-  const { data: live } = useQuery({ queryKey: ['mp-live'], queryFn: () => api.listMarketplace() });
+  const {
+    data: live,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({ queryKey: ['mp-live'], queryFn: () => api.listMarketplace() });
   const [form, setForm] = useState({
     itemId: '',
     startingPrice: '',
@@ -70,6 +81,11 @@ export function MarketplaceCreatePage() {
         title="Marketplace"
         description="List unclaimed items for timed auction and keep an eye on what's currently live."
       />
+      <QueueSummary
+        count={isLoading || isError ? undefined : live?.length}
+        label="Live marketplace listings"
+        description="Give unclaimed belongings another life through timed auctions."
+      />
       <Card variant="outlined">
         <CardContent>
           <Typography variant="h6" gutterBottom>
@@ -83,7 +99,7 @@ export function MarketplaceCreatePage() {
               value={form.itemId}
               onChange={(e) => setForm({ ...form, itemId: e.target.value })}
             />
-            <Stack direction="row" spacing={2}>
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
               <TextField
                 label={`Starting price (${DEFAULT_CURRENCY})`}
                 type="number"
@@ -116,7 +132,7 @@ export function MarketplaceCreatePage() {
               onClick={() => create.mutate()}
               disabled={!form.itemId || !form.startingPrice || create.isPending}
             >
-              List
+              Publish listing
             </Button>
           </Stack>
         </CardContent>
@@ -128,10 +144,20 @@ export function MarketplaceCreatePage() {
           <Chip
             size="small"
             label={live.length}
-            sx={{ bgcolor: 'rgba(168,181,160,0.14)', color: TEAL, fontWeight: 700 }}
+            sx={{
+              bgcolor: 'rgba(168,181,160,0.14)',
+              color: 'var(--workspace-green)',
+              fontWeight: 700,
+            }}
           />
         )}
       </Stack>
+      {isLoading && <ListSkeleton rows={3} />}
+      {isError && (
+        <Alert severity="error" action={<Button onClick={() => void refetch()}>Retry</Button>}>
+          Could not load listings.
+        </Alert>
+      )}
       {live && live.length === 0 && (
         <EmptyState
           dense
@@ -153,11 +179,7 @@ export function MarketplaceCreatePage() {
             key={l.id}
             sx={{
               position: 'relative',
-              p: 2.25,
-              borderRadius: 2.5,
-              border: 1,
-              borderColor: 'divider',
-              bgcolor: 'background.paper',
+              ...workspacePanel,
               overflow: 'hidden',
               transition: 'border-color .15s, transform .15s',
               '&:hover': { borderColor: TEAL, transform: 'translateY(-2px)' },
@@ -189,12 +211,17 @@ export function MarketplaceCreatePage() {
                     width: 7,
                     height: 7,
                     borderRadius: '50%',
-                    bgcolor: TEAL,
+                    bgcolor: 'var(--workspace-green)',
                     boxShadow: `0 0 0 3px rgba(168,181,160,0.2)`,
                   }}
                 />
                 <Typography
-                  sx={{ fontSize: 11, fontWeight: 700, color: TEAL, letterSpacing: '0.08em' }}
+                  sx={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: 'var(--workspace-green)',
+                    letterSpacing: '0.08em',
+                  }}
                 >
                   LIVE
                 </Typography>
@@ -207,7 +234,9 @@ export function MarketplaceCreatePage() {
             <Stack direction="row" spacing={0.75} sx={{ alignItems: 'baseline', mt: 0.25 }}>
               <Typography
                 sx={{
-                  fontFamily: '"Black Ops One", Georgia, serif',
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: 600,
+                  fontVariantNumeric: 'tabular-nums',
                   fontSize: 26,
                   lineHeight: 1.1,
                   color: 'text.primary',
@@ -242,5 +271,13 @@ export function MarketplaceCreatePage() {
         ))}
       </Box>
     </Stack>
+  );
+}
+
+export function MarketplaceCreatePage() {
+  return (
+    <AdminWorkspace>
+      <MarketplaceCreatePageContent />
+    </AdminWorkspace>
   );
 }

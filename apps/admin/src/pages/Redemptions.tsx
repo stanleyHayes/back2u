@@ -1,4 +1,9 @@
 import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+} from '../components/AdminWorkspace.js';
+import {
   Alert,
   Box,
   Button,
@@ -14,7 +19,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import type { RedemptionDTO, RedemptionStatus } from '@back2u/shared-types';
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
-import { EmptyState, PageHeader } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -31,18 +36,28 @@ function money(minor: number, currency: string): string {
   return `${(minor / 100).toFixed(2)} ${currency}`;
 }
 
-export function RedemptionsPage() {
+function RedemptionsPageContent() {
   const qc = useQueryClient();
   const [code, setCode] = useState('');
   const [institutionId, setInstitutionId] = useState('');
   const [lastConfirmed, setLastConfirmed] = useState<RedemptionDTO | null>(null);
 
-  const { data: institutions } = useQuery({
+  const {
+    data: institutions,
+    isLoading: institutionsLoading,
+    isError: institutionsError,
+    refetch: reloadInstitutions,
+  } = useQuery({
     queryKey: ['admin-institutions'],
     queryFn: () => api.listInstitutions(),
   });
 
-  const { data: redemptions } = useQuery({
+  const {
+    data: redemptions,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ['admin-redemptions', institutionId],
     queryFn: () => api.listInstitutionRedemptions(institutionId),
     enabled: !!institutionId,
@@ -65,6 +80,11 @@ export function RedemptionsPage() {
         description="Customers spend reputation points at partner establishments. Enter the voucher code shown in their app to confirm and fulfil the redemption."
       />
 
+      <QueueSummary
+        count={institutionId && !isLoading && !isError ? redemptions?.length : undefined}
+        label="Institution redemption ledger"
+        description="Confirm a customer’s voucher, or choose an institution to inspect its redemption history."
+      />
       {/* Confirm by code */}
       <Card variant="outlined">
         <CardContent>
@@ -81,6 +101,7 @@ export function RedemptionsPage() {
               placeholder="RDM-XXXXXX"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
+              fullWidth
               sx={{ flex: 1 }}
             />
             <Button
@@ -118,7 +139,9 @@ export function RedemptionsPage() {
             label="Institution"
             value={institutionId}
             onChange={(e) => setInstitutionId(e.target.value)}
-            sx={{ minWidth: 280, mb: 2 }}
+            disabled={institutionsLoading || institutionsError}
+            fullWidth
+            sx={{ maxWidth: 520, mb: 2 }}
           >
             <MenuItem value="">
               <em>Select an institution</em>
@@ -130,7 +153,26 @@ export function RedemptionsPage() {
             ))}
           </TextField>
 
-          {institutionId && (redemptions ?? []).length === 0 && (
+          {institutionsError && (
+            <Alert
+              severity="error"
+              action={<Button onClick={() => void reloadInstitutions()}>Retry</Button>}
+            >
+              Could not load institutions.
+            </Alert>
+          )}
+          {!institutionId && (
+            <Typography sx={{ color: 'text.secondary', fontSize: 14, py: 2 }}>
+              Choose an institution to see its voucher activity.
+            </Typography>
+          )}
+          {isLoading && <ListSkeleton rows={3} />}
+          {isError && (
+            <Alert severity="error" action={<Button onClick={() => void refetch()}>Retry</Button>}>
+              Could not load the ledger.
+            </Alert>
+          )}
+          {institutionId && !isLoading && !isError && (redemptions ?? []).length === 0 && (
             <EmptyState
               dense
               tone="marigold"
@@ -150,9 +192,9 @@ export function RedemptionsPage() {
                   justifyContent: 'space-between',
                   gap: 2,
                   p: 1.5,
-                  borderRadius: 1,
-                  border: '1px solid',
-                  borderColor: 'divider',
+                  borderRadius: '16px',
+                  boxShadow: 'var(--workspace-inset)',
+                  flexWrap: 'wrap',
                 }}
               >
                 <Box>
@@ -173,5 +215,13 @@ export function RedemptionsPage() {
         </CardContent>
       </Card>
     </Stack>
+  );
+}
+
+export function RedemptionsPage() {
+  return (
+    <AdminWorkspace>
+      <RedemptionsPageContent />
+    </AdminWorkspace>
   );
 }

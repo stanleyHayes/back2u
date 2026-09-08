@@ -1,15 +1,19 @@
-import { Alert, Box, Button, Chip, Stack, Typography } from '@mui/material';
+import {
+  PartnerWorkspace,
+  WorkspaceHeader as PageHeader,
+  workspacePanel,
+  workspaceHeading,
+} from '../components/PartnerWorkspace.js';
+import { Alert, Box, Button, Chip, Skeleton, Stack, Typography } from '@mui/material';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { SubscriptionTier } from '@back2u/shared-types';
-import { EmptyState, PageHeader } from '@back2u/ui-web';
+import { EmptyState } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 import { useAuth } from '../lib/auth.store.js';
 
-const INK = '#2E3D2F';
-const PAPER = '#F2EFEA';
 const TEAL = '#40614A';
 const MARIGOLD = '#8B6F4E';
 
@@ -17,22 +21,34 @@ const ORDER: Record<SubscriptionTier, number> = { free: 0, pro: 1, enterprise: 2
 const money = (minor: number, currency: string) =>
   minor === 0 ? 'Free' : `${currency} ${(minor / 100).toLocaleString()}/mo`;
 
-export function BillingPage() {
+function BillingContent() {
   const qc = useQueryClient();
   const user = useAuth((s) => s.user);
   const institutionId = user?.institutionId;
 
-  const { data: plans } = useQuery({
+  const {
+    data: plans,
+    isPending: plansLoading,
+    isError: plansError,
+    refetch: reloadPlans,
+  } = useQuery({
     queryKey: ['subscription-plans'],
     queryFn: () => api.getSubscriptionPlans(),
   });
-  const { data: inst } = useQuery({
+  const {
+    data: inst,
+    isPending: instLoading,
+    isError: instError,
+    refetch: reloadInstitution,
+  } = useQuery({
     queryKey: ['my-institution', institutionId],
     queryFn: () => api.getInstitution(institutionId!),
     enabled: !!institutionId,
   });
 
-  const current: SubscriptionTier = inst?.subscriptionTier ?? 'free';
+  const current: SubscriptionTier | undefined = inst
+    ? (inst.subscriptionTier ?? 'free')
+    : undefined;
 
   const subscribe = useMutation({
     mutationFn: (tier: SubscriptionTier) => api.subscribeInstitution(institutionId!, tier),
@@ -40,12 +56,12 @@ export function BillingPage() {
   });
 
   return (
-    <Box sx={{ maxWidth: 1040, mx: 'auto' }}>
+    <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
       <Box sx={{ mb: 3 }}>
         <PageHeader
           icon={<CreditCardOutlinedIcon />}
           title="Plans & billing"
-          description="Upgrade your institution to unlock unlimited items, courier dispatch, analytics, and API access."
+          description="Review your current plan and compare the features available to your institution."
         />
       </Box>
 
@@ -55,14 +71,36 @@ export function BillingPage() {
         </Alert>
       )}
 
+      {plansError && (
+        <Alert
+          severity="error"
+          sx={{ mb: 3 }}
+          action={<Button onClick={() => reloadPlans()}>Retry</Button>}
+        >
+          Plans could not be loaded.
+        </Alert>
+      )}
+      {instError && (
+        <Alert
+          severity="error"
+          sx={{ mb: 3 }}
+          action={<Button onClick={() => reloadInstitution()}>Retry</Button>}
+        >
+          Your current subscription could not be loaded. Plan changes are unavailable until it
+          loads.
+        </Alert>
+      )}
+      {subscribe.isSuccess && (
+        <Alert severity="success" sx={{ mb: 3 }}>
+          Your subscription has been updated.
+        </Alert>
+      )}
       {inst && (
         <Box
           sx={{
             mb: 3,
-            p: 2.5,
-            borderRadius: 2,
-            bgcolor: INK,
-            color: PAPER,
+            ...workspacePanel,
+            color: 'text.primary',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -76,14 +114,14 @@ export function BillingPage() {
                 fontSize: 12,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
-                color: 'rgba(250,248,243,0.6)',
+                color: 'text.secondary',
               }}
             >
               {inst.name}
             </Typography>
             <Typography
               sx={{
-                fontFamily: '"Black Ops One", Georgia, serif',
+                fontFamily: 'Outfit, sans-serif',
                 fontSize: 22,
                 fontWeight: 600,
                 textTransform: 'capitalize',
@@ -93,7 +131,7 @@ export function BillingPage() {
             </Typography>
           </Box>
           {current !== 'free' && inst.subscriptionRenewsAt && (
-            <Typography sx={{ color: 'rgba(250,248,243,0.7)', fontSize: 14 }}>
+            <Typography sx={{ color: 'text.secondary', fontSize: 14 }}>
               Renews {new Date(inst.subscriptionRenewsAt).toLocaleDateString()}
             </Typography>
           )}
@@ -115,42 +153,44 @@ export function BillingPage() {
         />
       )}
 
+      {plansLoading && (
+        <Box
+          aria-label="Loading plans"
+          sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}
+        >
+          {[0, 1, 2].map((index) => (
+            <Box key={index} sx={workspacePanel}>
+              <Skeleton height={35} width="50%" />
+              <Skeleton height={55} />
+              <Skeleton variant="rounded" height={160} sx={{ mt: 2 }} />
+            </Box>
+          ))}
+        </Box>
+      )}
+      <Typography component="h2" sx={{ ...workspaceHeading, fontSize: 23, mb: 3 }}>
+        Choose the room you need to grow
+      </Typography>
       <Box
         sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2.5 }}
       >
         {plans?.map((plan) => {
           const isCurrent = plan.tier === current;
-          const isUpgrade = ORDER[plan.tier] > ORDER[current];
-          const featured = plan.tier === 'pro';
+          const isUpgrade = current !== undefined && ORDER[plan.tier] > ORDER[current];
           return (
             <Box
               key={plan.tier}
               sx={{
                 position: 'relative',
                 p: 3,
-                borderRadius: 2,
-                bgcolor: 'background.paper',
-                border: '2px solid',
-                borderColor: isCurrent ? TEAL : featured ? MARIGOLD : 'divider',
+                borderRadius: '24px',
+                bgcolor: 'background.default',
+                border: '1px solid',
+                borderColor: isCurrent ? 'primary.main' : 'divider',
                 display: 'flex',
                 flexDirection: 'column',
-                boxShadow: featured ? '0 30px 60px -40px rgba(139,111,78,0.5)' : 'none',
+                boxShadow: isCurrent ? 'var(--workspace-inset)' : 'var(--workspace-raised)',
               }}
             >
-              {featured && !isCurrent && (
-                <Chip
-                  label="Most popular"
-                  size="small"
-                  sx={{
-                    position: 'absolute',
-                    top: -12,
-                    right: 16,
-                    bgcolor: MARIGOLD,
-                    color: '#F2EFEA',
-                    fontWeight: 700,
-                  }}
-                />
-              )}
               {isCurrent && (
                 <Chip
                   label="Current"
@@ -170,7 +210,7 @@ export function BillingPage() {
               </Typography>
               <Typography
                 sx={{
-                  fontFamily: '"Black Ops One", Georgia, serif',
+                  fontFamily: 'Outfit, sans-serif',
                   fontWeight: 600,
                   fontSize: 30,
                   color: 'text.primary',
@@ -186,7 +226,12 @@ export function BillingPage() {
                 {plan.features.map((f) => (
                   <Stack key={f} direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
                     <CheckRoundedIcon
-                      sx={{ fontSize: 18, color: TEAL, mt: '2px', flexShrink: 0 }}
+                      sx={{
+                        fontSize: 18,
+                        color: 'var(--workspace-green)',
+                        mt: '2px',
+                        flexShrink: 0,
+                      }}
                     />
                     <Typography sx={{ fontSize: 14 }}>{f}</Typography>
                   </Stack>
@@ -194,7 +239,14 @@ export function BillingPage() {
               </Stack>
               <Button
                 fullWidth
-                disabled={isCurrent || !institutionId || subscribe.isPending}
+                disabled={
+                  isCurrent ||
+                  !institutionId ||
+                  instLoading ||
+                  instError ||
+                  !inst ||
+                  subscribe.isPending
+                }
                 onClick={() => subscribe.mutate(plan.tier)}
                 variant={isUpgrade ? 'contained' : 'outlined'}
                 sx={
@@ -229,5 +281,13 @@ export function BillingPage() {
         })}
       </Box>
     </Box>
+  );
+}
+
+export function BillingPage() {
+  return (
+    <PartnerWorkspace>
+      <BillingContent />
+    </PartnerWorkspace>
   );
 }

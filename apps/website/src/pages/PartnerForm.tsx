@@ -28,6 +28,13 @@ import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlin
 import RedeemOutlinedIcon from '@mui/icons-material/RedeemOutlined';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
+import LocalAirportOutlinedIcon from '@mui/icons-material/LocalAirportOutlined';
+import DirectionsTransitOutlinedIcon from '@mui/icons-material/DirectionsTransitOutlined';
+import HotelOutlinedIcon from '@mui/icons-material/HotelOutlined';
+import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
@@ -75,6 +82,73 @@ const VOLUME_OPTIONS = ['<10', '10-50', '50-200', '200+'] as const;
 
 type InstitutionType = (typeof INSTITUTION_TYPES)[number];
 type VolumeOption = (typeof VOLUME_OPTIONS)[number];
+
+const INSTITUTION_DETAILS: Record<InstitutionType, { icon: ReactNode; description: string }> = {
+  University: {
+    icon: <SchoolOutlinedIcon />,
+    description: 'Campuses, colleges and student spaces',
+  },
+  Mall: {
+    icon: <StorefrontOutlinedIcon />,
+    description: 'Shopping centres and retail destinations',
+  },
+  Airport: {
+    icon: <LocalAirportOutlinedIcon />,
+    description: 'Terminals, lounges and airport facilities',
+  },
+  Transit: {
+    icon: <DirectionsTransitOutlinedIcon />,
+    description: 'Bus, rail and public transport networks',
+  },
+  Hotel: { icon: <HotelOutlinedIcon />, description: 'Hotels, resorts and guest accommodation' },
+  Other: {
+    icon: <BusinessOutlinedIcon />,
+    description: 'Offices, community spaces and other venues',
+  },
+};
+
+function InstitutionTypeLabel({ type }: { type: InstitutionType | '' }) {
+  const details = type ? INSTITUTION_DETAILS[type] : null;
+  return (
+    <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0, flex: 1 }}>
+      <Box
+        sx={{
+          width: 42,
+          height: 42,
+          flexShrink: 0,
+          display: 'grid',
+          placeItems: 'center',
+          borderRadius: '12px',
+          bgcolor: 'action.selected',
+          color: 'primary.main',
+          '& svg': { fontSize: 23 },
+        }}
+      >
+        {details?.icon ?? <BusinessOutlinedIcon />}
+      </Box>
+      <Box sx={{ minWidth: 0, whiteSpace: 'normal' }}>
+        <Typography
+          component="span"
+          sx={{ display: 'block', fontSize: 15, fontWeight: 600, lineHeight: 1.4 }}
+        >
+          {type || 'Select a type'}
+        </Typography>
+        <Typography
+          component="span"
+          sx={{
+            display: 'block',
+            color: 'text.secondary',
+            fontSize: 12,
+            lineHeight: 1.5,
+            mt: 0.25,
+          }}
+        >
+          {details?.description ?? 'Choose the best fit for your venue'}
+        </Typography>
+      </Box>
+    </Stack>
+  );
+}
 
 interface PlaceHit {
   name: string;
@@ -611,13 +685,54 @@ export function PartnerForm() {
                       value={formData.institutionType}
                       onChange={handleChange('institutionType')}
                       disabled={submitting}
+                      slotProps={{
+                        inputLabel: { shrink: true },
+                        select: {
+                          displayEmpty: true,
+                          renderValue: (value) => (
+                            <InstitutionTypeLabel type={value as InstitutionType | ''} />
+                          ),
+                          MenuProps: {
+                            slotProps: {
+                              paper: {
+                                sx: {
+                                  mt: 1,
+                                  borderRadius: '18px',
+                                  border: '1px solid',
+                                  borderColor: 'divider',
+                                  maxHeight: 480,
+                                  '& .MuiMenu-list': { p: 0.75 },
+                                  '& .MuiMenuItem-root': {
+                                    borderRadius: '12px',
+                                    px: 1.5,
+                                    py: 1.25,
+                                    gap: 1,
+                                    whiteSpace: 'normal',
+                                    '&.Mui-focusVisible': {
+                                      outline: '2px solid',
+                                      outlineColor: 'primary.main',
+                                      outlineOffset: -2,
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      }}
+                      sx={{ '& .MuiSelect-select': { py: 1.75, pr: '40px !important' } }}
                     >
-                      <MenuItem value="">
-                        <em>Select a type</em>
+                      <MenuItem value="" aria-label="Select a type">
+                        <InstitutionTypeLabel type="" />
                       </MenuItem>
                       {INSTITUTION_TYPES.map((type) => (
-                        <MenuItem key={type} value={type}>
-                          {type}
+                        <MenuItem key={type} value={type} aria-label={type}>
+                          <InstitutionTypeLabel type={type} />
+                          {formData.institutionType === type && (
+                            <CheckRoundedIcon
+                              sx={{ fontSize: 19, color: 'primary.main', flexShrink: 0 }}
+                            />
+                          )}
                         </MenuItem>
                       ))}
                     </TextField>

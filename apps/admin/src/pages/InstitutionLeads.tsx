@@ -1,3 +1,8 @@
+import {
+  AdminWorkspace,
+  WorkspaceHeader as PageHeader,
+  QueueSummary,
+} from '../components/AdminWorkspace.js';
 import { useState } from 'react';
 import {
   Alert,
@@ -15,7 +20,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { InstitutionLeadStatus } from '@back2u/shared-types';
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
-import { EmptyState, ListSkeleton, PageHeader } from '@back2u/ui-web';
+import { EmptyState, ListSkeleton } from '@back2u/ui-web';
 
 import { api } from '../lib/api.js';
 
@@ -26,7 +31,7 @@ const STATUS_COLOR: Record<InstitutionLeadStatus, 'default' | 'info' | 'success'
   rejected: 'error',
 };
 
-export function InstitutionLeadsPage() {
+function InstitutionLeadsPageContent() {
   const qc = useQueryClient();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [processing, setProcessing] = useState(false);
@@ -41,7 +46,7 @@ export function InstitutionLeadsPage() {
     severity: 'success',
   });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['admin-institution-leads'],
     queryFn: () => api.listInstitutionLeads(),
   });
@@ -49,6 +54,20 @@ export function InstitutionLeadsPage() {
   const decide = useMutation({
     mutationFn: (input: { id: string; decision: 'contacted' | 'approved' | 'rejected' }) =>
       api.decideInstitutionLead(input.id, input.decision),
+    onSuccess: () => {
+      if (!processing) {
+        void qc.invalidateQueries({ queryKey: ['admin-institution-leads'] });
+        setSelectedIds(new Set());
+      }
+    },
+    onError: () => {
+      if (!processing)
+        setSnackbar({
+          open: true,
+          message: 'Could not update the lead. Please try again.',
+          severity: 'error',
+        });
+    },
   });
 
   const items = data ?? [];
@@ -112,6 +131,7 @@ export function InstitutionLeadsPage() {
             {newCount > 0 && <Chip label={`${newCount} new`} color="info" />}
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
               <Checkbox
+                slotProps={{ input: { 'aria-label': 'Select all visible records' } }}
                 checked={allSelected}
                 indeterminate={someSelected}
                 onChange={toggleSelectAll}
@@ -125,12 +145,29 @@ export function InstitutionLeadsPage() {
         }
       />
 
+      {isError && (
+        <Alert
+          severity="error"
+          action={
+            <Button color="inherit" onClick={() => void refetch()}>
+              Retry
+            </Button>
+          }
+        >
+          Could not load this directory. Please try again.
+        </Alert>
+      )}
+      <QueueSummary
+        count={isLoading || isError ? undefined : newCount}
+        label="New partnership enquiries"
+        description="Review venue details and contact information before moving a lead to its next stage."
+      />
       {selectedIds.size > 0 && (
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
           <Button
             variant="contained"
             color="success"
-            disabled={processing}
+            disabled={decide.isPending || processing}
             onClick={() => runBulk('approved')}
           >
             Approve selected ({selectedIds.size})
@@ -138,7 +175,7 @@ export function InstitutionLeadsPage() {
           <Button
             variant="outlined"
             color="error"
-            disabled={processing}
+            disabled={decide.isPending || processing}
             onClick={() => runBulk('rejected')}
           >
             Reject selected ({selectedIds.size})
@@ -178,9 +215,10 @@ export function InstitutionLeadsPage() {
               >
                 <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <Checkbox
+                    slotProps={{ input: { 'aria-label': `Select ${lead.name}` } }}
                     checked={selectedIds.has(lead.id)}
                     onChange={() => toggleSelect(lead.id)}
-                    disabled={processing}
+                    disabled={decide.isPending || processing}
                   />
                   <Box>
                     <Typography variant="h6">{lead.name}</Typography>
@@ -193,7 +231,16 @@ export function InstitutionLeadsPage() {
                 <Chip label={lead.status} size="small" color={STATUS_COLOR[lead.status]} />
               </Stack>
 
-              <Stack spacing={0.25} sx={{ mt: 1.5, pl: 4 }}>
+              <Stack
+                spacing={0.25}
+                sx={{
+                  mt: 2,
+                  p: 2,
+                  borderRadius: '14px',
+                  boxShadow: 'var(--workspace-inset)',
+                  overflowWrap: 'anywhere',
+                }}
+              >
                 <Typography variant="body2">
                   <b>Contact:</b> {lead.contactName}
                 </Typography>
@@ -216,7 +263,7 @@ export function InstitutionLeadsPage() {
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ mt: 1.5, pl: 4, fontStyle: 'italic' }}
+                  sx={{ mt: 2, px: 2, lineHeight: 1.8, overflowWrap: 'anywhere' }}
                 >
                   “{lead.message}”
                 </Typography>
@@ -226,7 +273,7 @@ export function InstitutionLeadsPage() {
                 <Button
                   size="small"
                   variant="outlined"
-                  disabled={processing || lead.status === 'contacted'}
+                  disabled={decide.isPending || processing || lead.status === 'contacted'}
                   onClick={() => decide.mutate({ id: lead.id, decision: 'contacted' })}
                 >
                   Mark contacted
@@ -235,7 +282,7 @@ export function InstitutionLeadsPage() {
                   size="small"
                   variant="contained"
                   color="success"
-                  disabled={processing || lead.status === 'approved'}
+                  disabled={decide.isPending || processing || lead.status === 'approved'}
                   onClick={() => decide.mutate({ id: lead.id, decision: 'approved' })}
                 >
                   Approve
@@ -243,7 +290,7 @@ export function InstitutionLeadsPage() {
                 <Button
                   size="small"
                   color="error"
-                  disabled={processing || lead.status === 'rejected'}
+                  disabled={decide.isPending || processing || lead.status === 'rejected'}
                   onClick={() => decide.mutate({ id: lead.id, decision: 'rejected' })}
                 >
                   Reject
@@ -268,5 +315,13 @@ export function InstitutionLeadsPage() {
         </Alert>
       </Snackbar>
     </Stack>
+  );
+}
+
+export function InstitutionLeadsPage() {
+  return (
+    <AdminWorkspace>
+      <InstitutionLeadsPageContent />
+    </AdminWorkspace>
   );
 }
